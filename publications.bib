@@ -1,3 +1,74 @@
+@ARTICLE{PPAP02,
+       author = {{Paquette}, Courtney and {Paquette}, Elliot and {Adlam}, Ben and {Pennington}, Jeffrey},
+        title = "{Implicit Regularization or Implicit Conditioning? Exact Risk Trajectories of SGD in High Dimensions}",
+      journal = {arXiv e-prints},
+     keywords = {Statistics - Machine Learning, Computer Science - Machine Learning, Mathematics - Optimization and Control, Mathematics - Probability, Mathematics - Statistics Theory},
+         year = 2022,
+        month = jun,
+          eid = {arXiv:2206.07252},
+        pages = {arXiv:2206.07252},
+archivePrefix = {arXiv},
+       eprint = {2206.07252},
+ primaryClass = {stat.ML},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/2022arXiv220607252P},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System},
+      abstract = {Stochastic gradient descent (SGD) is a pillar of modern machine learning, serving as the go-to optimization algorithm for a diverse array of problems. While the empirical success of SGD is often attributed to its computational efficiency and favorable generalization behavior, neither effect is well understood and disentangling them remains an open problem. Even in the simple setting of convex quadratic problems, worst-case analyses give an asymptotic convergence rate for SGD that is no better than full-batch gradient descent (GD), and the purported implicit regularization effects of SGD lack a precise explanation. In this work, we study the dynamics of multi-pass SGD on high-dimensional convex quadratics and establish an asymptotic equivalence to a stochastic differential equation, which we call homogenized stochastic gradient descent (HSGD), whose solutions we characterize explicitly in terms of a Volterra integral equation. These results yield precise formulas for the learning and risk trajectories, which reveal a mechanism of implicit conditioning that explains the efficiency of SGD relative to GD. We also prove that the noise from SGD negatively impacts generalization performance, ruling out the possibility of any type of implicit regularization in this context. Finally, we show how to adapt the HSGD formalism to include streaming SGD, which allows us to produce an exact prediction for the excess risk of multi-pass SGD relative to that of streaming SGD (bootstrap risk).}
+}
+
+
+
+@ARTICLE{PPAP01,
+       author = {{Paquette}, Courtney and {Paquette}, Elliot and {Adlam}, Ben and {Pennington}, Jeffrey},
+        title = "{Homogenization of SGD in high-dimensions: Exact dynamics and generalization properties}",
+      journal = {arXiv e-prints},
+     keywords = {Mathematics - Statistics Theory, Mathematics - Optimization and Control, Mathematics - Probability, Statistics - Machine Learning},
+         year = 2022,
+        month = may,
+          eid = {arXiv:2205.07069},
+        pages = {arXiv:2205.07069},
+archivePrefix = {arXiv},
+       eprint = {2205.07069},
+ primaryClass = {math.ST},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/2022arXiv220507069P},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System},
+      abstract = {We develop a stochastic differential equation, called homogenized SGD, for analyzing the dynamics of stochastic gradient descent (SGD) on a high-dimensional random least squares problem with  $\ell^2$-regularization. We show that homogenized SGD is the high-dimensional equivalence of SGD -- for any quadratic statistic (e.g., population risk with quadratic loss), the statistic under the iterates of SGD converges to the statistic under homogenized SGD when the number of samples  n  and number of features  d  are polynomially related. By analyzing homogenized SGD, we provide exact non-asymptotic high-dimensional expressions for the generalization performance of SGD in terms of a solution of a Volterra integral equation. Further we provide the exact value of the limiting excess risk in the case of quadratic losses when trained by SGD. The analysis is formulated for data matrices and target vectors that satisfy a family of resolvent conditions, which can roughly be viewed as a weak (non-quantitative) form of delocalization of sample-side singular vectors of the data. Several motivating applications are provided including sample covariance matrices with independent samples and random features with non-generative model targets.}
+}
+
+@ARTICLE{LeeChengPaquettePaquette,
+       author = {{Lee}, Kiwon and {Cheng}, Andrew N. and {Paquette}, Courtney and {Paquette}, Elliot},
+        title = "{Trajectory of Mini-Batch Momentum: Batch Size Saturation and Convergence in High Dimensions}",
+      journal = {arXiv e-prints},
+     keywords = {Mathematics - Optimization and Control, Computer Science - Machine Learning, Mathematics - Probability, Statistics - Machine Learning},
+         year = 2022,
+        month = jun,
+          eid = {arXiv:2206.01029},
+        pages = {arXiv:2206.01029},
+archivePrefix = {arXiv},
+       eprint = {2206.01029},
+ primaryClass = {math.OC},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/2022arXiv220601029L},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System},
+      abstract = {We analyze the dynamics of large batch stochastic gradient descent with momentum (SGD+M) on the least squares problem when both the number of samples and dimensions are large. In this setting, we show that the dynamics of SGD+M converge to a deterministic discrete Volterra equation as dimension increases, which we analyze. We identify a stability measurement, the implicit conditioning ratio (ICR), which regulates the ability of SGD+M to accelerate the algorithm. When the batch size exceeds this ICR, SGD+M converges linearly at a rate of  $O(1/\sqrt{\kappa})$, matching optimal full-batch momentum (in particular performing as well as a full-batch but with a fraction of the size). For batch sizes smaller than the ICR, in contrast, SGD+M has rates that scale like a multiple of the single batch SGD rate. We give explicit choices for the learning rate and momentum parameter in terms of the Hessian spectra that achieve this performance.}
+}
+
+
+@ARTICLE{HoheiselPaquette01,
+       author = {{Hoheisel}, Tim and {Paquette}, Elliot},
+        title = "{Flatness of the nuclear norm sphere, simultaneous polarization, and uniqueness in nuclear norm minimization}",
+      journal = {arXiv e-prints},
+     keywords = {Mathematics - Optimization and Control, 15A18, 47N10, 65F22, 90C25, 90C27},
+         year = 2022,
+        month = may,
+          eid = {arXiv:2205.08442},
+        pages = {arXiv:2205.08442},
+archivePrefix = {arXiv},
+       eprint = {2205.08442},
+ primaryClass = {math.OC},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/2022arXiv220508442H},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System},
+      abstract = {In this paper we establish necessary and sufficient conditions for the existence of line segments (or flats) in the sphere of the nuclear norm via the notion of simultaneous polarization and a refined expression for the subdifferential of the nuclear norm. This is then leveraged to provide (point-based) necessary and sufficient conditions for uniqueness of solutions for minimizing the nuclear norm over an affine manifold. We further establish an alternative set of sufficient conditions for uniqueness, based on the interplay of the subdifferential of the nuclear norm and the range of the problem-defining linear operator. Finally, using convex duality, we show how to transfer the uniqueness results for the original problem to a whole class of nuclear norm-regularized minimization problems with a strictly convex fidelity term.}
+}
+
 @ARTICLE{AvdW,
        author = {{Paquette}, Elliot and {Vander Werf}, Andrew},
         title = "{Random geometric graphs and the spherical Wishart matrix}",
@@ -15,21 +86,27 @@ archivePrefix = {arXiv},
       abstract= {We consider the random geometric graph on n vertices drawn uniformly from a  d--dimensional sphere. We focus on the sparse regime, when the expected degree is constant independent of d and n. We show that, when d is larger than n by logarithmic factors, this graph is comparable to the Erdős--Rényi random graph of the same edge density in the inclusion divergence between the graph laws. This divergence functions in certain ways like a relaxation of the total variation distance, but is strong enough to distinguish Erdős--Rényi graphs of different densities with a higher resolution than the total variation distance. To do the analysis, we derive some exact statistics of the spherical Wishart matrix, the Gram matrix of n independent uniformly random  d--dimensional spherical vectors. In particular we give expressions for the characteristic function of the spherical Wishart matrix which are well--approximated using steepest descent.}
 }
 
-@ARTICLE{Paquettes03,
-       author = {{Paquette}, Courtney and {Paquette}, Elliot},
-        title = "{Dynamics of Stochastic Momentum Methods on Large-scale, Quadratic Models}",
-      journal = {NeurIPS 2021},
-     keywords = {Mathematics - Optimization and Control, Computer Science - Machine Learning, Mathematics - Probability, Statistics - Machine Learning},
-         year = 2021,
-        month = jun,
-          eid = {arXiv:2106.03696},
-archivePrefix = {arXiv},
-       eprint = {2106.03696},
- primaryClass = {math.OC},
-       adsurl = {https://ui.adsabs.harvard.edu/abs/2021arXiv210603696P},
-      adsnote = {Provided by the SAO/NASA Astrophysics Data System},
-      abstract= {We analyze a class of stochastic gradient algorithms with momentum on a high-dimensional random least squares problem. Our framework, inspired by random matrix theory, provides an exact (deterministic) characterization for the sequence of loss values produced by these algorithms which is expressed only in terms of the eigenvalues of the Hessian. This leads to simple expressions for nearly-optimal hyperparameters, a description of the limiting neighborhood, and average-case complexity. As a consequence, we show that (small-batch) stochastic heavy-ball momentum with a fixed momentum parameter provides no actual performance improvement over SGD when step sizes are adjusted correctly. For contrast, in the non-strongly convex setting, it is possible to get a large improvement over SGD using momentum. By introducing hyperparameters that depend on the number of samples, we propose a new algorithm sDANA (stochastic dimension adjusted Nesterov acceleration) which obtains an asymptotically optimal average-case complexity while remaining linearly convergent in the strongly convex setting without adjusting parameters.}
+@inproceedings{Paquettes03,
+	author = {Paquette, Courtney and Paquette, Elliot},
+	booktitle = {Advances in Neural Information Processing Systems},
+	editor = {M. Ranzato and A. Beygelzimer and Y. Dauphin and P.S. Liang and J. Wortman Vaughan},
+	pages = {9229--9240},
+	publisher = {Curran Associates, Inc.},
+	title = {Dynamics of Stochastic Momentum Methods on Large-scale, Quadratic Models},
+	url = {https://proceedings.neurips.cc/paper/2021/file/4cf0ed8641cfcbbf46784e620a0316fb-Paper.pdf},
+	volume = {34},
+	year = {2021},
+	keywords = {Mathematics - Optimization and Control, Computer Science - Machine Learning, Mathematics - Probability, Statistics - Machine Learning},
+	eid = {arXiv:2106.03696},
+	archivePrefix = {arXiv},
+	eprint = {2106.03696},
+	primaryClass = {math.OC},
+	adsurl = {https://ui.adsabs.harvard.edu/abs/2021arXiv210603696P},
+	adsnote = {Provided by the SAO/NASA Astrophysics Data System},
+	abstract= {We analyze a class of stochastic gradient algorithms with momentum on a high-dimensional random least squares problem. Our framework, inspired by random matrix theory, provides an exact (deterministic) characterization for the sequence of loss values produced by these algorithms which is expressed only in terms of the eigenvalues of the Hessian. This leads to simple expressions for nearly-optimal hyperparameters, a description of the limiting neighborhood, and average-case complexity. As a consequence, we show that (small-batch) stochastic heavy-ball momentum with a fixed momentum parameter provides no actual performance improvement over SGD when step sizes are adjusted correctly. For contrast, in the non-strongly convex setting, it is possible to get a large improvement over SGD using momentum. By introducing hyperparameters that depend on the number of samples, we propose a new algorithm sDANA (stochastic dimension adjusted Nesterov acceleration) which obtains an asymptotically optimal average-case complexity while remaining linearly convergent in the strongly convex setting without adjusting parameters.}
 }
+
+
 
 @InProceedings{Paquettes02,
        author = {{Paquette}, Courtney and {Lee}, Kiwon and {Pedregosa}, Fabian and {Paquette}, Elliot},
@@ -91,9 +168,9 @@ archivePrefix = {arXiv},
 @ARTICLE{Paquettes01,
        author = {{Paquette}, Courtney and {van Merri{\"e}nboer}, Bart and {Paquette}, Elliot and {Pedregosa}, Fabian},
         title = "{Halting Time is Predictable for Large Models: A Universality Property and Average-case Analysis}",
-      journal = {To appear in Foundations of Computational Mathematics},
+      journal = {Foundations of Computational Mathematics},
      keywords = {Mathematics - Optimization and Control, Statistics - Machine Learning},
-         year = 2020,
+         year = 2022,
         month = jun,
           eid = {arXiv:2006.04299},
         pages = {56pp},
@@ -138,7 +215,7 @@ archivePrefix = {arXiv},
 @ARTICLE{PaquetteTrogdon02,
 	author = {{Paquette}, Elliot and {Trogdon}, Thomas},
 	title = "Universality for the conjugate gradient and MINRES algorithms on sample covariance matrices",
-	journal = {arXiv e-prints},
+	journal = {To appear in Communications in Pure and Applied Mathematics},
 	keywords = {preprint, Random Matrices, Mathematics - Numerical Analysis, Mathematics - Probability, 65F10, 60B20},
 	year = 2020,
 	month = jul,
@@ -224,7 +301,6 @@ archivePrefix = {arXiv},
 @ARTICLE{LambertPaquette02,
 	author = {{Lambert}, Gaultier and {Paquette}, Elliot},
 	title = "Strong approximation of Gaussian beta-ensemble characteristic polynomials: the hyperbolic regime",
-	journal = {arXiv e-prints},
 	keywords = {preprint, random matrices, Mathematics - Probability},
 	year = 2020,
 	month = jan,
@@ -250,7 +326,8 @@ archivePrefix = {arXiv},
 	eprint = {2001.09042},
 	primaryClass = {math.PR},
 	adsurl = {https://ui.adsabs.harvard.edu/abs/2020arXiv200109042L},
-	adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+	adsnote = {Provided by the SAO/NASA Astrophysics Data System},
+	journal = {To appear in Annals of Applied Probability}
 }
 
 @ARTICLE{KahlePaquetteRoldan,
@@ -368,7 +445,9 @@ archivePrefix = {arXiv},
 	eprint = {1808.10647},
 	primaryClass = {math.CO},
 	adsurl = {https://ui.adsabs.harvard.edu/\#abs/2018arXiv180810647N},
-	adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+	adsnote = {Provided by the SAO/NASA Astrophysics Data System},
+	journal = {To appear in Transactions of the American Mathematical Society}
+%	JOURNAL = {Trans. Amer. Math. Soc.},
 }
 
 @ARTICLE{NguyenPaquette01,
