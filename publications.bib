@@ -1,3 +1,14 @@
+@misc{LVP01,
+      title={Matrix Dyson equation for correlated linearizations and test error of random features regression}, 
+      author={Hugo Latourelle-Vigeant and Elliot Paquette},
+      year={2023},
+      eprint={2312.09194},
+      archivePrefix={arXiv},
+      primaryClass={math.ST},
+	  abstract = {This paper develops some theory of the matrix Dyson equation (MDE) for correlated linearizations and uses it to solve a problem on asymptotic deterministic equivalent for the test error in random features regression. The theory developed for the correlated MDE includes existence-uniqueness, spectral support bounds, and stability properties of the MDE. This theory is new for constructing deterministic equivalents for pseudoresolvents of a class of correlated linear pencils. In the application, this theory is used to give a deterministic equivalent of the test error in random features ridge regression, in a proportional scaling regime, wherein we have conditioned on both training and test datasets.}
+}
+
+
 @ARTICLE{CWPPS01,
        author = {{Collins-Woodfin}, Elizabeth and {Paquette}, Courtney and {Paquette}, Elliot and {Seroussi}, Inbar},
         title = "{Hitting the High-Dimensional Notes: An ODE for SGD learning dynamics on GLMs and multi-index models}",
@@ -33,6 +44,26 @@ archivePrefix = {arXiv},
       adsnote = {Provided by the SAO/NASA Astrophysics Data System},
       abstract= {There has been increasing demand for establishing privacy-preserving methodologies for modern statistics and machine learning. Differential privacy, a mathematical notion from computer science, is a rising tool offering robust privacy guarantees. Recent work focuses primarily on developing differentially private versions of individual statistical and machine learning tasks, with nontrivial upstream pre-processing typically not incorporated. An important example is when record linkage is done prior to downstream modeling. Record linkage refers to the statistical task of linking two or more data sets of the same group of entities without a unique identifier. This probabilistic procedure brings additional uncertainty to the subsequent task. In this paper, we present two differentially private algorithms for linear regression with linked data. In particular, we propose a noisy gradient method and a sufficient statistics perturbation approach for the estimation of regression coefficients. We investigate the privacy-accuracy tradeoff by providing finite-sample error bounds for the estimators, which allows us to understand the relative contributions of linkage error, estimation error, and the cost of privacy. The variances of the estimators are also discussed. We demonstrate the performance of the proposed algorithms through simulations and an application to synthetic data.}
 }
+
+@ARTICLE{BMMP01,
+       author = {{Bandeira}, Afonso S. and {Maillard}, Antoine and {Mendelson}, Shahar and {Paquette}, Elliot},
+        title = "{Fitting an ellipsoid to a quadratic number of random points}",
+      journal = {arXiv e-prints},
+     keywords = {Mathematics - Probability, Computer Science - Data Structures and Algorithms, Computer Science - Machine Learning, Mathematics - Statistics Theory, Statistics - Machine Learning},
+         year = 2023,
+        month = jul,
+          eid = {arXiv:2307.01181},
+        pages = {arXiv:2307.01181},
+          doi = {10.48550/arXiv.2307.01181},
+archivePrefix = {arXiv},
+       eprint = {2307.01181},
+ primaryClass = {math.PR},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/2023arXiv230701181B},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System},
+      abstract ={We consider the problem of fitting $n$ standard Gaussian random vectors in $d$ dimensions to the boundary of a centered ellipsoid.  We show the problem has a feasibility transition when $n \leq d^2/C$.
+      }
+}
+
 
 @ARTICLE{CollinsWoodfinPaquette01,
        author = {{Collins-Woodfin}, Elizabeth and {Paquette}, Elliot},
@@ -125,7 +156,7 @@ archivePrefix = {arXiv},
       abstract = {We develop a stochastic differential equation, called homogenized SGD, for analyzing the dynamics of stochastic gradient descent (SGD) on a high-dimensional random least squares problem with  $\ell^2$-regularization. We show that homogenized SGD is the high-dimensional equivalence of SGD -- for any quadratic statistic (e.g., population risk with quadratic loss), the statistic under the iterates of SGD converges to the statistic under homogenized SGD when the number of samples  n  and number of features  d  are polynomially related. By analyzing homogenized SGD, we provide exact non-asymptotic high-dimensional expressions for the generalization performance of SGD in terms of a solution of a Volterra integral equation. Further we provide the exact value of the limiting excess risk in the case of quadratic losses when trained by SGD. The analysis is formulated for data matrices and target vectors that satisfy a family of resolvent conditions, which can roughly be viewed as a weak (non-quantitative) form of delocalization of sample-side singular vectors of the data. Several motivating applications are provided including sample covariance matrices with independent samples and random features with non-generative model targets.}
 }
 
-@ARTICLE{LeeChengPaquettePaquette,
+@inproceedings{LeeChengPaquettePaquette,
        author = {{Lee}, Kiwon and {Cheng}, Andrew N. and {Paquette}, Courtney and {Paquette}, Elliot},
         title = "{Trajectory of Mini-Batch Momentum: Batch Size Saturation and Convergence in High Dimensions}",
       	booktitle = {Advances in Neural Information Processing Systems},
@@ -145,22 +176,28 @@ archivePrefix = {arXiv},
       abstract = {We analyze the dynamics of large batch stochastic gradient descent with momentum (SGD+M) on the least squares problem when both the number of samples and dimensions are large. In this setting, we show that the dynamics of SGD+M converge to a deterministic discrete Volterra equation as dimension increases, which we analyze. We identify a stability measurement, the implicit conditioning ratio (ICR), which regulates the ability of SGD+M to accelerate the algorithm. When the batch size exceeds this ICR, SGD+M converges linearly at a rate of  $O(1/\sqrt{\kappa})$, matching optimal full-batch momentum (in particular performing as well as a full-batch but with a fraction of the size). For batch sizes smaller than the ICR, in contrast, SGD+M has rates that scale like a multiple of the single batch SGD rate. We give explicit choices for the learning rate and momentum parameter in terms of the Hessian spectra that achieve this performance.}
 }
 
-
-@ARTICLE{HoheiselPaquette01,
-       author = {{Hoheisel}, Tim and {Paquette}, Elliot},
-        title = "{Flatness of the nuclear norm sphere, simultaneous polarization, and uniqueness in nuclear norm minimization}",
-      journal = {To appear in Journal of Optimization Theory and Applications},
-     keywords = {Mathematics - Optimization and Control, 15A18, 47N10, 65F22, 90C25, 90C27},
-         year = 2022,
-        month = may,
-          eid = {arXiv:2205.08442},
-        pages = {18pp},
-archivePrefix = {arXiv},
-       eprint = {2205.08442},
- primaryClass = {math.OC},
-       adsurl = {https://ui.adsabs.harvard.edu/abs/2022arXiv220508442H},
-      adsnote = {Provided by the SAO/NASA Astrophysics Data System},
-      abstract = {In this paper we establish necessary and sufficient conditions for the existence of line segments (or flats) in the sphere of the nuclear norm via the notion of simultaneous polarization and a refined expression for the subdifferential of the nuclear norm. This is then leveraged to provide (point-based) necessary and sufficient conditions for uniqueness of solutions for minimizing the nuclear norm over an affine manifold. We further establish an alternative set of sufficient conditions for uniqueness, based on the interplay of the subdifferential of the nuclear norm and the range of the problem-defining linear operator. Finally, using convex duality, we show how to transfer the uniqueness results for the original problem to a whole class of nuclear norm-regularized minimization problems with a strictly convex fidelity term.}
+@article {HoheiselPaquette01,
+    AUTHOR = {Hoheisel, Tim and Paquette, Elliot},
+     TITLE = {Uniqueness in nuclear norm minimization: flatness of the
+              nuclear norm sphere and simultaneous polarization},
+   JOURNAL = {J. Optim. Theory Appl.},
+  FJOURNAL = {Journal of Optimization Theory and Applications},
+    VOLUME = {197},
+      YEAR = {2023},
+    NUMBER = {1},
+     PAGES = {252--276},
+      ISSN = {0022-3239,1573-2878},
+   MRCLASS = {90C25 (15A23 65K10 90C27)},
+  MRNUMBER = {4572102},
+MRREVIEWER = {Mei\ Yang},
+       DOI = {10.1007/s10957-023-02167-7},
+       URL = {https://doi.org/10.1007/s10957-023-02167-7},
+      abstract = {In this paper we establish necessary and sufficient conditions for the existence of line segments (or flats) in the sphere of the nuclear norm via the notion of simultaneous polarization and a refined expression for the subdifferential of the nuclear norm. This is then leveraged to provide (point-based) necessary and sufficient conditions for uniqueness of solutions for minimizing the nuclear norm over an affine manifold. We further establish an alternative set of sufficient conditions for uniqueness, based on the interplay of the subdifferential of the nuclear norm and the range of the problem-defining linear operator. Finally, using convex duality, we show how to transfer the uniqueness results for the original problem to a whole class of nuclear norm-regularized minimization problems with a strictly convex fidelity term.},
+	eid = {arXiv:2205.08442},
+	archivePrefix = {arXiv},
+    eprint = {2205.08442},
+	primaryClass = {math.CV},
+     keywords = {Mathematics - Optimization and Control, 15A18, 47N10, 65F22, 90C25, 90C27}
 }
 
 @ARTICLE{AvdW,
@@ -223,22 +260,25 @@ archivePrefix = {arXiv},
      abstract = {We propose a new framework, inspired by random matrix theory, for analyzing the dynamics of stochastic gradient descent (SGD) when both number of samples and dimensions are large. This framework applies to any fixed stepsize and on the least squares problem with random data (finite-sum). Using this new framework, we show that the dynamics of SGD become deterministic in the large sample and dimensional limit. Furthermore, the limiting dynamics are governed by a Volterra integral equation. This model predicts that SGD undergoes a phase transition at an explicitly given critical stepsize that ultimately affects its convergence rate, which is also verified experimentally. Finally, when input data is isotropic, we provide explicit expressions for the dynamics and average-case convergence rates (i.e., the complexity of an algorithm averaged over all possible inputs). These rates show significant improvement over classical worst-case complexities.}
 }
 
-
-@ARTICLE{NajnudelPaquetteSimm01,
-       author = {{Najnudel}, Joseph and {Paquette}, Elliot and {Simm}, Nick},
-        title = "{Secular Coefficients and the Holomorphic Multiplicative Chaos}",
-      journal = {To appear in Annals of Probability},
-     keywords = {Mathematics - Probability, Mathematical Physics, Mathematics - Combinatorics, 60B20, 60F05, 60G42},
-         year = 2020,
-        month = nov,
-          eid = {arXiv:2011.01823},
-        pages = {73pp},
+@article {NajnudelPaquetteSimm01,
+    AUTHOR = {Najnudel, Joseph and Paquette, Elliot and Simm, Nick},
+     TITLE = {Secular coefficients and the holomorphic multiplicative chaos},
+   JOURNAL = {Ann. Probab.},
+  FJOURNAL = {The Annals of Probability},
+    VOLUME = {51},
+      YEAR = {2023},
+    NUMBER = {4},
+     PAGES = {1193--1248},
+      ISSN = {0091-1798,2168-894X},
+   MRCLASS = {60B20 (60F05)},
+  MRNUMBER = {4597318},
+       DOI = {10.1214/22-aop1616},
+       URL = {https://doi.org/10.1214/22-aop1616},
 	abstract = "We study the {secular coefficients} of $N \times N$ random unitary matrices $U_{N}$ drawn from the Circular $\beta$-Ensemble, which are defined as the coefficients of $\{z^n\}$ in the characteristic polynomial $\det(1-zU_{N}^{*})$. When $\beta > 4$ we obtain a new class of limiting distributions that arise when both $n$ and $N$ tend to infinity simultaneously. We solve an open problem of Diaconis and Gamburd by showing that for $\beta=2$, the middle coefficient of degree $n=\lfloor\frac{N}{2}\rfloor$ tends to zero as $N \to \infty$. We show how the theory of Gaussian multiplicative chaos (GMC) plays a prominent role in these problems and in the explicit description of the obtained limiting distributions. We extend the remarkable \textit{magic square formula} of Diaconis and Gamburd for the moments of secular coefficients to all $\beta>0$ and analyse the asymptotic behaviour of the moments. We obtain estimates on the order of magnitude of the secular coefficients for all $\beta > 0,$ and these estimates are sharp when $\beta \geq 2$.  These insights motivated us to introduce a new stochastic object associated with the secular coefficients, which we call {Holomorphic Multiplicative Chaos (HMC)}. Viewing the HMC as a random distribution, we prove a sharp result about its regularity in an appropriate Sobolev space. Our proofs expose and exploit several novel connections with other areas, including random permutations, Tauberian theorems and combinatorics.",
-archivePrefix = {arXiv},
+     keywords = {Mathematics - Probability, Mathematical Physics, Mathematics - Combinatorics, 60B20, 60F05, 60G42},
        eprint = {2011.01823},
- primaryClass = {math.PR},
-       adsurl = {https://ui.adsabs.harvard.edu/abs/2020arXiv201101823N},
-      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+archivePrefix = {arXiv},
+ primaryClass = {math.PR}	   
 }
 
 @ARTICLE{LambertPaquette03,
@@ -561,15 +601,22 @@ abstract = "We consider a Markovian evolution on point processes, the
 	      DOI = {10.1090/tran/8040},
 }
 
-@ARTICLE{NewmanPaquette01,
-	author = {{Newman}, Andrew and {Paquette}, Elliot},
-	title = "The integer homology threshold in $Y_d(n, p)$",
-	journal = {arXiv e-prints},
-	keywords = {topology, Mathematics - Combinatorics, Mathematics - Algebraic Topology, Mathematics - Probability},
-	year = 2018,
-	month = Aug,
-	eid = {arXiv:1808.10647},
-	pages = {arXiv:1808.10647},
+@article {NewmanPaquette01,
+    AUTHOR = {Newman, Andrew and Paquette, Elliot},
+     TITLE = {The integer homology threshold in {$Y_d(n, p)$}},
+   JOURNAL = {Proc. Amer. Math. Soc.},
+  FJOURNAL = {Proceedings of the American Mathematical Society},
+    VOLUME = {151},
+      YEAR = {2023},
+    NUMBER = {8},
+     PAGES = {3213--3228},
+      ISSN = {0002-9939,1088-6826},
+   MRCLASS = {05E45 (55U10 60C05)},
+  MRNUMBER = {4591761},
+MRREVIEWER = {David\ B.\ Penman},
+       DOI = {10.1090/proc/16196},
+       URL = {https://doi.org/10.1090/proc/16196},
+	eprint = {1808.10647},
 	abstract = "We prove that in the $d$-dimensional Linial--Meshulam stochastic process
 		the $(d - 1)$st homology group with integer coefficients
 		vanishes exactly when the final isolated $(d - 1)$-dimensional
@@ -579,13 +626,10 @@ abstract = "We consider a Markovian evolution on point processes, the
 		for homology with integer coefficients to vanish in $Y_d(n, p),$
 		answering a 2003 question of Linial and Meshulam.
 		",
+	keywords = {topology, Mathematics - Combinatorics, Mathematics - Algebraic Topology, Mathematics - Probability},
 	archivePrefix = {arXiv},
-	eprint = {1808.10647},
+    eprint = {1808.10647},
 	primaryClass = {math.CO},
-	adsurl = {https://ui.adsabs.harvard.edu/\#abs/2018arXiv180810647N},
-	adsnote = {Provided by the SAO/NASA Astrophysics Data System},
-	journal = {To appear in Transactions of the American Mathematical Society}
-%	JOURNAL = {Trans. Amer. Math. Soc.},
 }
 
 @ARTICLE{NguyenPaquette01,
