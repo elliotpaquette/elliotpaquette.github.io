@@ -1,3 +1,33 @@
+@ARTICLE{MXAP02,
+       author = {{Xiao}, Ke Liang and {Marshall}, Noah and {Agarwala}, Atish and {Paquette}, Elliot},
+        title = "{Exact Risk Curves of signSGD in High-Dimensions: Quantifying Preconditioning and Noise-Compression Effects}",
+      journal = {arXiv e-prints},
+     keywords = {Statistics - Machine Learning, Computer Science - Machine Learning},
+         year = 2024,
+        month = nov,
+     abstract = "{In recent years, signSGD has garnered interest as both a practical
+        optimizer as well as a simple model to understand adaptive
+        optimizers like Adam. Though there is a general consensus that
+        signSGD acts to precondition optimization and reshapes noise,
+        quantitatively understanding these effects in theoretically
+        solvable settings remains difficult. We present an analysis of
+        signSGD in a high dimensional limit, and derive a limiting SDE
+        and ODE to describe the risk. Using this framework we quantify
+        four effects of signSGD: effective learning rate, noise
+        compression, diagonal preconditioning, and gradient noise
+        reshaping. Our analysis is consistent with experimental
+        observations but moves beyond that by quantifying the dependence
+        of these effects on the data and noise distributions. We
+        conclude with a conjecture on how these results might be
+        extended to Adam.}",
+          doi = {10.48550/arXiv.2411.12135},
+archivePrefix = {arXiv},
+       eprint = {2411.12135},
+ primaryClass = {stat.ML},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/2024arXiv241112135X},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
 @article{MXAP01,
       title={A Clipped Trip: the Dynamics of SGD with Gradient Clipping in High-Dimensions}, 
       author={Noah Marshall and Ke Liang Xiao and Atish Agarwala and Elliot Paquette},
@@ -12,6 +42,7 @@
       title={The High Line: Exact Risk and Learning Rate Curves of Stochastic Adaptive Learning Rate Algorithms}, 
       author={Elizabeth Collins-Woodfin and Inbar Seroussi and Begoña García Malaxechebarría and Andrew W. Mackenzie and Elliot Paquette and Courtney Paquette},
       year={2024},
+	  journal={NeurIPS},
       eprint={2405.19585},
       archivePrefix={arXiv},
       primaryClass={math.OC},
@@ -22,6 +53,7 @@
       title={4+3 Phases of Compute-Optimal Neural Scaling Laws}, 
       author={Elliot Paquette and Courtney Paquette and Lechao Xiao and Jeffrey Pennington},
       year={2024},
+	  journal={NeurIPS Spotlight},
       eprint={2405.15074},
       archivePrefix={arXiv},
       primaryClass={stat.ML},
@@ -52,12 +84,11 @@
 @ARTICLE{BMMP01,
        author = {{Bandeira}, Afonso S. and {Maillard}, Antoine and {Mendelson}, Shahar and {Paquette}, Elliot},
         title = "{Fitting an ellipsoid to a quadratic number of random points}",
-      journal = {arXiv e-prints},
+      journal = {ALEA},
      keywords = {Mathematics - Probability, Computer Science - Data Structures and Algorithms, Computer Science - Machine Learning, Mathematics - Statistics Theory, Statistics - Machine Learning},
-         year = 2023,
-        month = jul,
-          eid = {arXiv:2307.01181},
-        pages = {arXiv:2307.01181},
+         year = 2024,
+		 volume = 21,
+        pages = {1835–-1852},
           doi = {10.48550/arXiv.2307.01181},
 archivePrefix = {arXiv},
        eprint = {2307.01181},
@@ -67,40 +98,41 @@ archivePrefix = {arXiv},
       abstract ={We consider the problem of fitting $n$ standard Gaussian random vectors in $d$ dimensions to the boundary of a centered ellipsoid.  We show the problem has a feasibility transition when $n \leq d^2/C$.
       }
 }
-
-@ARTICLE{CWPPS01,
-       author = {{Collins-Woodfin}, Elizabeth and {Paquette}, Courtney and {Paquette}, Elliot and {Seroussi}, Inbar},
-        title = "{Hitting the High-Dimensional Notes: An ODE for SGD learning dynamics on GLMs and multi-index models}",
-      journal = {arXiv e-prints},
-     keywords = {Mathematics - Optimization and Control, Computer Science - Machine Learning, Mathematics - Probability, Mathematics - Statistics Theory, Statistics - Machine Learning},
-         year = 2023,
-        month = aug,
-          eid = {arXiv:2308.08977},
-        pages = {arXiv:2308.08977},
-          doi = {10.48550/arXiv.2308.08977},
+@article{CWPPS01,
+  author = {Collins-Woodfin, Elizabeth and Paquette, Courtney and Paquette, Elliot and Seroussi, Inbar},
+    title = {Hitting the High-dimensional notes: an ODE for SGD learning dynamics on GLMs and multi-index models},
+    journal = {Information and Inference: A Journal of the IMA},
+    volume = {13},
+    number = {4},
+    pages = {iaae028},
+    year = {2024},
+    month = {10},
+    abstract = {We analyze the dynamics of streaming stochastic gradient descent (SGD) in the high-dimensional limit when applied to generalized linear models and multi-index models (e.g. logistic regression, phase retrieval) with general data-covariance. In particular, we demonstrate a deterministic equivalent of SGD in the form of a system of ordinary differential equations that describes a wide class of statistics, such as the risk and other measures of sub-optimality. This equivalence holds with overwhelming probability when the model parameter count grows proportionally to the number of data. This framework allows us to obtain learning rate thresholds for the stability of SGD as well as convergence guarantees. In addition to the deterministic equivalent, we introduce an SDE with a simplified diffusion coefficient (homogenized SGD), which allows us to analyze the dynamics of general statistics of SGD iterates. Finally, we illustrate this theory on some standard examples and show numerical simulations, which give an excellent match to the theory.},
+    issn = {2049-8772},
+    doi = {10.1093/imaiai/iaae028},
+    url = {https://doi.org/10.1093/imaiai/iaae028},
+    eprint = {2308.08977},
 archivePrefix = {arXiv},
-       eprint = {2308.08977},
- primaryClass = {math.OC},
-       adsurl = {https://ui.adsabs.harvard.edu/abs/2023arXiv230808977C},
-      adsnote = {Provided by the SAO/NASA Astrophysics Data System},
-      abstract = {We analyze the dynamics of streaming stochastic gradient descent (SGD) in the high-dimensional limit when applied to generalized linear models and multi-index models (e.g. logistic regression, phase retrieval) with general data-covariance. In particular, we demonstrate a deterministic equivalent of SGD in the form of a system of ordinary differential equations that describes a wide class of statistics, such as the risk and other measures of sub-optimality. This equivalence holds with overwhelming probability when the model parameter count grows proportionally to the number of data. This framework allows us to obtain learning rate thresholds for stability of SGD as well as convergence guarantees. In addition to the deterministic equivalent, we introduce an SDE with a simplified diffusion coefficient (homogenized SGD) which allows us to analyze the dynamics of general statistics of SGD iterates. Finally, we illustrate this theory on some standard examples and show numerical simulations which give an excellent match to the theory.}
-}
+       eprint = {2006.04299},
+ primaryClass = {math.OC}
+ }
 
 @ARTICLE{LinPaquetteKolaczyk01,
        author = {{Lin}, Shurong and {Paquette}, Elliot and {Kolaczyk}, Eric D.},
+		journal = {Harvard Data Science Review},
+		number = {3},
+		year = {2024},
+		month = {jul 31},
+		publisher = {The MIT Press},
+		volume = {6},
         title = "{Differentially Private Linear Regression with Linked Data}",
-      journal = {arXiv e-prints},
      keywords = {Statistics - Methodology, Computer Science - Cryptography and Security, 68P27, 62-XX, G.3, I.0},
-         year = 2023,
-        month = aug,
           eid = {arXiv:2308.00836},
         pages = {arXiv:2308.00836},
           doi = {10.48550/arXiv.2308.00836},
 archivePrefix = {arXiv},
        eprint = {2308.00836},
  primaryClass = {stat.ME},
-       adsurl = {https://ui.adsabs.harvard.edu/abs/2023arXiv230800836L},
-      adsnote = {Provided by the SAO/NASA Astrophysics Data System},
       abstract= {There has been increasing demand for establishing privacy-preserving methodologies for modern statistics and machine learning. Differential privacy, a mathematical notion from computer science, is a rising tool offering robust privacy guarantees. Recent work focuses primarily on developing differentially private versions of individual statistical and machine learning tasks, with nontrivial upstream pre-processing typically not incorporated. An important example is when record linkage is done prior to downstream modeling. Record linkage refers to the statistical task of linking two or more data sets of the same group of entities without a unique identifier. This probabilistic procedure brings additional uncertainty to the subsequent task. In this paper, we present two differentially private algorithms for linear regression with linked data. In particular, we propose a noisy gradient method and a sufficient statistics perturbation approach for the estimation of regression coefficients. We investigate the privacy-accuracy tradeoff by providing finite-sample error bounds for the estimators, which allows us to understand the relative contributions of linkage error, estimation error, and the cost of privacy. The variances of the estimators are also discussed. We demonstrate the performance of the proposed algorithms through simulations and an application to synthetic data.}
 }
 @article{CollinsWoodfinPaquette01,
@@ -139,7 +171,7 @@ abstract = {We give a description of the high-dimensional limit of one-pass sing
 @ARTICLE{PaquetteZeitouni03,
        author = {{Paquette}, Elliot and {Zeitouni}, Ofer},
         title = "{The extremal landscape for the C$\beta$E ensemble}",
-      journal = {arXiv e-prints},
+      journal = {Forum of Mathematics, Sigma},
      keywords = {Mathematics - Probability},
          year = 2022,
         month = sep,
@@ -179,11 +211,10 @@ archivePrefix = {arXiv},
 @ARTICLE{PPAP01,
        author = {{Paquette}, Courtney and {Paquette}, Elliot and {Adlam}, Ben and {Pennington}, Jeffrey},
         title = "{Homogenization of SGD in high-dimensions: Exact dynamics and generalization properties}",
-      journal = {arXiv e-prints},
+      journal = {Mathematical Programming},
      keywords = {Mathematics - Statistics Theory, Mathematics - Optimization and Control, Mathematics - Probability, Statistics - Machine Learning},
          year = 2022,
         month = may,
-          eid = {arXiv:2205.07069},
         pages = {64pp},
 archivePrefix = {arXiv},
        eprint = {2205.07069},
