@@ -1962,7 +1962,7 @@
 	input[type="button"],
 	button,
 	.button {
-		background-color: #000;
+		background-color: rgba(0, 0, 0, 0.2);
 		color: #fff !important;
 	}
 
