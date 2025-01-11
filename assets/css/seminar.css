@@ -3704,6 +3704,7 @@
 		-webkit-justify-content: center;
 		-ms-justify-content: center;
 		justify-content: center;
+		background-image: var(--banner-image);
 		/*background-image: url("../../images/sbanner2.png");*/
 		background-position: center;
 		background-size: cover;

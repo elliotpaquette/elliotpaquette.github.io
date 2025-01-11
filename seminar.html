@@ -46,9 +46,6 @@ html,body,span,h1 {
 	      opacity: 1;
 	    }
     </style>
-
-    <link rel="stylesheet" href="assets/css/seminar.css" />
-
 	<!-- Select random image  -->
 	<script>
 		// Array of available stable diffusion images
@@ -92,13 +89,16 @@ html,body,span,h1 {
 		document.documentElement.style.setProperty('--banner-image', `url('${randomImage}')`);
 
 		// Set the banner background
-		document.addEventListener('DOMContentLoaded', function() {
+		/*document.addEventListener('DOMContentLoaded', function() {
 			const banner = document.querySelector('.banner');
 			if (banner) {
 				banner.style.backgroundImage = `url('${randomImage}')`;
 			}
-		});
+		});*/
 	</script>
+	
+	<link rel="stylesheet" href="assets/css/seminar.css" />
+
   </head>
   <body>
 
