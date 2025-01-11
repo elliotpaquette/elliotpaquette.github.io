@@ -20,9 +20,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
-    <script src="./bibtex_js.js" type="text/javascript" charset="utf-8"></script>
-    <bibtex src="./publications.bib"></bibtex>
-
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">    
 
     <style>
@@ -52,6 +49,55 @@ html,body,span,h1 {
 
     <link rel="stylesheet" href="assets/css/seminar.css" />
 
+	<!-- Select random image  -->
+	<script>
+		// Array of available stable diffusion images
+		const bannerImages = [
+			'images/stablediffusions/1079745333_a_sequence_of_dancing_maple_leaves_on_a_snowy_background_in_the_style_of_Wassily_Kandinsky.png',
+			'images/stablediffusions/1428386552_random_matrix_theory__matte_painting.png',
+			'images/stablediffusions/1532497341_A_von_Koch_curve_made_out_of_maple_leaves_on_a_snowy_background_in_the_style_of_Wassily_Kandinsky.png',
+			'images/stablediffusions/1650796826_neural_networks_in_space_with_moose.png',
+			'images/stablediffusions/1658124127_A_julia_set_made_out_of_maple_leaves_in_the_style_of_Wassily_Kandinsky.png',
+			'images/stablediffusions/1695721273_A_julia_set_made_out_of_maple_leaves_in_the_style_of_Wassily_Kandinsky.png',
+			'images/stablediffusions/1761702766_random_matrix_theory__matte_painting.png',
+			'images/stablediffusions/1857588991_A_julia_set_made_out_of_maple_leaves_in_the_style_of_Wassily_Kandinsky.png',
+			'images/stablediffusions/1971997739_An_infinite_binary_tree_made_out_of_maple_leaves_in_the_style_of_Wassily_Kandinsky.png',
+			'images/stablediffusions/2112588924_neural_networks_in_space_with_moose.png',
+			'images/stablediffusions/2158945392_An_infinite_binary_tree_made_out_of_maple_leaves_in_the_style_of_Wassily_Kandinsky.png',
+			'images/stablediffusions/2188565217_A_von_Koch_curve_made_out_of_maple_leaves_on_a_snowy_background_in_the_style_of_Wassily_Kandinsky.png',
+			'images/stablediffusions/2344040347_A_von_Koch_curve_made_out_of_maple_leaves_on_a_snowy_background_in_the_style_of_Wassily_Kandinsky.png',
+			'images/stablediffusions/2396693944_An_infinite_binary_tree_made_out_of_maple_leaves_in_the_style_of_Leonardo_Davinci.png',
+			'images/stablediffusions/2612159436_An_infinite_binary_tree_made_out_of_maple_leaves_in_the_style_of_Leonardo_Davinci.png',
+			'images/stablediffusions/2652117655_neural_networks_in_space_with_moose.png',
+			'images/stablediffusions/270992988_neural_networks_in_space_with_moose.png',
+			'images/stablediffusions/3042553662_random_matrix_theory__matte_painting.png',
+			'images/stablediffusions/3119231784_An_infinite_binary_tree_made_out_of_maple_leaves_on_a_snowy_background_in_the_style_of_Albrecht_Durer.png',
+			'images/stablediffusions/3218829890_An_infinite_binary_tree_made_out_of_maple_leaves_in_the_style_of_Leonardo_Davinci.png',
+			'images/stablediffusions/3260494365_neural_networks_in_space_with_moose.png',
+			'images/stablediffusions/3705206587_neural_networks_in_space_with_moose.png',
+			'images/stablediffusions/3707103559_An_infinite_binary_tree_made_out_of_maple_leaves_on_a_snowy_background_in_the_style_of_Albrecht_Durer.png',
+			'images/stablediffusions/3781721263_neural_networks_in_space_with_moose.png',
+			'images/stablediffusions/3808369929_An_infinite_binary_tree_made_out_of_maple_leaves_in_the_style_of_Wassily_Kandinsky.png',
+			'images/stablediffusions/3867407954_An_infinite_binary_tree_made_out_of_maple_leaves_in_the_style_of_Wassily_Kandinsky.png',
+			'images/stablediffusions/3870908517_An_infinite_binary_tree_made_out_of_maple_leaves_on_a_snowy_background_in_the_style_of_Albrecht_Durer.png',
+			'images/stablediffusions/4027615202_A_julia_set_made_out_of_maple_leaves_in_the_style_of_Wassily_Kandinsky.png',
+			'images/stablediffusions/739595628_A_von_Koch_curve_made_out_of_maple_leaves_on_a_snowy_background_in_the_style_of_Wassily_Kandinsky.png',
+			'images/stablediffusions/766781084_An_infinite_binary_tree_made_out_of_maple_leaves_on_a_snowy_background_in_the_style_of_Albrecht_Durer.png',
+			'images/stablediffusions/81036373_An_infinite_binary_tree_made_out_of_maple_leaves_in_the_style_of_Leonardo_Davinci.png',
+			// Add all your stable diffusion images here
+		];
+		
+		// Select random image
+		const randomImage = bannerImages[Math.floor(Math.random() * bannerImages.length)];
+		
+		// Set the banner background
+		document.addEventListener('DOMContentLoaded', function() {
+			const banner = document.querySelector('.banner');
+			if (banner) {
+				banner.style.backgroundImage = `url('${randomImage}')`;
+			}
+		});
+	</script>
   </head>
   <body>
 
