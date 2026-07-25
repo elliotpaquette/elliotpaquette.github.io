@@ -1,0 +1,62 @@
+.reveal .equation-grid {
+  margin-top: 0.45em;
+}
+
+.reveal .equation-grid .column {
+  padding: 0.55em 0.7em;
+  border-top: 4px solid var(--lecture-blue);
+  background: var(--lecture-soft-blue);
+}
+
+.reveal .term-table table {
+  width: 100%;
+  table-layout: fixed;
+  margin-top: 0.25em;
+  font-size: 0.69em;
+}
+
+.reveal .term-table table th,
+.reveal .term-table table td {
+  padding: 0.34em 0.45em;
+}
+
+.reveal .term-table table th:nth-child(1),
+.reveal .term-table table td:nth-child(1) {
+  width: 13%;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.reveal .term-table table th:nth-child(2),
+.reveal .term-table table td:nth-child(2) {
+  width: 35%;
+  text-align: center;
+}
+
+.reveal .term-table table th:nth-child(3),
+.reveal .term-table table td:nth-child(3) {
+  width: 52%;
+}
+
+.reveal .dense-math {
+  font-size: 0.86em;
+}
+
+.reveal .phase-figure {
+  height: 650px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.reveal .phase-figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.reveal .compact-source {
+  margin-top: 0.2em;
+  color: var(--lecture-muted);
+  font-size: 0.58em;
+  text-align: right;
+}

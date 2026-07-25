@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.9.38">
+
+  <meta name="author" content="Princeton 2026 Summer School in Machine Learning">
+  <title>Power Laws in Data and Optimization – Power-Law Covariance</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-0427d8d92a431aa6a6430e53ec02a470.css">
+  <link rel="stylesheet" href="lecture-01.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Power-Law Covariance</h1>
+  <p class="subtitle">A simplifying structure for data and representations</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Princeton 2026 Summer School in Machine Learning 
+</div>
+</div>
+</div>
+
+</section>
+<section id="a-theory-of-every-neural-network-says-almost-nothing" class="slide level2">
+<h2>A theory of every neural network says almost nothing</h2>
+<p>With enough parameters, neural networks can represent an enormous range of input–output relationships.</p>
+<p>The data, target, architecture, and optimizer can all change the training story.</p>
+<div class="claim">
+<p>A useful theory begins by choosing a structure that constrains the problem.</p>
+<p>Here the structure is the <strong>covariance eigenspectrum</strong>.</p>
+</div>
+</section>
+<section id="covariance-turns-variability-into-geometry" class="slide level2">
+<h2>Covariance turns variability into geometry</h2>
+<div class="columns">
+<div class="column" style="width:48%;">
+<p>For a random vector <span class="math inline">\(X\in\mathbb R^d\)</span>,</p>
+<p><span class="math display">\[
+\Sigma
+=\operatorname{Cov}(X)
+=\mathbb E[(X-\mu)\otimes(X-\mu)].
+\]</span></p>
+<p>For centered data,</p>
+<p><span class="math display">\[
+\Sigma=\mathbb E[X\otimes X].
+\]</span></p>
+</div><div class="column" style="width:46%;">
+<p>If <span class="math inline">\(u\)</span> is a unit vector,</p>
+<p><span class="math display">\[
+u^\top\Sigma u
+=\operatorname{Var}\langle u,X\rangle.
+\]</span></p>
+<ul>
+<li>eigenvectors = principal directions;</li>
+<li>eigenvalues = variance in those directions.</li>
+</ul>
+</div></div>
+<div class="takeaway">
+<p>Covariance is a <strong>linear</strong> statistic, but in high dimension it can still carry rich geometry. Later we will ask whether nonlinear network transformations weakly preserve that geometry.</p>
+</div>
+</section>
+<section id="a-power-law-is-a-soft-notion-of-dimension" class="slide level2">
+<h2>A power law is a soft notion of dimension</h2>
+<p><span class="math display">\[
+\lambda_j(\Sigma)\asymp j^{-\alpha}
+\qquad\Longleftrightarrow\qquad
+\log\lambda_j \approx C-\alpha\log j.
+\]</span></p>
+<p>There is no sharp rank cutoff. Instead, count the directions visible above a resolution <span class="math inline">\(\varepsilon\)</span>:</p>
+<p><span class="math display">\[
+N(\varepsilon)
+=\#\{j:\lambda_j\geq\varepsilon\}
+\asymp \varepsilon^{-1/\alpha}.
+\]</span></p>
+<div class="columns compact-columns">
+<div class="column">
+<p><strong>Larger <span class="math inline">\(\alpha\)</span></strong><br>
+Faster decay; fewer visible directions.</p>
+</div><div class="column">
+<p><strong>Smaller <span class="math inline">\(\alpha\)</span></strong><br>
+Heavier tail; more relevant directions.</p>
+</div></div>
+<div class="source">
+<p>Example: Matérn kernels connect <span class="math inline">\(\alpha\)</span> to smoothness and intrinsic dimension.</p>
+</div>
+</section>
+<section id="image-spectra-survive-random-layers" class="slide level2">
+<h2>Image spectra survive random layers</h2>
+<div class="figure-slide">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="../assets/figures/module-01/preservation-sketch-tanh-cifar.png" class="quarto-figure quarto-figure-center" style="height:68.0%" alt="Power-law covariance spectra under iterated linear sketches and through a random tanh MLP on CIFAR-10."></p>
+</figure>
+</div>
+</div>
+<div class="takeaway">
+<p>The finite width changes the spectral cutoff much more than the fitted slope.</p>
+</div>
+</section>
+<section id="for-language-first-specify-the-random-vector" class="slide level2">
+<h2>For language, first specify the random vector</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 34%">
+<col style="width: 65%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Random vector</th>
+<th style="text-align: left;">What its covariance records</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">token embedding <span class="math inline">\(e_T\)</span></td>
+<td style="text-align: left;">frequency together with embedding geometry</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">vectorized context <span class="math inline">\(C_L=\operatorname{vec}(e_{T_1},\ldots,e_{T_L})\)</span></td>
+<td style="text-align: left;">token marginals together with cross-position dependence</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">activation <span class="math inline">\(h_{w,t}\)</span></td>
+<td style="text-align: left;">anisotropy across feature channels</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">\(d\)</span> = embedding width; <span class="math inline">\(L\)</span> = context length; <span class="math inline">\(m\)</span> = hidden width.</p>
+<div class="takeaway">
+<p>These are different operators. A claim about one does not automatically transfer to another.</p>
+</div>
+</section>
+<section id="zipf-frequencies-determine-token-covariance" class="slide level2">
+<h2>Zipf frequencies determine token covariance</h2>
+<p>For a one-hot token <span class="math inline">\(u_T\)</span>, with frequency vector <span class="math inline">\(p\)</span>,</p>
+<p><span class="math display">\[
+\operatorname{Cov}(u_T)
+=\operatorname{diag}(p)-pp^\top.
+\]</span></p>
+<p>If <span class="math inline">\(p_{(1)}\geq p_{(2)}\geq\cdots\)</span>, rank-one interlacing gives</p>
+<p><span class="math display">\[
+p_{(j)}
+\geq \lambda_j\!\left(\operatorname{Cov}(u_T)\right)
+\geq p_{(j+1)}.
+\]</span></p>
+<p>For an embedding matrix <span class="math inline">\(E\)</span>,</p>
+<p><span class="math display">\[
+\operatorname{Cov}(e_T)
+=E^\top\bigl(\operatorname{diag}(p)-pp^\top\bigr)E.
+\]</span></p>
+<p>A wide random embedding sketches this covariance.</p>
+</section>
+<section id="at-initialization-frequency-geometry-survives-the-embedding" class="slide level2">
+<h2>At initialization, frequency geometry survives the embedding</h2>
+<div class="figure-slide">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="../assets/figures/module-01/slides/token-random-embedding.png" class="quarto-figure quarto-figure-center" style="height:78.0%" alt="FineWeb-Edu unigram frequencies and the covariance spectrum of a wide random token embedding."></p>
+</figure>
+</div>
+</div>
+<div class="source">
+<p>Held-out FineWeb-Edu tokens.</p>
+</div>
+</section>
+<section id="training-introduces-a-second-spectral-regime" class="slide level2">
+<h2>Training introduces a second spectral regime</h2>
+<div class="columns">
+<div class="column" style="width:58%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="../assets/figures/module-01/slides/token-trained-embedding.png" class="quarto-figure quarto-figure-center" style="width:100.0%" alt="FineWeb-Edu frequency spectrum together with random and trained token-embedding covariance spectra."></p>
+</figure>
+</div>
+</div><div class="column" style="width:38%;">
+<ul>
+<li><p>The trained head is reshaped by semantic overlap between token embeddings.</p></li>
+<li><p>Redundant directions produce a sharper terminal cutoff.</p></li>
+<li><p>The crossover is a genuine <strong>two-power-law</strong> picture, not one global slope.</p></li>
+</ul>
+</div></div>
+<div class="takeaway">
+<p>Piecewise power laws give a tractable refinement of a single-exponent model.</p>
+</div>
+</section>
+<section id="context-covariance-exposes-token-dependence" class="slide level2">
+<h2>Context covariance exposes token dependence</h2>
+<p>For a length-<span class="math inline">\(L\)</span> window, let</p>
+<p><span class="math display">\[
+C_L=\operatorname{vec}(e_{T_1}-\mu_1,\ldots,e_{T_L}-\mu_L).
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+\Sigma_{\mathrm{context}}
+=
+\begin{bmatrix}
+\Gamma_{11}&amp;\cdots&amp;\Gamma_{1L}\\
+\vdots&amp;\ddots&amp;\vdots\\
+\Gamma_{L1}&amp;\cdots&amp;\Gamma_{LL}
+\end{bmatrix},
+\qquad
+\Gamma_{ab}
+=\mathbb E[(e_{T_a}-\mu_a)\otimes(e_{T_b}-\mu_b)].
+\]</span></p>
+<ul>
+<li><span class="math inline">\(\Gamma_{aa}\)</span>: token covariance at position <span class="math inline">\(a\)</span>;</li>
+<li><span class="math inline">\(\Gamma_{ab}\)</span>, <span class="math inline">\(a\neq b\)</span>: cross-position dependence;</li>
+<li>independent tokens would make every off-diagonal block vanish.</li>
+</ul>
+</section>
+<section id="context-spectra-begin-with-a-flatter-phase" class="slide level2">
+<h2>Context spectra begin with a flatter phase</h2>
+<div class="figure-slide figure-slide-tall">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="../assets/figures/module-01/slides/context-random-spectrum.png" class="quarto-figure quarto-figure-center" style="height:78.0%" alt="Vectorized context covariance spectrum for a random token embedding."></p>
+</figure>
+</div>
+</div>
+<div class="takeaway">
+<p>The initial flat regime gives way to a distinctly different spectral tail.</p>
+</div>
+</section>
+<section id="training-changes-the-context-spectrum-crossover" class="slide level2">
+<h2>Training changes the context-spectrum crossover</h2>
+<div class="figure-slide figure-slide-tall">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="../assets/figures/module-01/slides/context-trained-spectrum.png" class="quarto-figure quarto-figure-center" style="height:78.0%" alt="Vectorized context covariance spectrum for a trained token embedding."></p>
+</figure>
+</div>
+</div>
+<div class="takeaway">
+<p>The trained representation again shows more than one spectral regime.</p>
+</div>
+</section>
+<section id="cross-position-dependence-forms-a-diagonal-band" class="slide level2">
+<h2>Cross-position dependence forms a diagonal band</h2>
+<div class="figure-slide figure-slide-tall">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="../assets/figures/module-01/slides/context-block-energy.png" class="quarto-figure quarto-figure-center" style="height:78.0%" alt="Block covariance energy between every pair of token positions in a context window."></p>
+</figure>
+</div>
+</div>
+<div class="takeaway">
+<p>Nearby token positions remain strongly coupled after unigram statistics are held fixed.</p>
+</div>
+</section>
+<section id="most-cross-position-dependence-is-local" class="slide level2">
+<h2>Most cross-position dependence is local</h2>
+<div class="figure-slide figure-slide-tall">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="../assets/figures/module-01/slides/context-lag-energy.png" class="quarto-figure quarto-figure-center" style="height:78.0%" alt="Normalized cross-position covariance energy as a function of token lag."></p>
+</figure>
+</div>
+</div>
+<div class="takeaway">
+<p>The lag profile separates genuine local dependence from the shuffled-token noise floor.</p>
+</div>
+</section>
+<section id="eigenvalues-do-not-determine-the-representation" class="slide level2">
+<h2>Eigenvalues do not determine the representation</h2>
+<p>For any orthogonal matrix <span class="math inline">\(Q\)</span>,</p>
+<p><span class="math display">\[
+Q\Sigma Q^\top
+\]</span></p>
+<p>has exactly the same eigenvalues as <span class="math inline">\(\Sigma\)</span>. A permutation matrix is one special case.</p>
+<h3 id="the-basis-is-essential">The basis is essential</h3>
+<p>Eigenvectors identify which combinations of features carry the variance.</p>
+<div class="source">
+<p>RoPE is one example. Its position-dependent rotations preserve the full context-covariance spectrum while rotating the eigenvectors and block structure.</p>
+</div>
+</section>
+<section id="the-embedding-begins-with-an-extended-power-law-regime" class="slide level2">
+<h2>The embedding begins with an extended power-law regime</h2>
+<div class="figure-slide">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="../assets/figures/module-01/slides/transformer-after-embedding.png" class="quarto-figure quarto-figure-center" style="height:78.0%" alt="Activation-covariance spectrum after the token embedding of a trained transformer."></p>
+</figure>
+</div>
+</div>
+<div class="takeaway">
+<p>After the embedding, the fitted spectral exponent is approximately <span class="math inline">\(0.62\)</span>.</p>
+</div>
+</section>
+<section id="the-power-law-regime-survives-the-first-mlp" class="slide level2">
+<h2>The power-law regime survives the first MLP</h2>
+<div class="figure-slide">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="../assets/figures/module-01/slides/transformer-layer-0-mlp.png" class="quarto-figure quarto-figure-center" style="height:78.0%" alt="Activation-covariance spectrum midway through the first MLP of a trained transformer."></p>
+</figure>
+</div>
+</div>
+<div class="takeaway">
+<p>Inside layer 0, the fitted spectral exponent is approximately <span class="math inline">\(0.75\)</span>.</p>
+</div>
+</section>
+<section id="the-same-structure-persists-deep-in-the-network" class="slide level2">
+<h2>The same structure persists deep in the network</h2>
+<div class="figure-slide">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="../assets/figures/module-01/slides/transformer-layer-15-mlp.png" class="quarto-figure quarto-figure-center" style="height:78.0%" alt="Activation-covariance spectrum midway through layer 15 of a trained transformer."></p>
+</figure>
+</div>
+</div>
+<div class="takeaway">
+<p>Inside layer 15, the fitted spectral exponent is approximately <span class="math inline">\(0.68\)</span>.</p>
+</div>
+</section>
+<section id="the-final-representation-remains-strongly-anisotropic" class="slide level2">
+<h2>The final representation remains strongly anisotropic</h2>
+<div class="figure-slide">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="../assets/figures/module-01/slides/transformer-before-softmax.png" class="quarto-figure quarto-figure-center" style="height:78.0%" alt="Activation-covariance spectrum immediately before the final softmax of a trained transformer."></p>
+</figure>
+</div>
+</div>
+<div class="takeaway">
+<p>Immediately before the softmax, the fitted spectral exponent is approximately <span class="math inline">\(0.68\)</span>.</p>
+</div>
+</section>
+<section>
+<section id="theory-weak-preservation" class="title-slide slide level1 center">
+<h1>Theory: weak preservation</h1>
+
+</section>
+<section id="a-linear-statistic-must-survive-nonlinear-transformations" class="slide level2">
+<h2>A linear statistic must survive nonlinear transformations</h2>
+<p>Covariance is a linear summary of the data, but a network repeatedly applies nonlinear transformations.</p>
+<p>For the spectrum to remain useful inside a network, we want <strong>weak preservation</strong>:</p>
+<p><span class="math display">\[
+\lambda_j(\Sigma)\asymp j^{-\alpha}
+\quad\Longrightarrow\quad
+\lambda_j(\Sigma_{\mathrm{new}})
+=j^{-\alpha}\times\text{slowly varying factors}.
+\]</span></p>
+<p>Constants, the eigenbasis, and logarithmic corrections may change while the polynomial exponent survives.</p>
+</section>
+<section id="one-block-stability-can-propagate-through-depth" class="slide level2">
+<h2>One-block stability can propagate through depth</h2>
+<p>For an MLP,</p>
+<p><span class="math display">\[
+H^{(0)}=X,\qquad
+Z^{(\ell)}=(W^{(\ell)})^\top H^{(\ell-1)},\qquad
+H^{(\ell)}=f_\ell(Z^{(\ell)}).
+\]</span></p>
+<p>The layer-<span class="math inline">\(\ell\)</span> activation covariance is <span class="math inline">\(\Sigma_\ell=\operatorname{Cov}(H^{(\ell)})\)</span>.</p>
+<p>The question is whether</p>
+<p><span class="math display">\[
+\lambda_j(\Sigma_{\ell-1})\asymp j^{-\alpha}
+\quad\Longrightarrow\quad
+\lambda_j(\Sigma_\ell)\asymp j^{-\alpha}.
+\]</span></p>
+<p>A uniform one-block statement propagates through finite depth by induction. The hard step is controlling one nonlinear transformation.</p>
+</section>
+<section id="random-features-isolate-one-nonlinear-block" class="slide level2">
+<h2>Random features isolate one nonlinear block</h2>
+<p>Freeze a Gaussian matrix <span class="math inline">\(W\)</span> and study</p>
+<p><span class="math display">\[
+h(X)=f(W^\top X).
+\]</span></p>
+<p>The population second-moment matrix is</p>
+<p><span class="math display">\[
+K_{f,W}
+=\mathbb E_X\!\left[
+\frac1d f(W^\top X)f(W^\top X)^\top
+\right].
+\]</span></p>
+<div class="claim">
+<p>Freezing <span class="math inline">\(W\)</span> separates the representation question from the optimization of the final linear readout.</p>
+</div>
+<p>Maloney, Roberts, and Sully used this setting to identify approximate spectral preservation in a solvable scaling model <span class="citation" data-cites="maloney2022solvable">(Maloney et al. 2022)</span>.</p>
+</section>
+<section id="the-exponent-survives-monomial-random-features" class="slide level2">
+<h2>The exponent survives monomial random features</h2>
+<section id="theorem-power-law-preservation-for-monomial-random-features" class="theorem-slide">
+<h3>Theorem: power-law preservation for monomial random features</h3>
+<p>Let <span class="math inline">\(X\sim N(0,\Sigma)\)</span> with <span class="math inline">\(\lambda_j(\Sigma)\asymp j^{-\alpha}\)</span>. Let <span class="math inline">\(W\)</span> have independent Gaussian entries and let <span class="math inline">\(f(y)=y^p\)</span>. Then, with high probability over <span class="math inline">\(W\)</span>,</p>
+<p><span class="math display">\[
+\boxed{
+\lambda_j(K_{f,W})
+\asymp
+\left(\frac{\log^{p-1}(j+1)}{j}\right)^\alpha
+\,,\qquad
+1\leq j\leq c\,\frac{d}{\log^{p+1}d}
+}
+\]</span></p>
+</section>
+<div class="source">
+<p><span class="math inline">\(\textit{P.--Ke Liang Xiao--Yizhe Zhu (2026)}\)</span>: polynomial rate preserved; logarithmic correction added.</p>
+</div>
+</section>
+<section id="the-phenomenon-extends-beyond-the-theorem" class="slide level2">
+<h2>The phenomenon extends beyond the theorem</h2>
+<div class="figure-slide">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="../assets/figures/module-01/activation-spectra-alpha1p31.png" class="quarto-figure quarto-figure-center" style="height:66.0%" alt="Random-feature covariance spectra for monomial and non-monomial activations."></p>
+</figure>
+</div>
+</div>
+<div class="takeaway">
+<p>The theorem covers monomials. ReLU, tanh, and other activations show related behavior numerically—but not every activation preserves the same tail.</p>
+</div>
+</section>
+<section id="preservation-also-appears-beyond-gaussian-inputs" class="slide level2">
+<h2>Preservation also appears beyond Gaussian inputs</h2>
+<div class="figure-slide figure-slide-tall">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="../assets/figures/module-01/universality-spectra-alpha1p31.png" class="quarto-figure quarto-figure-center" style="width:60.0%" alt="Random-feature covariance spectra across Gaussian, Rademacher, Student-t, and CIFAR-10 inputs for several activations."></p>
+</figure>
+</div>
+</div>
+<div class="takeaway">
+<p>Similar slopes across four input distributions suggest a broader universality phenomenon.</p>
+</div>
+</section>
+<section id="log-corrections-mimic-new-exponents" class="slide level2">
+<h2>Log corrections mimic new exponents</h2>
+<p>For <span class="math inline">\(p=2\)</span>,</p>
+<p><span class="math display">\[
+\lambda_j
+\asymp
+\left(\frac{\log(j+1)}{j}\right)^\alpha.
+\]</span></p>
+<p>The local log–log slope is</p>
+<p><span class="math display">\[
+\alpha_{\mathrm{local}}(j)
+=\alpha\left(
+1-\frac{j}{(j+1)\log(j+1)}
+\right).
+\]</span></p>
+<div class="columns compact-columns">
+<div class="column">
+<p>At <span class="math inline">\(j=3{,}000\)</span>,</p>
+<p><span class="math display">\[
+\alpha_{\mathrm{local}}\approx0.875\alpha.
+\]</span></p>
+</div><div class="column">
+<p>Within <span class="math inline">\(5\%\)</span> of <span class="math inline">\(\alpha\)</span> only near</p>
+<p><span class="math display">\[
+j=e^{20}\approx 4.9\times10^8.
+\]</span></p>
+</div></div>
+<p>At realistic widths, the correction looks like a shifted fitted slope.</p>
+</section>
+<section id="the-proof-is-a-tensor-covariance-argument" class="slide level2">
+<h2>The proof is a tensor covariance argument</h2>
+<ol type="1">
+<li><p><strong>Center the activation</strong> to isolate its highest Gaussian chaos.</p></li>
+<li><p><strong>Lift into tensor space</strong> so the kernel becomes a Gram matrix.</p></li>
+<li><p><strong>Count tensor-product eigenvalues</strong> to obtain the logarithmic correction.</p></li>
+<li><p><strong>Estimate a covariance from finite width</strong> to transfer the population spectrum back to the random-feature matrix.</p></li>
+</ol>
+<div class="takeaway">
+<p>For the quadratic activation, every step is already visible in the second Wiener chaos.</p>
+</div>
+</section>
+<section id="centering-isolates-the-pure-second-chaos" class="slide level2">
+<h2>Centering isolates the pure second chaos</h2>
+<p>For column <span class="math inline">\(w_a\)</span> of <span class="math inline">\(W\)</span>, set</p>
+<p><span class="math display">\[
+g_a=w_a^\top X,
+\qquad
+q_a=\mathbb E_X[g_a^2]=w_a^\top\Sigma w_a.
+\]</span></p>
+<p>The centered quadratic feature is</p>
+<p><span class="math display">\[
+:g_a^2:
+=g_a^2-q_a.
+\]</span></p>
+<p>If <span class="math inline">\(G=W^\top\Sigma W\)</span> and <span class="math inline">\(q=\operatorname{diag}(G)\)</span>, then</p>
+<p><span class="math display">\[
+K_{2,W}^{\mathrm{raw}}
+=\frac1dqq^\top+\frac2dG^{\odot2},
+\qquad
+K_{2,W}^{\mathrm{chaos}}
+=\frac2dG^{\odot2}.
+\]</span></p>
+<p>The two matrices differ by one rank-one term; interlacing preserves the tail.</p>
+</section>
+<section id="quadratic-features-live-in-symmetric-tensor-space" class="slide level2">
+<h2>Quadratic features live in symmetric tensor space</h2>
+<p>In an eigenbasis of <span class="math inline">\(\Sigma\)</span>, expanding <span class="math inline">\(:g_a^2:\)</span> in the second-chaos basis gives</p>
+<p><span class="math display">\[
+\phi_a
+=
+\left(
+(\sqrt2\,\lambda_r w_{ra}^2)_r,\;
+(2\sqrt{\lambda_r\lambda_s}\,w_{ra}w_{sa})_{r&lt;s}
+\right).
+\]</span></p>
+<p>Orthogonality yields</p>
+<p><span class="math display">\[
+\mathbb E_X[:g_a^2::g_b^2:]
+=\langle\phi_a,\phi_b\rangle.
+\]</span></p>
+<p>With <span class="math inline">\(\Phi=[\phi_1\ \cdots\ \phi_d]\)</span> in a tensor space of dimension <span class="math inline">\(v(v+1)/2\)</span>,</p>
+<p><span class="math display">\[
+\boxed{
+K_{2,W}^{\mathrm{chaos}}
+=\frac1d\Phi^\top\Phi
+}
+\]</span></p>
+</section>
+<section id="tensor-eigenvalues-are-pair-products" class="slide level2">
+<h2>Tensor eigenvalues are pair products</h2>
+<p>The principal population eigenvalues in tensor space are</p>
+<p><span class="math display">\[
+4\lambda_r\lambda_s,\qquad r&lt;s.
+\]</span></p>
+<p>If <span class="math inline">\(\lambda_r=r^{-\alpha}\)</span>, then the number above <span class="math inline">\(\varepsilon\)</span> is</p>
+<p><span class="math display">\[
+\begin{aligned}
+N_{\mathrm{off}}(\varepsilon)
+&amp;=\#\{r&lt;s:4\lambda_r\lambda_s\geq\varepsilon\}\\
+&amp;=\#\{r&lt;s:rs\leq(4/\varepsilon)^{1/\alpha}\}.
+\end{aligned}
+\]</span></p>
+<p>Thus the spectral counting problem is a lattice-point problem under a hyperbola.</p>
+</section>
+<section id="the-divisor-count-creates-the-logarithm" class="slide level2">
+<h2>The divisor count creates the logarithm</h2>
+<p>The divisor count gives</p>
+<p><span class="math display">\[
+\#\{r&lt;s:rs\leq R\}\sim \frac12R\log R.
+\]</span></p>
+<p>Hence <span class="math inline">\(j\asymp R\log R\)</span>, so</p>
+<p><span class="math display">\[
+\lambda_j\asymp
+\left(\frac{\log(j+1)}{j}\right)^\alpha.
+\]</span></p>
+</section>
+<section id="width-becomes-sample-size-in-tensor-space" class="slide level2">
+<h2>Width becomes sample size in tensor space</h2>
+<p>The nonzero eigenvalues of</p>
+<p><span class="math display">\[
+\frac1d\Phi^\top\Phi
+\qquad\text{and}\qquad
+\widehat C_{\mathrm{chaos}}
+=\frac1d\Phi\Phi^\top
+=\frac1d\sum_{a=1}^d\phi_a\phi_a^\top
+\]</span></p>
+<p>are identical.</p>
+<div class="claim">
+<p>The random-feature width <span class="math inline">\(d\)</span> is the sample size in an empirical covariance-estimation problem for tensor features.</p>
+</div>
+<p>On a <span class="math inline">\(k\)</span>-dimensional spectral head, the desired estimate is</p>
+<p><span class="math display">\[
+\left\|
+\frac1d\sum_{a=1}^d\xi_a\xi_a^\top-I_k
+\right\|\leq\delta.
+\]</span></p>
+</section>
+<section id="the-tensor-features-are-heavy-tailed" class="slide level2">
+<h2>The tensor features are heavy-tailed</h2>
+<p>Coordinates of <span class="math inline">\(\xi\)</span> are products <span class="math inline">\(w_rw_s\)</span>. For a unit vector <span class="math inline">\(u\)</span>, Gaussian hypercontractivity gives</p>
+<p><span class="math display">\[
+\|\langle\xi,u\rangle\|_{L^q}
+\leq(q-1)\|\langle\xi,u\rangle\|_{L^2},
+\qquad q\geq2.
+\]</span></p>
+<p>This is <strong>sub-exponential</strong>, not sub-Gaussian, growth.</p>
+<p>Large individual tensor-feature vectors can dominate the ordinary empirical covariance, so the clean <span class="math inline">\(d\asymp k\)</span> sub-Gaussian theorem does not apply. The concentration step uses bounds for sums of heavy-tailed random matrices <span class="citation" data-cites="jirak2026concentration">(Jirak et al. 2026)</span>.</p>
+<p>For degree <span class="math inline">\(p\)</span>, the current argument gives a sharp range</p>
+<p><span class="math display">\[
+k_\star\asymp\frac{d}{\log^{p+1}d};
+\qquad
+p=2:\quad k_\star\asymp\frac d{\log^3d}.
+\]</span></p>
+</section>
+<section id="two-logarithms-come-from-different-mechanisms" class="slide level2">
+<h2>Two logarithms come from different mechanisms</h2>
+<div class="columns contrast-columns">
+<div class="column">
+<h3 id="structural">Structural</h3>
+<p><span class="math display">\[
+\lambda_j
+\asymp
+\left(\frac{\log j}{j}\right)^\alpha
+\]</span></p>
+<p>Comes from counting pair products <span class="math inline">\(rs\leq R\)</span>.</p>
+<p>It is already present in the <strong>population tensor spectrum</strong>.</p>
+</div><div class="column">
+<h3 id="statistical">Statistical</h3>
+<p><span class="math display">\[
+k_\star
+\asymp
+\frac d{\log^3d}
+\]</span></p>
+<p>Comes from estimating a covariance with heavy-tailed tensor samples.</p>
+<p>It limits the current <strong>finite-width proof range</strong>.</p>
+</div></div>
+</section>
+<section id="the-result-identifies-a-mechanism-not-a-universal-law" class="slide level2">
+<h2>The result identifies a mechanism, not a universal law</h2>
+<p><strong>Established in the clean model</strong></p>
+<ul>
+<li>Gaussian inputs;</li>
+<li>fresh Gaussian random weights;</li>
+<li>monomial activations;</li>
+<li>one frozen random-feature block.</li>
+</ul>
+<p><strong>Still open or model-dependent</strong></p>
+<ul>
+<li>sharp preservation theorems for ReLU and tanh;</li>
+<li>trained and statistically dependent weights;</li>
+<li>normalization, residual connections, and finite-depth composition;</li>
+<li>full context covariance under self-attention.</li>
+</ul>
+<div class="takeaway">
+<p>The theorem explains the mechanism; the experiments show where it should extend.</p>
+</div>
+</section>
+<section id="selected-references" class="slide level2 smaller scrollable">
+<h2>Selected references</h2>
+<ol type="1">
+<li><p>Elliot Paquette, Ke Liang Xiao, and Yizhe Zhu. <em>Power-Law Spectrum of the Random Feature Model</em> (2026). <a href="https://arxiv.org/abs/2603.14578">arXiv:2603.14578</a>.</p></li>
+<li><p>Moritz Jirak, Stanislav Minsker, Yiqiu Shen, and Martin Wahl. <em>Concentration and Moment Inequalities for Sums of Independent Heavy-Tailed Random Matrices</em>. <em>Probability Theory and Related Fields</em> 194 (2026), 1917–1944. <a href="https://doi.org/10.1007/s00440-025-01412-6">doi:10.1007/s00440-025-01412-6</a>.</p></li>
+<li><p>Alexander Maloney, Daniel A. Roberts, and James Sully. <em>A Solvable Model of Neural Scaling Laws</em> (2022). <a href="https://arxiv.org/abs/2210.16859">arXiv:2210.16859</a>.</p></li>
+</ol>
+</section>
+<section id="the-spectrum-is-a-useful-first-coordinate-system" class="slide level2">
+<h2>The spectrum is a useful first coordinate system</h2>
+<ol type="1">
+<li><p>Covariance eigenvalues quantify effective dimension.</p></li>
+<li><p>The spectrum is not the whole story: eigenvectors encode important structural information about the data.</p></li>
+<li><p>Real spectra can cross over between several power-law regimes.</p></li>
+<li><p>Random monomial features preserve the polynomial exponent, up to a structural logarithmic correction.</p></li>
+<li><p>Finite width turns the proof into heavy-tailed covariance estimation.</p></li>
+</ol>
+<div class="final-question">
+<p>In Module 2, we will explore how spectra affect learning curves.</p>
+<p>We will introduce how this spectral structure can affect scaling laws.</p>
+</div>
+
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': true,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'bottom-right',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1600,
+
+        height: 900,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 5.5e-2,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp("https:\/\/elliotpaquette\.github\.io\/summer-school-2026-notes\/");
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

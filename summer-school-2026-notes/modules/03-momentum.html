@@ -1,0 +1,2635 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Momentum Schedules – Power Laws in Data and Optimization</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-5685cd926c25366c96d9f1407e584118.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Power Laws in Data and Optimization</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-modules" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Modules</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-modules">    
+        <li>
+    <a class="dropdown-item" href="../modules/01-power-law-covariance.html">
+ <span class="dropdown-text">1. Power-Law Covariance</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../modules/02-scaling-laws.html">
+ <span class="dropdown-text">2. Scaling Laws</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../modules/03-momentum.html">
+ <span class="dropdown-text">3. Momentum</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../modules/04-muon.html">
+ <span class="dropdown-text">4. Muon</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-slides" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Slides</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-slides">    
+        <li>
+    <a class="dropdown-item" href="../slides/lecture-01.html">
+ <span class="dropdown-text">Lecture 1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../slides/lecture-02.html">
+ <span class="dropdown-text">Lecture 2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../slides/lecture-03.html">
+ <span class="dropdown-text">Lecture 3</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../slides/lecture-04.html">
+ <span class="dropdown-text">Lecture 4</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#can-an-algorithm-change-a-scaling-law" id="toc-can-an-algorithm-change-a-scaling-law" class="nav-link active" data-scroll-target="#can-an-algorithm-change-a-scaling-law"><span class="header-section-number">1</span> Can an Algorithm Change a Scaling Law?</a></li>
+  <li><a href="#memory-is-the-control" id="toc-memory-is-the-control" class="nav-link" data-scroll-target="#memory-is-the-control"><span class="header-section-number">2</span> Memory Is the Control</a></li>
+  <li><a href="#nesterov-momentum" id="toc-nesterov-momentum" class="nav-link" data-scroll-target="#nesterov-momentum"><span class="header-section-number">3</span> Nesterov Momentum</a>
+  <ul class="collapse">
+  <li><a href="#the-look-ahead-form" id="toc-the-look-ahead-form" class="nav-link" data-scroll-target="#the-look-ahead-form"><span class="header-section-number">3.1</span> The look-ahead form</a></li>
+  <li><a href="#the-ode-viewpoint" id="toc-the-ode-viewpoint" class="nav-link" data-scroll-target="#the-ode-viewpoint"><span class="header-section-number">3.2</span> The ODE viewpoint</a></li>
+  </ul></li>
+  <li><a href="#why-stochastic-nesterov-needs-damping" id="toc-why-stochastic-nesterov-needs-damping" class="nav-link" data-scroll-target="#why-stochastic-nesterov-needs-damping"><span class="header-section-number">4</span> Why Stochastic Nesterov Needs Damping</a></li>
+  <li><a href="#momentum-theory-on-the-power-law-random-features-model" id="toc-momentum-theory-on-the-power-law-random-features-model" class="nav-link" data-scroll-target="#momentum-theory-on-the-power-law-random-features-model"><span class="header-section-number">5</span> Momentum Theory on the Power-Law Random Features Model</a>
+  <ul class="collapse">
+  <li><a href="#the-controlled-comparison" id="toc-the-controlled-comparison" class="nav-link" data-scroll-target="#the-controlled-comparison"><span class="header-section-number">5.1</span> The controlled comparison</a></li>
+  <li><a href="#from-momentum-to-a-general-volterra-equation" id="toc-from-momentum-to-a-general-volterra-equation" class="nav-link" data-scroll-target="#from-momentum-to-a-general-volterra-equation"><span class="header-section-number">5.2</span> From momentum to a general Volterra equation</a></li>
+  <li><a href="#a-generalized-kesten-reduction" id="toc-a-generalized-kesten-reduction" class="nav-link" data-scroll-target="#a-generalized-kesten-reduction"><span class="header-section-number">5.3</span> A generalized Kesten reduction</a></li>
+  <li><a href="#loss-dynamics-and-the-phase-diagram" id="toc-loss-dynamics-and-the-phase-diagram" class="nav-link" data-scroll-target="#loss-dynamics-and-the-phase-diagram"><span class="header-section-number">5.4</span> Loss dynamics and the phase diagram</a></li>
+  </ul></li>
+  <li><a href="#from-dana-to-an-adaptive-optimizer" id="toc-from-dana-to-an-adaptive-optimizer" class="nav-link" data-scroll-target="#from-dana-to-an-adaptive-optimizer"><span class="header-section-number">6</span> From DANA to an Adaptive Optimizer</a></li>
+  <li><a href="#logarithmic-time-schedules" id="toc-logarithmic-time-schedules" class="nav-link" data-scroll-target="#logarithmic-time-schedules"><span class="header-section-number">7</span> Logarithmic-Time Schedules</a></li>
+  <li><a href="#the-enoki-scaling-experiment" id="toc-the-enoki-scaling-experiment" class="nav-link" data-scroll-target="#the-enoki-scaling-experiment"><span class="header-section-number">8</span> The Enoki Scaling Experiment</a></li>
+  <li><a href="#measuring-compute-efficiency" id="toc-measuring-compute-efficiency" class="nav-link" data-scroll-target="#measuring-compute-efficiency"><span class="header-section-number">9</span> Measuring Compute Efficiency</a></li>
+  <li><a href="#lessons-from-transporting-an-algorithm" id="toc-lessons-from-transporting-an-algorithm" class="nav-link" data-scroll-target="#lessons-from-transporting-an-algorithm"><span class="header-section-number">10</span> Lessons From Transporting an Algorithm</a>
+  <ul class="collapse">
+  <li><a href="#every-control-is-part-of-the-experiment" id="toc-every-control-is-part-of-the-experiment" class="nav-link" data-scroll-target="#every-control-is-part-of-the-experiment"><span class="header-section-number">10.1</span> Every control is part of the experiment</a></li>
+  <li><a href="#loss-fits-and-compute-conventions-are-not-standardized" id="toc-loss-fits-and-compute-conventions-are-not-standardized" class="nav-link" data-scroll-target="#loss-fits-and-compute-conventions-are-not-standardized"><span class="header-section-number">10.2</span> Loss fits and compute conventions are not standardized</a></li>
+  <li><a href="#small-and-large-models-can-occupy-different-regimes" id="toc-small-and-large-models-can-occupy-different-regimes" class="nav-link" data-scroll-target="#small-and-large-models-can-occupy-different-regimes"><span class="header-section-number">10.3</span> Small and large models can occupy different regimes</a></li>
+  <li><a href="#baselining-is-essential" id="toc-baselining-is-essential" class="nav-link" data-scroll-target="#baselining-is-essential"><span class="header-section-number">10.4</span> Baselining is essential</a></li>
+  <li><a href="#weight-decay-needs-the-right-clock" id="toc-weight-decay-needs-the-right-clock" class="nav-link" data-scroll-target="#weight-decay-needs-the-right-clock"><span class="header-section-number">10.5</span> Weight decay needs the right clock</a></li>
+  <li><a href="#scaling-is-different-from-tuning" id="toc-scaling-is-different-from-tuning" class="nav-link" data-scroll-target="#scaling-is-different-from-tuning"><span class="header-section-number">10.6</span> Scaling is different from tuning</a></li>
+  </ul></li>
+  <li><a href="#the-batch-size-question" id="toc-the-batch-size-question" class="nav-link" data-scroll-target="#the-batch-size-question"><span class="header-section-number">11</span> The Batch-Size Question</a></li>
+  <li><a href="#what-the-experiment-does-and-does-not-show" id="toc-what-the-experiment-does-and-does-not-show" class="nav-link" data-scroll-target="#what-the-experiment-does-and-does-not-show"><span class="header-section-number">12</span> What the Experiment Does and Does Not Show</a></li>
+  <li><a href="#what-to-keep" id="toc-what-to-keep" class="nav-link" data-scroll-target="#what-to-keep"><span class="header-section-number">13</span> What To Keep</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/elliotpaquette/summer-school-2026-notes/blob/main/modules/03-momentum.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/elliotpaquette/summer-school-2026-notes/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Momentum Schedules</h1>
+<p class="subtitle lead">Module 3</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="can-an-algorithm-change-a-scaling-law" class="level2 page-columns page-full" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="can-an-algorithm-change-a-scaling-law"><span class="header-section-number">1</span> Can an Algorithm Change a Scaling Law?</h2>
+<p>Module 1 began with an empirical structure: covariance eigenvalues in data and neural representations often decay approximately as a power law. Module 2 put that structure into the power-law random features model and derived learning curves and compute-optimal scaling laws. We now close the loop:</p>
+<ol type="1">
+<li>observe a structure in real problems;</li>
+<li>build a solvable model of that structure;</li>
+<li>use the model to design an optimizer; and</li>
+<li>transport the design principle back to transformer training.</li>
+</ol>
+<p>The question is more precise than whether one optimizer obtains a lower loss than another:</p>
+<div id="qst-algorithm-outscaling" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-qst figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-qst" id="qst-algorithm-outscaling-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Question&nbsp;1: Algorithmic outscaling
+</figcaption>
+<div aria-describedby="qst-algorithm-outscaling-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<p>Can an optimizer change the exponent of a compute-optimal scaling law, or can it only improve the multiplicative constant?</p>
+</div>
+</figure>
+</div>
+<p>Suppose algorithms <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> have compute-optimal losses</p>
+<p><span class="math display">\[
+\mathcal L_{\star,A}(\mathsf C)
+\asymp c_A\mathsf C^{-\eta_A},
+\qquad
+\mathcal L_{\star,B}(\mathsf C)
+\asymp c_B\mathsf C^{-\eta_B}.
+\]</span></p>
+<p>Algorithm <span class="math inline">\(A\)</span> <strong>outscales</strong> <span class="math inline">\(B\)</span> if <span class="math inline">\(\eta_A&gt;\eta_B\)</span>. A smaller constant <span class="math inline">\(c_A\)</span> is still valuable, but it is a vertical improvement rather than a change in slope. This distinction is hard to establish from a finite compute range: a crossover between two terms can look like a new exponent, and an improvement that grows for several model sizes can eventually saturate.</p>
+<p>The first half of this module asks the question in the same solvable model as Module 2. There, dimension-adapted Nesterov acceleration (DANA) provides a positive answer: an algorithm can provably outscale SGD on part of the phase diagram <span class="citation" data-cites="ferbach2025dimension">(<a href="#ref-ferbach2025dimension" role="doc-biblioref">Ferbach et al. 2025</a>)</span>. The second half asks what survives when the idea is moved into an AdamW-like optimizer and tested on a transformer scaling ladder. The empirical answer will be more cautious.</p>
+<div class="no-row-height column-margin column-container"></div></section>
+<section id="memory-is-the-control" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="memory-is-the-control"><span class="header-section-number">2</span> Memory Is the Control</h2>
+<p>Let <span class="math inline">\(g_{t+1}\)</span> be a stochastic gradient. A common momentum variable is the exponential moving average</p>
+<p><span class="math display">\[
+m_{t+1}=\beta m_t+(1-\beta)g_{t+1}.
+\]</span></p>
+<p>Unrolling the recursion gives</p>
+<p><span class="math display">\[
+m_{t+1}
+=(1-\beta)\sum_{s=0}^{t}\beta^{t-s}g_{s+1}.
+\]</span></p>
+<p>The weight of a gradient decays on the time scale</p>
+<p><span class="math display">\[
+\tau_{\mathrm{mem}}\asymp \frac{1}{1-\beta}.
+\]</span></p>
+<p>For the familiar choice <span class="math inline">\(\beta=0.9\)</span>, this horizon is of order ten steps. For <span class="math inline">\(\beta=0.99\)</span>, it is of order one hundred. The horizon does not grow when the model is made larger or trained longer. Classical stochastic momentum therefore has <strong>short memory</strong> on the scale of a long training run.</p>
+<p>This does not make constant momentum useless. It can improve stability, transients, and constants. The stronger statement is specific to scaling: on the PLRF model, classical constant momentum has the same loss and compute-optimal exponents as SGD. After rescaling the effective learning rate, the leading risk dynamics agree.</p>
+<div class="callout callout-style-default callout-important callout-titled" title="The first negative result">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>The first negative result
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Classical stochastic momentum can beat SGD at fixed scale without outscaling SGD. A finite-memory filter changes constants but does not create a new asymptotic clock.</p>
+</div>
+</div>
+<p>To change the exponent, we need an algorithmic time scale that grows with the training problem.</p>
+</section>
+<section id="nesterov-momentum" class="level2 page-columns page-full" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="nesterov-momentum"><span class="header-section-number">3</span> Nesterov Momentum</h2>
+<p>Nesterov acceleration is first of all a <strong>deterministic, full-gradient acceleration scheme</strong>. Its classical guarantee assumes that the optimizer can evaluate <span class="math inline">\(\nabla L\)</span> itself, rather than a noisy gradient from a randomly sampled example or mini-batch. For a smooth convex objective <span class="math inline">\(L\)</span>, one standard two-sequence form is</p>
+<p><span class="math display">\[
+\begin{aligned}
+\theta_{t+1}
+&amp;=y_t-\gamma\nabla L(y_t),\\
+y_{t+1}
+&amp;=\theta_{t+1}+\mu_t(\theta_{t+1}-\theta_t),
+\end{aligned}
+\]</span></p>
+<p>where, for example,</p>
+<p><span class="math display">\[
+\mu_t=\frac{t}{t+3}=1-\frac{3}{t+3}.
+\]</span></p>
+<p>Unlike constant momentum, <span class="math inline">\(1-\mu_t\asymp t^{-1}\)</span>. Its effective memory horizon grows proportionally to the current time. The algorithm has no fixed memory scale. In deterministic convex optimization, this growing memory is part of the mechanism that accelerates the objective decay relative to ordinary gradient descent.</p>
+<div class="callout callout-style-default callout-warning callout-titled" title="Deterministic Nesterov is not automatically a stochastic optimizer">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Deterministic Nesterov is not automatically a stochastic optimizer
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The formulas in this section describe classical full-gradient Nesterov acceleration. A naive stochastic version replaces</p>
+<p><span class="math display">\[
+\nabla L(y_t)
+\quad\text{by}\quad
+g_{t+1}=\nabla\ell(y_t;\xi_{t+1}),
+\qquad
+\mathbb E[g_{t+1}\mid y_t]=\nabla L(y_t).
+\]</span></p>
+<p>That substitution preserves the algebraic forms below, but not the deterministic stability or acceleration guarantee. Because the memory horizon grows with <span class="math inline">\(t\)</span>, the momentum variable also accumulates stochastic-gradient noise. In the small-batch PLRF setting studied here, undamped stochastic Nesterov is unstable. DANA is introduced precisely to recover stability by damping the long-memory contribution.</p>
+<div id="fig-stochastic-nesterov-divergence" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-stochastic-nesterov-divergence-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/module-03/stochastic-nesterov-divergence.png" class="img-fluid figure-img" style="width:88.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-stochastic-nesterov-divergence-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Naive stochastic Nesterov (red) initially lowers the PLRF risk but eventually turns upward and diverges, while SGD and the damped DANA schedules remain stable. The experiment uses dimension <span class="math inline">\(d=1000\)</span>, batch size one, and the paper convention <span class="math inline">\(\alpha_{\rm paper}=1.4\)</span>, corresponding to covariance exponent <span class="math inline">\(\alpha=2.8\)</span> in these notes. Solid curves are the ODE predictions and lighter curves are stochastic runs. Figure from <span class="citation" data-cites="ferbach2025dimension">Ferbach et al. (<a href="#ref-ferbach2025dimension" role="doc-biblioref">2025</a>)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="no-row-height column-margin column-container"></div><section id="the-look-ahead-form" class="level3" data-number="3.1">
+<h3 data-number="3.1" class="anchored" data-anchor-id="the-look-ahead-form"><span class="header-section-number">3.1</span> The look-ahead form</h3>
+<p>Define the velocity <span class="math inline">\(v_{t+1}=\theta_{t+1}-\theta_t\)</span>. Since <span class="math inline">\(y_t=\theta_t+\mu_{t-1}v_t\)</span>, the same iteration becomes</p>
+<p><span class="math display">\[
+\begin{aligned}
+v_{t+1}
+&amp;=\mu_{t-1}v_t
+   -\gamma\nabla L(\theta_t+\mu_{t-1}v_t),\\
+\theta_{t+1}
+&amp;=\theta_t+v_{t+1}.
+\end{aligned}
+\]</span></p>
+<p>The gradient is evaluated at a point extrapolated in the direction of the current velocity. This is the familiar <strong>look-ahead</strong> interpretation.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Four views of the same Nesterov iteration">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Four views of the same Nesterov iteration
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The same deterministic full-gradient iteration can be represented in several coordinate systems. We begin with three <strong>exactly equivalent</strong> formulations. Only after establishing their relationship will we introduce the fourth, EMA-like view. Replacing the displayed full gradients by stochastic gradients defines a naive stochastic analogue, not a stable acceleration theorem.</p>
+<div class="nesterov-view-grid nesterov-exact-grid">
+<div class="nesterov-view-card">
+<p><strong>Two sequences</strong></p>
+<p><strong>State:</strong> <span class="math inline">\((\theta_t,y_t)\)</span></p>
+<p><span class="math display">\[
+\begin{aligned}
+\theta_{t+1}&amp;=y_t-\gamma\nabla L(y_t),\\
+y_{t+1}&amp;=\theta_{t+1}
++\mu_t(\theta_{t+1}-\theta_t).
+\end{aligned}
+\]</span></p>
+<p>Take a gradient step, then extrapolate.</p>
+</div>
+<div class="nesterov-view-card">
+<p><strong>Look ahead</strong></p>
+<p><strong>State:</strong> <span class="math inline">\((\theta_t,v_t)\)</span></p>
+<p><span class="math display">\[
+\begin{aligned}
+v_{t+1}&amp;=\mu_{t-1}v_t
+-\gamma\nabla L(\theta_t+\mu_{t-1}v_t),\\
+\theta_{t+1}&amp;=\theta_t+v_{t+1}.
+\end{aligned}
+\]</span></p>
+<p>Evaluate the gradient at the extrapolated point.</p>
+</div>
+<div class="nesterov-view-card">
+<p><strong>Extra gradient</strong></p>
+<p><strong>State:</strong> <span class="math inline">\((\Phi_t,m_t)\)</span></p>
+<p><span class="math display">\[
+\begin{aligned}
+g_{t+1}&amp;=\nabla L(\Phi_t),\\
+m_{t+1}&amp;=\mu_{t-1}m_t+g_{t+1},\\
+\Phi_{t+1}&amp;=\Phi_t-\gamma
+(g_{t+1}+\mu_t m_{t+1}).
+\end{aligned}
+\]</span></p>
+<p>Separate the fresh gradient from accumulated memory.</p>
+</div>
+</div>
+<p><strong>The exact relationship between the first three views.</strong></p>
+<p>Define</p>
+<p><span class="math display">\[
+\begin{aligned}
+v_t&amp;=\theta_t-\theta_{t-1},\\
+\Phi_t&amp;=y_t=\theta_t+\mu_{t-1}v_t,\\
+m_t&amp;=-v_t/\gamma,
+\qquad
+g_{t+1}=\nabla L(\Phi_t).
+\end{aligned}
+\]</span></p>
+<p>Substituting these identities into the two-sequence iteration gives exactly</p>
+<p><span class="math display">\[
+\begin{aligned}
+m_{t+1}
+&amp;=\mu_{t-1}m_t+g_{t+1},\\
+\Phi_{t+1}
+&amp;=\Phi_t-\gamma\bigl(g_{t+1}+\mu_t m_{t+1}\bigr).
+\end{aligned}
+\]</span></p>
+<p>Thus the two-sequence, look-ahead, and extra-gradient blocks describe the same algorithm in different coordinates. The extra-gradient coordinates are useful because they display the fresh gradient and accumulated memory separately.</p>
+<p><strong>The fourth view: normalized EMA memory.</strong></p>
+<p>The EMA form is different in status. It is obtained by normalizing the exact extra-gradient accumulator and then making a slowly-varying-schedule approximation.</p>
+<div class="nesterov-view-card nesterov-ema-card">
+<p><strong>EMA form</strong></p>
+<p><strong>State:</strong> <span class="math inline">\((\Phi_t,p_t)\)</span></p>
+<p><span class="math display">\[
+\begin{aligned}
+p_{t+1}
+&amp;\approx\mu_{t-1}p_t+(1-\mu_{t-1})g_{t+1},\\
+\Phi_{t+1}
+&amp;=\Phi_t-\gamma\left(
+g_{t+1}+\frac{\mu_t}{1-\mu_{t-1}}p_{t+1}
+\right).
+\end{aligned}
+\]</span></p>
+<p>Normalize the memory to look like Adam’s first moment. The first line is a slowly-varying-schedule approximation, not another exact change of variables.</p>
+</div>
+<p>To make the accumulator resemble an exponential moving average, normalize it by its current innovation weight:</p>
+<p><span class="math display">\[
+p_{t+1}=(1-\mu_{t-1})m_{t+1}.
+\]</span></p>
+<p>The parameter update then becomes exactly</p>
+<p><span class="math display">\[
+\Phi_{t+1}
+=\Phi_t-\gamma\left(
+g_{t+1}
++\frac{\mu_t}{1-\mu_{t-1}}p_{t+1}
+\right).
+\]</span></p>
+<p>Because the normalization changes with time, the exact recursion for <span class="math inline">\(p_t\)</span> is</p>
+<p><span class="math display">\[
+p_{t+1}
+=
+\mu_{t-1}
+\frac{1-\mu_{t-1}}{1-\mu_{t-2}}p_t
++(1-\mu_{t-1})g_{t+1}.
+\]</span></p>
+<p>For constant momentum, the ratio is exactly one. For a slowly varying Nesterov schedule,</p>
+<p><span class="math display">\[
+\frac{1-\mu_{t-1}}{1-\mu_{t-2}}\approx1,
+\]</span></p>
+<p>which gives the familiar EMA approximation</p>
+<p><span class="math display">\[
+p_{t+1}
+\approx
+\mu_{t-1}p_t+(1-\mu_{t-1})g_{t+1}.
+\]</span></p>
+<p>For <span class="math inline">\(\mu_t=t/(t+3)\)</span>, the ratio approaches one as <span class="math inline">\(t\)</span> grows, but it is not identically one.</p>
+<p>The extra-gradient form remains the most convenient starting point for DANA because it exposes separate coefficients for the fresh gradient and the accumulated momentum without making the EMA approximation.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="the-ode-viewpoint" class="level3 page-columns page-full" data-number="3.2">
+<h3 data-number="3.2" class="anchored" data-anchor-id="the-ode-viewpoint"><span class="header-section-number">3.2</span> The ODE viewpoint</h3>
+<p>Nesterov acceleration also has a continuous-time interpretation. Under an appropriate small-step limit, the iterates are described by a second-order equation of the schematic form</p>
+<p><span class="math display">\[
+\ddot\theta(t)+\frac{c}{t}\dot\theta(t)+\nabla L(\theta(t))=0.
+\]</span></p>
+<p>The damping decreases like <span class="math inline">\(1/t\)</span>. This ODE viewpoint explains why a time-dependent momentum coefficient is not an arbitrary schedule: it is the discrete counterpart of a damping law whose clock expands with time <span class="citation" data-cites="su2016differential">(<a href="#ref-su2016differential" role="doc-biblioref">Su et al. 2016</a>)</span>.</p>
+<div class="no-row-height column-margin column-container"></div><div class="callout callout-style-default callout-note callout-titled" title="From the stochastic recursion to the Su ODE">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>From the stochastic recursion to the Su ODE
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The useful continuum object is not only the mean iterate. On a quadratic, the loss is a second moment, and momentum introduces a cross-moment. Those quantities form a closed three-variable system.</p>
+<p>Fix an eigenvector of the PLRF Hessian with eigenvalue <span class="math inline">\(\lambda\)</span>. Let <span class="math inline">\(x_k\)</span> be the parameter error and <span class="math inline">\(y_k\)</span> the momentum in this direction. A schematic one-step version of the paper’s general momentum algorithm is</p>
+<p><span class="math display">\[
+\begin{aligned}
+y_{k+1}-y_k
+  &amp;= -\Delta_k y_k+\gamma_{1,k}B\lambda x_k
+     +\gamma_{1,k}\varepsilon^{(y)}_{k+1},\\
+x_{k+1}-x_k
+  &amp;= -\gamma_{2,k}B\lambda x_k-\gamma_{3,k}y_k
+     +\gamma_{2,k}\varepsilon^{(x)}_{k+1}.
+\end{aligned}
+\]</span></p>
+<p>The noises have conditional mean zero. In the PLRF model their leading conditional variance in this mode is proportional to <span class="math inline">\(B\lambda\mathscr P_k\)</span>, where <span class="math inline">\(\mathscr P_k\)</span> is the total population loss. Now introduce</p>
+<p><span class="math display">\[
+\rho_k^2=\mathbb E[x_k^2],
+\qquad
+\xi_k^2=\mathbb E[y_k^2],
+\qquad
+\chi_k=\mathbb E[x_ky_k].
+\]</span></p>
+<p>Expand, for example,</p>
+<p><span class="math display">\[
+x_{k+1}^2-x_k^2
+=2x_k(x_{k+1}-x_k)+(x_{k+1}-x_k)^2,
+\]</span></p>
+<p>and do the same for <span class="math inline">\(y_k^2\)</span> and <span class="math inline">\(x_ky_k\)</span>. Replacing first differences by time derivatives and retaining the leading drift and quadratic-variation terms gives the paper’s simplified three-variable closure:</p>
+<p><span class="math display">\[
+\frac{d}{dt}
+\begin{pmatrix}
+\rho^2\\ \xi^2\\ \chi
+\end{pmatrix}
+=
+\begin{pmatrix}
+-2\gamma_2B\lambda &amp; 0 &amp; -2\gamma_3\\
+0 &amp; -2\Delta &amp; 2\gamma_1B\lambda\\
+\gamma_1B\lambda &amp; -\gamma_3 &amp;
+  -(\Delta+\gamma_2B\lambda)
+\end{pmatrix}
+\begin{pmatrix}
+\rho^2\\ \xi^2\\ \chi
+\end{pmatrix}
++
+B\lambda\mathscr P(t)
+\begin{pmatrix}
+\gamma_2^2\\ \gamma_1^2\\ 0
+\end{pmatrix}.
+\]</span></p>
+<p>This formula separates the two effects cleanly. The matrix is the deterministic transport of error and momentum. The final vector is stochastic variance injected by fresh examples. Summing <span class="math inline">\(\lambda\rho_\lambda^2(t)\)</span> over the spectrum recovers the population loss and couples all modes through <span class="math inline">\(\mathscr P(t)\)</span>; solving that coupled system is what produces the Volterra equation later in the module.</p>
+<p>To locate the classical Nesterov ODE inside this system, first remove the variance forcing and follow the underlying deterministic amplitudes:</p>
+<p><span class="math display">\[
+\dot x=-\gamma_2B\lambda x-\gamma_3y,
+\qquad
+\dot y=-\Delta y+\gamma_1B\lambda x.
+\]</span></p>
+<p>For the pure momentum branch, <span class="math inline">\(\gamma_2=0\)</span>. Eliminating <span class="math inline">\(y\)</span> gives exactly</p>
+<p><span class="math display">\[
+\ddot x+
+\left(\Delta-\frac{\dot\gamma_3}{\gamma_3}\right)\dot x
++\gamma_1\gamma_3B\lambda x=0.
+\]</span></p>
+<p>Thus, when <span class="math inline">\(\gamma_3\)</span> is constant, <span class="math inline">\(\Delta(t)=c/t\)</span>, and time is normalized so that <span class="math inline">\(\gamma_1\gamma_3B=1\)</span>, each spectral mode obeys</p>
+<p><span class="math display">\[
+\ddot x+\frac{c}{t}\dot x+\lambda x=0,
+\]</span></p>
+<p>which is precisely the quadratic, modewise form of the Su–Boyd–Candès Nesterov ODE <span class="citation" data-cites="su2016differential">(<a href="#ref-su2016differential" role="doc-biblioref">Su et al. 2016</a>)</span>. In this sense the Su ODE is the <strong>deterministic skeleton</strong> of the continuum risk model. The three-variable system retains what that skeleton discards: variance injection and its feedback through the total loss.</p>
+<p>The paper uses Poissonization to make the differential equations an exact description of a continuous-time jump embedding of the discrete algorithm. For intuition, the first-difference calculation above exposes the same closure more directly.</p>
+</div>
+</div>
+</div>
+<div class="no-row-height column-margin column-container"><div id="ref-su2016differential" class="csl-entry" role="listitem">
+Su, Weijie, Stephen Boyd, and Emmanuel J. Candès. 2016. <span>“A Differential Equation for Modeling Nesterov’s Accelerated Gradient Method: Theory and Insights.”</span> <em>Journal of Machine Learning Research</em> 17 (153): 1–43. <a href="https://jmlr.org/papers/v17/15-084.html">https://jmlr.org/papers/v17/15-084.html</a>.
+</div></div></section>
+</section>
+<section id="why-stochastic-nesterov-needs-damping" class="level2 page-columns page-full" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="why-stochastic-nesterov-needs-damping"><span class="header-section-number">4</span> Why Stochastic Nesterov Needs Damping</h2>
+<p>The deterministic method uses the exact gradient and accelerates by retaining an increasingly long history. After the naive stochastic substitution, the same accumulator remembers both signal and gradient noise. Its memory grows with time, so the accumulated noise can grow as well. Standard Nesterov uses essentially one coefficient to preserve both the fresh-gradient contribution and the long-memory contribution. At small batch, a step size that keeps the fresh gradient useful may make the momentum term unstable; shrinking it enough to control the momentum can erase the fresh-gradient dynamics.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Related precedent: accelerated SGD">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Related precedent: accelerated SGD
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The need to redesign deterministic acceleration in the presence of gradient noise predates DANA. Flammarion and Bach showed that averaging and acceleration can be expressed within a common two-sequence stochastic-gradient framework, with the step sizes controlling which regime the method occupies <span class="citation" data-cites="flammarion2015from">(<a href="#ref-flammarion2015from" role="doc-biblioref">Flammarion and Bach 2015</a>)</span>.</p>
+<p>Varré and Flammarion later developed <strong>accelerated SGD (AcSGD)</strong> for non-strongly-convex least squares <span class="citation" data-cites="varre2022accelerated">(<a href="#ref-varre2022accelerated" role="doc-biblioref">Varré and Flammarion 2022</a>)</span>. AcSGD couples a stable stochastic-gradient channel to a more aggressive accelerated channel, but scales the aggressive contribution down to control the noise it creates. It can be written in the same general two-state momentum framework used here. On PLRF, the momentum paper’s experiments suggest that AcSGD has behavior close to DANA-constant. The distinction is one of emphasis: the AcSGD result gives a general acceleration bound for least squares, whereas DANA chooses dimension- and data-dependent damping specifically to study compute-optimal scaling exponents.</p>
+</div>
+</div>
+<div class="no-row-height column-margin column-container"><div id="ref-varre2022accelerated" class="csl-entry" role="listitem">
+Varré, Aditya, and Nicolas Flammarion. 2022. <span>“Accelerated <span>SGD</span> for Non-Strongly-Convex Least Squares.”</span> <em>Proceedings of the 35th Conference on Learning Theory</em>, Proceedings of machine learning research, vol. 178: 2062–126. <a href="https://proceedings.mlr.press/v178/varre22a.html">https://proceedings.mlr.press/v178/varre22a.html</a>.
+</div></div><div class="no-row-height column-margin column-container"><div id="ref-flammarion2015from" class="csl-entry" role="listitem">
+Flammarion, Nicolas, and Francis Bach. 2015. <span>“From Averaging to Acceleration, There Is Only a Step-Size.”</span> <em>Proceedings of the 28th Conference on Learning Theory</em>, Proceedings of machine learning research, vol. 40: 658–95. <a href="https://proceedings.mlr.press/v40/Flammarion15.html">https://proceedings.mlr.press/v40/Flammarion15.html</a>.
+</div></div><p>DANA separates these roles. Starting from the extra-gradient form, write</p>
+<p><span class="math display">\[
+\begin{aligned}
+m_{t+1}&amp;=\mu_{t-1}m_t+g_{t+1},\\
+\Phi_{t+1}
+&amp;=\Phi_t-\gamma\bigl(g_{t+1}+a_t m_{t+1}\bigr).
+\end{aligned}
+\]</span></p>
+<p>Standard Nesterov corresponds to <span class="math inline">\(a_t=\mu_t\)</span>. DANA chooses <span class="math inline">\(a_t&lt;\mu_t\)</span>: the algorithm keeps long memory but damps its contribution to the parameter update.</p>
+<p>There are two useful designs.</p>
+<ul>
+<li><strong>DANA-constant</strong> chooses the damping scale using the model dimension or a fixed training horizon.</li>
+<li><strong>DANA-decaying</strong> adapts the damping continuously with the current time.</li>
+</ul>
+<p>The name stands for <strong>dimension-adapted Nesterov acceleration</strong>. The dimension adaptation is not decorative: it is what allows the long-memory term to remain stable while retaining a contribution large enough to change the scaling law.</p>
+<div id="fig-plrf-optimizer-comparison" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-plrf-optimizer-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/module-03/plrf-optimizer-comparison.png" class="img-fluid figure-img" style="width:96.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-plrf-optimizer-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: DANA and SGD on the power-law random features model. Constant momentum tracks SGD at the level of scaling exponents, while dimension- or time-adapted damping can produce a steeper compute-optimal curve. Figure from <span class="citation" data-cites="ferbach2025dimension">Ferbach et al. (<a href="#ref-ferbach2025dimension" role="doc-biblioref">2025</a>)</span>.
+</figcaption>
+<div class="no-row-height column-margin column-container"></div></figure>
+</div>
+</section>
+<section id="momentum-theory-on-the-power-law-random-features-model" class="level2 page-columns page-full" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="momentum-theory-on-the-power-law-random-features-model"><span class="header-section-number">5</span> Momentum Theory on the Power-Law Random Features Model</h2>
+<section id="the-controlled-comparison" class="level3" data-number="5.1">
+<h3 data-number="5.1" class="anchored" data-anchor-id="the-controlled-comparison"><span class="header-section-number">5.1</span> The controlled comparison</h3>
+<p>We use exactly the setting of Module 2. In the notes convention,</p>
+<p><span class="math display">\[
+X_j=j^{-\alpha/2}Z_j,
+\qquad
+\operatorname{Var}(X_j)=j^{-\alpha},
+\qquad
+b_j=j^{-\beta}.
+\]</span></p>
+<p>A Gaussian feature map <span class="math inline">\(W\in\mathbb R^{v\times d}\)</span> produces the quadratic population loss</p>
+<p><span class="math display">\[
+\mathcal L(\theta)
+=\left\|\Sigma^{1/2}(W\theta-b)\right\|_2^2,
+\qquad
+\widehat K=W^\top\Sigma W.
+\]</span></p>
+<p>The data geometry, target, feature map, and compute model are held fixed. Only the optimizer changes. This makes PLRF a controlled test of whether an algorithm can alter the four loss contributions derived in Module 2.</p>
+<div class="callout callout-style-default callout-warning callout-titled" title="Exponent convention">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Exponent convention
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The momentum paper writes <span class="math inline">\(X_j=j^{-\alpha_{\rm paper}}Z_j\)</span>. Its covariance eigenvalues decay as <span class="math inline">\(j^{-2\alpha_{\rm paper}}\)</span>. These notes use</p>
+<p><span class="math display">\[
+\alpha=2\alpha_{\rm paper}.
+\]</span></p>
+<p>In particular, the paper’s line <span class="math inline">\(2\alpha_{\rm paper}=1\)</span> is the trace-class boundary <span class="math inline">\(\alpha=1\)</span> here.</p>
+</div>
+</div>
+</section>
+<section id="from-momentum-to-a-general-volterra-equation" class="level3" data-number="5.2">
+<h3 data-number="5.2" class="anchored" data-anchor-id="from-momentum-to-a-general-volterra-equation"><span class="header-section-number">5.2</span> From momentum to a general Volterra equation</h3>
+<p>For SGD, Module 2 obtained a convolution Volterra equation: the kernel depended only on the time difference. Scheduled momentum is nonautonomous. Its coefficients change with time, and the resulting kernel remembers both when a noise impulse entered and when its effect is measured.</p>
+<p>After continuizing the stochastic recursion, diagonalizing <span class="math inline">\(\widehat K\)</span>, and following one spectral mode <span class="math inline">\(\lambda\)</span>, one obtains a small matrix ODE</p>
+<p><span class="math display">\[
+\frac{\partial}{\partial t}\Phi_\lambda(t,s)
+=\Omega(t;\lambda)\Phi_\lambda(t,s),
+\qquad
+\Phi_\lambda(s,s)=I.
+\]</span></p>
+<p>The fundamental solution <span class="math inline">\(\Phi_\lambda(t,s)\)</span> propagates an impulse from time <span class="math inline">\(s\)</span> to time <span class="math inline">\(t\)</span>. Integrating these modewise propagators against the same deterministic spectral measures used in Module 2 gives</p>
+<p><span class="math display">\[
+\mathscr P(t)
+=
+\mathscr F(t)
++
+\int_0^t
+\mathscr K(t,s)\mathscr P(s)\,ds.
+\]</span></p>
+<p>The forcing <span class="math inline">\(\mathscr F\)</span> carries the initial target error. The kernel <span class="math inline">\(\mathscr K(t,s)\)</span> carries stochastic-gradient noise through the scheduled momentum dynamics. The equation is still Volterra—only earlier times influence later ones—but it is generally not a convolution.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Why a matrix ODE appears">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Why a matrix ODE appears
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>SGD has one state variable, the parameter error. Momentum adds at least one state variable, and the second-moment calculation adds their quadratic cross-terms. For each eigenvalue <span class="math inline">\(\lambda\)</span> of <span class="math inline">\(\widehat K\)</span>, the expected error, momentum, and their covariance therefore evolve as a finite-dimensional linear system with time-dependent coefficients.</p>
+<p>This is the useful division of labor:</p>
+<p><span class="math display">\[
+\begin{array}{c}
+\text{random matrix theory}
+\\[-2mm]
+\downarrow
+\\[-2mm]
+\text{deterministic spectral measures}
+\end{array}
+\qquad\text{and}\qquad
+\begin{array}{c}
+\text{scheduled momentum}
+\\[-2mm]
+\downarrow
+\\[-2mm]
+\Phi_\lambda(t,s).
+\end{array}
+\]</span></p>
+<p>The measures describe which spectral modes exist; the fundamental solution describes how the optimizer moves through them.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="a-generalized-kesten-reduction" class="level3" data-number="5.3">
+<h3 data-number="5.3" class="anchored" data-anchor-id="a-generalized-kesten-reduction"><span class="header-section-number">5.3</span> A generalized Kesten reduction</h3>
+<p>The exact Volterra equation is not yet a scaling law. As in Module 2, the goal is to show that repeated feedback through the kernel does not generate a new leading power beyond the forcing and first kernel contribution.</p>
+<div id="lem-generalized-kesten" class="theorem lemma">
+<p><span class="theorem-title"><strong>Lemma 1 (Generalized Kesten Bound)</strong></span> Let <span class="math inline">\(K(t,s)\geq0\)</span> for <span class="math inline">\(0\leq s\leq t\)</span>. Suppose that for a constant <span class="math inline">\(C_K\)</span>,</p>
+<p><span class="math display">\[
+\int_r^t K(t,s)K(s,r)\,ds
+\leq C_K K(t,r)
+\]</span></p>
+<p>for every <span class="math inline">\(0\leq r\leq t\)</span>. Then the iterated kernels satisfy</p>
+<p><span class="math display">\[
+K^{*(n+1)}(t,r)
+\leq C_K^n K(t,r).
+\]</span></p>
+</div>
+<p>The proof is an induction: convolve the <span class="math inline">\(n\)</span>-fold bound with one more copy of <span class="math inline">\(K\)</span>, then apply the assumed two-kernel inequality. If <span class="math inline">\(C_K&lt;1\)</span>, the Volterra series is controlled by a geometric sum. Schematically,</p>
+<p><span class="math display">\[
+\mathscr P
+=\mathscr F+K*\mathscr F+K*K*\mathscr F+\cdots
+\asymp
+\mathscr F+K*\mathscr F.
+\]</span></p>
+<div class="callout callout-style-default callout-note callout-titled" title="What makes the momentum proof hard?">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>What makes the momentum proof hard?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>For a convolution kernel, the Kesten condition can often be reduced to a one-variable tail estimate. For DANA, <span class="math inline">\(K(t,s)\)</span> depends on both times through solutions of a singular, time-dependent matrix ODE. The proof must:</p>
+<ul>
+<li>find asymptotics of the fundamental solutions in different spectral regimes;</li>
+<li>control the transition between SGD-like and accelerated modes;</li>
+<li>integrate those bounds against the PLRF deterministic spectral measures;</li>
+<li>verify stability and the generalized Kesten condition uniformly.</li>
+</ul>
+<p>The long Frobenius and kernel estimates in the source paper perform this work. For the scaling story, the important mechanism is that stability makes the Volterra feedback summable, after which the optimizer-dependent forcing and kernel tails determine the exponents.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="loss-dynamics-and-the-phase-diagram" class="level3 page-columns page-full" data-number="5.4">
+<h3 data-number="5.4" class="anchored" data-anchor-id="loss-dynamics-and-the-phase-diagram"><span class="header-section-number">5.4</span> Loss dynamics and the phase diagram</h3>
+<p>The main theorem has a particularly clean interpretation: <strong>momentum does not create a new collection of loss curves. It runs the same <span class="math inline">\(4+3\)</span> curves on a different clock.</strong></p>
+<p>Let</p>
+<p><span class="math display">\[
+\mathscr P_{\mathrm{alg}}(t;d)
+=
+\mathbb E\left[
+\left\|\Sigma^{1/2}(W\theta_t-b)\right\|_2^2
+\right]
+\]</span></p>
+<p>denote the expected PLRF population loss after <span class="math inline">\(t\)</span> optimizer steps with model dimension <span class="math inline">\(d\)</span>. It is useful first to define a reference loss curve in an abstract optimization time <span class="math inline">\(s\)</span>. In the notes convention, its four components are</p>
+<p><span class="math display">\[
+\begin{aligned}
+\widehat{\mathscr F}_{pp}(s)
+&amp;\asymp s^{-(\alpha+2\beta-1)/\alpha},
+&amp;&amp;\text{population bias},\\
+\mathscr F_0(d)
+&amp;\asymp d^{-\{\alpha+(1-2\beta)_+\}},
+&amp;&amp;\text{capacity floor},\\
+\widehat{\mathscr F}_{ac}(s;d)
+&amp;\asymp d^{-1}s^{-1+1/\alpha},
+&amp;&amp;\text{embedding bias},\\
+\widehat{\mathscr K}_{pp}(s)
+&amp;\asymp s^{-2+1/\alpha},
+&amp;&amp;\text{stochastic variance}.
+\end{aligned}
+\]</span></p>
+<p>Group the three deterministic pieces into</p>
+<p><span class="math display">\[
+\widehat{\mathscr F}(s;d)
+=
+\widehat{\mathscr F}_{pp}(s)
+\;+\widehat{\mathscr F}_{ac}(s;d)
+\;+\mathscr F_0(d).
+\]</span></p>
+<p>These are exactly the four components from Module 2. They generate the same four principal phases and three subphase splits:</p>
+<div class="columns phase-component-columns page-columns page-full">
+<div class="column page-columns page-full" style="width:42%;">
+<div id="fig-active-loss-phase-map" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-active-loss-phase-map-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/module-02/phase-diagram-paper-convention.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-active-loss-phase-map-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: The PLRF phase regions in the <span class="math inline">\((\alpha_{\rm paper},\beta)\)</span>-plane. Figure from <span class="citation" data-cites="paquette2024fourplusthree">Paquette et al. (<a href="#ref-paquette2024fourplusthree" role="doc-biblioref">2024</a>)</span>.
+</figcaption>
+<div class="no-row-height column-margin column-container"><div id="ref-paquette2024fourplusthree" class="csl-entry" role="listitem">
+Paquette, Elliot, Courtney Paquette, Lechao Xiao, and Jeffrey Pennington. 2024. <span>“4+3 Phases of Compute-Optimal Neural Scaling Laws.”</span> <em>Advances in Neural Information Processing Systems</em> 37. <a href="https://openreview.net/forum?id=aVSxwicpAk">https://openreview.net/forum?id=aVSxwicpAk</a>.
+</div></div></figure>
+</div>
+</div><div class="column" style="width:58%;">
+<p><strong>Dominant terms in each region</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>phase</th>
+<th>active loss components</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>I</td>
+<td><span class="math inline">\(\widehat{\mathscr F}_{pp}+\mathscr F_0\)</span></td>
+</tr>
+<tr class="even">
+<td>II</td>
+<td><span class="math inline">\(\widehat{\mathscr F}_{pp}+\widehat{\mathscr F}_{ac}+\mathscr F_0\)</span></td>
+</tr>
+<tr class="odd">
+<td>III</td>
+<td><span class="math inline">\(\gamma\widehat{\mathscr K}_{pp}+\widehat{\mathscr F}_{ac}+\mathscr F_0\)</span></td>
+</tr>
+<tr class="even">
+<td>IV</td>
+<td><span class="math inline">\(\widehat{\mathscr F}_{pp}+\gamma\widehat{\mathscr K}_{pp}+\mathscr F_0\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The diagram uses the paper convention on its vertical axis, <span class="math inline">\(\alpha_{\rm paper}=\alpha/2\)</span>. Its high-dimensional line at <span class="math inline">\(\alpha_{\rm paper}=1/2\)</span> is therefore the boundary <span class="math inline">\(\alpha=1\)</span> in these notes. The sublabels Ia–Ic and IVa–IVb refine the compute-optimal balance without changing the active-component grouping in the table.</p>
+<div id="thm-acceleration-clock" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 1 (Acceleration Is a Change of Clock)</strong></span> Away from the critical lines, at fixed batch size and for stable hyperparameters, the momentum paper proves the scaling equivalence</p>
+<p><span class="math display">\[
+\boxed{
+\mathscr P_{\mathrm{alg}}(t;d)
+\asymp
+\widehat{\mathscr F}(\vartheta_{\mathrm{alg}}(t);d)
+\;+\gamma\widehat{\mathscr K}_{pp}(\vartheta_{\mathrm{alg}}(t)).
+}
+\]</span></p>
+<p>The optimizer enters primarily through one scalar effective time,</p>
+<p><span class="math display">\[
+\vartheta_{\mathrm{DANA}}(t)
+=
+1+2\gamma_2Bt+
+\left(\int_0^t\sqrt{\gamma_3(s)B}\,ds\right)^2.
+\]</span></p>
+<p>Thus DANA is, at the level of scaling laws, the original PLRF loss curve composed with a faster clock.</p>
+</div>
+<p>The clocks make the comparison immediate:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\vartheta_{\mathrm{SGD}}(t)
+&amp;\asymp 1+\gamma Bt,\\
+\vartheta_{\mathrm{SGD-M}}(t)
+&amp;\asymp 1+\gamma_{\mathrm{eff}}Bt,\\
+\vartheta_{\mathrm{DANA\text{-}constant}}(t)
+&amp;\asymp 1+\gamma_2Bt+\frac{Bt^2}{d},\\
+\vartheta_{\mathrm{DANA\text{-}decaying}}(t)
+&amp;\asymp 1+Bt+Bt^{\,2-1/\alpha}.
+\end{aligned}
+\]</span></p>
+<p>Constant momentum changes only the coefficient of a linear clock, so SGD-M has the same scaling exponents as SGD. DANA-constant is linear until <span class="math inline">\(t\asymp d\)</span> and quadratic afterward. DANA-decaying replaces physical time by <span class="math inline">\(t^{2-1/\alpha}\)</span> above the high-dimensional line. All of the individual accelerated slopes follow simply by substituting these clocks into the four original curves.</p>
+<p>Figure 3 presents this loss decomposition in a representative Phase II problem. The loss begins in a population-bias regime, passes through an embedding-bias regime, and eventually reaches the capacity floor. DANA does not remove or replace these components; composing them with <span class="math inline">\(\vartheta_{\mathrm{DANA}}(t)\)</span> makes the first two regimes decay more quickly as functions of optimizer steps.</p>
+<div id="fig-dana-phase-summary" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-dana-phase-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/module-03/dana-phase-summary.png" class="img-fluid figure-img" style="width:55.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dana-phase-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: PLRF loss dynamics under SGD/SGD-M, DANA-constant, and DANA-decaying in a representative regime above the high-dimensional line. Both DANA schedules accelerate the purple population-bias and blue embedding-bias regions; the orange capacity floor is algorithm-independent. The drawing is schematic and does not render every slope metrically. Figure from <span class="citation" data-cites="ferbach2025dimension">Ferbach et al. (<a href="#ref-ferbach2025dimension" role="doc-biblioref">2025</a>)</span>.
+</figcaption>
+<div class="no-row-height column-margin column-container"></div></figure>
+</div>
+<p>For example, composing with the quadratic DANA-constant clock doubles the time-decay exponent of both <span class="math inline">\(\mathscr F_{pp}\)</span> and <span class="math inline">\(\mathscr F_{ac}\)</span> after <span class="math inline">\(t\asymp d\)</span>. Composing with the DANA-decaying clock multiplies both exponents by <span class="math inline">\(2-1/\alpha\)</span>, a factor strictly between one and two when <span class="math inline">\(\alpha&gt;1\)</span>.</p>
+<p>This also explains an apparent tension between the two figures. A loss component can have a steeper late-time slope without changing the <strong>compute-optimal</strong> scaling law. DANA-constant behaves like SGD until roughly <span class="math inline">\(t=d\)</span>. In Phase IIIb the relevant compute-optimal balance is reached at that same transition scale, before the accelerated blue branch has enough room to alter the exponent. DANA-decaying activates acceleration earlier and therefore does outscale SGD there.</p>
+<p>Balancing these time-dependent terms against the capacity floor at each point in <span class="math inline">\((\alpha,\beta)\)</span> produces the actual acceleration phase diagram. The large region above the horizontal line is where scheduled momentum can change the compute-optimal exponent, rather than merely improve a constant prefactor.</p>
+<div id="fig-dana-acceleration-phase-diagram" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-dana-acceleration-phase-diagram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/module-03/dana-acceleration-phase-diagram.png" class="img-fluid figure-img" style="width:82.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dana-acceleration-phase-diagram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Where DANA changes the compute-optimal exponent. The source figure uses <span class="math inline">\(\alpha_{\rm paper}\)</span>, so its horizontal line at <span class="math inline">\(\alpha_{\rm paper}=1/2\)</span> is <span class="math inline">\(\alpha=1\)</span> in the notes convention. Above that line, DANA-decaying outscales SGD throughout the analyzed phases. DANA-constant also outscales SGD except in the hatched Phase IIIb region. Below the line, both analyzed schedules have the same compute-optimal exponent as SGD. Figure from <span class="citation" data-cites="ferbach2025dimension">Ferbach et al. (<a href="#ref-ferbach2025dimension" role="doc-biblioref">2025</a>)</span>.
+</figcaption>
+<div class="no-row-height column-margin column-container"><div id="ref-ferbach2025dimension" class="csl-entry" role="listitem">
+Ferbach, Damien, Katie Everett, Gauthier Gidel, Elliot Paquette, and Courtney Paquette. 2025. <span>“Dimension-Adapted Momentum Outscales SGD.”</span> <em>arXiv Preprint arXiv:2505.16098</em>. <a href="https://arxiv.org/abs/2505.16098">https://arxiv.org/abs/2505.16098</a>.
+</div></div></figure>
+</div>
+<p>The hatched exception is <strong>Phase IIIb</strong>, not Phase IIIa. In Phase IIIa, both DANA-constant and DANA-decaying outscale SGD. In Phase IIIb, DANA-constant does not outscale: the compute-optimal balance between stochastic variance and embedding bias occurs around <span class="math inline">\(t\asymp d\)</span>, exactly where constant DANA is only beginning to depart from SGD. DANA-decaying accelerates before that transition and therefore still outscales SGD in Phase IIIb.</p>
+<p>The conclusions are:</p>
+<ol type="1">
+<li>SGD with constant momentum has the same scaling exponents as SGD.</li>
+<li>Above the high-dimensional line, <span class="math inline">\(\alpha&gt;1\)</span>, DANA-decaying provably outscales SGD; DANA-constant does so except in Phase IIIb.</li>
+<li>Below that line, <span class="math inline">\(\alpha\leq1\)</span>, these DANA schedules have the same compute-optimal exponent as SGD.</li>
+<li>Whether a different schedule or algorithm can accelerate below the trace-class boundary remains open.</li>
+</ol>
+<p>The last point matters empirically. Covariance exponents measured in language data and transformer representations occur on both sides of <span class="math inline">\(\alpha=1\)</span>. The solvable theory therefore identifies a real design mechanism, but it does not yet cover all of the regimes that motivated it.</p>
+<div id="qst-high-dimensional-dana" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-qst figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-qst" id="qst-high-dimensional-dana-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Question&nbsp;2: Momentum below the trace-class boundary
+</figcaption>
+<div aria-describedby="qst-high-dimensional-dana-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<p>Can one design and analyze a stochastic momentum schedule that outscales SGD when the covariance is not trace class, <span class="math inline">\(\alpha\leq1\)</span>? Is the obstacle a limitation of DANA, or of the current proof method?</p>
+</div>
+</figure>
+</div>
+</section>
+</section>
+<section id="from-dana-to-an-adaptive-optimizer" class="level2 page-columns page-full" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="from-dana-to-an-adaptive-optimizer"><span class="header-section-number">6</span> From DANA to an Adaptive Optimizer</h2>
+<p>Raw DANA is not the optimizer one would normally deploy for a transformer. Transformer layers have heterogeneous gradient scales, and even coordinates within one layer can have very different second moments. AdamW normalizes the first moment by a coordinatewise estimate of the second moment:</p>
+<p><span class="math display">\[
+\begin{aligned}
+m_{t+1}
+&amp;=\beta_{1,t}m_t+(1-\beta_{1,t})g_{t+1},\\
+v_{t+1}
+&amp;=\beta_{2,t}v_t+(1-\beta_{2,t})g_{t+1}^{\odot2},\\
+\theta_{t+1}
+&amp;=(1-\gamma_t\lambda_t)\theta_t
+-\gamma_t\frac{m_{t+1}}{\sqrt{v_{t+1}}+\varepsilon}.
+\end{aligned}
+\]</span></p>
+<p>This coordinatewise normalization is approximately invariant to rescaling a gradient coordinate. It is one reason adaptive optimizers are attractive when different parameter groups do not share a common natural scale <span class="citation" data-cites="kingma2015adam loshchilov2019adamw">(<a href="#ref-kingma2015adam" role="doc-biblioref">Kingma and Ba 2015</a>; <a href="#ref-loshchilov2019adamw" role="doc-biblioref">Loshchilov and Hutter 2019</a>)</span>.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-kingma2015adam" class="csl-entry" role="listitem">
+Kingma, Diederik P., and Jimmy Ba. 2015. <span>“Adam: A Method for Stochastic Optimization.”</span> <em>International Conference on Learning Representations</em>. <a href="https://arxiv.org/abs/1412.6980">https://arxiv.org/abs/1412.6980</a>.
+</div><div id="ref-loshchilov2019adamw" class="csl-entry" role="listitem">
+Loshchilov, Ilya, and Frank Hutter. 2019. <span>“Decoupled Weight Decay Regularization.”</span> <em>International Conference on Learning Representations</em>. <a href="https://arxiv.org/abs/1711.05101">https://arxiv.org/abs/1711.05101</a>.
+</div></div><p>The practical translation is therefore not “replace AdamW by the PLRF algorithm.” It is:</p>
+<blockquote class="blockquote">
+<p>Put DANA’s growing-memory and damping principles inside an AdamW-like normalized optimizer.</p>
+</blockquote>
+<p>This produces adaptive DANA, or <strong>ADANA</strong> <span class="citation" data-cites="ferbach2026logarithmic">(<a href="#ref-ferbach2026logarithmic" role="doc-biblioref">Ferbach et al. 2026</a>)</span>.</p>
+<div class="no-row-height column-margin column-container"></div></section>
+<section id="logarithmic-time-schedules" class="level2" data-number="7">
+<h2 data-number="7" class="anchored" data-anchor-id="logarithmic-time-schedules"><span class="header-section-number">7</span> Logarithmic-Time Schedules</h2>
+<p>The central schedule is</p>
+<p><span class="math display">\[
+1-\beta_t\asymp\frac{\delta}{t+\delta}.
+\]</span></p>
+<p>Its memory horizon is proportional to <span class="math inline">\(t+\delta\)</span>. Doubling training time also doubles the scale of history retained by the optimizer. Equivalently, comparable multiplicative eras of training receive comparable attention. This is why the authors call it a <strong>logarithmic-time schedule</strong>.</p>
+<p>The long-memory term is separately damped:</p>
+<p><span class="math display">\[
+a(t)\asymp(1+t)^{1-\kappa},
+\qquad 0&lt;\kappa&lt;1,
+\]</span></p>
+<p>in the unnormalized accumulator convention. The corresponding normalized coefficient decays as a power of time. Small <span class="math inline">\(\kappa\)</span> is more aggressive; large <span class="math inline">\(\kappa\)</span> is more conservative; and <span class="math inline">\(\kappa=1\)</span> approaches an SGD/AdamW-like scaling regime.</p>
+<p>The PLRF theory suggests how such an exponent can arise from the data spectrum, but a transformer has many layers, changing representations, adaptive normalization, finite batches, and nonquadratic loss. In the practical study, <span class="math inline">\(\kappa\)</span> is therefore treated as a scale-stable hyperparameter to be tested, not as a quantity known exactly from first principles.</p>
+</section>
+<section id="the-enoki-scaling-experiment" class="level2 page-columns page-full" data-number="8">
+<h2 data-number="8" class="anchored" data-anchor-id="the-enoki-scaling-experiment"><span class="header-section-number">8</span> The Enoki Scaling Experiment</h2>
+<p>The empirical test uses a controlled decoder-only transformer family called <strong>Enoki</strong>,<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> trained on FineWeb <span class="citation" data-cites="penedo2024fineweb">(<a href="#ref-penedo2024fineweb" role="doc-biblioref">Penedo et al. 2024</a>)</span>. The goal is not to introduce a new frontier architecture. It is to construct a reliable scaling ladder on which optimizer comparisons are interpretable.</p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;<em>Enoki</em> is a local project nickname, chosen as a mnemonic for the model’s many thin attention heads. It is not the name of a standard architecture or a widely used public model family.</p></div><div id="ref-penedo2024fineweb" class="csl-entry" role="listitem">
+Penedo, Guilherme, Hynek Kydlíček, Loubna Ben Allal, et al. 2024. <span>“The FineWeb Datasets: Decanting the Web for the Finest Text Data at Scale.”</span> <em>The Thirty-Eight Conference on Neural Information Processing Systems Datasets and Benchmarks Track</em>.
+</div></div><p>The main architectural choices are:</p>
+<ul>
+<li>RoPE positional encoding <span class="citation" data-cites="su2024roformer">(<a href="#ref-su2024roformer" role="doc-biblioref">Su et al. 2024</a>)</span> — <a href="#rope-architecture-note">where RoPE goes and what it changes</a>;</li>
+<li>QK-LayerNorm applied before RoPE — <a href="#qk-layernorm-note">what it normalizes and why</a>;</li>
+<li>pre-LN attention and MLP blocks — <a href="#pre-layernorm-note">where the normalization goes</a>;</li>
+<li>fixed attention-head dimension <span class="math inline">\(64\)</span> — <a href="#small-heads-note">why 64-dimensional heads?</a>;</li>
+<li>width and depth increased proportionally — <a href="#width-depth-note">why co-scale them?</a>;</li>
+<li>fan-in initialization for embeddings and ordinary linear maps — <a href="#fanin-mup-note">how this differs from <span class="math inline">\(\mu\)</span>P</a>;</li>
+<li>depth-dependent initialization of residual-branch output projections — <a href="#residual-init-note">why scale these weights with depth?</a>;</li>
+<li>no weight tying and no <span class="math inline">\(z\)</span>-loss — <a href="#tying-zloss-note">what these omissions mean</a>.</li>
+</ul>
+<div class="no-row-height column-margin column-container"></div><div id="rope-architecture-note" class="callout callout-style-default callout-note callout-titled" title="Where RoPE goes, and what it changes">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Where RoPE goes, and what it changes
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>RoPE is applied inside each attention head, after producing and normalizing the queries and keys but before forming attention logits:</p>
+<p><span class="math display">\[
+h_t
+\longmapsto
+(q_t,k_t,v_t)
+\longmapsto
+(\operatorname{LN}(q_t),\operatorname{LN}(k_t),v_t)
+\longmapsto
+(R_tq_t,R_tk_t,v_t).
+\]</span></p>
+<p>The attention score between positions <span class="math inline">\(t\)</span> and <span class="math inline">\(s\)</span> is therefore</p>
+<p><span class="math display">\[
+(R_tq_t)^\top(R_sk_s)
+=
+q_t^\top R_{s-t}k_s.
+\]</span></p>
+<p>Each <span class="math inline">\(R_t\)</span> is block diagonal. On coordinate pair <span class="math inline">\(\ell\)</span>, it is the planar rotation</p>
+<p><span class="math display">\[
+R_t^{(\ell)}
+=
+\begin{pmatrix}
+\cos(t\omega_\ell)&amp;-\sin(t\omega_\ell)\\
+\sin(t\omega_\ell)&amp; \cos(t\omega_\ell)
+\end{pmatrix}.
+\]</span></p>
+<p>This is how absolute positions enter the query and key embeddings while their inner product depends on relative displacement <span class="math inline">\(s-t\)</span> <span class="citation" data-cites="su2024roformer">(<a href="#ref-su2024roformer" role="doc-biblioref">Su et al. 2024</a>)</span>. Values are not rotated in the standard construction.</p>
+<p>Empirically, RoPE leaves the measured attention and representation geometry largely unchanged while improving token efficiency, providing evidence that it acts primarily as an <strong>optimization accelerator</strong> rather than changing which representations are ultimately learned <span class="citation" data-cites="liu2026spectral">(<a href="#ref-liu2026spectral" role="doc-biblioref">Liu et al. 2026</a>)</span>.</p>
+</div>
+</div>
+</div>
+<div class="no-row-height column-margin column-container"><div id="ref-liu2026spectral" class="csl-entry" role="listitem">
+Liu, Andy Zeyi, Elliot Paquette, and John Sous. 2026. <span>“Spectral Lens: Activation and Gradient Spectra as Diagnostics of LLM Optimization.”</span> <em>arXiv Preprint arXiv:2605.05683</em>. <a href="https://arxiv.org/abs/2605.05683">https://arxiv.org/abs/2605.05683</a>.
+</div></div><div class="no-row-height column-margin column-container"><div id="ref-su2024roformer" class="csl-entry" role="listitem">
+Su, Jianlin, Murtadha Ahmed, Yu Lu, Shengfeng Pan, Wen Bo, and Yunfeng Liu. 2024. <span>“RoFormer: Enhanced Transformer with Rotary Position Embedding.”</span> <em>Neurocomputing</em> 568: 127063. <a href="https://doi.org/10.1016/j.neucom.2023.127063">https://doi.org/10.1016/j.neucom.2023.127063</a>.
+</div></div><div id="qk-layernorm-note" class="callout callout-style-default callout-note callout-titled" title="QK-LayerNorm: definition and stability argument">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>QK-LayerNorm: definition and stability argument
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>For one attention head, first form the usual query, key, and value projections,</p>
+<p><span class="math display">\[
+q_t=W_Qh_t,\qquad k_t=W_Kh_t,\qquad v_t=W_Vh_t.
+\]</span></p>
+<p><strong>QK-LayerNorm</strong> applies a separate LayerNorm along the head dimension to each query and key vector:</p>
+<p><span class="math display">\[
+\widehat q_t=\operatorname{LN}_Q(q_t),
+\qquad
+\widehat k_t=\operatorname{LN}_K(k_t).
+\]</span></p>
+<p>Enoki then applies RoPE to these normalized vectors and computes</p>
+<p><span class="math display">\[
+z_{ts}
+=
+\frac{(R_t\widehat q_t)^\top(R_s\widehat k_s)}
+{\sqrt{d_{\mathrm{head}}}},
+\qquad
+A_{ts}=\operatorname{softmax}_s(z_{ts}).
+\]</span></p>
+<p>Thus the order is</p>
+<p><span class="math display">\[
+h_t
+\longmapsto
+(q_t,k_t,v_t)
+\longmapsto
+(\widehat q_t,\widehat k_t,v_t)
+\longmapsto
+(R_t\widehat q_t,R_t\widehat k_t,v_t).
+\]</span></p>
+<p>LayerNorm fixes the coordinate mean and variance of each query and key, up to its learned affine parameters. Consequently, their norms cannot grow freely during training. It does <strong>not</strong> fix their directions: attention can still learn which queries align with which keys.</p>
+<p>Why is this useful? Without QK-LayerNorm, an attention logit</p>
+<p><span class="math display">\[
+z_{ts}=\frac{\langle q_t,k_s\rangle}{\sqrt{d_{\mathrm{head}}}}
+\]</span></p>
+<p>can become large simply because both <span class="math inline">\(\lVert q_t\rVert\)</span> and <span class="math inline">\(\lVert k_s\rVert\)</span> grow. The logit depends on both factors and can therefore grow roughly quadratically with their common scale. Softmax then becomes nearly one-hot—often called <strong>attention-entropy collapse</strong>—and training can diverge. QK-LayerNorm removes this radial route to large logits, leaving the attention score controlled primarily by query–key alignment <span class="citation" data-cites="dehghani2023scaling wortsman2024small">(<a href="#ref-dehghani2023scaling" role="doc-biblioref"><span class="nocase">Dehghani et al.</span> 2023</a>; <a href="#ref-wortsman2024small" role="doc-biblioref">Wortsman et al. 2024</a>)</span>.</p>
+<p>The small-scale-proxies study reproduces the same failure in small models by raising the learning rate. Without QK-LayerNorm, the learning rate at which training diverges decreases as model size grows; with it, models tolerate much larger learning rates and exhibit substantially lower learning-rate sensitivity, although sensitivity does not disappear completely <span class="citation" data-cites="wortsman2024small">(<a href="#ref-wortsman2024small" role="doc-biblioref">Wortsman et al. 2024</a>)</span>. This is the most relevant argument for including it in a scaling experiment: it widens the stable optimization range and makes an optimizer comparison less likely to be confounded by attention-logit blow-up.</p>
+<p>QK-LayerNorm was used throughout the Enoki experiments, so there is no controlled Enoki ablation that isolates its contribution. The defensible claim is that it removes one known radial route to attention-logit growth. It remains an open question whether its benefits here should be attributed principally to controlling query–key covariance, softmax saturation, attention sinks, or several of these effects at once.</p>
+<!--
+The DanaStar experiments adopted QK-LayerNorm throughout, before RoPE. The
+paper does not report a controlled Enoki ablation without it, so we should not
+attribute a measured Enoki improvement specifically to QK-LayerNorm. Its role
+here is a stability prescription inherited from the transformer-instability
+literature. This LayerNorm variant is related to the earlier QKNorm proposal,
+which $\ell_2$-normalizes queries and keys and replaces the usual fixed scale
+with a learned one [@henry2020query].
+-->
+</div>
+</div>
+</div>
+<div class="no-row-height column-margin column-container"></div><div class="no-row-height column-margin column-container"></div><div class="no-row-height column-margin column-container"><div id="ref-dehghani2023scaling" class="csl-entry" role="listitem">
+<span class="nocase">Dehghani, Mostafa, Josip Djolonga, Basil Mustafa, et al.</span> 2023. <span>“Scaling Vision Transformers to 22 Billion Parameters.”</span> <em>Proceedings of Machine Learning Research</em> 202: 7480–512. <a href="https://proceedings.mlr.press/v202/dehghani23a.html">https://proceedings.mlr.press/v202/dehghani23a.html</a>.
+</div></div><div id="pre-layernorm-note" class="callout callout-style-default callout-note callout-titled" title="Pre-LN: put normalization before each residual branch">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Pre-LN: put normalization before each residual branch
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-11" class="callout-11-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>“Pre-LN” specifies where LayerNorm sits relative to a transformer sublayer and its residual connection. If <span class="math inline">\(\mathcal A\)</span> is attention and <span class="math inline">\(\mathcal M\)</span> is the MLP, an Enoki block has the form</p>
+<p><span class="math display">\[
+\begin{aligned}
+u_\ell
+&amp;=
+x_\ell+\mathcal A_\ell\!\left(\operatorname{LN}_{\ell,1}(x_\ell)\right),\\
+x_{\ell+1}
+&amp;=
+u_\ell+\mathcal M_\ell\!\left(\operatorname{LN}_{\ell,2}(u_\ell)\right).
+\end{aligned}
+\]</span></p>
+<p>The normalization is <strong>before</strong> the attention or MLP transformation—hence <em>pre</em>-LN. The residual stream itself retains a direct identity path. A final LayerNorm is ordinarily applied after the last transformer block.</p>
+<p>The original Transformer instead used <strong>Post-LN</strong>:</p>
+<p><span class="math display">\[
+\begin{aligned}
+u_\ell
+&amp;=
+\operatorname{LN}_{\ell,1}
+\!\left(x_\ell+\mathcal A_\ell(x_\ell)\right),\\
+x_{\ell+1}
+&amp;=
+\operatorname{LN}_{\ell,2}
+\!\left(u_\ell+\mathcal M_\ell(u_\ell)\right).
+\end{aligned}
+\]</span></p>
+<p>Here every residual route passes through a normalization operation. The two arrangements contain nearly the same components, but their optimization geometry is different.</p>
+<p><span class="citation" data-cites="xiong2020layer">Xiong et al. (<a href="#ref-xiong2020layer" role="doc-biblioref">2020</a>)</span> used a mean-field calculation to explain that difference. At initialization, Post-LN can produce large gradients in parameters near the output of a deep transformer. A large learning rate can therefore make early training unstable, and learning-rate warmup protects the model while those gradient scales settle. For Pre-LN, gradients are much better behaved at initialization because the residual stream supplies an unnormalized identity route through the depth of the network.</p>
+<p>This was a major <strong>trainability</strong> improvement: in the experiments of <span class="citation" data-cites="xiong2020layer">Xiong et al. (<a href="#ref-xiong2020layer" role="doc-biblioref">2020</a>)</span>, Pre-LN transformers could remove warmup while reaching results comparable to Post-LN baselines, with less training time and hyperparameter tuning. It should not be read as a claim that Pre-LN always achieves a better final loss. Its practical attraction for Enoki is that it makes a deep scaling ladder easier to optimize consistently, reducing the chance that an optimizer comparison is really detecting a fragile normalization placement.</p>
+<p>Pre-LN is separate from QK-LayerNorm. The former normalizes the residual-stream input to the entire attention and MLP branches; the latter additionally normalizes the query and key vectors <em>inside</em> attention before RoPE and the query–key dot product.</p>
+</div>
+</div>
+</div>
+<div class="no-row-height column-margin column-container"><div id="ref-xiong2020layer" class="csl-entry" role="listitem">
+Xiong, Ruibin, Yunchang Yang, Di He, et al. 2020. <span>“On Layer Normalization in the Transformer Architecture.”</span> <em>Proceedings of the 37th International Conference on Machine Learning</em>, Proceedings of machine learning research, vol. 119: 10524–33. <a href="https://proceedings.mlr.press/v119/xiong20b.html">https://proceedings.mlr.press/v119/xiong20b.html</a>.
+</div></div><div class="no-row-height column-margin column-container"></div><div id="small-heads-note" class="callout callout-style-default callout-note callout-titled" title="Why fix the attention-head dimension at 64?">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Why fix the attention-head dimension at 64?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-12" class="callout-12-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The local name <strong>Enoki</strong> refers to the model’s many thin attention heads. Each head has fixed dimension</p>
+<p><span class="math display">\[
+d_{\mathrm{head}}=64.
+\]</span></p>
+<p>When the residual width grows, the number of heads grows with it. A wider model therefore obtains more parallel attention subspaces rather than making each query–key comparison higher-dimensional. For this scaling experiment, that is principally a <strong>control choice</strong>: it keeps the local geometry of a head approximately fixed while width and depth change, so that an apparent optimizer effect is less likely to be caused by a simultaneous change in the attention mechanism.</p>
+<p>There is also an architectural hypothesis behind small heads, but not a settled law. The original Transformer used <span class="math inline">\(d_{\mathrm{head}}=64\)</span> and motivated multiple heads as a way to attend to different positions and representation subspaces <span class="citation" data-cites="vaswani2017attention">(<a href="#ref-vaswani2017attention" role="doc-biblioref">Vaswani et al. 2017</a>)</span>. That suggests allocating additional width to more heads rather than to wider heads. In the other direction, head-pruning experiments find that many trained heads can be removed with little loss, which warns against identifying “more heads” with “more useful independent features” <span class="citation" data-cites="michel2019sixteen">(<a href="#ref-michel2019sixteen" role="doc-biblioref">Michel et al. 2019</a>)</span>. A convincing theory and controlled empirical account of how head dimension itself should scale is still missing.</p>
+<section id="what-public-model-families-actually-do" class="level3" data-number="8.1">
+<h3 data-number="8.1" class="anchored" data-anchor-id="what-public-model-families-actually-do"><span class="header-section-number">8.1</span> What public model families actually do</h3>
+<p>The table separates <strong>query heads</strong> from <strong>key/value heads</strong>. This matters for grouped-query attention (GQA): reducing the number of KV heads saves KV-cache memory, but does not make the query heads narrower.</p>
+<div id="tbl-head-scaling" class="head-scaling-table quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-head-scaling-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Public attention configurations, grouped by model family. For dense models, active and total parameter counts coincide.
+</figcaption>
+<div aria-describedby="tbl-head-scaling-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="head-scaling-table caption-top table">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Family</th>
+<th style="text-align: right;">Parameters (active / total)</th>
+<th style="text-align: right;">Depth <span class="math inline">\(L\)</span></th>
+<th style="text-align: right;">Residual width <span class="math inline">\(W\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(L/W\)</span></th>
+<th style="text-align: right;">Query heads</th>
+<th style="text-align: right;">KV heads</th>
+<th style="text-align: right;">Head dimension</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>NanoDO default <span class="citation" data-cites="liu2024nanodo">(<a href="#ref-liu2024nanodo" role="doc-biblioref">Liu et al. 2024</a>)</span></td>
+<td style="text-align: right;">configuration-dependent</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">512</td>
+<td style="text-align: right;">0.0117</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">64</td>
+</tr>
+<tr class="even">
+<td>GPT-2 <span class="citation" data-cites="radford2019language">(<a href="#ref-radford2019language" role="doc-biblioref">Radford et al. 2019</a>)</span></td>
+<td style="text-align: right;">124M</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">768</td>
+<td style="text-align: right;">0.0156</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">64</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td style="text-align: right;">355M</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">1,024</td>
+<td style="text-align: right;">0.0234</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">64</td>
+</tr>
+<tr class="even">
+<td></td>
+<td style="text-align: right;">774M</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: right;">1,280</td>
+<td style="text-align: right;">0.0281</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">64</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td style="text-align: right;">1.5B</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">1,600</td>
+<td style="text-align: right;">0.0300</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">64</td>
+</tr>
+<tr class="even">
+<td>Llama 2 <span class="citation" data-cites="touvron2023llama2">(<a href="#ref-touvron2023llama2" role="doc-biblioref"><span class="nocase">Touvron et al.</span> 2023</a>)</span></td>
+<td style="text-align: right;">7B</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">4,096</td>
+<td style="text-align: right;">0.0078</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">128</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td style="text-align: right;">13B</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">5,120</td>
+<td style="text-align: right;">0.0078</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">128</td>
+</tr>
+<tr class="even">
+<td></td>
+<td style="text-align: right;">70B</td>
+<td style="text-align: right;">80</td>
+<td style="text-align: right;">8,192</td>
+<td style="text-align: right;">0.0098</td>
+<td style="text-align: right;">64</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">128</td>
+</tr>
+<tr class="odd">
+<td>Llama 4 Scout <span class="citation" data-cites="meta2025llama4">(<a href="#ref-meta2025llama4" role="doc-biblioref">Meta AI 2025</a>)</span></td>
+<td style="text-align: right;">17B / 109B</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">5,120</td>
+<td style="text-align: right;">0.0094</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">128</td>
+</tr>
+<tr class="even">
+<td>Llama 4 Maverick</td>
+<td style="text-align: right;">17B / 400B</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">5,120</td>
+<td style="text-align: right;">0.0094</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">128</td>
+</tr>
+<tr class="odd">
+<td>Qwen2 <span class="citation" data-cites="yang2024qwen2">(<a href="#ref-yang2024qwen2" role="doc-biblioref"><span class="nocase">Yang et al.</span> 2024</a>)</span></td>
+<td style="text-align: right;">0.5B</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">896</td>
+<td style="text-align: right;">0.0268</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">64</td>
+</tr>
+<tr class="even">
+<td></td>
+<td style="text-align: right;">1.5B</td>
+<td style="text-align: right;">28</td>
+<td style="text-align: right;">1,536</td>
+<td style="text-align: right;">0.0182</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">128</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td style="text-align: right;">7B</td>
+<td style="text-align: right;">28</td>
+<td style="text-align: right;">3,584</td>
+<td style="text-align: right;">0.0078</td>
+<td style="text-align: right;">28</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">128</td>
+</tr>
+<tr class="even">
+<td></td>
+<td style="text-align: right;">72B</td>
+<td style="text-align: right;">80</td>
+<td style="text-align: right;">8,192</td>
+<td style="text-align: right;">0.0098</td>
+<td style="text-align: right;">64</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">128</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>NanoDO is a research implementation rather than a checkpoint family, so its row reports the public default configuration; its parameter count depends on the chosen vocabulary and other settings. It provides another direct 64-dimensional-head precedent. GPT-2 is the clean released-family precedent for Enoki: residual width and head count grow together while the head dimension remains 64. Llama 2 also grows the number of query heads, but holds their dimension at 128 rather than 64; at 70B it separately adopts GQA. Llama 4 retains 128-dimensional query heads and an 8-head KV interface in both released sizes; its large difference in total parameter count comes from the number of experts, not a wider attention interface. Qwen2 makes one change in head dimension, from 64 in the 0.5B model to 128 in the larger models, and then scales mainly through width, depth, and head count. Thus the public recipes cluster around 64 and 128, but do not imply a universal scaling rule. Nor should the difference between these two nearby conventional choices be treated as a major architectural divide.</p>
+</section>
+<section id="head-dimension-is-primarily-a-systems-choice" class="level3" data-number="8.2">
+<h3 data-number="8.2" class="anchored" data-anchor-id="head-dimension-is-primarily-a-systems-choice"><span class="header-section-number">8.2</span> Head dimension is primarily a systems choice</h3>
+<p>In current practice, head dimension appears to be chosen primarily for lower-level hardware and kernel considerations, rather than from a scaling principle saying that it should grow with model size. This helps explain why public recipes repeatedly use a small set of round dimensions—especially 64 and 128—even as parameter count changes by orders of magnitude.</p>
+<p>Holding <span class="math inline">\(d_{\mathrm{model}}\)</span> fixed and writing <span class="math inline">\(d_{\mathrm{model}}=H d_{\mathrm{head}}\)</span>, redistributing width between the number of heads <span class="math inline">\(H\)</span> and their dimension does not substantially change the leading arithmetic count for dense attention. It can nevertheless change wall-clock performance. Head dimension determines matrix-tile shapes, parallel work per head, the amount of on-chip storage required by a tile, and how effectively kernel overhead is amortized. Larger heads can therefore be faster up to a kernel-, sequence-length-, datatype-, and GPU-dependent size; beyond that point, storage pressure or reduced occupancy can reverse the advantage. Modern fused-attention kernels explicitly optimize common dimensions such as 64 and 128 <span class="citation" data-cites="dao2022flashattention">(<a href="#ref-dao2022flashattention" role="doc-biblioref">Dao et al. 2022</a>)</span>.</p>
+<p>This makes head dimension look more like a <strong>systems parameter</strong> than a parameter governed by a known model-scaling law. Both 64 and 128 are ordinary, nearby engineering choices, and there is little reason to expect choosing one instead of the other to be the source of a major performance difference. For Enoki, the important decision is not 64 rather than 128. It is holding the head dimension fixed across the scaling ladder, thereby preserving a common coordinate system for the experiment.</p>
+</section>
+</div>
+</div>
+</div>
+<div class="no-row-height column-margin column-container"><div id="ref-dao2022flashattention" class="csl-entry" role="listitem">
+Dao, Tri, Daniel Y. Fu, Stefano Ermon, Atri Rudra, and Christopher Ré. 2022. <span>“<span>FlashAttention</span>: Fast and Memory-Efficient Exact Attention with <span>IO</span>-Awareness.”</span> <em>Advances in Neural Information Processing Systems</em> 35. <a href="https://arxiv.org/abs/2205.14135">https://arxiv.org/abs/2205.14135</a>.
+</div></div><div class="no-row-height column-margin column-container"></div><div class="no-row-height column-margin column-container"></div><div class="no-row-height column-margin column-container"></div><div class="no-row-height column-margin column-container"></div><div class="no-row-height column-margin column-container"></div><div class="no-row-height column-margin column-container"><div id="ref-michel2019sixteen" class="csl-entry" role="listitem">
+Michel, Paul, Omer Levy, and Graham Neubig. 2019. <span>“Are Sixteen Heads Really Better Than One?”</span> <em>Advances in Neural Information Processing Systems</em> 32. <a href="https://arxiv.org/abs/1905.10650">https://arxiv.org/abs/1905.10650</a>.
+</div></div><div class="no-row-height column-margin column-container"><div id="ref-vaswani2017attention" class="csl-entry" role="listitem">
+Vaswani, Ashish, Noam Shazeer, Niki Parmar, et al. 2017. <span>“Attention Is All You Need.”</span> <em>Advances in Neural Information Processing Systems</em> 30. <a href="https://arxiv.org/abs/1706.03762">https://arxiv.org/abs/1706.03762</a>.
+</div></div><div id="width-depth-note" class="callout callout-style-default callout-note callout-titled" title="Width and depth: a conservative scaling path">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-13-contents" aria-controls="callout-13" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Width and depth: a conservative scaling path
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-13" class="callout-13-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Let <span class="math inline">\(W=d_{\mathrm{model}}\)</span> denote residual width and <span class="math inline">\(L\)</span> the number of transformer blocks. Away from embeddings, a conventional dense transformer has parameter count approximately</p>
+<p><span class="math display">\[
+P \asymp L W^2,
+\]</span></p>
+<p>because every block contains a fixed number of matrices whose two dimensions scale with <span class="math inline">\(W\)</span>. “Scale width and depth proportionally” means choosing <span class="math inline">\(L\propto W\)</span>. Along such a family,</p>
+<p><span class="math display">\[
+P\asymp W^3\asymp L^3.
+\]</span></p>
+<p>Enoki implements this with the number of attention heads <span class="math inline">\(h\)</span> as its scale coordinate:</p>
+<p><span class="math display">\[
+d_{\mathrm{head}}=64,\qquad
+W=64h,\qquad
+L=\left\lfloor\frac{3h}{4}\right\rfloor,\qquad
+d_{\mathrm{MLP}}=4W.
+\]</span></p>
+<p>Its aspect ratio is therefore nearly constant:</p>
+<p><span class="math display">\[
+\frac{L}{W}
+\approx
+\frac{3h/4}{64h}
+=
+\frac{3}{256}
+\approx 0.0117.
+\]</span></p>
+<p>Thus width, depth, head count, and MLP width all move along one fixed ray in architecture space. This is valuable experimentally: each increase in model size is a larger instance of essentially the same shape, rather than a new choice about whether parameters should be spent on depth or width.</p>
+<p>The public configurations in <a href="#tbl-head-scaling" class="quarto-xref">Table&nbsp;1</a> provide useful scale for this number. NanoDO’s default also has <span class="math inline">\(L/W\approx0.0117\)</span>; Llama 2 and Llama 4 lie between roughly <span class="math inline">\(0.0078\)</span> and <span class="math inline">\(0.0098\)</span>; and the GPT-2 ladder ranges from <span class="math inline">\(0.0156\)</span> to <span class="math inline">\(0.0300\)</span> <span class="citation" data-cites="liu2024nanodo touvron2023llama2 meta2025llama4 radford2019language">(<a href="#ref-liu2024nanodo" role="doc-biblioref">Liu et al. 2024</a>; <a href="#ref-touvron2023llama2" role="doc-biblioref"><span class="nocase">Touvron et al.</span> 2023</a>; <a href="#ref-meta2025llama4" role="doc-biblioref">Meta AI 2025</a>; <a href="#ref-radford2019language" role="doc-biblioref">Radford et al. 2019</a>)</span>. Qwen2 spans much of the combined range, from <span class="math inline">\(0.0268\)</span> in its smallest configuration to <span class="math inline">\(0.0098\)</span> at 72B <span class="citation" data-cites="yang2024qwen2">(<a href="#ref-yang2024qwen2" role="doc-biblioref"><span class="nocase">Yang et al.</span> 2024</a>)</span>. These are not a single universal constant, but they are all small ratios of order <span class="math inline">\(10^{-2}\)</span>. Enoki is therefore using a conventional depth–width aspect ratio while keeping that ratio unusually clean across its entire experimental ladder.</p>
+<section id="the-proportional-limit" class="level3" data-number="8.3">
+<h3 data-number="8.3" class="anchored" data-anchor-id="the-proportional-limit"><span class="header-section-number">8.3</span> The proportional limit</h3>
+<p>There is also a theoretical reason to regard this as the natural direction of travel. Classical infinite-width theory sends <span class="math inline">\(W\to\infty\)</span> while holding depth <span class="math inline">\(L\)</span> fixed. In that sequential limit, important interactions between depth and finite width disappear. Joint, or <strong>proportional</strong>, limits instead send</p>
+<p><span class="math display">\[
+L,W\longrightarrow\infty
+\qquad\text{with}\qquad
+\frac{L}{W}\longrightarrow\rho\in(0,\infty).
+\]</span></p>
+<p>The depth-to-width ratio then remains visible in the limiting theory. Finite-width corrections accumulate across layers, and their leading size is controlled by an aspect ratio of the form <span class="math inline">\(L/W\)</span> rather than by width alone <span class="citation" data-cites="roberts2022principles">(<a href="#ref-roberts2022principles" role="doc-biblioref">Roberts et al. 2022, 381–82</a>)</span>. Thus scaling only width eventually describes a fixed-depth object, while proportional scaling preserves a genuinely deep and wide regime.</p>
+<!--
+Chizat's analysis of deep residual networks gives a complementary dynamical
+picture. With the residual branch scaled correctly with depth, forward and
+backward propagation behave as stochastic approximations to a continuous
+mean-ODE, and the training dynamics converge to a feature-learning limit as
+depth and hidden width grow [@chizat2025hidden]. The estimates explicitly
+track depth and width together. This does not prove that Enoki's precise
+constant of proportionality is uniquely optimal, but it does support
+co-scaling the two axes rather than treating depth as a fixed afterthought.
+-->
+<p>See also Chizat’s lectures!</p>
+</section>
+<section id="what-does-the-evidence-say" class="level3" data-number="8.4">
+<h3 data-number="8.4" class="anchored" data-anchor-id="what-does-the-evidence-say"><span class="header-section-number">8.4</span> What does the evidence say?</h3>
+<p>In practice, most model families scale depth and width together in some approximately proportional fashion. The precise ratio varies across families, as the table above shows, but co-scaling is the standard construction rather than holding either depth or width fixed.</p>
+<p>The influential counterpoint is <span class="citation" data-cites="kaplan2020scaling">Kaplan et al. (<a href="#ref-kaplan2020scaling" role="doc-biblioref">2020</a>)</span>. Across the range of shapes they tested, non-embedding parameter count predicted language-model performance surprisingly well, with comparatively weak dependence on how those parameters were divided between depth and width. This cannot hold without limits: extremely shallow, narrow, or otherwise poorly balanced models must eventually be penalized. The empirical claim is that there is a broad central regime in which model shape mattered much less than parameter count—not that every shape with the same parameter count is equivalent.</p>
+<p>Shape can also matter for downstream performance and hardware efficiency. For example, <span class="citation" data-cites="tay2021scale">Tay et al. (<a href="#ref-tay2021scale" role="doc-biblioref">2021</a>)</span> found that some standard T5 shapes were off the compute–performance Pareto frontier and that preferred scaling protocols varied across compute regimes.</p>
+<p>CompleteP also revisits model shape under a depth-aware parameterization. It finds that a substantially wider range of width–depth ratios remains compute-efficient, including much deeper models than standard or width-only <span class="math inline">\(\mu\)</span>P parameterizations favor <span class="citation" data-cites="dey2025completep">(<a href="#ref-dey2025completep" role="doc-biblioref">Dey et al. 2025</a>)</span>. This is a better depth result than simply decomposing the parameter count as <span class="math inline">\(P\propto LW^2\)</span>: the apparent optimum over shapes depends on whether the parameterization gives each depth a fair optimization comparison.</p>
+<p><strong>Open question.</strong> Why should useful transformer families exhibit even an approximate proportionality between depth and width? Better yet, is there a different joint depth–width scaling limit that organizes model shape, parameterization, feature learning, and hardware efficiency more naturally?</p>
+</section>
+</div>
+</div>
+</div>
+<div class="no-row-height column-margin column-container"></div><div class="no-row-height column-margin column-container"><div id="ref-tay2021scale" class="csl-entry" role="listitem">
+Tay, Yi, Mostafa Dehghani, Jinfeng Rao, et al. 2021. <span>“Scale Efficiently: Insights from Pre-Training and Fine-Tuning Transformers.”</span> <em>arXiv Preprint arXiv:2109.10686</em>. <a href="https://arxiv.org/abs/2109.10686">https://arxiv.org/abs/2109.10686</a>.
+</div></div><div class="no-row-height column-margin column-container"></div><div class="no-row-height column-margin column-container"><div id="ref-roberts2022principles" class="csl-entry" role="listitem">
+Roberts, Daniel A., Sho Yaida, and Boris Hanin. 2022. <em>The Principles of Deep Learning Theory</em>. Cambridge University Press. <a href="https://arxiv.org/abs/2106.10165">https://arxiv.org/abs/2106.10165</a>.
+</div></div><div class="no-row-height column-margin column-container"><div id="ref-yang2024qwen2" class="csl-entry" role="listitem">
+<span class="nocase">Yang, An, Baosong Yang, Binyuan Hui, et al.</span> 2024. <span>“Qwen2 Technical Report.”</span> <em>arXiv Preprint arXiv:2407.10671</em>. <a href="https://arxiv.org/abs/2407.10671">https://arxiv.org/abs/2407.10671</a>.
+</div></div><div class="no-row-height column-margin column-container"></div><div class="no-row-height column-margin column-container"><div id="ref-meta2025llama4" class="csl-entry" role="listitem">
+Meta AI. 2025. <em>The Llama 4 Herd: The Beginning of a New Era of Natively Multimodal AI Innovation</em>. <a href="https://ai.meta.com/blog/llama-4-multimodal-intelligence/">https://ai.meta.com/blog/llama-4-multimodal-intelligence/</a>.
+</div></div><div class="no-row-height column-margin column-container"><div id="ref-touvron2023llama2" class="csl-entry" role="listitem">
+<span class="nocase">Touvron, Hugo, Louis Martin, Kevin Stone, et al.</span> 2023. <span>“Llama 2: Open Foundation and Fine-Tuned Chat Models.”</span> <em>arXiv Preprint arXiv:2307.09288</em>. <a href="https://arxiv.org/abs/2307.09288">https://arxiv.org/abs/2307.09288</a>.
+</div></div><div class="no-row-height column-margin column-container"></div><div id="fanin-mup-note" class="callout callout-style-default callout-note callout-titled page-columns page-full" title="Fan-in initialization, μP, and CompleteP">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-15-contents" aria-controls="callout-15" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Fan-in initialization, μP, and CompleteP
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-15" class="callout-15-contents callout-collapse collapse page-columns page-full">
+<div class="callout-body-container callout-body page-columns page-full">
+<p>The original maximal-update parameterization, <span class="math inline">\(\mu\)</span>P, asks how initialization, parameter multipliers, and tensor-wise learning rates should change as <strong>width</strong> grows so that features continue to move at order one and tuned hyperparameters transfer from a small proxy to a wide model <span class="citation" data-cites="yang2022tensor">(<a href="#ref-yang2022tensor" role="doc-biblioref">Yang et al. 2022</a>)</span>. In its standard implementation, the base and target models have the same depth.</p>
+<div class="callout callout-style-default callout-important callout-titled" title="Table 3 of Tensor Programs V versus Enoki">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Table 3 of Tensor Programs V versus Enoki
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Table 3 of <span class="citation" data-cites="yang2022tensor">Yang et al. (<a href="#ref-yang2022tensor" role="doc-biblioref">2022</a>)</span> does apply to transformers. In fact, Appendix D.5 explicitly allows the Enoki-style width limit in which <span class="math inline">\(d_{\mathrm{head}}\)</span> stays fixed while the number of heads and <span class="math inline">\(d_{\mathrm{model}}\)</span> grow. The differences are in the parameterization:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>component</th>
+<th>Standard parameterization</th>
+<th>Transformer <span class="math inline">\(\mu\)</span>P</th>
+<th>Enoki</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ordinary hidden-weight initialization</td>
+<td><span class="math inline">\(1/\mathrm{fan}_{\mathrm{in}}\)</span></td>
+<td><span class="math inline">\(1/\mathrm{fan}_{\mathrm{in}}\)</span></td>
+<td>same fan-in order</td>
+</tr>
+<tr class="even">
+<td>token-embedding initialization</td>
+<td>input-weight rule, <span class="math inline">\(1/\mathrm{fan}_{\mathrm{in}}\)</span></td>
+<td>same input-weight rule</td>
+<td><span class="math inline">\(\operatorname{Var}(E)=1/W\)</span></td>
+</tr>
+<tr class="odd">
+<td>language-model head initialization</td>
+<td><span class="math inline">\(\operatorname{Var}(W_{\mathrm{lm}})\asymp 1/W\)</span></td>
+<td><span class="math inline">\(\operatorname{Var}(W_{\mathrm{lm}})\asymp 1/W^2\)</span></td>
+<td><span class="math inline">\(\operatorname{Var}(W_{\mathrm{lm}})=1/W\)</span></td>
+</tr>
+<tr class="even">
+<td>Adam learning rate</td>
+<td>one width-independent order for every tensor</td>
+<td>input tensors: order one; hidden and output tensors: order <span class="math inline">\(1/W\)</span></td>
+<td>one shared, empirically fitted <span class="math inline">\(\eta(P)\)</span> at each model scale</td>
+</tr>
+<tr class="odd">
+<td>attention logits</td>
+<td><span class="math inline">\(q^\top k/\sqrt{d_{\mathrm{head}}}\)</span></td>
+<td><span class="math inline">\(q^\top k/d_{\mathrm{head}}\)</span></td>
+<td><span class="math inline">\(q^\top k/\sqrt{d_{\mathrm{head}}}\)</span></td>
+</tr>
+<tr class="even">
+<td>depth dependence</td>
+<td>none</td>
+<td>none in Table 3</td>
+<td>residual-output variance <span class="math inline">\(1/(2\,\mathrm{fan}_{\mathrm{in}}L)\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>The attention normalization differs by a constant on this particular ladder: Enoki fixes <span class="math inline">\(d_{\mathrm{head}}=64\)</span>, so neither <span class="math inline">\(1/d_{\mathrm{head}}\)</span> nor <span class="math inline">\(1/\sqrt{d_{\mathrm{head}}}\)</span> changes with model scale. The consequential departures are the embedding and readout initialization, the use of one learning rate rather than tensor-wise <span class="math inline">\(\mu\)</span>P rates, and the explicit depth-dependent residual initialization.</p>
+<p>Seen against both columns, Enoki is closer to standard parameterization in its widthwise hidden/readout initialization and attention normalization. It is not exactly standard parameterization, however: its embedding rule is width-dependent, its residual-output initialization depends on depth, and its single learning rate is fitted to decrease along the model ladder rather than remaining width-independent.</p>
+<p>Tensor Programs V also tested transferring hyperparameters across depth, but did not derive a depth parameterization analogous to Table 3. It found that depth transfer was fragile for post-LN transformers and that the best initialization scale did not transfer reliably with depth, while pre-LN learning-rate transfer worked over the tested range. This is precisely the gap later depth-aware parameterizations try to address.</p>
+<p>There is also more empirical freedom than the clean asymptotic recipe might suggest. <span class="citation" data-cites="everett2024scaling">Everett et al. (<a href="#ref-everett2024scaling" role="doc-biblioref">2024</a>)</span> trained transformers under four parameterizations and several optimizers. They found hyperparameter transfer under all four parameterizations, not only <span class="math inline">\(\mu\)</span>P; their per-layer learning-rate prescription for standard parameterization outperformed <span class="math inline">\(\mu\)</span>P, and the best empirical exponents were often ones that stronger theoretical alignment assumptions would have excluded. Thus not using the canonical <span class="math inline">\(\mu\)</span>P recipe does not by itself make Enoki’s scaling ladder inconsistent. It means that its initialization and learning-rate scaling must be established empirically as depth and width change together, rather than inherited automatically from a width-only prescription.</p>
+</div>
+</div>
+<div class="no-row-height column-margin column-container"><div id="ref-everett2024scaling" class="csl-entry" role="listitem">
+Everett, Katie E., Lechao Xiao, Mitchell Wortsman, et al. 2024. <span>“Scaling Exponents Across Parameterizations and Optimizers.”</span> <em>Proceedings of the 41st International Conference on Machine Learning</em>, Proceedings of machine learning research, vol. 235: 12666–700. <a href="https://proceedings.mlr.press/v235/everett24a.html">https://proceedings.mlr.press/v235/everett24a.html</a>.
+</div></div><div class="no-row-height column-margin column-container"><div id="ref-yang2022tensor" class="csl-entry" role="listitem">
+Yang, Greg, Edward J. Hu, Igor Babuschkin, et al. 2022. <span>“Tensor Programs v: Tuning Large Neural Networks via Zero-Shot Hyperparameter Transfer.”</span> <em>arXiv Preprint arXiv:2203.03466</em>. <a href="https://arxiv.org/abs/2203.03466">https://arxiv.org/abs/2203.03466</a>.
+</div></div><p>Thus Enoki is neither exactly standard parameterization nor <span class="math inline">\(\mu\)</span>P. It retains fan-in initialization for ordinary hidden maps, adds a GPT-2-style depth correction to residual outputs, and determines a common learning-rate scaling empirically along its joint width–depth ladder.</p>
+<p>The more relevant extension for depth is <strong>CompleteP</strong> <span class="citation" data-cites="dey2025completep">(<a href="#ref-dey2025completep" role="doc-biblioref">Dey et al. 2025</a>)</span>. It writes a residual update schematically as</p>
+<p><span class="math display">\[
+h_{\ell+1}=h_\ell+L^{-\alpha}F_\ell(h_\ell)
+\]</span></p>
+<p>and compares depth-aware parameterizations as <span class="math inline">\(L\)</span> changes. Its central point is that hyperparameter transfer is not enough: a parameterization can transfer well while becoming <em>lazy</em>, so that deeper layers learn features close to their linearization. CompleteP takes <span class="math inline">\(\alpha=1\)</span> and couples this residual scaling to prescriptions for learning rates, weight decay, and AdamW <span class="math inline">\(\epsilon\)</span>. In the paper’s analysis and experiments, this is the choice that achieves both reliable depthwise hyperparameter transfer and non-lazy feature learning in every layer.</p>
+<p>This is useful context rather than a description of Enoki’s parameterization. Enoki’s depth-dependent residual initialization is not the full CompleteP recipe: it does not apply CompleteP’s forward multipliers and optimizer scaling rules. Classical <span class="math inline">\(\mu\)</span>P, CompleteP, and Enoki’s proportional model ladder therefore answer related but distinct questions: widthwise transfer, depthwise transfer and feature learning, and the architectural path along which the scaling experiment is run.</p>
+</div>
+</div>
+</div>
+<div class="no-row-height column-margin column-container"><div id="ref-dey2025completep" class="csl-entry" role="listitem">
+Dey, Nolan, Bin Claire Zhang, Lorenzo Noci, et al. 2025. <span>“Don’t Be Lazy: <span>CompleteP</span> Enables Compute-Efficient Deep Transformers.”</span> <em>Advances in Neural Information Processing Systems</em> 38. <a href="https://arxiv.org/abs/2505.01618">https://arxiv.org/abs/2505.01618</a>.
+</div></div><div class="no-row-height column-margin column-container"></div><div id="residual-init-note" class="callout callout-style-default callout-note callout-titled" title="Why scale residual-output initialization with depth?">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-16-contents" aria-controls="callout-16" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Why scale residual-output initialization with depth?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-16" class="callout-16-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Each transformer layer adds two new contributions to the residual stream:</p>
+<p><span class="math display">\[
+x_{\ell+\frac12}
+=x_\ell+A_\ell(\operatorname{LN}(x_\ell)),
+\qquad
+x_{\ell+1}
+=x_{\ell+\frac12}+M_\ell(\operatorname{LN}(x_{\ell+\frac12})).
+\]</span></p>
+<p>If the <span class="math inline">\(2L\)</span> contributions have comparable, weakly correlated variance, their sum grows like <span class="math inline">\(2L\)</span>. Scaling the standard deviation of the weights that produce each contribution by <span class="math inline">\(1/\sqrt{2L}\)</span> keeps the accumulated residual variance of order one. Only the projections that <em>write back</em> to the residual stream—the attention output and MLP output projections—receive this factor. It is an initialization rule, not a multiplier in the forward equations.</p>
+<p>Enoki combines that argument with fan-in initialization:</p>
+<p><span class="math display">\[
+\operatorname{Std}(W_{\mathrm{out}})
+=\frac{1}{\sqrt{2L\,\mathrm{fan}_{\mathrm{in}}}},
+\qquad
+\operatorname{Std}(W_{\mathrm{ordinary}})
+=\frac{1}{\sqrt{\mathrm{fan}_{\mathrm{in}}}}.
+\]</span></p>
+<p>This is the fan-in version of the modified initialization described in GPT-2, which scales residual-layer weights by <span class="math inline">\(1/\sqrt{N}\)</span> when there are <span class="math inline">\(N\)</span> residual layers <span class="citation" data-cites="radford2019language">(<a href="#ref-radford2019language" role="doc-biblioref">Radford et al. 2019</a>)</span>. The widely used <a href="https://github.com/karpathy/nanoGPT/blob/master/model.py">nanoGPT implementation</a> makes the convention explicit by reinitializing its two <code>c_proj</code> weights per block with standard deviation <span class="math inline">\(0.02/\sqrt{2L}\)</span>.</p>
+<p>The convention is not universal. The public NanoDO default applies the same Xavier-uniform kernel initializer to its attention and MLP projections, with no special depth factor <span class="citation" data-cites="liu2024nanodo">(<a href="#ref-liu2024nanodo" role="doc-biblioref">Liu et al. 2024</a>)</span>. For Llama, Meta’s public <a href="https://github.com/meta-llama/llama3/blob/main/llama/model.py">reference repository</a> contains inference modules whose initialization callbacks are no-ops because pretrained weights are loaded. Neither that code nor the Llama papers establishes that the GPT-2 residual-initialization rule was used during pretraining, so we should not attribute this choice to Llama.</p>
+</div>
+</div>
+</div>
+<div class="no-row-height column-margin column-container"><div id="ref-liu2024nanodo" class="csl-entry" role="listitem">
+Liu, Peter J., Roman Novak, Jaehoon Lee, et al. 2024. <em><span>NanoDO</span>: A Minimal Transformer Decoder-Only Language Model Implementation in <span>JAX</span></em>. V. 0.1.0. Released. <a href="https://github.com/google-deepmind/nanodo">https://github.com/google-deepmind/nanodo</a>.
+</div></div><div class="no-row-height column-margin column-container"><div id="ref-radford2019language" class="csl-entry" role="listitem">
+Radford, Alec, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, and Ilya Sutskever. 2019. <em>Language Models Are Unsupervised Multitask Learners</em>. OpenAI. <a href="https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf">https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf</a>.
+</div></div><div id="tying-zloss-note" class="callout callout-style-default callout-note callout-titled" title="No weight tying and no z-loss">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-17-contents" aria-controls="callout-17" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>No weight tying and no z-loss
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-17" class="callout-17-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>Weight tying</strong> identifies the token-embedding matrix with the output classifier:</p>
+<p><span class="math display">\[
+E_{\mathrm{in}}=E_{\mathrm{out}}.
+\]</span></p>
+<p>It saves roughly <span class="math inline">\(VW\)</span> parameters and can act as a useful structural regularizer <span class="citation" data-cites="press2017using">(<a href="#ref-press2017using" role="doc-biblioref">Press and Wolf 2017</a>)</span>. Enoki leaves the two matrices independent. Consequently, its total parameter count includes both embedding tables, <span class="math inline">\(2VW\)</span>, and input and output token representations are free to learn different geometries.</p>
+<p>The ordinary cross-entropy depends on output logits <span class="math inline">\(y_i\)</span> only through</p>
+<p><span class="math display">\[
+p_i=\frac{e^{y_i}}{Z},
+\qquad
+Z=\sum_j e^{y_j}.
+\]</span></p>
+<p>It is invariant to shifting every logit by the same constant. The logits can therefore drift together without changing the predicted probabilities. <strong><span class="math inline">\(z\)</span>-loss</strong> removes this unconstrained direction by adding</p>
+<p><span class="math display">\[
+\lambda_z(\log Z)^2
+\]</span></p>
+<p>to the training objective. It was introduced as a guard against output-logit divergence in large language models <span class="citation" data-cites="chowdhery2023palm">(<a href="#ref-chowdhery2023palm" role="doc-biblioref"><span class="nocase">Chowdhery et al.</span> 2023</a>)</span>.</p>
+<p><span class="citation" data-cites="wortsman2024small">Wortsman et al. (<a href="#ref-wortsman2024small" role="doc-biblioref">2024</a>)</span> reproduced this failure in small transformers by using large learning rates. In their experiments, the logits drifted very negative toward the end of training; <span class="math inline">\(z\)</span>-loss repaired the instability across scales, while weight decay also mitigated it for the larger models they tested. This is a useful warning about interpreting Enoki’s choice: Enoki did not use <span class="math inline">\(z\)</span>-loss and did not encounter a failure that required it in the measured regime, but that is not evidence that the term is unnecessary at smaller models with more aggressive learning rates, or at scales beyond the Enoki ladder. The onset depends jointly on scale, learning rate, weight decay, and training duration.</p>
+</div>
+</div>
+</div>
+<div class="no-row-height column-margin column-container"><div id="ref-wortsman2024small" class="csl-entry" role="listitem">
+Wortsman, Mitchell, Peter J. Liu, Lechao Xiao, et al. 2024. <span>“Small-Scale Proxies for Large-Scale Transformer Training Instabilities.”</span> <em>International Conference on Learning Representations</em>. <a href="https://arxiv.org/abs/2309.14322">https://arxiv.org/abs/2309.14322</a>.
+</div></div><div class="no-row-height column-margin column-container"><div id="ref-chowdhery2023palm" class="csl-entry" role="listitem">
+<span class="nocase">Chowdhery, Aakanksha, Sharan Narang, Jacob Devlin, et al.</span> 2023. <span>“<span>PaLM</span>: Scaling Language Modeling with Pathways.”</span> <em>Journal of Machine Learning Research</em> 24 (240): 1–113. <a href="https://jmlr.org/papers/v24/22-1144.html">https://jmlr.org/papers/v24/22-1144.html</a>.
+</div></div><div class="no-row-height column-margin column-container"><div id="ref-press2017using" class="csl-entry" role="listitem">
+Press, Ofir, and Lior Wolf. 2017. <span>“Using the Output Embedding to Improve Language Models.”</span> <em>Proceedings of the 15th Conference of the European Chapter of the Association for Computational Linguistics</em>, 157–63. <a href="https://aclanthology.org/E17-2025/">https://aclanthology.org/E17-2025/</a>.
+</div></div><p>Training uses sequence length <span class="math inline">\(2048\)</span>, global batch <span class="math inline">\(32\)</span> sequences, and therefore <span class="math inline">\(65{,}536\)</span> tokens per iteration. The models follow a Chinchilla-style allocation <span class="math inline">\(N=20D\)</span>, where <span class="math inline">\(D\)</span> includes embedding parameters. Peak learning rates are scaled separately for every optimizer.</p>
+<div class="callout callout-style-default callout-important callout-titled" title="A scaling experiment is an infrastructure experiment">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>A scaling experiment is an infrastructure experiment
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>An optimizer cannot be evaluated at scale until the architecture, initialization, learning-rate rule, normalization, compute accounting, and baseline have themselves been made to scale. A failure in any one of these can look like an optimizer-dependent exponent.</p>
+</div>
+</div>
+</section>
+<section id="measuring-compute-efficiency" class="level2 page-columns page-full" data-number="9">
+<h2 data-number="9" class="anchored" data-anchor-id="measuring-compute-efficiency"><span class="header-section-number">9</span> Measuring Compute Efficiency</h2>
+<p>For an optimizer <span class="math inline">\(B\)</span> trained with compute <span class="math inline">\(C_B\)</span>, let <span class="math inline">\(C_A\)</span> be the compute that a baseline <span class="math inline">\(A\)</span> needs to reach the same loss. The <strong>compute multiplier</strong> is</p>
+<p><span class="math display">\[
+\frac{C_A}{C_B},
+\]</span></p>
+<p>and the relative compute saving is</p>
+<p><span class="math display">\[
+\frac{C_A-C_B}{C_B}.
+\]</span></p>
+<p>In practice, <span class="math inline">\(C_A\)</span> is obtained by interpolating the baseline’s measured loss-compute curve. This metric is useful even when neither curve has a trustworthy asymptotic power-law fit.</p>
+<div id="fig-enoki-compute" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-enoki-compute-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/module-03/enoki-loss-compute-efficiency.png" class="img-fluid figure-img" style="width:98.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-enoki-compute-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Final validation loss and compute efficiency on the Enoki scaling ladder. ADANA and several modern optimizer variants improve over the tuned AdamW baseline over much of the measured range, but the relative gains do not by themselves establish a different asymptotic exponent. Figure from <span class="citation" data-cites="ferbach2026logarithmic">Ferbach et al. (<a href="#ref-ferbach2026logarithmic" role="doc-biblioref">2026</a>)</span>.
+</figcaption>
+<div class="no-row-height column-margin column-container"></div></figure>
+</div>
+<p>With the reported tuning, ADANA reaches compute improvements of order <span class="math inline">\(30\%\)</span>–<span class="math inline">\(40\%\)</span> against the corresponding AdamW baselines at the largest displayed scales. The exact percentage depends on whether AdamW itself receives the improved weight-decay schedule. The growth of the advantage over part of the ladder is empirical evidence of finite-range outscaling. What it does not yet prove is that one exponent continues unchanged beyond the observed break.</p>
+</section>
+<section id="lessons-from-transporting-an-algorithm" class="level2 page-columns page-full" data-number="10">
+<h2 data-number="10" class="anchored" data-anchor-id="lessons-from-transporting-an-algorithm"><span class="header-section-number">10</span> Lessons From Transporting an Algorithm</h2>
+<section id="every-control-is-part-of-the-experiment" class="level3" data-number="10.1">
+<h3 data-number="10.1" class="anchored" data-anchor-id="every-control-is-part-of-the-experiment"><span class="header-section-number">10.1</span> Every control is part of the experiment</h3>
+<p>Architecture, initialization, normalization, learning-rate scaling, moment schedules, weight decay, batch size, and the compute horizon are not background details. Every item in this list can change the scale of the activations and gradients, the effective gradient noise, or the number of useful optimization steps. They also interact, so a scaling result is a statement about the full training prescription rather than the optimizer in isolation. Controlled ablations are what separate the contribution of one component from the others.</p>
+</section>
+<section id="loss-fits-and-compute-conventions-are-not-standardized" class="level3 page-columns page-full" data-number="10.2">
+<h3 data-number="10.2" class="anchored" data-anchor-id="loss-fits-and-compute-conventions-are-not-standardized"><span class="header-section-number">10.2</span> Loss fits and compute conventions are not standardized</h3>
+<p>Even the functional form of a scaling law is a modeling choice. Early language model scaling work emphasized pure power laws such as <span class="math inline">\(L(C)=eC^{-f}\)</span> <span class="citation" data-cites="kaplan2020scaling">(<a href="#ref-kaplan2020scaling" role="doc-biblioref">Kaplan et al. 2020</a>)</span>. The Chinchilla analysis instead fitted a joint law with an irreducible loss floor, <span class="math inline">\(L(N,D)=E+A N^{-\alpha}+B D^{-\beta}\)</span> <span class="citation" data-cites="hoffmann2022chinchilla">(<a href="#ref-hoffmann2022chinchilla" role="doc-biblioref">Hoffmann et al. 2022</a>)</span>. Smoothly broken power laws were developed to describe crossovers between scaling regimes <span class="citation" data-cites="caballero2023broken">(<a href="#ref-caballero2023broken" role="doc-biblioref">Caballero et al. 2023</a>)</span>, while the Enoki comparison uses the particularly simple two-power surrogate <span class="math inline">\(L(C)=a+bC^{-c}+eC^{-f}\)</span> <span class="citation" data-cites="ferbach2026logarithmic">(<a href="#ref-ferbach2026logarithmic" role="doc-biblioref">Ferbach et al. 2026</a>)</span>. Thus three commonly encountered compute-loss fits are</p>
+<div class="no-row-height column-margin column-container"><div id="ref-caballero2023broken" class="csl-entry" role="listitem">
+Caballero, Ethan, Kshitij Gupta, Irina Rish, and David Krueger. 2023. <span>“Broken Neural Scaling Laws.”</span> <em>International Conference on Learning Representations</em>. <a href="https://arxiv.org/abs/2210.14891">https://arxiv.org/abs/2210.14891</a>.
+</div></div><p><span class="math display">\[
+L(C)=eC^{-f},
+\qquad
+L(C)=a+eC^{-f},
+\qquad\text{or}\qquad
+L(C)=a+bC^{-c}+eC^{-f}.
+\]</span></p>
+<p>The horizontal coordinate is a choice as well. For a transformer with <span class="math inline">\(n_{\rm layer}\)</span> layers, width <span class="math inline">\(n_{\rm embd}\)</span>, vocabulary size <span class="math inline">\(n_{\rm vocab}\)</span>, and sequence length <span class="math inline">\(n_{\rm seq}\)</span>, commonly used FLOP-per-token approximations are</p>
+<p><span class="math display">\[
+\begin{aligned}
+6P &amp;=
+72n_{\rm layer}n_{\rm embd}^2,
+&amp;&amp;\text{non-embedding count (Kaplan)},\\
+6N &amp;=
+72n_{\rm layer}n_{\rm embd}^2+6n_{\rm vocab}n_{\rm embd},
+&amp;&amp;\text{including embeddings (Chinchilla)},\\
+M &amp;=
+72n_{\rm layer}n_{\rm embd}^2
+{}+12n_{\rm layer}n_{\rm embd}n_{\rm seq},
+&amp;&amp;\text{including attention cost (DeepSeek)}.
+\end{aligned}
+\]</span></p>
+<p>These conventions follow <span class="citation" data-cites="kaplan2020scaling">Kaplan et al. (<a href="#ref-kaplan2020scaling" role="doc-biblioref">2020</a>)</span>, <span class="citation" data-cites="hoffmann2022chinchilla">Hoffmann et al. (<a href="#ref-hoffmann2022chinchilla" role="doc-biblioref">2022</a>)</span>, and <span class="citation" data-cites="deepseek2024llm">DeepSeek-AI (<a href="#ref-deepseek2024llm" role="doc-biblioref">2024</a>)</span>, respectively. Each count is multiplied by the number of training tokens to obtain total compute.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-kaplan2020scaling" class="csl-entry" role="listitem">
+Kaplan, Jared, Sam McCandlish, Tom Henighan, et al. 2020. <span>“Scaling Laws for Neural Language Models.”</span> <em>arXiv Preprint arXiv:2001.08361</em>. <a href="https://arxiv.org/abs/2001.08361">https://arxiv.org/abs/2001.08361</a>.
+</div><div id="ref-hoffmann2022chinchilla" class="csl-entry" role="listitem">
+Hoffmann, Jordan, Sebastian Borgeaud, Arthur Mensch, et al. 2022. <span>“An Empirical Analysis of Compute-Optimal Large Language Model Training.”</span> <em>Advances in Neural Information Processing Systems</em> 35. <a href="https://arxiv.org/abs/2203.15556">https://arxiv.org/abs/2203.15556</a>.
+</div><div id="ref-deepseek2024llm" class="csl-entry" role="listitem">
+DeepSeek-AI. 2024. <span>“<span>DeepSeek LLM</span>: Scaling Open-Source Language Models with Longtermism.”</span> <em>arXiv Preprint arXiv:2401.02954</em>. <a href="https://arxiv.org/abs/2401.02954">https://arxiv.org/abs/2401.02954</a>.
+</div></div><p>Residuals reveal why both choices matter. Random scatter around zero is consistent with an adequate fit; a coherent arc means that the fitted curve has left systematic scale dependence unexplained. A high <span class="math inline">\(R^2\)</span> alone does not rule out this misspecification.</p>
+<div id="fig-compute-formula-residuals" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-compute-formula-residuals-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/module-03/compute-formula-adamw-residuals.png" class="img-fluid figure-img" style="width:98.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-compute-formula-residuals-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: AdamW fit residuals across three compute conventions (columns) and three loss laws (rows) on the Enoki scaling ladder. The coherent arches in many panels remain visible despite <span class="math inline">\(R^2\)</span> values close to one. With the Chinchilla compute convention, the broken power law removes nearly all of the structured residual. Figure from <span class="citation" data-cites="ferbach2026logarithmic">Ferbach et al. (<a href="#ref-ferbach2026logarithmic" role="doc-biblioref">2026</a>)</span>.
+</figcaption>
+<div class="no-row-height column-margin column-container"></div></figure>
+</div>
+<p>Changing the loss law or the compute coordinate can therefore change the fitted exponent. An outscaling claim is not meaningful unless it states both conventions and checks the residuals.</p>
+</section>
+<section id="small-and-large-models-can-occupy-different-regimes" class="level3" data-number="10.3">
+<h3 data-number="10.3" class="anchored" data-anchor-id="small-and-large-models-can-occupy-different-regimes"><span class="header-section-number">10.3</span> Small and large models can occupy different regimes</h3>
+<p>On the measured ladder, sub-billion-parameter and larger models do not lie cleanly on one power law. A broken law,</p>
+<p><span class="math display">\[
+L(C)=a+bC^{-c}+eC^{-f},
+\]</span></p>
+<p>fits much better. Moreover, the large-compute exponents fitted for AdamW, ADANA, Muon, and Ademamix are very similar. The visible improvement is real, and its initial growth with scale is evidence that the PLRF design mechanism survives in transformers. The unresolved fact is that this growth stops after the common break.</p>
+<p>This is exactly the warning from Module 2: finite-scale loss is a competition among terms. A method can appear to outscale over one range and saturate when another term takes over.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Open question: what changes near one billion parameters?">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Open question: what changes near one billion parameters?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The bend near the billion-parameter scale appears across AdamW, ADANA, Muon, and Ademamix. That common location makes a purely optimizer-specific explanation unlikely. It could mark a genuine shared crossover in the learned spectrum, the point at which embedding and attention costs become a different fraction of total compute, or a feature of the experimental protocol: this is also roughly where the ladder moves from directly swept learning rates to learning rates extrapolated from smaller models.</p>
+<p>A decisive test would densely re-sweep learning rate and weight decay on both sides of the bend, recompute the horizontal axis using measured FLOPs, and compare activation and gradient spectra across the same models. Does the bend remain at the same parameter count after those controls?</p>
+</div>
+</div>
+</section>
+<section id="baselining-is-essential" class="level3 page-columns page-full" data-number="10.4">
+<h3 data-number="10.4" class="anchored" data-anchor-id="baselining-is-essential"><span class="header-section-number">10.4</span> Baselining is essential</h3>
+<p>A weak AdamW baseline makes every new optimizer look good. The baseline must use the same architecture, data, compute convention, and tuning effort. Learning rate and weight decay must be tuned across scales, not copied from one convenient model.</p>
+<p>For Enoki, the learning-rate search proceeds in three stages:</p>
+<ol type="1">
+<li>search a coarse powers-of-two grid;</li>
+<li>refine around the best value by multiplicative factors such as <span class="math inline">\(1.25\)</span>;</li>
+<li>retain several strong values at every scale and fit a saturated law</li>
+</ol>
+<p><span class="math display">\[
+\gamma_\star(P)=a(b+P)^{-d},
+\]</span></p>
+<p>where <span class="math inline">\(P\)</span> is the non-embedding parameter count.</p>
+<p>The saturation offset <span class="math inline">\(b\)</span> matters because small models often do not yet lie in the same scaling regime as large ones.</p>
+<p>The effect of a learning-rate error can be measured from the sweep itself. Near the optimum, fit</p>
+<p><span class="math display">\[
+L(\log\gamma)
+\approx
+L_\star+\zeta\bigl(\log\gamma-\log\gamma_\star\bigr)^2.
+\]</span></p>
+<p>Across the AdamW ladder, the measured mean curvature is <span class="math inline">\(\bar\zeta=1.93\times 10^{-2}\)</span> with standard deviation <span class="math inline">\(3.5\times 10^{-3}\)</span>. A multiplicative learning-rate error <span class="math inline">\(q\)</span> therefore costs approximately</p>
+<p><span class="math display">\[
+\Delta L\approx \bar\zeta(\log q)^2.
+\]</span></p>
+<p>For <span class="math inline">\(q=1.5\)</span> this is about <span class="math inline">\(0.00317\)</span> nats; for a factor-of-two miss it is about <span class="math inline">\(0.00927\)</span> nats. At the 2.4B-parameter Enoki point, where the validation loss is about <span class="math inline">\(2.51\)</span>, these are only about <span class="math inline">\(0.13\%\)</span> and <span class="math inline">\(0.37\%\)</span> of the total loss, respectively.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="What does that loss penalty mean in compute?">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>What does that loss penalty mean in compute?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Use the local AdamW loss–compute law</p>
+<p><span class="math display">\[
+L(C)=a+bC^{-s}.
+\]</span></p>
+<p>Its log-compute slope is</p>
+<p><span class="math display">\[
+\left|\frac{dL}{d\log C}\right|=s(L-a).
+\]</span></p>
+<p>At the 2.4B Enoki scale, the fitted values <span class="math inline">\(L\approx2.51\)</span>, <span class="math inline">\(a\approx0.20\)</span>, and <span class="math inline">\(s\approx0.043\)</span> give <span class="math inline">\(s(L-a)\approx0.099\)</span> nats. Thus a loss penalty <span class="math inline">\(\Delta L\)</span> corresponds locally to</p>
+<p><span class="math display">\[
+\Delta\log C
+\approx
+\frac{\Delta L}{s(L-a)}.
+\]</span></p>
+<p>Equivalently, inverting the fitted power law gives the compute multiplier</p>
+<p><span class="math display">\[
+\frac{C_{\rm miss}}{C_{\rm tuned}}
+=
+\left(
+\frac{L-a}{L-a-\Delta L}
+\right)^{1/s}.
+\]</span></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>learning-rate factor <span class="math inline">\(q\)</span></th>
+<th>loss penalty <span class="math inline">\(\Delta L\)</span></th>
+<th>relative loss penalty</th>
+<th>implied compute penalty</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(1.5\)</span></td>
+<td><span class="math inline">\(0.00317\)</span> nats</td>
+<td><span class="math inline">\(0.13\%\)</span></td>
+<td><span class="math inline">\(3.2\%\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(2\)</span></td>
+<td><span class="math inline">\(0.00927\)</span> nats</td>
+<td><span class="math inline">\(0.37\%\)</span></td>
+<td><span class="math inline">\(9.8\%\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>So a <span class="math inline">\(50\%\)</span> learning-rate miss can make a perfectly tuned comparator appear about <span class="math inline">\(3\%\)</span> more compute-efficient against that baseline. This is detectable, but it is small beside the reported <span class="math inline">\(30\%\)</span>–<span class="math inline">\(40\%\)</span> gains. A factor-of-two miss is more serious, at roughly <span class="math inline">\(10\%\)</span>.</p>
+</div>
+</div>
+<div id="fig-adamw-lr-curvature" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-adamw-lr-curvature-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/module-03/adamw-lr-curvature.png" class="img-fluid figure-img" style="width:96.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-adamw-lr-curvature-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: Local AdamW learning-rate curvature measured from the Enoki sweeps. The curvature is fairly stable across scale, so it directly converts a multiplicative learning-rate miss into a validation-loss penalty. Figure from <span class="citation" data-cites="ferbach2026logarithmic">Ferbach et al. (<a href="#ref-ferbach2026logarithmic" role="doc-biblioref">2026</a>)</span>.
+</figcaption>
+<div class="no-row-height column-margin column-container"></div></figure>
+</div>
+</section>
+<section id="weight-decay-needs-the-right-clock" class="level3 page-columns page-full" data-number="10.5">
+<h3 data-number="10.5" class="anchored" data-anchor-id="weight-decay-needs-the-right-clock"><span class="header-section-number">10.5</span> Weight decay needs the right clock</h3>
+<p>Constant decoupled weight decay applies one time scale throughout training. The comparison fixes a dimensionless coefficient <span class="math inline">\(\omega\)</span> and contrasts</p>
+<p><span class="math display">\[
+\lambda_{\rm const}(t)=\frac{\omega}{T},
+\qquad
+\lambda_{\log}(t)=\frac{\omega}{T/10+t}.
+\]</span></p>
+<p>Here <span class="math inline">\(T\)</span> is the planned training horizon. The constant rule has the correct overall scale but distributes the same shrinkage rate across training; the logarithmic rule is stronger early and satisfies <span class="math inline">\(\lambda_{\log}(t)\asymp t^{-1}\)</span> late. Weight decay and momentum therefore evolve on compatible logarithmic clocks.</p>
+<p>The particular offset <span class="math inline">\(T/10\)</span> is a finite-scale regularization of that clock, not the principle itself. Write the more general family as</p>
+<p><span class="math display">\[
+\lambda_{\Omega}(t)
+=\frac{\omega}{T/\Omega+t},
+\qquad
+\Omega\in\{10,100,1000,\infty\},
+\]</span></p>
+<p>where <span class="math inline">\(\Omega=\infty\)</span> denotes the pure <span class="math inline">\(\omega/t\)</span> clock. At the smallest scales, removing the offset carries a visible penalty, especially for ADANA. That penalty closes as scale grows, while the fitted large-scale trend begins to favor the pure clock. Thus <span class="math inline">\(T/10\)</span> is useful protection against a short-run transient, but it is not evidently needed in the large-scale regime.</p>
+<div id="fig-weight-decay-clock-ablation" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-weight-decay-clock-ablation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/module-03/weight-decay-clock-ablation.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-weight-decay-clock-ablation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9: Weight-decay clock ablation on the Enoki ladder. Finite offsets <span class="math inline">\(T/\Omega\)</span> with <span class="math inline">\(\Omega=10,100,1000\)</span> behave similarly. The pure <span class="math inline">\(\omega/t\)</span> rule (<span class="math inline">\(\Omega=\infty\)</span>) is worse at very small scale, but the gap disappears with scale and the fitted trend eventually turns upward. The experiment therefore supports the logarithmic clock without making the specific <span class="math inline">\(T/10\)</span> offset fundamental. Figure from <span class="citation" data-cites="ferbach2026logarithmic">Ferbach et al. (<a href="#ref-ferbach2026logarithmic" role="doc-biblioref">2026</a>)</span>.
+</figcaption>
+<div class="no-row-height column-margin column-container"></div></figure>
+</div>
+<div id="fig-log-weight-decay" class="quarto-layout-panel page-columns page-full">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-log-weight-decay-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../assets/module-03/weight-decay-sweep.png" class="img-fluid figure-img"></p>
+<figcaption>The best constant <span class="math inline">\(\omega\)</span> remains roughly stable across model sizes.</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../assets/module-03/weight-decay-compute-gain.png" class="img-fluid figure-img"></p>
+<figcaption>Logarithmic-time weight decay improves both AdamW and Ademamix.</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../assets/module-03/weight-decay-dana-comparison.png" class="img-fluid figure-img"></p>
+<figcaption>ADANA and DANA-MK4 favor the same more conservative damping exponent.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-log-weight-decay-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10: Weight-decay and damping comparisons on the Enoki ladder. The left panel shows that the scale-normalized weight-decay coefficient can be transferred across model sizes. The center panel isolates a compute gain from logarithmic-time weight decay in two optimizer families, so this gain is not unique to ADANA. The right panel compares the two DANA variants at <span class="math inline">\(\kappa=0.75\)</span> and <span class="math inline">\(0.85\)</span>. Figure from <span class="citation" data-cites="ferbach2026logarithmic">Ferbach et al. (<a href="#ref-ferbach2026logarithmic" role="doc-biblioref">2026</a>)</span>.
+</figcaption>
+<div class="no-row-height column-margin column-container"></div></figure>
+</div>
+<p>One possible interpretation returns to power-law features. If progressively rarer directions require multiplicatively longer training times, the regularizer that selects among those directions may also need to distribute its influence over logarithmic time. This is a hypothesis, not yet a theorem.</p>
+</section>
+<section id="scaling-is-different-from-tuning" class="level3 page-columns page-full" data-number="10.6">
+<h3 data-number="10.6" class="anchored" data-anchor-id="scaling-is-different-from-tuning"><span class="header-section-number">10.6</span> Scaling is different from tuning</h3>
+<p>The best configuration at small scale need not be the configuration whose advantage grows with scale. Conversely, an improvement that is visible at moderate scale can wash out after sufficiently long training. Hyperparameters that do not transfer unchanged need their own scaling rules.</p>
+<p>The damping exponent illustrates the point. More aggressive values can look strong early and degrade later; more conservative values can improve as scale increases.</p>
+<div id="fig-kappa-ablation" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-kappa-ablation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/module-03/kappa-ablation.png" class="img-fluid figure-img" style="width:88.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-kappa-ablation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11: Compute efficiency as the damping exponent <span class="math inline">\(\kappa\)</span> changes. The intermediate value near <span class="math inline">\(0.85\)</span> performs best over the measured Enoki ladder; <span class="math inline">\(\kappa=1\)</span> returns toward baseline-like behavior. Figure from <span class="citation" data-cites="ferbach2026logarithmic">Ferbach et al. (<a href="#ref-ferbach2026logarithmic" role="doc-biblioref">2026</a>)</span>.
+</figcaption>
+<div class="no-row-height column-margin column-container"><div id="ref-ferbach2026logarithmic" class="csl-entry" role="listitem">
+Ferbach, Damien, Courtney Paquette, Gauthier Gidel, Katie Everett, and Elliot Paquette. 2026. <span>“Logarithmic-Time Schedules for Scaling Language Models with Momentum.”</span> <em>arXiv Preprint arXiv:2602.05298</em>. <a href="https://arxiv.org/abs/2602.05298">https://arxiv.org/abs/2602.05298</a>.
+</div></div></figure>
+</div>
+</section>
+</section>
+<section id="the-batch-size-question" class="level2" data-number="11">
+<h2 data-number="11" class="anchored" data-anchor-id="the-batch-size-question"><span class="header-section-number">11</span> The Batch-Size Question</h2>
+<p>The theory and main transformer experiments emphasize small batches. At large batch, stochastic noise shrinks, so the need for damping should weaken and the method should approach classical full-gradient Nesterov acceleration. A complete optimizer should interpolate between these limits:</p>
+<p><span class="math display">\[
+\begin{array}{ccc}
+\text{small batch}
+&amp;\longrightarrow&amp;
+\text{large batch}\\
+\text{strong stochastic damping}
+&amp;&amp;
+\text{classical Nesterov}.
+\end{array}
+\]</span></p>
+<p>The current experiments show that ADANA can remain useful at larger batches after batch-dependent retuning, but there is not yet a complete theory or universal transfer rule.</p>
+<div id="qst-batch-interpolation" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-qst figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-qst" id="qst-batch-interpolation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Question&nbsp;3: The batch-size interpolation
+</figcaption>
+<div aria-describedby="qst-batch-interpolation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<p>How should the DANA damping coefficient depend jointly on covariance exponent, model dimension, batch size, and training horizon so that the algorithm interpolates optimally between small-batch stochastic training and full-batch Nesterov acceleration?</p>
+</div>
+</figure>
+</div>
+</section>
+<section id="what-the-experiment-does-and-does-not-show" class="level2" data-number="12">
+<h2 data-number="12" class="anchored" data-anchor-id="what-the-experiment-does-and-does-not-show"><span class="header-section-number">12</span> What the Experiment Does and Does Not Show</h2>
+<p>The PLRF result and transformer result answer different questions.</p>
+<p>In the solvable model:</p>
+<ul>
+<li>constant momentum does not change the exponent;</li>
+<li>scheduled, dimension-adapted momentum can change it;</li>
+<li>the mechanism is visible through spectral ODEs and a generalized Volterra equation.</li>
+</ul>
+<p>In transformer training:</p>
+<ul>
+<li>logarithmic-time momentum and weight-decay schedules can save substantial compute against a tuned AdamW baseline;</li>
+<li>the gains grow over part of the scaling ladder, providing evidence of finite-range outscaling;</li>
+<li>the measured loss is better described by a broken power law;</li>
+<li>after the break, the gains stop growing and the fitted large-scale exponents of several optimizers are close.</li>
+</ul>
+<div class="callout callout-style-default callout-important callout-titled" title="The honest conclusion">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>The honest conclusion
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The PLRF model proves that dimension-adapted momentum outscales SGD when <span class="math inline">\(\alpha&gt;1\)</span>. The transformer experiments do more than show a constant-factor gain: the same design ideas produce real improvements whose advantage grows over a substantial finite range. The honest uncertainty begins at the power-law break, where that growth stops.</p>
+<p>Two questions remain open:</p>
+<ol type="1">
+<li>What causes the break: a correctable feature of the setup or a fundamental change of scaling regime?</li>
+<li>Why do the optimizer gains stop growing there? In particular, many transformer spectral measurements suggest effective exponents on the shallower side, <span class="math inline">\(\alpha\leq1\)</span>, whereas the proved DANA outscaling mechanism requires <span class="math inline">\(\alpha&gt;1\)</span>. Can one design an acceleration strategy that works robustly on both sides of the <span class="math inline">\(\alpha=1\)</span> boundary?</li>
+</ol>
+</div>
+</div>
+</section>
+<section id="what-to-keep" class="level2" data-number="13">
+<h2 data-number="13" class="anchored" data-anchor-id="what-to-keep"><span class="header-section-number">13</span> What To Keep</h2>
+<ol type="1">
+<li>Outscaling means changing a compute exponent, not only improving a constant.</li>
+<li>Constant momentum has a fixed memory horizon and does not outscale SGD on PLRF.</li>
+<li>Nesterov momentum has a horizon that grows with time.</li>
+<li>Stochastic long memory accumulates noise, so acceleration requires damping.</li>
+<li>DANA uses dimension- or time-adapted damping and provably outscales SGD in part of the trace-class PLRF phase diagram.</li>
+<li>Scheduled momentum produces a general, non-convolution Volterra equation; a generalized Kesten bound reduces it to forcing and kernel asymptotics.</li>
+<li>ADANA transports logarithmic-time memory into an adaptive optimizer.</li>
+<li>Careful baselines, compute definitions, residual checks, learning-rate scaling, and weight-decay schedules are essential.</li>
+<li>The transformer results show finite-range outscaling, followed by an unexplained power-law break; the next problem is to understand that break and design acceleration across both sides of <span class="math inline">\(\alpha=1\)</span>.</li>
+</ol>
+<!--
+## Exercises
+
+1. **Memory horizons.** For constant $\beta$, find the lag at which a
+   gradient's weight falls by a factor $e$. Repeat for
+   $\beta_t=1-c/(t+\delta)$, and show that the horizon is proportional to
+   the current time.
+
+2. **Nesterov coordinates.** Starting from the two-sequence iteration, derive
+   the look-ahead and extra-gradient formulations.
+
+3. **Noise accumulation.** Suppose $g_t=\xi_t$ with independent centered
+   noise of covariance $I$. Compare the variance of an unnormalized
+   accumulator with constant $\beta$ and with
+   $\beta_t=1-c/(t+\delta)$.
+
+4. **Generalized Kesten bound.** Prove @lem-generalized-kesten by induction and
+   use it to bound the Volterra series when $C_K<1$.
+
+5. **Compute saved.** Given two monotone loss-compute curves, linearly
+   interpolate the baseline curve and compute the multiplier required to match
+   each loss achieved by the new optimizer.
+
+6. **Broken laws.** Generate data from
+   $L(C)=a+bC^{-c}+eC^{-f}$. Fit a single power law on early, late, and full
+   compute ranges. How often would the fitted slopes lead to a false
+   outscaling claim?
+
+7. **Batch interpolation.** Propose a damping schedule that becomes DANA-like
+   at batch one and approaches standard Nesterov as $B\to\infty$. Which
+   quantities would have to be estimated to make the rule scale invariant?
+-->
+
+
+
+</section>
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/elliotpaquette\.github\.io\/summer-school-2026-notes\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/elliotpaquette/summer-school-2026-notes/blob/main/modules/03-momentum.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/elliotpaquette/summer-school-2026-notes/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

@@ -1,0 +1,1944 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Power-Law Covariance – Power Laws in Data and Optimization</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-5685cd926c25366c96d9f1407e584118.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Power Laws in Data and Optimization</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-modules" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Modules</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-modules">    
+        <li>
+    <a class="dropdown-item" href="../modules/01-power-law-covariance.html">
+ <span class="dropdown-text">1. Power-Law Covariance</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../modules/02-scaling-laws.html">
+ <span class="dropdown-text">2. Scaling Laws</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../modules/03-momentum.html">
+ <span class="dropdown-text">3. Momentum</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../modules/04-muon.html">
+ <span class="dropdown-text">4. Muon</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-slides" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Slides</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-slides">    
+        <li>
+    <a class="dropdown-item" href="../slides/lecture-01.html">
+ <span class="dropdown-text">Lecture 1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../slides/lecture-02.html">
+ <span class="dropdown-text">Lecture 2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../slides/lecture-03.html">
+ <span class="dropdown-text">Lecture 3</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../slides/lecture-04.html">
+ <span class="dropdown-text">Lecture 4</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#the-simplifying-structure" id="toc-the-simplifying-structure" class="nav-link active" data-scroll-target="#the-simplifying-structure"><span class="header-section-number">1</span> The Simplifying Structure</a></li>
+  <li><a href="#covariance" id="toc-covariance" class="nav-link" data-scroll-target="#covariance"><span class="header-section-number">2</span> Covariance</a></li>
+  <li><a href="#power-law-covariance" id="toc-power-law-covariance" class="nav-link" data-scroll-target="#power-law-covariance"><span class="header-section-number">3</span> Power-Law Covariance</a></li>
+  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples"><span class="header-section-number">4</span> Examples</a>
+  <ul class="collapse">
+  <li><a href="#images" id="toc-images" class="nav-link" data-scroll-target="#images"><span class="header-section-number">4.1</span> Images</a></li>
+  <li><a href="#language" id="toc-language" class="nav-link" data-scroll-target="#language"><span class="header-section-number">4.2</span> Language</a></li>
+  <li><a href="#source-and-capacity" id="toc-source-and-capacity" class="nav-link" data-scroll-target="#source-and-capacity"><span class="header-section-number">4.3</span> Source and Capacity</a></li>
+  </ul></li>
+  <li><a href="#nonlinear-representations" id="toc-nonlinear-representations" class="nav-link" data-scroll-target="#nonlinear-representations"><span class="header-section-number">5</span> Nonlinear Representations</a>
+  <ul class="collapse">
+  <li><a href="#activations-and-layerwise-composition" id="toc-activations-and-layerwise-composition" class="nav-link" data-scroll-target="#activations-and-layerwise-composition"><span class="header-section-number">5.1</span> Activations and layerwise composition</a></li>
+  <li><a href="#random-features-isolate-one-block" id="toc-random-features-isolate-one-block" class="nav-link" data-scroll-target="#random-features-isolate-one-block"><span class="header-section-number">5.2</span> Random features isolate one block</a></li>
+  <li><a href="#what-changes-for-sequence-transformations" id="toc-what-changes-for-sequence-transformations" class="nav-link" data-scroll-target="#what-changes-for-sequence-transformations"><span class="header-section-number">5.3</span> What changes for sequence transformations?</a></li>
+  </ul></li>
+  <li><a href="#the-preservation-theorem" id="toc-the-preservation-theorem" class="nav-link" data-scroll-target="#the-preservation-theorem"><span class="header-section-number">6</span> The Preservation Theorem</a></li>
+  <li><a href="#proof-overview" id="toc-proof-overview" class="nav-link" data-scroll-target="#proof-overview"><span class="header-section-number">7</span> Proof Overview</a>
+  <ul class="collapse">
+  <li><a href="#centering-isolates-the-pure-second-chaos" id="toc-centering-isolates-the-pure-second-chaos" class="nav-link" data-scroll-target="#centering-isolates-the-pure-second-chaos"><span class="header-section-number">7.1</span> Centering isolates the pure second chaos</a></li>
+  <li><a href="#expanding-the-chaos-in-an-orthogonal-basis" id="toc-expanding-the-chaos-in-an-orthogonal-basis" class="nav-link" data-scroll-target="#expanding-the-chaos-in-an-orthogonal-basis"><span class="header-section-number">7.2</span> Expanding the chaos in an orthogonal basis</a></li>
+  <li><a href="#where-the-logarithm-comes-from" id="toc-where-the-logarithm-comes-from" class="nav-link" data-scroll-target="#where-the-logarithm-comes-from"><span class="header-section-number">7.3</span> Where the logarithm comes from</a></li>
+  <li><a href="#the-covariance-estimation-problem-hidden-in-the-kernel" id="toc-the-covariance-estimation-problem-hidden-in-the-kernel" class="nav-link" data-scroll-target="#the-covariance-estimation-problem-hidden-in-the-kernel"><span class="header-section-number">7.4</span> The covariance-estimation problem hidden in the kernel</a></li>
+  <li><a href="#why-the-sub-gaussian-theorem-does-not-apply" id="toc-why-the-sub-gaussian-theorem-does-not-apply" class="nav-link" data-scroll-target="#why-the-sub-gaussian-theorem-does-not-apply"><span class="header-section-number">7.5</span> Why the sub-Gaussian theorem does not apply</a></li>
+  <li><a href="#why-only-dlog3-d" id="toc-why-only-dlog3-d" class="nav-link" data-scroll-target="#why-only-dlog3-d"><span class="header-section-number">7.6</span> Why only <span class="math inline">\(d/\log^3 d\)</span>?</a></li>
+  </ul></li>
+  <li><a href="#what-to-keep" id="toc-what-to-keep" class="nav-link" data-scroll-target="#what-to-keep"><span class="header-section-number">8</span> What To Keep</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/elliotpaquette/summer-school-2026-notes/blob/main/modules/01-power-law-covariance.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/elliotpaquette/summer-school-2026-notes/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Power-Law Covariance</h1>
+<p class="subtitle lead">Module 1</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="the-simplifying-structure" class="level2 page-columns page-full" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="the-simplifying-structure"><span class="header-section-number">1</span> The Simplifying Structure</h2>
+<p>Neural networks are expressive enough to fit essentially arbitrary input–output relationships. Universal approximation formalizes one version of this statement: with enough width, depth, and parameters, a neural network can represent a very large class of functions <span class="citation" data-cites="cybenko1989approximation hornik1991approximation">(<a href="#ref-cybenko1989approximation" role="doc-biblioref">Cybenko 1989</a>; <a href="#ref-hornik1991approximation" role="doc-biblioref">Hornik 1991</a>)</span>. On a finite dataset, a sufficiently flexible network can also interpolate arbitrary labels.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-cybenko1989approximation" class="csl-entry" role="listitem">
+Cybenko, George. 1989. <span>“Approximation by Superpositions of a Sigmoidal Function.”</span> <em>Mathematics of Control, Signals and Systems</em> 2 (4): 303–14.
+</div><div id="ref-hornik1991approximation" class="csl-entry" role="listitem">
+Hornik, Kurt. 1991. <span>“Approximation Capabilities of Multilayer Feedforward Networks.”</span> <em>Neural Networks</em> 4 (2): 251–57.
+</div></div><p>Without further constraints, then, almost any behavior is possible. There is no single “general neural network problem” with a predictable output or training story: the space of possible data distributions, targets, and learned functions is simply too rich. We should expect the corresponding range of training behaviors to be equally rich.</p>
+<p>A useful theory therefore has to impose structure on the class of problems under study. The goal is not to describe every neural network problem at once, but to identify assumptions that constrain the problem enough to improve our understanding of how it trains. Those assumptions might concern the data, the target, the architecture, or the optimizer.</p>
+<p>The simplifying structure in these notes is <strong>the power-law covariance spectrum</strong>.</p>
+<p>The claim of this first module is:</p>
+<blockquote class="blockquote">
+<p>A surprisingly large part of the optimization and scaling-law story can be organized by looking at how covariance eigenvalues decay.</p>
+</blockquote>
+<p>This is not the whole story. Architecture matters. The target function matters. The optimizer matters. Feature learning matters. But the covariance spectrum is a good first object because it is easy to measure, it appears in real data, and it survives some of the basic operations that neural networks apply to data.</p>
+</section>
+<section id="covariance" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="covariance"><span class="header-section-number">2</span> Covariance</h2>
+<p>Let <span class="math inline">\(X \in \mathbb{R}^d\)</span> be a random vector with mean <span class="math inline">\(\mu = \mathbb{E}X\)</span>. Its covariance matrix is defined by</p>
+<p><span class="math display">\[
+\Sigma
+= \operatorname{Cov}(X)
+= \mathbb{E}\left[(X-\mu)(X-\mu)^\top\right].
+\]</span></p>
+<p>For a centered random vector, this is simply</p>
+<p><span class="math display">\[
+\Sigma = \mathbb{E}[XX^\top] = \mathbb{E}[X \otimes X],
+\]</span></p>
+<p>where <span class="math inline">\(X \otimes X\)</span> is the tensor product of <span class="math inline">\(X\)</span> with itself: a two-tensor in <span class="math inline">\(\mathbb{R}^d \otimes \mathbb{R}^d\)</span>.</p>
+<div class="callout callout-style-simple callout-note callout-titled" title="What does $X \otimes X$ mean?">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>What does <span class="math inline">\(X \otimes X\)</span> mean?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>If <span class="math inline">\(x,y \in \mathbb{R}^d\)</span>, then <span class="math inline">\(x \otimes y\)</span> has coordinates</p>
+<p><span class="math display">\[
+(x \otimes y)_{ij} = x_i y_j.
+\]</span></p>
+<p>In NumPy, this tensor product is a <code>tensordot</code> with no contracted axes:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>x_tensor_x <span class="op">=</span> np.tensordot(x, x, axes<span class="op">=</span><span class="dv">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>For a one-dimensional array <code>x</code>, the result has shape <code>(d, d)</code> and is equivalent to <code>np.outer(x, x)</code>.</p>
+<p>The inner product tensorizes: for <span class="math inline">\(x,y,u,v \in \mathbb{R}^d\)</span>,</p>
+<p><span class="math display">\[
+\langle x \otimes y, u \otimes v\rangle
+= \langle x,u\rangle \langle y,v\rangle.
+\]</span></p>
+<p>Thus <span class="math inline">\(\mathbb{R}^d \otimes \mathbb{R}^d\)</span> is naturally isomorphic to the space <span class="math inline">\(\mathbb{R}^{d \times d}\)</span> of two-index arrays, and <span class="math inline">\(X \otimes X\)</span> corresponds to the matrix <span class="math inline">\(XX^\top\)</span>. If we also use the Euclidean inner product to identify vectors and covectors, the same tensor can be viewed as the rank-one operator <span class="math inline">\(u \mapsto \langle X,u\rangle X\)</span>.</p>
+</div>
+</div>
+</div>
+<p>The covariance matrix records how the variability of <span class="math inline">\(X\)</span> is distributed across directions. If <span class="math inline">\(u \in \mathbb{R}^d\)</span> is a unit vector, then</p>
+<p><span class="math display">\[
+u^\top \Sigma u = \operatorname{Var}(\langle u, X\rangle)
+\]</span></p>
+<p>is the variance of the data along direction <span class="math inline">\(u\)</span>. The eigenvectors of <span class="math inline">\(\Sigma\)</span> give the principal directions of variation, and the eigenvalues</p>
+<p><span class="math display">\[
+\lambda_1(\Sigma) \geq \lambda_2(\Sigma) \geq \cdots \geq 0
+\]</span></p>
+<p>say how much variance lives in each direction.</p>
+<p>This is a <strong>linear</strong> statistic. It does not know everything about the distribution of <span class="math inline">\(X\)</span>. But in high dimensions, even this linear statistic can already be rich. The preservation question later in the module asks whether this linear spectral summary remains recognizable after the nonlinear transformations used by a neural network. The relevant notion will be weak: constants, eigenvectors, and slowly varying corrections may change while the polynomial decay rate survives.</p>
+</section>
+<section id="power-law-covariance" class="level2 page-columns page-full" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="power-law-covariance"><span class="header-section-number">3</span> Power-Law Covariance</h2>
+<p>We say that <span class="math inline">\(X\)</span>, or its covariance matrix <span class="math inline">\(\Sigma\)</span>, has a power-law covariance spectrum with exponent <span class="math inline">\(\alpha &gt; 0\)</span> if</p>
+<p><span class="math display">\[
+\lambda_j(\Sigma) \asymp j^{-\alpha}.
+\]</span></p>
+<p>Here <span class="math inline">\(a_j \asymp b_j\)</span> means that the two quantities agree up to multiplicative constants independent of <span class="math inline">\(j\)</span>. On a log-log plot, a power law appears as an approximately straight line:</p>
+<p><span class="math display">\[
+\log \lambda_j \approx C - \alpha \log j.
+\]</span></p>
+<p>This exponent is a soft notion of dimension. If the data lived exactly in a <span class="math inline">\(k\)</span>-dimensional linear subspace, then only <span class="math inline">\(k\)</span> eigenvalues would be nonzero. A power law is a softened version of that picture: there is no sharp cutoff, but the amount of variance still falls predictably as we move down the list of directions.</p>
+<p>One useful way to see this is through the counting function</p>
+<p><span class="math display">\[
+N(\varepsilon)
+= \#\{j : \lambda_j(\Sigma) \geq \varepsilon\}.
+\]</span></p>
+<p>If <span class="math inline">\(\lambda_j(\Sigma) \asymp j^{-\alpha}\)</span>, then</p>
+<p><span class="math display">\[
+N(\varepsilon) \asymp \varepsilon^{-1/\alpha}.
+\]</span></p>
+<p>So the exponent tells us how many directions survive above a resolution <span class="math inline">\(\varepsilon\)</span>. Larger <span class="math inline">\(\alpha\)</span> means the spectrum decays faster and the data is effectively lower-dimensional. Smaller <span class="math inline">\(\alpha\)</span> means the tail is heavier and more directions remain relevant.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Laplacian Eigenvalues and Intrinsic Dimension">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Laplacian Eigenvalues and Intrinsic Dimension
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>There is a precise setting in which a power-law spectrum records the dimension of a manifold. Let <span class="math inline">\(M\)</span> be a compact <span class="math inline">\(k\)</span>-dimensional Riemannian manifold, and let <span class="math inline">\(L=-\Delta_M\)</span> be its nonnegative Laplace–Beltrami operator. If</p>
+<p><span class="math display">\[
+L\phi_j = \nu_j\phi_j,
+\qquad
+0=\nu_0\leq \nu_1\leq \nu_2\leq\cdots,
+\]</span></p>
+<p>then Weyl’s law says</p>
+<p><span class="math display">\[
+\#\{j:\nu_j\leq \Lambda\}\asymp \Lambda^{k/2},
+\qquad\text{or equivalently}\qquad
+\nu_j\asymp j^{2/k}.
+\]</span></p>
+<p>Thus the intrinsic dimension <span class="math inline">\(k\)</span> determines how quickly new spatial modes appear <span class="citation" data-cites="grebenkov2013geometrical">(<a href="#ref-grebenkov2013geometrical" role="doc-biblioref">Grebenkov and Nguyen 2013</a>)</span>.</p>
+<p>The covariance spectrum is not automatically the Laplacian spectrum: Laplacian eigenvalues grow, whereas covariance eigenvalues decay. The connection appears when the data are modeled as a smooth random field on <span class="math inline">\(M\)</span>. For example, suppose the covariance operator is</p>
+<p><span class="math display">\[
+\Sigma=(I+L)^{-s}.
+\]</span></p>
+<p>The Laplacian eigenfunctions <span class="math inline">\(\phi_j\)</span> are then also covariance eigenfunctions, and</p>
+<p><span class="math display">\[
+\lambda_j(\Sigma)
+=(1+\nu_j)^{-s}
+\asymp j^{-2s/k}.
+\]</span></p>
+<p>This separates two effects. The dimension <span class="math inline">\(k\)</span> controls the density of available modes, while the regularity <span class="math inline">\(s\)</span> controls how much variance remains in high-frequency modes. Matérn Gaussian fields on manifolds are an important example of this construction <span class="citation" data-cites="borovitskiy2020matern">(<a href="#ref-borovitskiy2020matern" role="doc-biblioref">Borovitskiy et al. 2020</a>)</span>.</p>
+<p>For visual data, this gives a geometric reason to expect a stable effective dimension. Images can be viewed as random fields on a two-dimensional spatial domain, or more generally as observations varying along a lower-dimensional manifold of pose, viewpoint, lighting, and deformation. If that underlying geometry and its regularity are stable, their spectral signature can persist across discretizations and datasets. This is a mechanism, rather than a claim that every visual dataset must have exactly the same exponent.</p>
+</div>
+</div>
+<div class="no-row-height column-margin column-container"><div id="ref-borovitskiy2020matern" class="csl-entry" role="listitem">
+Borovitskiy, Viacheslav, Alexander Terenin, Peter Mostowsky, and Marc Peter Deisenroth. 2020. <span>“Mat<span>é</span>rn Gaussian Processes on Riemannian Manifolds.”</span> <em>Advances in Neural Information Processing Systems</em> 33: 1812–26.
+</div></div><div class="no-row-height column-margin column-container"><div id="ref-grebenkov2013geometrical" class="csl-entry" role="listitem">
+Grebenkov, Denis S., and Binh-Thanh Nguyen. 2013. <span>“Geometrical Structure of Laplacian Eigenfunctions.”</span> <em>SIAM Review</em> 55 (4): 601–67. <a href="https://doi.org/10.1137/120880173">https://doi.org/10.1137/120880173</a>.
+</div></div></section>
+<section id="examples" class="level2 page-columns page-full" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="examples"><span class="header-section-number">4</span> Examples</h2>
+<p>Power laws are common in machine learning, but they appear in several different places. Neural language model loss obeys empirical scaling laws in data, parameters, and compute <span class="citation" data-cites="kaplan2020scaling hoffmann2022chinchilla">(<a href="#ref-kaplan2020scaling" role="doc-biblioref">Kaplan et al. 2020</a>; <a href="#ref-hoffmann2022chinchilla" role="doc-biblioref">Hoffmann et al. 2022</a>)</span>. Word frequencies follow Zipf-like laws <span class="citation" data-cites="piantadosi2014zipf">(<a href="#ref-piantadosi2014zipf" role="doc-biblioref">Piantadosi 2014</a>)</span>. Here we focus on a more geometric example: covariance spectra of data and representations.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-kaplan2020scaling" class="csl-entry" role="listitem">
+Kaplan, Jared, Sam McCandlish, Tom Henighan, et al. 2020. <span>“Scaling Laws for Neural Language Models.”</span> <em>arXiv Preprint arXiv:2001.08361</em>. <a href="https://arxiv.org/abs/2001.08361">https://arxiv.org/abs/2001.08361</a>.
+</div><div id="ref-hoffmann2022chinchilla" class="csl-entry" role="listitem">
+Hoffmann, Jordan, Sebastian Borgeaud, Arthur Mensch, et al. 2022. <span>“An Empirical Analysis of Compute-Optimal Large Language Model Training.”</span> <em>Advances in Neural Information Processing Systems</em> 35. <a href="https://arxiv.org/abs/2203.15556">https://arxiv.org/abs/2203.15556</a>.
+</div><div id="ref-piantadosi2014zipf" class="csl-entry" role="listitem">
+Piantadosi, Steven T. 2014. <span>“Zipf’s Word Frequency Law in Natural Language: A Critical Review and Future Directions.”</span> <em>Psychonomic Bulletin &amp; Review</em> 21 (5): 1112–30.
+</div></div><section id="images" class="level3 page-columns page-full" data-number="4.1">
+<h3 data-number="4.1" class="anchored" data-anchor-id="images"><span class="header-section-number">4.1</span> Images</h3>
+<p>CIFAR-10 is a small image dataset <span class="citation" data-cites="krizhevsky2009learning">(<a href="#ref-krizhevsky2009learning" role="doc-biblioref">Krizhevsky 2009</a>)</span>, but its covariance spectrum already has a clear power-law shape. Even more suggestive, when CIFAR images are pushed through random neural layers, the activation covariance spectra often continue to look power-law.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-krizhevsky2009learning" class="csl-entry" role="listitem">
+Krizhevsky, Alex. 2009. <em>Learning Multiple Layers of Features from Tiny Images</em>. University of Toronto.
+</div></div><div id="fig-preservation" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-preservation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/figures/module-01/preservation-sketch-tanh-cifar.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-preservation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Power-law spectra under sketches and a random tanh MLP. Left: three iterated Gaussian sketches preserve the input power-law tail until the finite sketch dimension cuts off the spectrum. Right: the input and four hidden layers of a random tanh MLP on CIFAR-10 have nearly the same fitted slope.
+</figcaption>
+</figure>
+</div>
+<p>Figure <a href="#fig-preservation" class="quarto-xref">Figure&nbsp;1</a> shows two related facts. A random linear sketch does not destroy the tail exponent. A random nonlinear tanh MLP, at least in this experiment, also keeps the same slope across layers. The theorem later in this module explains a clean version of this phenomenon for random features and monomial activations.</p>
+<p>The same experiment can be repeated across architectures. The exponents are not identical layer by layer, but the broad fact is stable: activation covariance spectra remain close to power laws.</p>
+<div id="fig-cifar-slopes" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-cifar-slopes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/figures/module-01/cifar-layer-slopes.svg" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cifar-slopes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Fitted covariance-spectrum exponents across layers for CIFAR-10 experiments. The exact exponent drifts with architecture, activation, and training, but power-law fits remain meaningful across MLP, CNN, and ResNet-style representations.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="language" class="level3 page-columns page-full" data-number="4.2">
+<h3 data-number="4.2" class="anchored" data-anchor-id="language"><span class="header-section-number">4.2</span> Language</h3>
+<p>Language gives another route into the same idea, but first we have to decide what the random vector is. A token, a whole context window, and a hidden state produce different covariance operators. They answer different questions.</p>
+<section id="one-token-frequency-geometry" class="level4 page-columns page-full" data-number="4.2.1">
+<h4 data-number="4.2.1" class="anchored" data-anchor-id="one-token-frequency-geometry"><span class="header-section-number">4.2.1</span> One token: frequency geometry</h4>
+<p>Let <span class="math inline">\(T\)</span> be a token with probabilities <span class="math inline">\(p_i=\mathbb P(T=i)\)</span>, and let <span class="math inline">\(u_T\in\mathbb R^V\)</span> be its one-hot vector. Then</p>
+<p><span class="math display">\[
+\operatorname{Cov}(u_T)
+=\operatorname{diag}(p)-pp^\top.
+\]</span></p>
+<p>Thus unigram frequencies already define a covariance spectrum. If <span class="math inline">\(p_{(1)}\geq p_{(2)}\geq\cdots\)</span> are the sorted frequencies, rank-one interlacing gives</p>
+<p><span class="math display">\[
+p_{(j)}
+\geq
+\lambda_j\bigl(\operatorname{Cov}(u_T)\bigr)
+\geq
+p_{(j+1)}.
+\]</span></p>
+<p>Consequently, a Zipf-like frequency tail gives essentially the same tail in one-hot covariance. Centering changes the operator by one rank; it does not remove the long spectral tail.</p>
+<p>Now let <span class="math inline">\(E\in\mathbb R^{V\times d}\)</span> be a token-embedding matrix, with row <span class="math inline">\(e_i\)</span>, and set <span class="math inline">\(X=e_T=E^\top u_T\)</span>. Its covariance is</p>
+<p><span class="math display">\[
+\Sigma_{\mathrm{token}}
+=\operatorname{Cov}(e_T)
+=E^\top\bigl(\operatorname{diag}(p)-pp^\top\bigr)E.
+\]</span></p>
+<p>At random initialization, <span class="math inline">\(E^\top\)</span> is a random sketch of the categorical covariance. If the width is large enough to resolve the leading token directions, the leading covariance eigenvalues shadow the leading frequencies. A finite-width embedding cannot preserve all <span class="math inline">\(V\)</span> directions: the unresolved tail is compressed into a finite-width spectral floor.</p>
+<div id="fig-fineweb-token-covariance" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-fineweb-token-covariance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/figures/module-01/fineweb-token-covariance.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fineweb-token-covariance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Token-level covariance on 1,994,617 held-out FineWeb-Edu tokens. Left: the covariance spectrum of a width-4,096 random Gaussian embedding closely follows the leading sorted token frequencies; the dashed fit across the full displayed frequency range, ranks 1–4,096, is proportional to <span class="math inline">\(j^{-0.90}\)</span>. Finite width becomes visible deeper in the tail. Right: at matched width 768, a random embedding still follows the frequency geometry at the head, while a token embedding from a 100,000-step training run has a more anisotropic head and a sharper terminal decay. The dashed trained-tail fit over ranks 100–700 is proportional to <span class="math inline">\(j^{-2.14}\)</span>. Every displayed spectrum is normalized by its trace.
+</figcaption>
+</figure>
+</div>
+<p>Figure <a href="#fig-fineweb-token-covariance" class="quarto-xref">Figure&nbsp;3</a> uses the GPT-2 tokenizer on a held-out FineWeb-Edu shard <span class="citation" data-cites="penedo2024fineweb">(<a href="#ref-penedo2024fineweb" role="doc-biblioref">Penedo et al. 2024</a>)</span>. The random calculation makes precise the sense in which token-level covariance at initialization mostly sees frequency. The trained curve also gives an important qualification: learning can reshape the embedding geometry substantially even though the sampling probabilities are unchanged. In particular, the visible change of slope gives a two-regime rather than a single-power-law picture. The trained embeddings have learned semantic overlap and redundancy between tokens; that shared structure concentrates variation into fewer directions and is reflected in the sharper terminal cutoff. Such crossovers are common in empirical spectra. They can be modeled by piecewise power laws—one exponent before a characteristic scale and another after it—without changing the basic spectral methods used below.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-penedo2024fineweb" class="csl-entry" role="listitem">
+Penedo, Guilherme, Hynek Kydlíček, Loubna Ben Allal, et al. 2024. <span>“The FineWeb Datasets: Decanting the Web for the Finest Text Data at Scale.”</span> <em>The Thirty-Eight Conference on Neural Information Processing Systems Datasets and Benchmarks Track</em>.
+</div></div></section>
+<section id="a-whole-context-sequence-geometry" class="level4 page-columns page-full" data-number="4.2.2">
+<h4 data-number="4.2.2" class="anchored" data-anchor-id="a-whole-context-sequence-geometry"><span class="header-section-number">4.2.2</span> A whole context: sequence geometry</h4>
+<p>A language-model training example is not a single token. It is an ordered window <span class="math inline">\((T_1,\ldots,T_L)\)</span>. To retain its second-order structure, vectorize the centered embeddings:</p>
+<p><span class="math display">\[
+C_L
+=\operatorname{vec}\bigl(
+e_{T_1}-\mu_1,\ldots,e_{T_L}-\mu_L
+\bigr)
+\in\mathbb R^{Ld},
+\qquad
+\mu_a=\mathbb E[e_{T_a}].
+\]</span></p>
+<p>The context covariance is the block matrix</p>
+<p><span class="math display">\[
+\Sigma_{\mathrm{context}}
+=\operatorname{Cov}(C_L)
+=
+\begin{bmatrix}
+\Gamma_{11} &amp; \cdots &amp; \Gamma_{1L}\\
+\vdots &amp; \ddots &amp; \vdots\\
+\Gamma_{L1} &amp; \cdots &amp; \Gamma_{LL}
+\end{bmatrix},
+\qquad
+\Gamma_{ab}
+=\mathbb E\!\left[
+(e_{T_a}-\mu_a)\otimes(e_{T_b}-\mu_b)
+\right].
+\]</span></p>
+<p>The diagonal blocks are the positionwise token covariances. The off-diagonal blocks are new: they measure dependence between different positions. For a stationary sequence, <span class="math inline">\(\Gamma_{ab}\)</span> depends approximately only on the lag <span class="math inline">\(b-a\)</span>, so the operator is approximately block Toeplitz. If tokens are sampled independently from their unigram distribution, every off-diagonal block vanishes.</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p><strong>How the context covariance was computed.</strong> We sampled 50,000 nonoverlapping length-32 windows without crossing document boundaries. Both width-768 embedding tables were mapped through the same fixed random orthogonal projection to 32 features per token. Each projected window was flattened to a 1,024-dimensional vector, centered coordinatewise across windows, and used to form</p>
+<p><span class="math display">\[
+\widehat\Sigma_{\mathrm{context}}
+=\frac{1}{n-1}
+\sum_{w=1}^n(c_w-\bar c)\otimes(c_w-\bar c).
+\]</span></p>
+<p>The plotted eigenvalues are divided by their sum. The block-diagonal control sets <span class="math inline">\(\Gamma_{ab}=0\)</span> for <span class="math inline">\(a\ne b\)</span>; the shuffled control permutes the sampled tokens before rebuilding the windows.</p>
+</div></div><div id="fig-fineweb-context-covariance" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-fineweb-context-covariance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/figures/module-01/fineweb-context-covariance.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fineweb-context-covariance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Context covariance on 50,000 document-contained FineWeb-Edu windows of length 32. Both 768-dimensional embedding tables are passed through the same fixed 32-dimensional orthogonal sketch, giving a directly diagonalizable 1,024-dimensional context vector. The top panels compare ordered contexts with two controls that preserve token marginals but remove order. Dashed black reference fits over ranks 50–500, after the initially saturated region, give local exponents <span class="math inline">\(0.43\)</span> for the random embedding and <span class="math inline">\(0.91\)</span> for the trained embedding. The lower panels display the block covariance itself and the mean normalized block energy by lag.
+</figcaption>
+</figure>
+</div>
+<p>In Figure <a href="#fig-fineweb-context-covariance" class="quarto-xref">Figure&nbsp;4</a>, the dashed spectral control keeps each diagonal block <span class="math inline">\(\Gamma_{aa}\)</span> and sets all cross-position blocks to zero. The shuffled-token control estimates the finite-sample noise floor. Ordered contexts change the leading context eigenvalues, and the band around the diagonal of the block matrix makes the source visible: nearby token positions are correlated. The vectorized covariance also has two visibly different spectral phases: a relatively flat, saturated head followed by a differently shaped decaying tail. The fits over ranks 50–500 summarize that second regime; they are local guides after the initial saturation, not claims of a global context-spectrum exponent. At lag one, the normalized block energy is approximately <span class="math inline">\(0.090\)</span> for the random embedding and <span class="math inline">\(0.184\)</span> for the trained embedding, compared with shuffled baselines of approximately <span class="math inline">\(0.022\)</span> and <span class="math inline">\(0.017\)</span>.</p>
+<p>This leads to an open question for sequence models: how does attention transform context covariance, even at initialization? The projections <span class="math inline">\(W_Q,W_K,W_V\)</span> act token by token with weights shared across positions, but the attention weights couple tokens through their dot products. The diagonal token-covariance blocks and the off-diagonal cross-token blocks are therefore transformed together. Even for random weights, this is no longer the positionwise random-feature map studied later in the chapter. Let</p>
+<p><span class="math display">\[
+q_t=W_Q x_t,\qquad k_t=W_K x_t,
+\qquad
+a_t=\operatorname{softmax}_{s\leq t}
+\left(\frac{\langle q_t,k_s\rangle}{\sqrt m}\right),
+\qquad
+y_t=\sum_{s\leq t}a_{ts}W_Vx_s .
+\]</span></p>
+<p>Figure <a href="#fig-fineweb-causal-attention-covariance" class="quarto-xref">Figure&nbsp;5</a> uses fixed random maps <span class="math inline">\(W_Q,W_K,W_V\)</span>, so it is still an input-geometry diagnostic rather than a trained transformer measurement. The words “random” and “trained” refer only to the token embedding table. We use independent random query and key maps, as in standard transformer attention. Each length-<span class="math inline">\(128\)</span> window is sent through causal self-attention, and the resulting <span class="math inline">\((y_1,\ldots,y_{128})\)</span> is flattened before taking its covariance.</p>
+<div id="fig-fineweb-causal-attention-covariance" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-fineweb-causal-attention-covariance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/figures/module-01/fineweb-causal-attention-covariance.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fineweb-causal-attention-covariance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Causal self-attention output covariance on 13,765 document-contained FineWeb-Edu windows of length 128. The input embeddings are first sketched to dimension 128 and rescaled so that their entries have RMS one. The QK dimension is 128 and the value dimension is 32, so each flattened attention output has <span class="math inline">\(128\cdot32=4096\)</span> coordinates. The QK and value maps are independent fixed random projections, not trained transformer weights. Dashed black reference fits to the ordered spectra over ranks 1–1,000 give effective exponents <span class="math inline">\(\alpha=0.84\)</span> for the random embedding and <span class="math inline">\(\alpha=0.58\)</span> for the trained embedding. The curvature, especially for the trained embedding, makes clear that these are summaries of the displayed range rather than exact power laws. Shuffling the tokens changes the sorted eigenvalues only modestly.
+</figcaption>
+</figure>
+</div>
+<p>Both output covariances have an extended region of approximately power-law decay, although neither is a single power law over its full rank range. This calculation is only a first diagnostic. A general account of how attention transforms power-law context covariance—and which aspects are controlled by token marginals versus cross-token correlations—remains open.</p>
+<div class="callout callout-style-simple callout-note callout-titled" title="Why position can disappear from a spectrum">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Why position can disappear from a spectrum
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The ordered and shuffled curves in Figure <a href="#fig-fineweb-causal-attention-covariance" class="quarto-xref">Figure&nbsp;5</a> are not exactly equal, but their closeness illustrates a general limitation: sorted eigenvalues can be nearly insensitive to changes that substantially rearrange eigenvectors and cross-position covariance blocks. More generally, <span class="math inline">\(Q\Sigma Q^\top\)</span> has exactly the same eigenvalues as <span class="math inline">\(\Sigma\)</span> for every orthogonal <span class="math inline">\(Q\)</span>; permutation matrices are a special case. The basis is therefore essential. Eigenvectors identify which combinations of coordinates carry the variance, and that information is absent from the sorted spectrum alone.</p>
+<p>RoPE gives an exact version of this phenomenon. At position <span class="math inline">\(t\)</span>, it applies an orthogonal rotation <span class="math inline">\(R_t\)</span> to the token representation. On a vectorized context, this is the block-diagonal orthogonal map</p>
+<p><span class="math display">\[
+R=\operatorname{diag}(R_1,\ldots,R_L).
+\]</span></p>
+<p>If <span class="math inline">\(C_L\)</span> is the original context vector, then</p>
+<p><span class="math display">\[
+\operatorname{Cov}(R C_L)
+=R\Sigma_{\mathrm{context}}R^\top .
+\]</span></p>
+<p>The covariance therefore has exactly the same eigenvalues. Its eigenvectors are rotated in a position-dependent way, which is precisely where the positional information lives. This statement applies to the full vectorized context (and to a token covariance at any fixed position). Pooling differently rotated tokens across positions need not preserve the spectrum.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="activation-covariance-in-a-transformer" class="level4" data-number="4.2.3">
+<h4 data-number="4.2.3" class="anchored" data-anchor-id="activation-covariance-in-a-transformer"><span class="header-section-number">4.2.3</span> Activation covariance in a transformer</h4>
+<p>The same distinction returns after the context has passed through the network. Write <span class="math inline">\(h_{w,t}\in\mathbb R^m\)</span> for the activation at position <span class="math inline">\(t\)</span> in context window <span class="math inline">\(w\)</span>. There are at least two natural operators:</p>
+<p><span class="math display">\[
+\Sigma_h^{\mathrm{token}}
+=\operatorname{Cov}_{w,t}(h_{w,t}),
+\qquad
+\Sigma_h^{\mathrm{context}}
+=\operatorname{Cov}_{w}\!\left(
+\operatorname{vec}(h_{w,1},\ldots,h_{w,L})
+\right).
+\]</span></p>
+<p>The first pools token positions and studies anisotropy across the <span class="math inline">\(m\)</span> feature channels. It is an <span class="math inline">\(m\times m\)</span> matrix and is the standard, tractable choice when studying the linear maps shared across positions. The second is an <span class="math inline">\(Lm\times Lm\)</span> block matrix. It retains cross-position dependence and is the more faithful object for questions about the whole sequence, but it is much larger.</p>
+<p>The activation spectra below are pooled-token measurements of the first kind. The four panels show covariance-eigenvalue spectra at different locations in a trained decoder-only transformer: after the token embedding, midway through the MLPs in layers 0 and 15, and immediately before the final softmax. The model was trained on FineWeb. Its residual stream has width <span class="math inline">\(41\cdot64=2624\)</span>, and its MLP hidden layer has width <span class="math inline">\(41\cdot256=10496\)</span>. In each panel, the green points mark the fitted ranks: 11 through 262 for residual-stream activations and 11 through 1049 for MLP activations. The dashed line is the corresponding power-law fit.</p>
+<div id="fig-language-spectra" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-language-spectra-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/figures/module-01/transformer-activation-spectra.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-language-spectra-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Activation-covariance eigenvalue spectra from a trained transformer language model. Each panel shows sorted eigenvalues on log-log axes with a fitted power law.
+</figcaption>
+</figure>
+</div>
+<p>The displayed covariance-eigenvalue exponents range from approximately <span class="math inline">\(0.62\)</span> to <span class="math inline">\(0.75\)</span>. The exact value changes with the layer and with the chosen fitting window. The main evidence is therefore not one universal exponent, but an extended regime of approximately power-law spectral decay at every location shown. These empirical activation covariances are not the same object as the idealized covariance in the theorem below. They nevertheless show why an isotropic model, in which every activation direction has the same scale, misses a visible feature of transformer representations.</p>
+</section>
+</section>
+<section id="source-and-capacity" class="level3 page-columns page-full" data-number="4.3">
+<h3 data-number="4.3" class="anchored" data-anchor-id="source-and-capacity"><span class="header-section-number">4.3</span> Source and Capacity</h3>
+<p>The language around power-law spectra overlaps with the older <strong>source/capacity</strong> language from kernel regression <span class="citation" data-cites="caponnetto2007optimal rudi2017generalization">(<a href="#ref-caponnetto2007optimal" role="doc-biblioref">Caponnetto and De Vito 2007</a>; <a href="#ref-rudi2017generalization" role="doc-biblioref">Rudi and Rosasco 2017</a>)</span>.</p>
+<div class="no-row-height column-margin column-container"></div><ul>
+<li>A capacity condition is about the size of the hypothesis space or feature space. Spectrally, it is often an eigenvalue decay assumption for a covariance or kernel operator.</li>
+<li>A source condition is about the target function: how strongly the target aligns with easy versus hard directions.</li>
+</ul>
+<div class="callout callout-style-simple callout-note callout-titled" title="Exact source and capacity conditions">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Exact source and capacity conditions
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>In supervised regression, we observe input–output pairs <span class="math inline">\((x_i,y_i)\)</span> and try to estimate the regression function</p>
+<p><span class="math display">\[
+f_\star(x)=\mathbb E[Y\mid X=x].
+\]</span></p>
+<p>Kernel ridge regression chooses a positive-definite kernel <span class="math inline">\(k\)</span> with reproducing kernel Hilbert space <span class="math inline">\(\mathcal H_k\)</span>, and solves</p>
+<p><span class="math display">\[
+\widehat f_\tau
+=\underset{f\in\mathcal H_k}{\operatorname{argmin}}
+\left\{
+\frac1n\sum_{i=1}^n\bigl(f(x_i)-y_i\bigr)^2
++\tau\|f\|_{\mathcal H_k}^2
+\right\}.
+\]</span></p>
+<p>Write <span class="math inline">\(k_x=k(x,\mathord\cdot)\in\mathcal H_k\)</span> for the feature vector associated with an input <span class="math inline">\(x\)</span>. The input distribution defines the population covariance operator</p>
+<p><span class="math display">\[
+\Sigma
+=\mathbb E_X[k_X\otimes k_X].
+\]</span></p>
+<p>The capacity condition describes how many feature directions can be learned at regularization scale <span class="math inline">\(\tau\)</span>. The source condition describes how well the target <span class="math inline">\(f_\star\)</span>, or its projection into <span class="math inline">\(\mathcal H_k\)</span>, aligns with those directions. This is the kernel-regression version of separating data geometry from target difficulty.</p>
+<p>More abstractly, let <span class="math inline">\(\Sigma\)</span> be a positive compact operator on a separable Hilbert space <span class="math inline">\(\mathcal H\)</span>, with eigenpairs</p>
+<p><span class="math display">\[
+\Sigma e_j=\lambda_j e_j,
+\qquad
+\lambda_1\geq\lambda_2\geq\cdots&gt;0.
+\]</span></p>
+<p><strong>Capacity.</strong> A standard capacity condition controls the effective dimension</p>
+<p><span class="math display">\[
+\mathcal N(\tau)
+=\operatorname{Tr}\!\left(\Sigma(\Sigma+\tau I)^{-1}\right)
+=\sum_j\frac{\lambda_j}{\lambda_j+\tau}
+\]</span></p>
+<p>by requiring</p>
+<p><span class="math display">\[
+\mathcal N(\tau)\leq Q\tau^{-\gamma},
+\qquad 0&lt;\gamma\leq1.
+\]</span></p>
+<p>A stronger spectral normalization often used for the same purpose, with <span class="math inline">\(p=1/\gamma&gt;1\)</span>, is</p>
+<p><span class="math display">\[
+\operatorname{Tr}(\Sigma^{1/p})
+=\sum_j\lambda_j^{1/p}&lt;\infty.
+\]</span></p>
+<p>These are one-sided conditions: they limit how many directions can remain visible at scale <span class="math inline">\(\tau\)</span>, but they do not assert a matching lower bound or an exact spectral shape <span class="citation" data-cites="caponnetto2007optimal rudi2017generalization">(<a href="#ref-caponnetto2007optimal" role="doc-biblioref">Caponnetto and De Vito 2007</a>; <a href="#ref-rudi2017generalization" role="doc-biblioref">Rudi and Rosasco 2017</a>)</span>.</p>
+<p><strong>Source.</strong> Write the target in the same eigenbasis,</p>
+<p><span class="math display">\[
+f_\star=\sum_j\theta_j e_j.
+\]</span></p>
+<p>The target satisfies a source condition of order <span class="math inline">\(r\geq0\)</span> if there is some <span class="math inline">\(g\in\mathcal H\)</span> such that</p>
+<p><span class="math display">\[
+f_\star=\Sigma^r g.
+\]</span></p>
+<p>Equivalently,</p>
+<p><span class="math display">\[
+\|\Sigma^{-r}f_\star\|_{\mathcal H}^2
+=\sum_j\frac{\theta_j^2}{\lambda_j^{2r}}&lt;\infty.
+\]</span></p>
+<p>This is a spectral smoothness condition: the target must place sufficiently little mass in directions where the data covariance is small.</p>
+<p><strong>Where exact power laws sit.</strong> Suppose</p>
+<p><span class="math display">\[
+\lambda_j\asymp j^{-\alpha},
+\qquad
+\theta_j\asymp j^{-\beta}.
+\]</span></p>
+<p>When <span class="math inline">\(\alpha&gt;1\)</span>, the effective dimension has the sharp asymptotic behavior</p>
+<p><span class="math display">\[
+\mathcal N(\tau)\asymp\tau^{-1/\alpha}.
+\]</span></p>
+<p>Thus an exact power law does more than satisfy a capacity upper bound: it pins down the capacity exponent and supplies a matching lower bound. It also saturates the associated trace-moment condition, because</p>
+<p><span class="math display">\[
+\operatorname{Tr}(\Sigma^{1/p})&lt;\infty
+\quad\Longleftrightarrow\quad
+p&lt;\alpha.
+\]</span></p>
+<p>At the endpoint <span class="math inline">\(p=\alpha\)</span>, the sum is harmonic and diverges. Similarly, the source condition holds precisely when</p>
+<p><span class="math display">\[
+2\beta-2\alpha r&gt;1,
+\qquad\text{or equivalently}\qquad
+r&lt;\frac{\beta-\tfrac12}{\alpha}.
+\]</span></p>
+<p>It fails at equality. Exact power-law data and targets therefore sit naturally on the boundaries of whole families of source and capacity conditions. The power-law assumption is stronger: instead of asserting only membership in one of these classes, it specifies the spectral model itself.</p>
+<p>There is also a normalizability distinction. For an infinite-dimensional Hilbert-valued random vector,</p>
+<p><span class="math display">\[
+\mathbb E\|X\|_{\mathcal H}^2
+=\operatorname{Tr}(\Sigma)
+\asymp\sum_j j^{-\alpha},
+\]</span></p>
+<p>which is finite only when <span class="math inline">\(\alpha&gt;1\)</span>. This is the regime covered by the standard trace-class Hilbert-space theory. A finite-dimensional power-law model still makes sense for every <span class="math inline">\(\alpha&gt;0\)</span>, including the non-summable regimes <span class="math inline">\(\alpha\leq1\)</span>; its trace then grows with the dimension cutoff. This ability to describe both normalizable and non-normalizable tails is one reason to formulate the model directly as a power law.</p>
+</div>
+</div>
+</div>
+<div class="no-row-height column-margin column-container"><div id="ref-rudi2017generalization" class="csl-entry" role="listitem">
+Rudi, Alessandro, and Lorenzo Rosasco. 2017. <span>“Generalization Properties of Learning with Random Features.”</span> <em>Advances in Neural Information Processing Systems</em> 30.
+</div></div><div class="no-row-height column-margin column-container"><div id="ref-caponnetto2007optimal" class="csl-entry" role="listitem">
+Caponnetto, Andrea, and Ernesto De Vito. 2007. <span>“Optimal Rates for the Regularized Least-Squares Algorithm.”</span> <em>Foundations of Computational Mathematics</em> 7: 331–68.
+</div></div><p>In the power-law random features model used later, these are represented by two exponents. We write</p>
+<p><span class="math display">\[
+X_j=j^{-\alpha/2}Z_j,
+\qquad
+\mathbb E[X_j^2]=j^{-\alpha},
+\qquad
+b_j=j^{-\beta}.
+\]</span></p>
+<p>Thus <span class="math inline">\(\alpha\)</span> is the covariance-eigenvalue exponent and <span class="math inline">\(\beta\)</span> describes the target coefficients. Module 2 will use both.</p>
+<p>For now, the main point is that covariance is only one side of the problem. It tells us where the data varies. It does not, by itself, tell us what function we are trying to learn.</p>
+</section>
+</section>
+<section id="nonlinear-representations" class="level2 page-columns page-full" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="nonlinear-representations"><span class="header-section-number">5</span> Nonlinear Representations</h2>
+<p>Covariance is a property of linear projections of the data. Neural networks are not linear. So there is an immediate concern:</p>
+<div id="qst-nonlinear-survival" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-qst figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-qst" id="qst-nonlinear-survival-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Question&nbsp;1: Spectral survival
+</figcaption>
+<div aria-describedby="qst-nonlinear-survival-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<p>If the data starts with power-law covariance, does anything about that structure survive after nonlinear layers?</p>
+</div>
+</figure>
+</div>
+<section id="activations-and-layerwise-composition" class="level3" data-number="5.1">
+<h3 data-number="5.1" class="anchored" data-anchor-id="activations-and-layerwise-composition"><span class="header-section-number">5.1</span> Activations and layerwise composition</h3>
+<p>A neural network does not map the input to the output in one operation. It passes a succession of intermediate vectors from one layer to the next. These vectors are the <strong>activations</strong>. For a basic MLP, write</p>
+<p><span class="math display">\[
+H^{(0)}=X,
+\qquad
+Z^{(\ell)}=(W^{(\ell)})^\top H^{(\ell-1)},
+\qquad
+H^{(\ell)}=f_\ell\!\left(Z^{(\ell)}\right).
+\]</span></p>
+<p>The output <span class="math inline">\(H^{(\ell)}\)</span> of layer <span class="math inline">\(\ell\)</span> is the input to layer <span class="math inline">\(\ell+1\)</span>. Its activation covariance is</p>
+<p><span class="math display">\[
+\Sigma_\ell
+=\operatorname{Cov}\!\left(H^{(\ell)}\right).
+\]</span></p>
+<p>For one block <span class="math inline">\(h(x)=f(W^\top x)\)</span>, this reduces to</p>
+<p><span class="math display">\[
+\Sigma_{f,W}
+= \operatorname{Cov}(f(W^\top X)).
+\]</span></p>
+<p>This object asks: after the incoming activations are linearly mixed and passed through a nonlinearity, what are the principal directions of variation passed to the next layer?</p>
+<p>This formulation also explains why a one-block preservation result can be useful for a deep MLP. Suppose each block has the implication</p>
+<p><span class="math display">\[
+\lambda_j(\Sigma_{\ell-1})\asymp j^{-\alpha}
+\quad\Longrightarrow\quad
+\lambda_j(\Sigma_\ell)\asymp j^{-\alpha},
+\]</span></p>
+<p>possibly up to logarithmic corrections and a finite-width cutoff. If its hypotheses remain valid at every layer, the same implication can be applied inductively, so a composition of such blocks preserves the exponent.</p>
+<p>There is an important qualification. For nonlinear <span class="math inline">\(f_\ell\)</span>, the covariance <span class="math inline">\(\Sigma_\ell\)</span> is generally not determined by <span class="math inline">\(\Sigma_{\ell-1}\)</span> alone; it can depend on higher-order features of the incoming distribution. Thus the induction is a statement about a class of activation distributions, not a closed recursion on covariance matrices. Gaussian inputs, fresh random weights, and coordinatewise activations give one tractable setting. Trained weights, residual connections, normalization, and finite-width dependence require additional arguments.</p>
+</section>
+<section id="random-features-isolate-one-block" class="level3 page-columns page-full" data-number="5.2">
+<h3 data-number="5.2" class="anchored" data-anchor-id="random-features-isolate-one-block"><span class="header-section-number">5.2</span> Random features isolate one block</h3>
+<p>Random features are the cleanest mathematical version of this question <span class="citation" data-cites="rahimi2008random">(<a href="#ref-rahimi2008random" role="doc-biblioref">Rahimi and Recht 2007</a>)</span>. Rahimi and Recht introduced randomized nonlinear feature maps as explicit, finite-dimensional approximations to kernel feature spaces: the random map is frozen and a linear readout is trained. From the present viewpoint, freezing <span class="math inline">\(W\)</span> isolates the representation problem from the optimization problem. We can ask exactly what one random nonlinear block does to the spectrum of its input.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-rahimi2008random" class="csl-entry" role="listitem">
+Rahimi, Ali, and Benjamin Recht. 2007. <span>“Random Features for Large-Scale Kernel Machines.”</span> <em>Advances in Neural Information Processing Systems</em>, 1177–84. <a href="https://proceedings.neurips.cc/paper/2007/hash/013a006f03dbc5392effeb8f18fda755-Abstract.html">https://proceedings.neurips.cc/paper/2007/hash/013a006f03dbc5392effeb8f18fda755-Abstract.html</a>.
+</div><div id="ref-maloney2022solvable" class="csl-entry" role="listitem">
+Maloney, Alexander, Daniel A. Roberts, and James Sully. 2022. <span>“A Solvable Model of Neural Scaling Laws.”</span> <em>arXiv Preprint arXiv:2210.16859</em>. <a href="https://arxiv.org/abs/2210.16859">https://arxiv.org/abs/2210.16859</a>.
+</div></div><p>Maloney, Roberts, and Sully use this random-feature viewpoint in a solvable model of neural scaling laws <span class="citation" data-cites="maloney2022solvable">(<a href="#ref-maloney2022solvable" role="doc-biblioref">Maloney et al. 2022</a>)</span>. Their Figure 4 gives a useful numerical comparison on CIFAR-10: a ReLU random-feature map approximately preserves the power-law exponent and extends the power-law-shaped spectrum to more feature directions as its width grows. A linear random map does not produce the same extension. The fitted exponent after ReLU drifts slightly, so this is evidence for approximate preservation rather than exact equality—and for a phenomenon broader than any one exactly solvable activation.</p>
+<p>The preservation theorem below answers the following deliberately sharp question:</p>
+<div id="qst-random-feature-monomial" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-qst figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-qst" id="qst-random-feature-monomial-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Question&nbsp;2: Random features and monomials
+</figcaption>
+<div aria-describedby="qst-random-feature-monomial-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<p>If the input covariance has eigenvalues <span class="math inline">\(j^{-\alpha}\)</span>, what happens after a random-feature block <span class="math inline">\(f(W^\top X)\)</span> when <span class="math inline">\(f\)</span> is a monomial?</p>
+</div>
+</figure>
+</div>
+</section>
+<section id="what-changes-for-sequence-transformations" class="level3" data-number="5.3">
+<h3 data-number="5.3" class="anchored" data-anchor-id="what-changes-for-sequence-transformations"><span class="header-section-number">5.3</span> What changes for sequence transformations?</h3>
+<p>For sequence data, the activations at layer <span class="math inline">\(\ell\)</span> form a matrix</p>
+<p><span class="math display">\[
+H^{(\ell)}
+=
+\begin{bmatrix}
+\vert &amp; &amp; \vert\\
+h^{(\ell)}_1&amp;\cdots&amp;h^{(\ell)}_L\\
+\vert &amp; &amp; \vert
+\end{bmatrix}
+\in\mathbb R^{d_\ell\times L},
+\]</span></p>
+<p>not a single vector. As in the earlier language example, this gives both a pooled-token activation covariance and a vectorized context covariance. A positionwise MLP with shared weights,</p>
+<p><span class="math display">\[
+h_t^+
+=f(W^\top h_t),
+\qquad t=1,\ldots,L,
+\]</span></p>
+<p>applies the same random-feature map separately at every position. The theorem below is therefore relevant to each token marginal, or equivalently to the diagonal blocks of the context covariance. The off-diagonal blocks transform jointly:</p>
+<p><span class="math display">\[
+\Gamma_{ab}^+
+=\mathbb E\!\left[
+\bigl(f(W^\top h_a)-\mu_a^+\bigr)
+\otimes
+\bigl(f(W^\top h_b)-\mu_b^+\bigr)
+\right],
+\qquad
+\mu_t^+=\mathbb E[f(W^\top h_t)].
+\]</span></p>
+<p>Preservation of the pooled-token spectrum does not, by itself, imply preservation of the full context spectrum, because it says nothing about these cross-position blocks.</p>
+<p>Sequence-mixing layers pose a different question. For example, if a fixed matrix <span class="math inline">\(A\in\mathbb R^{L\times L}\)</span> mixes positions and</p>
+<p><span class="math display">\[
+H^+=W^\top H A^\top,
+\]</span></p>
+<p>then</p>
+<p><span class="math display">\[
+\operatorname{vec}(H^+)
+=(A\otimes W^\top)\operatorname{vec}(H)
+\]</span></p>
+<p>and hence</p>
+<p><span class="math display">\[
+\Sigma_{\mathrm{context}}^+
+=(A\otimes W^\top)\,
+\Sigma_{\mathrm{context}}\,
+(A^\top\otimes W).
+\]</span></p>
+<p>Even this linear sequence map acts simultaneously on positional and feature geometry. Self-attention is harder because its mixing matrix <span class="math inline">\(A(H)=\operatorname{softmax}(Q(H)^\top K(H))\)</span> is itself data-dependent. It couples all positions before the next activation is formed, so the random-features-plus-monomial theorem is not directly a theorem about an attention block. A sequence analogue would have to control the evolution of the whole block covariance—or a richer object that also retains the data-dependent attention weights—not only the pooled-token covariance.</p>
+<div id="qst-softmax-spectral-transform" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-qst figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-qst" id="qst-softmax-spectral-transform-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Question&nbsp;3: Power-law spectra under self-attention
+</figcaption>
+<div aria-describedby="qst-softmax-spectral-transform-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<p><strong>Status: open.</strong></p>
+<p>Formulate a theorem describing how power-law spectra transform under self-attention-type transformations.</p>
+</div>
+</figure>
+</div>
+</section>
+</section>
+<section id="the-preservation-theorem" class="level2 page-columns page-full" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="the-preservation-theorem"><span class="header-section-number">6</span> The Preservation Theorem</h2>
+<p><a href="#thm-power-law-preservation" class="quarto-xref">Theorem&nbsp;1</a> is the core result of Paquette, Xiao, and Zhu <span class="citation" data-cites="paquetteXiaoZhu2026powerlaw">(<a href="#ref-paquetteXiaoZhu2026powerlaw" role="doc-biblioref">Paquette et al. 2026</a>)</span>, and answers <a href="#qst-random-feature-monomial" class="quarto-xref">Question&nbsp;2</a>.</p>
+<div class="no-row-height column-margin column-container"></div><div id="thm-power-law-preservation" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 1 (Power-Law Preservation for Random Features)</strong></span> Let <span class="math inline">\(X \sim N(0,\Sigma) \in \mathbb{R}^v\)</span>, and suppose</p>
+<p><span class="math display">\[
+\lambda_j(\Sigma) \asymp j^{-\alpha}.
+\]</span></p>
+<p>Let <span class="math inline">\(W \in \mathbb{R}^{v \times d}\)</span> have independent standard Gaussian entries, and let <span class="math inline">\(f(y)=y^p\)</span> be a monomial activation. Define the population random-feature second-moment matrix</p>
+<p><span class="math display">\[
+K_{f,W}
+= \mathbb{E}_X\left[\frac{1}{d}
+f(W^\top X)f(W^\top X)^\top\right].
+\]</span></p>
+<p>Then, with high probability over <span class="math inline">\(W\)</span>, the eigenvalues of <span class="math inline">\(K_{f,W}\)</span> satisfy</p>
+<p><span class="math display">\[
+\lambda_j(K_{f,W})
+\asymp
+\left(\frac{\log^{p-1}(j+1)}{j}\right)^\alpha
+\]</span></p>
+<p>for</p>
+<p><span class="math display">\[
+1\leq j\leq c\,\frac{d}{\log^{p+1}d},
+\]</span></p>
+<p>with corresponding polylogarithmic upper and lower bounds through the rest of the spectrum.</p>
+</div>
+<p>Asymptotically, the important part is that the polynomial exponent is inherited. The activation changes constants and adds a logarithmic correction, but it does not replace the input spectrum by something with a different polynomial rate. At realistic widths, however, the logarithm is not necessarily negligible.</p>
+<div class="callout callout-style-default callout-warning callout-titled" title="A logarithmic correction can look like a different exponent">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>A logarithmic correction can look like a different exponent
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For the quadratic activation, the predicted curve is</p>
+<p><span class="math display">\[
+\lambda_j
+\asymp
+\left(\frac{\log(j+1)}{j}\right)^\alpha.
+\]</span></p>
+<p>Its local slope on log-log axes is</p>
+<p><span class="math display">\[
+\alpha_{\mathrm{local}}(j)
+=-\frac{d\log\lambda_j}{d\log j}
+=\alpha\left(
+1-\frac{j}{(j+1)\log(j+1)}
+\right).
+\]</span></p>
+<p>Thus at rank <span class="math inline">\(j=3{,}000\)</span>, the local slope is only about <span class="math inline">\(0.875\alpha\)</span>. If <span class="math inline">\(\alpha=1.31\)</span>, the local slope is approximately <span class="math inline">\(1.15\)</span>. An unweighted ordinary least-squares fit of <span class="math inline">\(\log\lambda_j\)</span> on <span class="math inline">\(\log j\)</span> over integer ranks <span class="math inline">\(10\)</span> through <span class="math inline">\(3{,}000\)</span> gives an exponent of approximately <span class="math inline">\(1.09\)</span>, even though the true polynomial exponent is <span class="math inline">\(1.31\)</span>.</p>
+<p>The approach to <span class="math inline">\(\alpha\)</span> is extraordinarily slow. The local slope is within <span class="math inline">\(10\%\)</span> of <span class="math inline">\(\alpha\)</span> only around <span class="math inline">\(j=e^{10}\approx 22{,}000\)</span>, and within <span class="math inline">\(5\%\)</span> only around <span class="math inline">\(j=e^{20}\approx 4.9\times 10^8\)</span>. At moderate width, the logarithmic correction is therefore more likely to appear as a shifted fitted exponent than as visible curvature.</p>
+</div>
+</div>
+<p>This is why the covariance spectrum is a plausible simplifying framework. It is not only visible in the raw data; in an idealized model, it survives a basic neural-network operation.</p>
+<div id="fig-activation-spectra" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-activation-spectra-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/figures/module-01/activation-spectra-alpha1p31.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-activation-spectra-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: Random-feature covariance spectra for monomial and non-monomial activations. The theorem covers monomials; the experiments suggest similar behavior for several standard activations, though not every activation preserves the same tail.
+</figcaption>
+</figure>
+</div>
+<p>The theorem is deliberately narrower than the experiments. It assumes Gaussian data and monomial activations. The numerical evidence is broader: ReLU, tanh, Heaviside, Gaussian/Rademacher/heavy-tailed synthetic data, and CIFAR-10 all show related preservation behavior in these experiments.</p>
+<div id="fig-universality" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-universality-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/figures/module-01/universality-spectra-alpha1p31.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-universality-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: Random-feature spectra across several data distributions and activations. The fitted slopes are similar across Gaussian, Rademacher, heavy-tailed, and CIFAR-10 inputs, suggesting a broader universality phenomenon beyond the theorem’s assumptions.
+</figcaption>
+</figure>
+</div>
+<div id="qst-relu-tanh-preservation" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-qst figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-qst" id="qst-relu-tanh-preservation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Question&nbsp;4: Preservation beyond monomials
+</figcaption>
+<div aria-describedby="qst-relu-tanh-preservation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<p><strong>Status: open.</strong></p>
+<p>Prove a power-law spectral-preservation theorem for random-feature blocks with ReLU or tanh activation. The experiments above suggest preservation, but <a href="#thm-power-law-preservation" class="quarto-xref">Theorem&nbsp;1</a> applies only to monomial activations.</p>
+</div>
+</figure>
+</div>
+</section>
+<section id="proof-overview" class="level2 page-columns page-full" data-number="7">
+<h2 data-number="7" class="anchored" data-anchor-id="proof-overview"><span class="header-section-number">7</span> Proof Overview</h2>
+<p>The proof follows one chain of reductions. Here is the whole argument before we look more closely at its parts.</p>
+<ol type="1">
+<li><strong>Start with the linear sketch.</strong> If <span class="math inline">\(f(y)=y\)</span>, then</li>
+</ol>
+<p><span class="math display">\[
+K_{f,W} = \frac{1}{d} W^\top \Sigma W.
+\]</span></p>
+<p>Thus even the warm-up is a covariance-estimation problem: a random sketch must preserve the tail of <span class="math inline">\(\Sigma\)</span> up to the finite-width cutoff.</p>
+<ol start="2" type="1">
+<li><p><strong>Lift the monomial into tensor space.</strong> For <span class="math inline">\(f(y)=y^p\)</span>, Gaussian moments and Wick’s formula rewrite the feature kernel as a sum of chaos components. The principal component is a covariance operator on degree-<span class="math inline">\(p\)</span> tensor features; the other Wick contractions are lower-order terms.</p></li>
+<li><p><strong>Center and isolate the principal chaos.</strong> Removing the lower-order mean terms exposes the tensor covariance whose eigenvalues are products <span class="math inline">\(\lambda_{i_1}\cdots\lambda_{i_p}\)</span>. The proof then shows that the remaining chaos terms do not change the leading polynomial rate.</p></li>
+<li><p><strong>Count tensor-product eigenvalues.</strong> Many index tuples produce products at the same scale. Lattice counting converts the original power law into</p></li>
+</ol>
+<p><span class="math display">\[
+j^{-\alpha}
+\quad\leadsto\quad
+\left(\frac{\log^{p-1}(j+1)}{j}\right)^\alpha.
+\]</span></p>
+<ol start="5" type="1">
+<li><strong>Transfer the population spectrum to finite width.</strong> The random columns of <span class="math inline">\(W\)</span> are samples in tensor space, so the finite-width feature kernel is an empirical covariance matrix. A head-tail decomposition and concentration argument show that it tracks the population tensor covariance over a large rank range despite the heavy-tailed tensor features.</li>
+</ol>
+<p>We specialize to the quadratic activation case, which illustrates all of the main ideas. It also reveals a second interpretation of the kernel trick: the random-feature kernel is an empirical covariance matrix in a much larger tensor space.</p>
+<section id="centering-isolates-the-pure-second-chaos" class="level3 page-columns page-full" data-number="7.1">
+<h3 data-number="7.1" class="anchored" data-anchor-id="centering-isolates-the-pure-second-chaos"><span class="header-section-number">7.1</span> Centering isolates the pure second chaos</h3>
+<p>Work in an eigenbasis of <span class="math inline">\(\Sigma\)</span>, and write</p>
+<p><span class="math display">\[
+X=\Sigma^{1/2}Z,
+\qquad
+\Sigma=\operatorname{diag}(\lambda_1,\lambda_2,\ldots),
+\qquad
+Z\sim N(0,I).
+\]</span></p>
+<p>Let <span class="math inline">\(w_a\)</span> be column <span class="math inline">\(a\)</span> of <span class="math inline">\(W\)</span>, and define the preactivation and its variance</p>
+<p><span class="math display">\[
+g_a=w_a^\top X,
+\qquad
+q_a=\mathbb E_X[g_a^2]=w_a^\top\Sigma w_a.
+\]</span></p>
+<p>The raw quadratic activation <span class="math inline">\(g_a^2\)</span> is not centered. Its mean <span class="math inline">\(q_a\)</span> is a degree-zero Gaussian chaos. Subtracting it leaves the <strong>pure second chaos</strong></p>
+<p><span class="math display">\[
+:g_a^2:
+\;=\;
+g_a^2-\mathbb E_X[g_a^2]
+\;=\;
+g_a^2-q_a.
+\]</span></p>
+<p>The colons denote the Wick square. “Pure” means that the constant component has been removed: <span class="math inline">\(:g_a^2:\)</span> lies entirely in the second Wiener chaos, the <span class="math inline">\(L^2\)</span> space spanned by centered quadratic Hermite polynomials <span class="citation" data-cites="janson1997gaussian">(<a href="#ref-janson1997gaussian" role="doc-biblioref">Janson 1997</a>)</span>.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-janson1997gaussian" class="csl-entry" role="listitem">
+Janson, Svante. 1997. <em>Gaussian Hilbert Spaces</em>. Cambridge Tracts in Mathematics 129. Cambridge University Press.
+</div></div><p>This centering also reconciles the second moment used in the theorem with the activation covariance used earlier. Let</p>
+<p><span class="math display">\[
+G=W^\top\Sigma W,
+\qquad
+q=\operatorname{diag}(G).
+\]</span></p>
+<p>Isserlis’ formula gives</p>
+<p><span class="math display">\[
+\mathbb E_X[g_a^2g_b^2]
+=q_aq_b+2G_{ab}^2.
+\]</span></p>
+<p>Consequently,</p>
+<p><span class="math display">\[
+K_{2,W}^{\mathrm{raw}}
+=\frac{1}{d}\mathbb E_X
+\left[g^{\odot 2}(g^{\odot 2})^\top\right]
+=\frac{1}{d}qq^\top+\frac{2}{d}G^{\odot 2},
+\]</span></p>
+<p>where <span class="math inline">\(\odot\)</span> denotes entrywise multiplication, while the centered activation covariance is</p>
+<p><span class="math display">\[
+K_{2,W}^{\mathrm{chaos}}
+=\frac{1}{d}\operatorname{Cov}_X(g^{\odot 2})
+=\frac{2}{d}G^{\odot 2}.
+\]</span></p>
+<p>The two matrices differ by one positive rank-one term. That term can change a leading eigenvalue, but by interlacing it cannot create or remove an extended spectral tail.</p>
+</section>
+<section id="expanding-the-chaos-in-an-orthogonal-basis" class="level3" data-number="7.2">
+<h3 data-number="7.2" class="anchored" data-anchor-id="expanding-the-chaos-in-an-orthogonal-basis"><span class="header-section-number">7.2</span> Expanding the chaos in an orthogonal basis</h3>
+<p>The second Wiener chaos has the orthonormal basis</p>
+<p><span class="math display">\[
+\frac{Z_r^2-1}{\sqrt 2},
+\qquad
+Z_rZ_s\quad(r&lt;s).
+\]</span></p>
+<p>Expanding the Wick square in this basis gives</p>
+<p><span class="math display">\[
+:g_a^2:
+=
+\sum_r \lambda_r w_{ra}^2(Z_r^2-1)
++2\sum_{r&lt;s}
+\sqrt{\lambda_r\lambda_s}\,
+w_{ra}w_{sa}Z_rZ_s.
+\]</span></p>
+<p>Let <span class="math inline">\(\phi_a\)</span> be its coefficient vector:</p>
+<p><span class="math display">\[
+\phi_a
+=
+\left(
+(\sqrt 2\,\lambda_r w_{ra}^2)_r,\;
+(2\sqrt{\lambda_r\lambda_s}\,w_{ra}w_{sa})_{r&lt;s}
+\right).
+\]</span></p>
+<p>Orthogonality of the chaos basis implies</p>
+<p><span class="math display">\[
+\mathbb E_X[:g_a^2::g_b^2:]
+=\langle\phi_a,\phi_b\rangle.
+\]</span></p>
+<p>If <span class="math inline">\(\Phi\)</span> is the matrix with columns <span class="math inline">\(\phi_1,\ldots,\phi_d\)</span>, then</p>
+<p><span class="math display">\[
+K_{2,W}^{\mathrm{chaos}}
+=\frac{1}{d}\Phi^\top\Phi.
+\]</span></p>
+<p>This identity is the kernel trick for the quadratic activation. The kernel matrix is a <span class="math inline">\(d\times d\)</span> Gram matrix of vectors living in the symmetric two-tensor space, which has dimension <span class="math inline">\(v(v+1)/2\)</span> when the input dimension is <span class="math inline">\(v\)</span>.</p>
+</section>
+<section id="where-the-logarithm-comes-from" class="level3" data-number="7.3">
+<h3 data-number="7.3" class="anchored" data-anchor-id="where-the-logarithm-comes-from"><span class="header-section-number">7.3</span> Where the logarithm comes from</h3>
+<p>Now average over a random sketch column <span class="math inline">\(w\sim N(0,I)\)</span>. The population second moment of the chaos coefficient vector,</p>
+<p><span class="math display">\[
+C_{\mathrm{chaos}}
+=\mathbb E_w[\phi(w)\phi(w)^\top],
+\]</span></p>
+<p>is block diagonal between the repeated-index coordinates <span class="math inline">\(Z_r^2-1\)</span> and the distinct-index coordinates <span class="math inline">\(Z_rZ_s\)</span>. A direct Gaussian moment computation gives</p>
+<p><span class="math display">\[
+C_{\mathrm{diag}}
+=2\lambda\lambda^\top
++4\operatorname{diag}(\lambda_r^2),
+\qquad
+C_{\mathrm{off}}
+=4\operatorname{diag}(\lambda_r\lambda_s)_{r&lt;s}.
+\]</span></p>
+<p>The first block is a rank-one matrix plus a spectrum decaying like <span class="math inline">\(j^{-2\alpha}\)</span>. The second block is the principal term. Its eigenvalues are the pairwise products <span class="math inline">\(\lambda_r\lambda_s\)</span> with <span class="math inline">\(r&lt;s\)</span>.</p>
+<p>For the exact model <span class="math inline">\(\lambda_r=r^{-\alpha}\)</span>, the number of pair products above a threshold <span class="math inline">\(\varepsilon\)</span> is</p>
+<p><span class="math display">\[
+\begin{aligned}
+N_{\mathrm{off}}(\varepsilon)
+&amp;=\#\{r&lt;s:4\lambda_r\lambda_s\geq\varepsilon\}\\
+&amp;=\#\left\{r&lt;s:
+rs\leq (4/\varepsilon)^{1/\alpha}
+\right\}.
+\end{aligned}
+\]</span></p>
+<p>The classical divisor count says</p>
+<p><span class="math display">\[
+\#\{r&lt;s:rs\leq R\}
+\sim \frac{1}{2}R\log R.
+\]</span></p>
+<p>Thus</p>
+<p><span class="math display">\[
+j\asymp R\log R
+\quad\Longleftrightarrow\quad
+R\asymp\frac{j}{\log(j+1)},
+\]</span></p>
+<p>and the <span class="math inline">\(j\)</span>th pair-product eigenvalue satisfies</p>
+<p><span class="math display">\[
+\lambda_j(C_{\mathrm{off}})
+\asymp
+R^{-\alpha}
+\asymp
+\left(\frac{\log(j+1)}{j}\right)^\alpha.
+\]</span></p>
+<p>This is the origin of the logarithmic correction. It is a multiplicity effect: many pairs <span class="math inline">\((r,s)\)</span> produce products at approximately the same scale. It is not an error term from covariance estimation.</p>
+</section>
+<section id="the-covariance-estimation-problem-hidden-in-the-kernel" class="level3 page-columns page-full" data-number="7.4">
+<h3 data-number="7.4" class="anchored" data-anchor-id="the-covariance-estimation-problem-hidden-in-the-kernel"><span class="header-section-number">7.4</span> The covariance-estimation problem hidden in the kernel</h3>
+<p>The nonzero eigenvalues of</p>
+<p><span class="math display">\[
+\frac{1}{d}\Phi^\top\Phi
+\qquad\text{and}\qquad
+\widehat C_{\mathrm{chaos}}
+=\frac{1}{d}\Phi\Phi^\top
+=\frac{1}{d}\sum_{a=1}^d\phi_a\phi_a^\top
+\]</span></p>
+<p>are identical. The first matrix is the random-feature kernel; the second is an empirical second-moment matrix formed from the <span class="math inline">\(d\)</span> random columns of <span class="math inline">\(W\)</span>. Thus <strong>width plays the role of sample size</strong> in a covariance-estimation problem on the tensor feature space.</p>
+<p>This reformulation makes the key probabilistic step precise. Order the distinct-index coordinates by their population scales <span class="math inline">\(4\lambda_r\lambda_s\)</span>, retain the largest <span class="math inline">\(k\)</span>, and set</p>
+<p><span class="math display">\[
+\xi_a=(w_{ra}w_{sa})_{(r,s)\text{ in the head}}.
+\]</span></p>
+<p>These vectors are isotropic: <span class="math inline">\(\mathbb E[\xi_a\xi_a^\top]=I_k\)</span>. If <span class="math inline">\(D_k\)</span> is the diagonal matrix containing the corresponding values <span class="math inline">\(4\lambda_r\lambda_s\)</span>, then the head of the empirical chaos covariance is</p>
+<p><span class="math display">\[
+\widehat C_k
+=D_k^{1/2}
+\left(\frac{1}{d}\sum_{a=1}^d\xi_a\xi_a^\top\right)
+D_k^{1/2}.
+\]</span></p>
+<p>Therefore, the norm estimate</p>
+<p><span class="math display">\[
+\left\|
+\frac{1}{d}\sum_{a=1}^d\xi_a\xi_a^\top-I_k
+\right\|
+\leq\delta&lt;1
+\]</span></p>
+<p>immediately gives the Loewner bounds</p>
+<p><span class="math display">\[
+(1-\delta)D_k
+\preceq
+\widehat C_k
+\preceq
+(1+\delta)D_k.
+\]</span></p>
+<p>This is exactly what is needed to transfer the population pair-product eigenvalues to the finite-width random-feature matrix.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Benchmark: sub-Gaussian covariance estimation">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Benchmark: sub-Gaussian covariance estimation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Let <span class="math inline">\(\xi\in\mathbb R^k\)</span> have second-moment matrix <span class="math inline">\(C\)</span>, and suppose every one-dimensional marginal is sub-Gaussian relative to its standard deviation:</p>
+<p><span class="math display">\[
+\|\langle \xi,u\rangle\|_{\psi_2}
+\leq K\|\langle \xi,u\rangle\|_{L^2}
+\qquad\text{for every }u\in\mathbb R^k.
+\]</span></p>
+<p>For <span class="math inline">\(d\)</span> independent copies, Vershynin’s covariance-estimation theorem gives <span class="citation" data-cites="vershynin2026high">(<a href="#ref-vershynin2026high" role="doc-biblioref">Vershynin 2026</a>, Theorem 4.7.1)</span></p>
+<p><span class="math display">\[
+\mathbb E\left\|
+\frac{1}{d}\sum_{a=1}^d\xi_a\xi_a^\top-C
+\right\|
+\leq
+CK^2
+\left(
+\sqrt{\frac{k}{d}}+\frac{k}{d}
+\right)\|C\|.
+\]</span></p>
+<p>In the isotropic case, a sample size proportional to <span class="math inline">\(k\)</span> therefore gives constant operator-norm accuracy. This is the clean covariance-estimation result one would like to apply to the chaos vectors.</p>
+</div>
+</div>
+<div class="no-row-height column-margin column-container"></div></section>
+<section id="why-the-sub-gaussian-theorem-does-not-apply" class="level3 page-columns page-full" data-number="7.5">
+<h3 data-number="7.5" class="anchored" data-anchor-id="why-the-sub-gaussian-theorem-does-not-apply"><span class="header-section-number">7.5</span> Why the sub-Gaussian theorem does not apply</h3>
+<p>The coordinates <span class="math inline">\(w_rw_s\)</span> are products of Gaussians. More generally, for a unit vector <span class="math inline">\(u\)</span>, the marginal <span class="math inline">\(\langle\xi,u\rangle\)</span> is a centered Gaussian quadratic form. Gaussian hypercontractivity gives, for <span class="math inline">\(q\geq2\)</span>,</p>
+<p><span class="math display">\[
+\|\langle\xi,u\rangle\|_{L^q}
+\leq
+(q-1)\|\langle\xi,u\rangle\|_{L^2}.
+\]</span></p>
+<p>This is sub-exponential, not sub-Gaussian, growth. Large individual vectors can therefore dominate the ordinary empirical covariance.</p>
+<p>A useful heavy-tailed replacement makes this obstruction explicit. Under a uniform <span class="math inline">\(L^p\)</span>–<span class="math inline">\(L^2\)</span> marginal bound with <span class="math inline">\(p&gt;4\)</span> and provided <span class="math inline">\(r(C)/d\)</span> is sufficiently small, Jirak, Minsker, Shen, and Wahl prove an estimate of the form <span class="citation" data-cites="jirak2026concentration">(<a href="#ref-jirak2026concentration" role="doc-biblioref">Jirak et al. 2026</a>, Theorem 6)</span></p>
+<div class="no-row-height column-margin column-container"><div id="ref-jirak2026concentration" class="csl-entry" role="listitem">
+Jirak, Moritz, Stanislav Minsker, Yiqiu Shen, and Martin Wahl. 2026. <span>“Concentration and Moment Inequalities for Sums of Independent Heavy-Tailed Random Matrices.”</span> <em>Probability Theory and Related Fields</em> 194: 1917–44. <a href="https://doi.org/10.1007/s00440-025-01412-6">https://doi.org/10.1007/s00440-025-01412-6</a>.
+</div></div><p><span class="math display">\[
+\begin{aligned}
+&amp;\left(
+\mathbb E\left\|
+\frac{1}{d}\sum_{a=1}^d\xi_a\xi_a^\top-C
+\right\|^2
+\right)^{1/2}\\
+&amp;\qquad\leq
+C_{p,\kappa}
+\left[
+\|C\|\sqrt{\frac{r(C)}{d}}
++
+\frac{
+\left(\mathbb E\max_{a\leq d}\|\xi_a\|^p\right)^{2/p}
+}{d}
+\right],
+\end{aligned}
+\]</span></p>
+<p>where <span class="math inline">\(r(C)=\operatorname{tr}(C)/\|C\|\)</span> is the effective rank. The first term is the familiar covariance-estimation rate. The second is the price of the largest sample and is absent from the simplest sub-Gaussian picture.</p>
+<p>To control this maximum, use Gaussian-chaos moment bounds, apply heavy-tailed matrix concentration block by block, and separate the tensor spectrum into a leading head and dyadic tails <span class="citation" data-cites="paquetteXiaoZhu2026powerlaw">(<a href="#ref-paquetteXiaoZhu2026powerlaw" role="doc-biblioref">Paquette et al. 2026</a>)</span>. For a monomial of degree <span class="math inline">\(p\)</span>, this gives sharp two-sided bounds through a head of size</p>
+<div class="no-row-height column-margin column-container"><div id="ref-paquetteXiaoZhu2026powerlaw" class="csl-entry" role="listitem">
+Paquette, Elliot, Ke Liang Xiao, and Yizhe Zhu. 2026. <em>Power-Law Spectrum of the Random Feature Model</em>. <a href="https://arxiv.org/abs/2603.14578">https://arxiv.org/abs/2603.14578</a>.
+</div></div><p><span class="math display">\[
+k_\star
+\asymp
+\frac{d}{\log^{p+1}d}.
+\]</span></p>
+<p>For the quadratic case, <span class="math inline">\(p=2\)</span>, so the current proof gives <span class="math inline">\(k_\star\asymp d/\log^3d\)</span>.</p>
+<div id="prp-refined-quadratic" class="theorem proposition">
+<p><span class="theorem-title"><strong>Proposition 1 (Finite-width quadratic preservation)</strong></span> For <span class="math inline">\(f(z)=z^2\)</span> and <span class="math inline">\(\alpha&gt;1\)</span>, there are positive constants such that, with probability <span class="math inline">\(1-O(\log^{-4}d)\)</span>,</p>
+<p><span class="math display">\[
+\lambda_j(K_{2,W}^{\mathrm{raw}})
+\asymp
+\left(\frac{\log(j+1)}{j}\right)^\alpha,
+\qquad
+1\leq j\leq c\frac{d}{\log^3d}.
+\]</span></p>
+<p>For the remaining ranks <span class="math inline">\(c\,d/\log^3d&lt;j\leq d\)</span>, one obtains the coarser bounds</p>
+<p><span class="math display">\[
+c\left(
+\frac{\log^{-2}(j+1)}{j}
+\right)^\alpha
+\leq
+\lambda_j(K_{2,W}^{\mathrm{raw}})
+\leq
+C\left(
+\frac{\log^4(j+1)}{j}
+\right)^\alpha,
+\]</span></p>
+<p>together with the endpoint lower bound</p>
+<p><span class="math display">\[
+\lambda_d(K_{2,W}^{\mathrm{raw}})
+\geq
+c\left(\frac{\log d}{d}\right)^\alpha.
+\]</span></p>
+<p>The sharp range is therefore almost linear in width, but still has a polylogarithmic gap. These are finite-width, high-probability statements, not only an asymptotic population calculation.</p>
+</div>
+</section>
+<section id="why-only-dlog3-d" class="level3 page-columns page-full" data-number="7.6">
+<h3 data-number="7.6" class="anchored" data-anchor-id="why-only-dlog3-d"><span class="header-section-number">7.6</span> Why only <span class="math inline">\(d/\log^3 d\)</span>?</h3>
+<p>So one can ask: why does the sharp estimate only work up to <span class="math inline">\(d/\log^3 d\)</span>? The population tensor covariance has the predicted pair-product spectrum throughout its range. The restriction appears when we replace that population operator by the empirical covariance formed from the <span class="math inline">\(d\)</span> random columns of <span class="math inline">\(W\)</span>. The tensor features are heavy-tailed, and proving that their empirical covariance is close to its population counterpart costs logarithmic factors.</p>
+<p>This statistical loss is separate from the factor <span class="math inline">\(\log j\)</span> in the eigenvalue curve. That logarithm is structural: it comes from counting the pair products <span class="math inline">\(\lambda_r\lambda_s\)</span>. The logarithms in the cutoff <span class="math inline">\(k_\star\asymp d/\log^3d\)</span> instead come from covariance estimation.</p>
+<p>For comparison, a general-distribution covariance theorem in Vershynin gives, under the almost-sure length bound</p>
+<p><span class="math display">\[
+\|\xi\|_2
+\leq
+K\left(\mathbb E\|\xi\|_2^2\right)^{1/2},
+\]</span></p>
+<p>a rate of the form <span class="citation" data-cites="vershynin2026high">(<a href="#ref-vershynin2026high" role="doc-biblioref">Vershynin 2026</a>, Theorem 5.6.1)</span></p>
+<div class="no-row-height column-margin column-container"><div id="ref-vershynin2026high" class="csl-entry" role="listitem">
+Vershynin, Roman. 2026. <em>High-Dimensional Probability: An Introduction with Applications in Data Science</em>. 2nd ed. Cambridge University Press. <a href="https://www.math.uci.edu/~rvershyn/papers/HDP-book/HDP-2.pdf">https://www.math.uci.edu/~rvershyn/papers/HDP-book/HDP-2.pdf</a>.
+</div></div><p><span class="math display">\[
+\mathbb E\|\widehat C-C\|
+\lesssim
+\left(
+\sqrt{\frac{K^2k\log k}{d}}
++
+\frac{K^2k\log k}{d}
+\right)\|C\|.
+\]</span></p>
+<p>The extra <span class="math inline">\(\log k\)</span>, compared with the sub-Gaussian theorem, is often called the <strong>missing logarithm</strong> in covariance estimation. There are heavy-tailed examples for which the ordinary empirical covariance really does need logarithmic oversampling; finite-moment results retain related maximum-sample or logarithmic terms <span class="citation" data-cites="tikhomirov2018sample">(<a href="#ref-tikhomirov2018sample" role="doc-biblioref">Tikhomirov 2018</a>)</span>.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-tikhomirov2018sample" class="csl-entry" role="listitem">
+Tikhomirov, Konstantin. 2018. <span>“Sample Covariance Matrices of Heavy-Tailed Distributions.”</span> <em>International Mathematics Research Notices</em> 2018 (20): 6254–89. <a href="https://doi.org/10.1093/imrn/rnx090">https://doi.org/10.1093/imrn/rnx090</a>.
+</div><div id="ref-mendelson2020robust" class="csl-entry" role="listitem">
+Mendelson, Shahar, and Nikita Zhivotovskiy. 2020. <span>“Robust Covariance Estimation Under <span><span class="math inline">\(L_4\)</span>–<span class="math inline">\(L_2\)</span></span> Norm Equivalence.”</span> <em>The Annals of Statistics</em> 48 (3): 1648–64. <a href="https://doi.org/10.1214/19-AOS1862">https://doi.org/10.1214/19-AOS1862</a>.
+</div><div id="ref-abdalla2026covariance" class="csl-entry" role="listitem">
+Abdalla, Pedro, and Nikita Zhivotovskiy. 2026. <span>“Covariance Estimation: Optimal Dimension-Free Guarantees for Adversarial Corruption and Heavy Tails.”</span> <em>Journal of the European Mathematical Society</em> 28 (4): 1809–47. <a href="https://doi.org/10.4171/JEMS/1505">https://doi.org/10.4171/JEMS/1505</a>.
+</div></div><p>This does not mean that every logarithm in the full proof is necessary. The <span class="math inline">\(\log^{p+1}d\)</span> loss comes from the current covariance-estimation argument, and sharper bounds may hold over a larger eigenvalue range. Robust covariance estimators can recover sub-Gaussian-type rates under much weaker moment conditions <span class="citation" data-cites="mendelson2020robust abdalla2026covariance">(<a href="#ref-mendelson2020robust" role="doc-biblioref">Mendelson and Zhivotovskiy 2020</a>; <a href="#ref-abdalla2026covariance" role="doc-biblioref">Abdalla and Zhivotovskiy 2026</a>)</span>, although replacing the empirical covariance here would also change the random-feature matrix being studied.</p>
+<p>The final lesson is that the tensor spectrum and covariance estimation solve different parts of the problem. The divisor count predicts the target eigenvalue curve. Concentration proves that a finite-width random feature map actually realizes that curve.</p>
+</section>
+</section>
+<section id="what-to-keep" class="level2" data-number="8">
+<h2 data-number="8" class="anchored" data-anchor-id="what-to-keep"><span class="header-section-number">8</span> What To Keep</h2>
+<p>The main lesson of the module is:</p>
+<ol type="1">
+<li>Covariance spectra give a measurable notion of effective dimension.</li>
+<li>Power-law covariance appears in image data and language-model representations.</li>
+<li>Source/capacity language separates data geometry from target difficulty.</li>
+<li>Activation covariance lets us ask whether nonlinear representations preserve the spectral structure.</li>
+<li>In the random feature model with monomial activations, the power-law exponent is preserved up to logarithmic corrections.</li>
+<li>For a quadratic activation, the structural <span class="math inline">\(\log j\)</span> comes from counting tensor-product eigenvalues; proving that finite width realizes this spectrum is a heavy-tailed covariance-estimation problem.</li>
+</ol>
+<p>This sets up the next module. If the power-law spectrum persists, then it can influence learning curves, compute-optimal model size, and optimizer schedules.</p>
+<!--
+## Exercises
+
+1. **Fitting a spectrum.** Generate eigenvalues
+   $\lambda_j = j^{-1.3}$ for $j=1,\ldots,1000$, add mild multiplicative
+   noise, and estimate the slope by linear regression on log-log axes. How much
+   does the estimated exponent change if you fit only the first 100 eigenvalues?
+
+2. **Effective dimension.** Suppose $\lambda_j = j^{-\alpha}$. Derive the
+   scaling $N(\varepsilon) \asymp \varepsilon^{-1/\alpha}$. What happens to
+   $N(\varepsilon)$ as $\alpha$ approaches zero?
+
+3. **Gram trick.** Let $H \in \mathbb{R}^{n \times m}$. Prove that
+   $H^\top H$ and $HH^\top$ have the same nonzero eigenvalues. What does
+   this imply when $m \gg n$?
+
+4. **Linear sketch.** Take
+   $\Sigma=\operatorname{diag}(j^{-\alpha})$ and a Gaussian sketch
+   $W \in \mathbb{R}^{v \times d}$. Numerically compare the eigenvalues of
+   $\Sigma$ and $W^\top \Sigma W/d$. Where does the finite-width cutoff
+   appear?
+
+5. **Source versus capacity.** In the toy model
+   $X_j = j^{-\alpha/2}Z_j$, $b_j = j^{-\beta}$, identify which exponent
+   belongs to the data distribution and which belongs to the target. Why should
+   an optimizer care about both?
+
+6. **Pure quadratic chaos.** Starting from
+   $g_a=w_a^\top\Sigma^{1/2}Z$, expand
+   $g_a^2-\mathbb E[g_a^2]$ in the orthonormal basis
+   $(Z_r^2-1)/\sqrt2$ and $Z_rZ_s$. Verify directly that
+   $\mathbb E[:g_a^2::g_b^2:]=2(w_a^\top\Sigma w_b)^2$.
+
+7. **The apparent exponent.** Let
+   $\lambda_j=(\log(j+1)/j)^\alpha$. Derive
+   $\alpha_{\mathrm{local}}(j)$ and determine how large $j$ must be before the
+   local exponent is within $10\%$, $5\%$, and $1\%$ of $\alpha$.
+-->
+
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/elliotpaquette\.github\.io\/summer-school-2026-notes\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/elliotpaquette/summer-school-2026-notes/blob/main/modules/01-power-law-covariance.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/elliotpaquette/summer-school-2026-notes/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

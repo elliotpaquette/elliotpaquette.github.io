@@ -1,0 +1,488 @@
+/*
+ * Mathematical statement environments
+ *
+ * Quarto's native theorem blocks supply the semantic classes and numbering.
+ * Question is a custom qst- float so that the native Exercise environment
+ * remains available.
+ */
+
+.theorem,
+figure.quarto-float-qst {
+  --statement-accent: var(--bs-primary);
+  margin: 1.35rem 0;
+  padding: 1rem 1.15rem;
+  border-inline-start: 0.22rem solid var(--statement-accent);
+  border-radius: 0.2rem;
+  background-color: color-mix(
+    in srgb,
+    var(--statement-accent) 7%,
+    var(--bs-body-bg)
+  );
+}
+
+.theorem .theorem-title,
+figure.quarto-float-qst .quarto-float-caption {
+  color: var(--statement-accent);
+  font-style: normal;
+  font-weight: 650;
+  text-align: start;
+}
+
+.theorem .theorem-title {
+  display: block;
+  margin-bottom: 0.55rem;
+}
+
+.theorem > :first-child,
+figure.quarto-float-qst > :first-child {
+  margin-top: 0;
+}
+
+.theorem > :last-child,
+figure.quarto-float-qst > :last-child,
+figure.quarto-float-qst > div > :last-child {
+  margin-bottom: 0;
+}
+
+.theorem.proposition {
+  --statement-accent: #6f42c1;
+}
+
+.theorem.conjecture {
+  --statement-accent: #b35c00;
+}
+
+.theorem.exercise {
+  --statement-accent: #167d67;
+}
+
+figure.quarto-float-qst {
+  --statement-accent: #167d67;
+  width: 100%;
+  text-align: start;
+}
+
+figure.quarto-float-qst .quarto-float-caption-top {
+  margin-bottom: 0.55rem;
+}
+
+figure.quarto-float-qst .quarto-float-caption {
+  margin-top: 0;
+}
+
+body.quarto-dark .theorem {
+  --statement-accent: #72a7d9;
+}
+
+body.quarto-dark .theorem.proposition {
+  --statement-accent: #b69df8;
+}
+
+body.quarto-dark .theorem.conjecture {
+  --statement-accent: #f3b562;
+}
+
+body.quarto-dark .theorem.exercise,
+body.quarto-dark figure.quarto-float-qst {
+  --statement-accent: #5dd6bc;
+}
+
+@supports not (background-color: color-mix(in srgb, white, black)) {
+  .theorem,
+  figure.quarto-float-qst {
+    background-color: rgba(var(--bs-primary-rgb), 0.07);
+  }
+}
+
+/*
+ * Module 2: keep each loss formula beside a roomier interpretation.
+ */
+
+.loss-term-table table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.loss-term-table col:first-child {
+  width: 38% !important;
+}
+
+.loss-term-table col:nth-child(2) {
+  width: 62% !important;
+}
+
+.loss-term-table th:first-child,
+.loss-term-table td:first-child {
+  width: 38%;
+}
+
+.loss-term-table th:nth-child(2),
+.loss-term-table td:nth-child(2) {
+  width: 62%;
+}
+
+.loss-term-table td {
+  vertical-align: top;
+}
+
+.loss-term-table td:first-child {
+  font-size: 0.96rem;
+}
+
+/*
+ * Module 2: reserve most phase-table space for the balance explanation.
+ */
+
+table.phase-balance-table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+table.phase-balance-table col:first-child {
+  width: 10% !important;
+}
+
+table.phase-balance-table col:nth-child(2) {
+  width: 36% !important;
+}
+
+table.phase-balance-table col:nth-child(3) {
+  width: 54% !important;
+}
+
+table.phase-balance-table td {
+  vertical-align: top;
+}
+
+/*
+ * Module 3: keep the PLRF phase map beside its dominant-component table.
+ */
+
+.phase-component-columns {
+  align-items: center;
+  gap: 1.4rem;
+  margin: 1.25rem 0 0.65rem;
+}
+
+.phase-component-columns > .column {
+  padding: 0;
+}
+
+.phase-component-columns figure,
+.phase-component-columns table {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.phase-component-columns > .column:last-child > p:first-child {
+  margin-top: 0;
+  text-align: center;
+}
+
+.phase-component-columns table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.phase-component-columns col:first-child {
+  width: 14% !important;
+}
+
+.phase-component-columns col:last-child {
+  width: 86% !important;
+}
+
+.phase-component-columns th:first-child,
+.phase-component-columns td:first-child {
+  width: 14%;
+  white-space: nowrap;
+}
+
+.phase-component-columns td {
+  vertical-align: middle;
+}
+
+/*
+ * Module 3: equivalent formulations of Nesterov acceleration.
+ */
+
+.nesterov-view-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+  margin: 1rem 0;
+}
+
+.nesterov-view-card {
+  min-width: 0;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid var(--bs-border-color);
+  border-top: 0.2rem solid var(--bs-primary);
+  border-radius: 0.35rem;
+  background-color: color-mix(
+    in srgb,
+    var(--bs-primary) 4%,
+    var(--bs-body-bg)
+  );
+}
+
+.nesterov-exact-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.nesterov-ema-card {
+  margin: 0.85rem 0 1rem;
+}
+
+.nesterov-view-card > :first-child {
+  margin-top: 0;
+}
+
+.nesterov-view-card > :last-child {
+  margin-bottom: 0;
+}
+
+.nesterov-view-card > p:first-child strong {
+  color: var(--bs-primary);
+  font-size: 1.05rem;
+  font-weight: 650;
+}
+
+.nesterov-view-card .math.display {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+@media (max-width: 767.98px) {
+  .phase-component-columns {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .phase-component-columns > .column {
+    width: 100% !important;
+  }
+
+  .nesterov-view-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1199.98px) {
+  .nesterov-exact-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@supports not (background-color: color-mix(in srgb, white, black)) {
+  .nesterov-view-card {
+    background-color: rgba(var(--bs-primary-rgb), 0.04);
+  }
+}
+
+/*
+ * Module 3: group public attention configurations by model family.
+ */
+
+.head-scaling-table tbody tr:nth-child(1) > * {
+  background-color: color-mix(in srgb, #ba8b24 13%, var(--bs-body-bg));
+}
+
+.head-scaling-table tbody tr:nth-child(n + 2):nth-child(-n + 5) > * {
+  background-color: color-mix(in srgb, #4f81bd 11%, var(--bs-body-bg));
+}
+
+.head-scaling-table tbody tr:nth-child(n + 6):nth-child(-n + 8) > * {
+  background-color: color-mix(in srgb, #7b61a8 11%, var(--bs-body-bg));
+}
+
+.head-scaling-table tbody tr:nth-child(n + 9):nth-child(-n + 10) > * {
+  background-color: color-mix(in srgb, #c26b38 12%, var(--bs-body-bg));
+}
+
+.head-scaling-table tbody tr:nth-child(n + 11):nth-child(-n + 14) > * {
+  background-color: color-mix(in srgb, #2d9b78 12%, var(--bs-body-bg));
+}
+
+.head-scaling-table tbody tr:nth-child(1) > *,
+.head-scaling-table tbody tr:nth-child(2) > *,
+.head-scaling-table tbody tr:nth-child(6) > *,
+.head-scaling-table tbody tr:nth-child(9) > *,
+.head-scaling-table tbody tr:nth-child(11) > * {
+  border-top: 2px solid color-mix(in srgb, var(--bs-body-color) 35%, transparent);
+}
+
+.head-scaling-table tbody tr > :first-child {
+  font-weight: 600;
+}
+
+@supports not (background-color: color-mix(in srgb, white, black)) {
+  .head-scaling-table tbody tr > * {
+    background-color: rgba(var(--bs-primary-rgb), 0.06);
+  }
+}
+
+/*
+ * Homepage: course overview and visual through-line.
+ */
+
+.home-shell {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.home-intro {
+  max-width: 900px;
+  margin: 0 auto 1.5rem;
+  font-size: 1.13rem;
+  line-height: 1.7;
+}
+
+.home-thesis {
+  margin: 1.35rem 0 0;
+  padding: 1rem 1.15rem;
+  border-inline-start: 0.25rem solid #167d67;
+  border-radius: 0.25rem;
+  background-color: color-mix(in srgb, #167d67 8%, var(--bs-body-bg));
+}
+
+.home-thesis > :last-child {
+  margin-bottom: 0;
+}
+
+.home-hero-figure {
+  margin: 1.75rem 0 2.6rem;
+}
+
+.home-hero-figure img {
+  display: block;
+  width: 100%;
+  border: 1px solid var(--bs-border-color);
+  border-radius: 0.55rem;
+  background: #fff;
+  box-shadow: 0 0.65rem 1.6rem rgba(27, 42, 65, 0.1);
+}
+
+.home-figure-note {
+  max-width: 850px;
+  margin: 0.65rem auto 0;
+  color: var(--bs-secondary-color);
+  font-size: 0.92rem;
+  text-align: center;
+}
+
+.home-module-grid,
+.home-skill-grid,
+.home-visual-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 1.25rem 0 2.5rem;
+}
+
+.home-module-card,
+.home-skill,
+.home-visual-card {
+  min-width: 0;
+  border: 1px solid var(--bs-border-color);
+  border-radius: 0.5rem;
+  background-color: color-mix(
+    in srgb,
+    var(--bs-primary) 3.5%,
+    var(--bs-body-bg)
+  );
+}
+
+.home-module-card {
+  padding: 1.05rem 1.15rem 1.15rem;
+  border-top: 0.22rem solid var(--bs-primary);
+}
+
+.home-module-label {
+  margin-bottom: 0.35rem;
+  color: var(--bs-secondary-color);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+}
+
+.home-module-card h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.18rem;
+}
+
+.home-module-card h3 a {
+  text-decoration: none;
+}
+
+.home-module-card h3 a:hover {
+  text-decoration: underline;
+}
+
+.home-module-card > :last-child,
+.home-skill > :last-child,
+.home-visual-card > :last-child {
+  margin-bottom: 0;
+}
+
+.home-skill {
+  padding: 1rem 1.1rem;
+}
+
+.home-skill > p:first-child {
+  margin-bottom: 0.35rem;
+  color: #167d67;
+  font-size: 1.04rem;
+}
+
+.home-visual-card {
+  overflow: hidden;
+}
+
+.home-visual-card img {
+  display: block;
+  width: 100%;
+  height: 24rem;
+  object-fit: contain;
+  border-bottom: 1px solid var(--bs-border-color);
+  background: #fff;
+}
+
+.home-visual-card p {
+  margin-inline: 1.05rem;
+}
+
+.home-visual-card p:last-child {
+  margin-bottom: 1.05rem;
+}
+
+body.quarto-dark .home-skill > p:first-child {
+  color: #5dd6bc;
+}
+
+@media (max-width: 767.98px) {
+  .home-intro {
+    font-size: 1.03rem;
+  }
+
+  .home-module-grid,
+  .home-skill-grid,
+  .home-visual-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .home-visual-card img {
+    height: auto;
+    max-height: 30rem;
+  }
+}
+
+@supports not (background-color: color-mix(in srgb, white, black)) {
+  .home-thesis,
+  .home-module-card,
+  .home-skill,
+  .home-visual-card {
+    background-color: rgba(var(--bs-primary-rgb), 0.04);
+  }
+}

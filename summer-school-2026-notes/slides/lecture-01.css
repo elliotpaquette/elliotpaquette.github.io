@@ -1,0 +1,239 @@
+:root {
+  --lecture-ink: #172033;
+  --lecture-muted: #5c6678;
+  --lecture-blue: #315c8c;
+  --lecture-teal: #167d67;
+  --lecture-violet: #6f42c1;
+  --lecture-line: #d9e0e8;
+  --lecture-soft-blue: #f2f6fb;
+  --lecture-soft-teal: #eff8f5;
+}
+
+.reveal {
+  color: var(--lecture-ink);
+  font-size: 30px;
+}
+
+.reveal .slides {
+  text-align: left;
+}
+
+.reveal .slides section {
+  padding: 0;
+}
+
+.reveal .quarto-title-block {
+  text-align: left;
+}
+
+.reveal h1.title {
+  max-width: 12em;
+  margin-top: 1.1em;
+  color: var(--lecture-ink);
+  font-size: 2.25em;
+  line-height: 1.02;
+}
+
+.reveal .subtitle {
+  max-width: 20em;
+  margin-top: 0.45em;
+  color: var(--lecture-blue);
+  font-size: 1.08em;
+}
+
+.reveal .quarto-title-authors {
+  margin-top: 3.8em;
+}
+
+.reveal .quarto-title-author-name {
+  color: var(--lecture-muted);
+  font-size: 0.72em;
+}
+
+.reveal h2 {
+  margin: 0 0 0.55em;
+  padding-bottom: 0.18em;
+  border-bottom: 2px solid var(--lecture-line);
+  color: var(--lecture-ink);
+  font-size: 1.58em;
+  line-height: 1.08;
+}
+
+.reveal h3 {
+  margin: 0 0 0.35em;
+  color: var(--lecture-blue);
+  font-size: 1em;
+}
+
+.reveal p,
+.reveal li {
+  line-height: 1.34;
+}
+
+.reveal ul,
+.reveal ol {
+  margin-top: 0.35em;
+}
+
+.reveal li + li {
+  margin-top: 0.28em;
+}
+
+.reveal table {
+  width: 100%;
+  margin: 0.65em auto;
+  border-collapse: collapse;
+  font-size: 0.82em;
+}
+
+.reveal table th {
+  color: var(--lecture-blue);
+  font-weight: 700;
+}
+
+.reveal table th,
+.reveal table td {
+  padding: 0.5em 0.6em;
+  border-bottom: 1px solid var(--lecture-line);
+}
+
+.reveal .columns {
+  align-items: center;
+  gap: 1.2em;
+}
+
+.reveal .compact-columns {
+  margin-top: 0.6em;
+}
+
+.reveal .compact-columns .column {
+  padding: 0.55em 0.75em;
+  border-top: 4px solid var(--lecture-blue);
+  background: var(--lecture-soft-blue);
+}
+
+.reveal .contrast-columns {
+  align-items: stretch;
+}
+
+.reveal .contrast-columns .column {
+  padding: 0.75em 0.9em;
+  border-top: 5px solid var(--lecture-violet);
+  background: #f6f3fb;
+}
+
+.reveal .contrast-columns .column:last-child {
+  border-top-color: var(--lecture-teal);
+  background: var(--lecture-soft-teal);
+}
+
+.reveal .claim,
+.reveal .takeaway,
+.reveal .theorem-slide,
+.reveal .final-question {
+  margin: 0.85em 0 0;
+  padding: 0.65em 0.8em;
+  border-left: 6px solid var(--lecture-blue);
+  background: var(--lecture-soft-blue);
+}
+
+.reveal .takeaway {
+  border-left-color: var(--lecture-teal);
+  background: var(--lecture-soft-teal);
+  font-size: 0.86em;
+}
+
+.reveal .theorem-slide {
+  margin-top: 0.3em;
+  padding: 0.8em 1em;
+  border-left-color: var(--lecture-violet);
+  background: #f6f3fb;
+}
+
+.reveal .final-question {
+  margin-top: 1.1em;
+  padding: 0.9em 1em;
+  border-left-color: var(--lecture-teal);
+  background: var(--lecture-soft-teal);
+  font-size: 1.08em;
+}
+
+.reveal .claim > :first-child,
+.reveal .takeaway > :first-child,
+.reveal .theorem-slide > :first-child,
+.reveal .final-question > :first-child {
+  margin-top: 0;
+}
+
+.reveal .claim > :last-child,
+.reveal .takeaway > :last-child,
+.reveal .theorem-slide > :last-child,
+.reveal .final-question > :last-child {
+  margin-bottom: 0;
+}
+
+.reveal .figure-slide {
+  height: 650px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.reveal .figure-slide p {
+  height: 100%;
+  margin: 0;
+}
+
+.reveal .figure-slide img {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  margin: 0;
+  object-fit: contain;
+}
+
+.reveal .figure-slide-tall {
+  height: 680px;
+}
+
+.reveal .source {
+  margin-top: 0.35em;
+  color: var(--lecture-muted);
+  font-size: 0.62em;
+  text-align: right;
+}
+
+.reveal .references {
+  font-size: 0.72em;
+}
+
+.reveal .references .csl-entry {
+  margin-bottom: 0.65em;
+}
+
+.reveal .smaller {
+  font-size: 0.78em;
+}
+
+.reveal .slide-number {
+  color: var(--lecture-muted);
+  background: transparent;
+}
+
+.reveal .progress {
+  color: var(--lecture-teal);
+}
+
+.reveal .footer {
+  color: var(--lecture-muted);
+}
+
+.reveal .MathJax {
+  max-width: 100%;
+}
+
+@media (max-width: 900px) {
+  .reveal {
+    font-size: 26px;
+  }
+}

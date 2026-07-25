@@ -1,0 +1,153 @@
+.reveal .section-break-content {
+  display: flex;
+  min-height: 650px;
+  margin-top: -0.2em;
+  padding: 0 1.4em;
+  align-items: center;
+  background: var(--lecture-blue);
+  color: white;
+  font-size: 1.42em;
+  font-weight: 700;
+}
+
+.reveal .section-break-content p {
+  max-width: 19em;
+  margin: 0;
+  line-height: 1.15;
+}
+
+.reveal .spectral-table table {
+  width: 100%;
+  table-layout: fixed;
+  margin-top: 0.25em;
+  font-size: 0.63em;
+}
+
+.reveal .spectral-table table th,
+.reveal .spectral-table table td {
+  padding: 0.32em 0.4em;
+}
+
+.reveal .spectral-table table th:nth-child(1),
+.reveal .spectral-table table td:nth-child(1) {
+  width: 16%;
+}
+
+.reveal .spectral-table table th:nth-child(2),
+.reveal .spectral-table table td:nth-child(2) {
+  width: 30%;
+  text-align: center;
+}
+
+.reveal .spectral-table table th:nth-child(3),
+.reveal .spectral-table table td:nth-child(3) {
+  width: 54%;
+}
+
+.reveal .kernel-table table,
+.reveal .regime-table table,
+.reveal .momentum-table table {
+  width: 94%;
+  margin-top: 0.3em;
+  font-size: 0.72em;
+}
+
+.reveal .kernel-table table th,
+.reveal .kernel-table table td,
+.reveal .regime-table table th,
+.reveal .regime-table table td,
+.reveal .momentum-table table th,
+.reveal .momentum-table table td {
+  padding: 0.35em 0.45em;
+}
+
+.reveal .math-grid {
+  align-items: stretch;
+  gap: 0.85em;
+}
+
+.reveal .math-grid .column {
+  padding: 0.55em 0.7em;
+  border-top: 4px solid var(--lecture-blue);
+  background: var(--lecture-soft-blue);
+}
+
+.reveal .figure-dominant {
+  height: 610px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.reveal .figure-dominant p {
+  height: 100%;
+  margin: 0;
+}
+
+.reveal .figure-dominant img {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  margin: 0;
+  object-fit: contain;
+}
+
+.reveal .figure-wide {
+  height: 585px;
+}
+
+.reveal .mode-crop {
+  height: 630px;
+  text-align: center;
+}
+
+.reveal .mode-crop img {
+  width: auto;
+  height: 100%;
+  object-fit: contain;
+}
+
+.reveal .compact-equations {
+  font-size: 0.84em;
+}
+
+.reveal .compact-source {
+  margin-top: 0.2em;
+  color: var(--lecture-muted);
+  font-size: 0.57em;
+  text-align: right;
+}
+
+.reveal .fixed-lr-box {
+  margin-top: 0.65em;
+  padding: 0.48em 0.65em;
+  border-left: 6px solid var(--lecture-teal);
+  background: var(--lecture-soft-teal);
+  font-size: 0.82em;
+}
+
+.reveal .three-mechanisms {
+  align-items: stretch;
+  gap: 0.75em;
+}
+
+.reveal .three-mechanisms .column {
+  padding: 0.65em 0.7em;
+  border-top: 5px solid var(--lecture-blue);
+  background: var(--lecture-soft-blue);
+  font-size: 0.84em;
+}
+
+.reveal .three-mechanisms .column:nth-child(2) {
+  border-top-color: var(--lecture-violet);
+  background: #f6f3fb;
+}
+
+.reveal .three-mechanisms .column:nth-child(3) {
+  border-top-color: var(--lecture-teal);
+  background: var(--lecture-soft-teal);
+}
+
+.reveal .source {
+  line-height: 1.2;
+}

@@ -1,0 +1,217 @@
+.reveal .section-break-content {
+  display: flex;
+  min-height: 650px;
+  margin-top: -0.2em;
+  padding: 0 1.4em;
+  align-items: center;
+  background: var(--lecture-blue);
+  color: white;
+  font-size: 1.45em;
+  font-weight: 700;
+}
+
+.reveal .section-break-content p {
+  max-width: 18em;
+  margin: 0;
+  line-height: 1.15;
+}
+
+.reveal .memory-table table,
+.reveal .penalty-table table {
+  width: 82%;
+  margin-top: 0.35em;
+  font-size: 0.76em;
+}
+
+.reveal .two-column-table table,
+.reveal .comparison-table table {
+  border: 1px solid var(--lecture-line);
+}
+
+.reveal .two-column-table table th,
+.reveal .two-column-table table td,
+.reveal .comparison-table table th,
+.reveal .comparison-table table td {
+  border: 1px solid var(--lecture-line);
+}
+
+.reveal .two-column-table table thead tr,
+.reveal .comparison-table table thead tr {
+  background: #e8eef6;
+}
+
+.reveal .two-column-table table tbody tr:nth-child(odd),
+.reveal .comparison-table table tbody tr:nth-child(odd) {
+  background: var(--lecture-soft-blue);
+}
+
+.reveal .two-column-table table tbody tr:nth-child(even),
+.reveal .comparison-table table tbody tr:nth-child(even) {
+  background: #fbfcfe;
+}
+
+.reveal .comparison-table table {
+  width: 100%;
+  table-layout: fixed;
+  margin-top: 0.3em;
+  font-size: 0.72em;
+}
+
+.reveal .comparison-table table th,
+.reveal .comparison-table table td {
+  padding: 0.42em 0.5em;
+  vertical-align: top;
+}
+
+.reveal .comparison-table table th:nth-child(1),
+.reveal .comparison-table table td:nth-child(1) {
+  width: 23%;
+}
+
+.reveal .comparison-table table th:nth-child(2),
+.reveal .comparison-table table td:nth-child(2) {
+  width: 29%;
+}
+
+.reveal .comparison-table table th:nth-child(3),
+.reveal .comparison-table table td:nth-child(3) {
+  width: 48%;
+}
+
+.reveal .dana-table-slide {
+  text-align: center;
+}
+
+.reveal .dana-table-slide .comparison-table table {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.reveal .dana-table-slide .comparison-table table th,
+.reveal .dana-table-slide .comparison-table table td {
+  text-align: center;
+}
+
+.reveal .compact-columns .column,
+.reveal .contrast-columns .column {
+  border-right: 1px solid var(--lecture-line);
+  border-bottom: 1px solid var(--lecture-line);
+  border-left: 1px solid var(--lecture-line);
+}
+
+.reveal .clock-table table {
+  table-layout: fixed;
+  margin-top: 0.25em;
+  font-size: 0.69em;
+}
+
+.reveal .clock-table table th:nth-child(1),
+.reveal .clock-table table td:nth-child(1) {
+  width: 20%;
+}
+
+.reveal .clock-table table th:nth-child(2),
+.reveal .clock-table table td:nth-child(2) {
+  width: 42%;
+}
+
+.reveal .clock-table table th:nth-child(3),
+.reveal .clock-table table td:nth-child(3) {
+  width: 38%;
+}
+
+.reveal .infrastructure-table table {
+  margin-top: 0.2em;
+  font-size: 0.68em;
+}
+
+.reveal .infrastructure-table table th:first-child,
+.reveal .infrastructure-table table td:first-child {
+  width: 25%;
+}
+
+.reveal .figure-dominant {
+  height: 610px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.reveal .figure-dominant p {
+  height: 100%;
+  margin: 0;
+}
+
+.reveal .figure-dominant img {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  margin: 0;
+  object-fit: contain;
+}
+
+.reveal .figure-extra-wide {
+  height: 600px;
+}
+
+.reveal .phase-component-slide {
+  align-items: flex-start;
+  gap: 0.8em;
+}
+
+.reveal .phase-component-slide table {
+  margin-top: 0.2em;
+  font-size: 0.68em;
+}
+
+.reveal .phase-component-slide table th,
+.reveal .phase-component-slide table td {
+  padding: 0.37em 0.4em;
+}
+
+.reveal .convention-line {
+  margin-top: 0.25em;
+  color: var(--lecture-blue);
+  font-size: 0.76em;
+  text-align: center;
+}
+
+.reveal .residual-crops {
+  align-items: flex-start;
+  gap: 0.8em;
+}
+
+.reveal .residual-crops .column {
+  font-size: 0.82em;
+  text-align: center;
+}
+
+.reveal .residual-crops img {
+  width: 100%;
+  margin-top: 0.2em;
+}
+
+.reveal .theory-practice-columns {
+  align-items: stretch;
+  gap: 1em;
+}
+
+.reveal .theory-practice-columns .column {
+  padding: 0.75em 0.9em;
+  border: 1px solid var(--lecture-line);
+  border-top: 5px solid var(--lecture-violet);
+  background: #f6f3fb;
+}
+
+.reveal .theory-practice-columns .column:last-child {
+  border-top-color: var(--lecture-teal);
+  background: var(--lecture-soft-teal);
+}
+
+.reveal .theory-practice-columns h3 {
+  font-size: 1em;
+}
+
+.reveal .source {
+  line-height: 1.2;
+}

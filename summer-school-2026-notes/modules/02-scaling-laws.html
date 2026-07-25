@@ -1,0 +1,2175 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Compute-Optimal Scaling Laws – Power Laws in Data and Optimization</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-5685cd926c25366c96d9f1407e584118.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Power Laws in Data and Optimization</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-modules" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Modules</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-modules">    
+        <li>
+    <a class="dropdown-item" href="../modules/01-power-law-covariance.html">
+ <span class="dropdown-text">1. Power-Law Covariance</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../modules/02-scaling-laws.html">
+ <span class="dropdown-text">2. Scaling Laws</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../modules/03-momentum.html">
+ <span class="dropdown-text">3. Momentum</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../modules/04-muon.html">
+ <span class="dropdown-text">4. Muon</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-slides" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Slides</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-slides">    
+        <li>
+    <a class="dropdown-item" href="../slides/lecture-01.html">
+ <span class="dropdown-text">Lecture 1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../slides/lecture-02.html">
+ <span class="dropdown-text">Lecture 2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../slides/lecture-03.html">
+ <span class="dropdown-text">Lecture 3</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../slides/lecture-04.html">
+ <span class="dropdown-text">Lecture 4</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#the-scaling-law-question" id="toc-the-scaling-law-question" class="nav-link active" data-scroll-target="#the-scaling-law-question"><span class="header-section-number">1</span> The Scaling-Law Question</a></li>
+  <li><a href="#compute-optimality" id="toc-compute-optimality" class="nav-link" data-scroll-target="#compute-optimality"><span class="header-section-number">2</span> Compute Optimality</a></li>
+  <li><a href="#the-power-law-random-features-model" id="toc-the-power-law-random-features-model" class="nav-link" data-scroll-target="#the-power-law-random-features-model"><span class="header-section-number">3</span> The Power-Law Random Features Model</a></li>
+  <li><a href="#why-random-matrix-theory-appears" id="toc-why-random-matrix-theory-appears" class="nav-link" data-scroll-target="#why-random-matrix-theory-appears"><span class="header-section-number">4</span> Why Random Matrix Theory Appears</a>
+  <ul class="collapse">
+  <li><a href="#the-marchenkopastur-law" id="toc-the-marchenkopastur-law" class="nav-link" data-scroll-target="#the-marchenkopastur-law"><span class="header-section-number">4.1</span> The Marchenko–Pastur law</a></li>
+  </ul></li>
+  <li><a href="#sgd-risk-as-a-volterra-equation" id="toc-sgd-risk-as-a-volterra-equation" class="nav-link" data-scroll-target="#sgd-risk-as-a-volterra-equation"><span class="header-section-number">5</span> SGD Risk as a Volterra Equation</a></li>
+  <li><a href="#kestens-lemma-from-implicit-to-explicit" id="toc-kestens-lemma-from-implicit-to-explicit" class="nav-link" data-scroll-target="#kestens-lemma-from-implicit-to-explicit"><span class="header-section-number">6</span> Kesten’s Lemma: From Implicit to Explicit</a></li>
+  <li><a href="#the-four-terms-in-the-loss" id="toc-the-four-terms-in-the-loss" class="nav-link" data-scroll-target="#the-four-terms-in-the-loss"><span class="header-section-number">7</span> The Four Terms in the Loss</a></li>
+  <li><a href="#the-43-phase-diagram" id="toc-the-43-phase-diagram" class="nav-link" data-scroll-target="#the-43-phase-diagram"><span class="header-section-number">8</span> The 4+3 Phase Diagram</a></li>
+  <li><a href="#reading-the-proof" id="toc-reading-the-proof" class="nav-link" data-scroll-target="#reading-the-proof"><span class="header-section-number">9</span> Reading the Proof</a></li>
+  <li><a href="#what-the-model-teaches-us" id="toc-what-the-model-teaches-us" class="nav-link" data-scroll-target="#what-the-model-teaches-us"><span class="header-section-number">10</span> What the Model Teaches Us</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/elliotpaquette/summer-school-2026-notes/blob/main/modules/02-scaling-laws.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/elliotpaquette/summer-school-2026-notes/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Compute-Optimal Scaling Laws</h1>
+<p class="subtitle lead">Module 2</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="the-scaling-law-question" class="level2 page-columns page-full" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="the-scaling-law-question"><span class="header-section-number">1</span> The Scaling-Law Question</h2>
+<p>Scaling laws were one of the organizing principles of the first part of the large-language-model revolution. Empirical laws related loss to model size, dataset size, and compute, and they made it possible to extrapolate beyond the largest experiment one could afford to run. This point of view guided the development of GPT-3 and GPT-4 and culminated, in one influential form, in the Chinchilla study <span class="citation" data-cites="kaplan2020scaling hoffmann2022chinchilla">(<a href="#ref-kaplan2020scaling" role="doc-biblioref">Kaplan et al. 2020</a>; <a href="#ref-hoffmann2022chinchilla" role="doc-biblioref">Hoffmann et al. 2022</a>)</span>.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-kaplan2020scaling" class="csl-entry" role="listitem">
+Kaplan, Jared, Sam McCandlish, Tom Henighan, et al. 2020. <span>“Scaling Laws for Neural Language Models.”</span> <em>arXiv Preprint arXiv:2001.08361</em>. <a href="https://arxiv.org/abs/2001.08361">https://arxiv.org/abs/2001.08361</a>.
+</div><div id="ref-hoffmann2022chinchilla" class="csl-entry" role="listitem">
+Hoffmann, Jordan, Sebastian Borgeaud, Arthur Mensch, et al. 2022. <span>“An Empirical Analysis of Compute-Optimal Large Language Model Training.”</span> <em>Advances in Neural Information Processing Systems</em> 35. <a href="https://arxiv.org/abs/2203.15556">https://arxiv.org/abs/2203.15556</a>.
+</div></div><p>Today, <em>compute-optimal pretraining</em> is not necessarily the dominant engineering question at a frontier lab. A model may be deliberately overtrained because it will be served many times. The parameter count may be chosen to meet inference, latency, or memory constraints rather than to minimize pretraining loss at a fixed FLOP budget. Much of the work of a large laboratory is now about productization and serving.</p>
+<p>The scientific question remains important. Scaling laws tell us the rough relation between the amount of data, the length of training, and model size. They tell us how much improvement to expect from the next increase in compute. They also pose one of the central questions in optimization:</p>
+<blockquote class="blockquote">
+<p>If an optimization problem is made ten times larger, how should every choice in the training procedure change?</p>
+</blockquote>
+<p>This includes layer-dependent initialization, normalization, learning rates, optimizer parameters, and schedules. A naive grid search does not scale to this problem. Even a three-dimensional grid is expensive at frontier scale, while a schedule belongs to an infinite-dimensional search space. Some understanding has to replace brute force.</p>
+<p>The simplifying structure in these notes is again a <strong>power-law covariance spectrum</strong>. We will study the power-law random features (PLRF) model of Paquette, Paquette, Xiao, and Pennington <span class="citation" data-cites="paquette2024fourplusthree">(<a href="#ref-paquette2024fourplusthree" role="doc-biblioref">Paquette et al. 2024</a>)</span>. It is a linear model, but it is rich enough to produce:</p>
+<div class="no-row-height column-margin column-container"></div><ul>
+<li>nontrivial learning curves under one-pass SGD;</li>
+<li>a Chinchilla-like compute-optimal relation;</li>
+<li>crossovers between different apparent power laws; and</li>
+<li>four phases, with three additional subphases, controlled by different statistical and optimization bottlenecks.</li>
+</ul>
+<p>The lesson is not that this quadratic model is a literal theory of a transformer. It is that broken scaling laws and changing slopes already occur in one of the simplest models in which data geometry, finite width, and optimizer noise interact.</p>
+<div class="callout callout-style-default callout-important callout-titled" title="The practitioner's question">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>The practitioner’s question
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>When a scaling curve changes slope, has the intrinsic difficulty of the problem changed, or has some initialization, learning rate, normalization, or schedule failed to scale correctly? Both mechanisms are possible, even in a solvable model.</p>
+</div>
+</div>
+</section>
+<section id="compute-optimality" class="level2 page-columns page-full" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="compute-optimality"><span class="header-section-number">2</span> Compute Optimality</h2>
+<p>Suppose a model of size <span class="math inline">\(d\)</span> is trained for <span class="math inline">\(r\)</span> steps with batch size <span class="math inline">\(B\)</span>. In the model below, the leading compute cost is</p>
+<p><span class="math display">\[
+    \mathsf C \asymp dBr.
+\]</span></p>
+<p>At fixed compute <span class="math inline">\(\mathsf C\)</span>, increasing <span class="math inline">\(d\)</span> gives a more expressive model but leaves fewer optimization steps. Decreasing <span class="math inline">\(d\)</span> allows more steps but eventually runs into a capacity floor. The compute-optimal problem is</p>
+<p><span class="math display">\[
+d_\star(\mathsf C)
+\in \operatorname*{arg\,min}_{d}
+\mathcal L\left(r=\frac{\mathsf C}{dB},d\right).
+\]</span></p>
+<div id="fig-toy-scaling-law" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-toy-scaling-law-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/module-02/toy-scaling-law.png" class="img-fluid figure-img" style="width:85.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-toy-scaling-law-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: At fixed compute, a small model can be trained for many steps but encounters a capacity floor, whereas a large model receives too few updates. Repeating the minimization for each compute budget traces the red compute-optimal frontier. Figure adapted from <span class="citation" data-cites="paquette2024fourplusthree">Paquette et al. (<a href="#ref-paquette2024fourplusthree" role="doc-biblioref">2024</a>)</span>.
+</figcaption>
+<div class="no-row-height column-margin column-container"></div></figure>
+</div>
+<p>The Chinchilla observation is that, over the range studied, compute should be allocated approximately evenly on a logarithmic scale between model size and training tokens. In our notation this is the relation</p>
+<p><span class="math display">\[
+      d_\star(\mathsf C)\asymp \mathsf C^{1/2},
+      \qquad
+      r_\star(\mathsf C)\asymp \mathsf C^{1/2}.
+\]</span></p>
+<p>The PLRF model reproduces this relation over a substantial region of its phase diagram. It also explains why it is not universal across all problem classes.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="What is the compute-optimal frontier?">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>What is the compute-optimal frontier?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>For each compute budget, imagine training many model sizes and retaining the one with the lowest loss. The lower envelope of those loss curves is the compute-optimal loss <span class="math inline">\(\mathcal L_\star(\mathsf C)\)</span>; the minimizing sizes form <span class="math inline">\(d_\star(\mathsf C)\)</span>. Empirically this is the logic of an IsoFLOP experiment. The frontier is a scientific benchmark, not a prescription that every deployed model must be stopped at that point.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="the-power-law-random-features-model" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="the-power-law-random-features-model"><span class="header-section-number">3</span> The Power-Law Random Features Model</h2>
+<p>Let the input be</p>
+<p><span class="math display">\[
+  X=(X_1,\ldots,X_v),\qquad
+  X_j=j^{-\alpha/2}Z_j,\qquad Z_j\stackrel{\mathrm{iid}}{\sim}\mathcal N(0,1),
+\]</span></p>
+<p>so that</p>
+<p><span class="math display">\[
+  \Sigma=\mathbb E[XX^\top]
+  =\operatorname{diag}(1^{-\alpha},2^{-\alpha},\ldots,v^{-\alpha}).
+\]</span></p>
+<p>The target is the linear functional</p>
+<p><span class="math display">\[
+  Y=\langle X,b\rangle,
+  \qquad b_j=j^{-\beta}.
+\]</span></p>
+<p>Here <span class="math inline">\(\alpha\)</span> measures the decay of the data covariance spectrum and <span class="math inline">\(\beta\)</span> measures the alignment or smoothness of the target. A large <span class="math inline">\(\beta\)</span> concentrates the target on the leading, easy-to-learn directions; a small <span class="math inline">\(\beta\)</span> places more target energy in the tail.</p>
+<p>Instead of fitting all <span class="math inline">\(v\)</span> coordinates, introduce a Gaussian random feature map</p>
+<p><span class="math display">\[
+  W\in\mathbb R^{v\times d},
+  \qquad W_{jk}\stackrel{\mathrm{iid}}{\sim}\mathcal N(0,1/d),
+  \qquad \phi(X)=W^\top X.
+\]</span></p>
+<p>The model predicts <span class="math inline">\(\widehat Y_\theta=\langle W^\top X,\theta\rangle\)</span>. Its population loss is the quadratic</p>
+<p><span class="math display">\[
+\begin{aligned}
+  \mathcal L(\theta)
+  &amp;=\mathbb E\left[
+       \bigl(\langle W^\top X,\theta\rangle-\langle X,b\rangle\bigr)^2
+     \right] \\
+  &amp;=\left\|\Sigma^{1/2}(W\theta-b)\right\|_2^2.
+\end{aligned}
+\]</span></p>
+<p>There are three structural parameters:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>parameter</th>
+<th>role</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(\alpha\)</span></td>
+<td>decay of the covariance eigenvalues; data geometry</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\beta\)</span></td>
+<td>decay of the target coefficients; target difficulty</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(d\)</span></td>
+<td>number of random features; model capacity</td>
+</tr>
+</tbody>
+</table>
+<p>We run one-pass mini-batch SGD on fresh samples, with constant step size <span class="math inline">\(\gamma\)</span>. This removes finite-dataset reuse from the problem and isolates the interaction between the spectrum, random feature map, and stochastic optimization.</p>
+<div class="callout callout-style-default callout-warning callout-titled" title="Convention">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Convention
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The 4+3 paper writes <span class="math inline">\(X_j=j^{-\alpha_{\rm paper}}Z_j\)</span>. Its covariance eigenvalues therefore decay as <span class="math inline">\(j^{-2\alpha_{\rm paper}}\)</span>. These notes reserve <span class="math inline">\(\alpha\)</span> for the covariance-eigenvalue exponent: <span class="math display">\[
+  \alpha=2\alpha_{\rm paper}.
+\]</span> Thus the paper’s high-dimensional line <span class="math inline">\(2\alpha_{\rm paper}=1\)</span> is <span class="math inline">\(\alpha=1\)</span> here.</p>
+</div>
+</div>
+</section>
+<section id="why-random-matrix-theory-appears" class="level2 page-columns page-full" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="why-random-matrix-theory-appears"><span class="header-section-number">4</span> Why Random Matrix Theory Appears</h2>
+<p>The Hessian of the feature-space population loss is</p>
+<p><span class="math display">\[
+  \widehat K=W^\top\Sigma W.
+\]</span></p>
+<p>Equivalently, its nonzero eigenvalues are those of <span class="math inline">\(\Sigma^{1/2}WW^\top\Sigma^{1/2}\)</span>. Even though <span class="math inline">\(\Sigma\)</span> is diagonal, the random projection mixes its eigendirections. Learning curves depend on functions of <span class="math inline">\(\widehat K\)</span>, such as</p>
+<p><span class="math display">\[
+  (I-\gamma\widehat K)^r
+  \quad\text{and}\quad
+  (\widehat K-zI)^{-1}.
+\]</span></p>
+<p>The relevant object is therefore not merely the population spectrum of <span class="math inline">\(\Sigma\)</span>, but the spectrum and resolvent of a random sample covariance matrix.</p>
+<section id="the-marchenkopastur-law" class="level3 page-columns page-full" data-number="4.1">
+<h3 data-number="4.1" class="anchored" data-anchor-id="the-marchenkopastur-law"><span class="header-section-number">4.1</span> The Marchenko–Pastur law</h3>
+<p>Start with the isotropic case. Let <span class="math inline">\(G\in\mathbb R^{n\times d}\)</span> have independent <span class="math inline">\(\mathcal N(0,1)\)</span> entries and let <span class="math inline">\(d/n\to c\in(0,\infty)\)</span>. The empirical eigenvalue distribution of</p>
+<p><span class="math display">\[
+  S=\frac1nG^\top G
+\]</span></p>
+<p>converges to the Marchenko–Pastur distribution. Its continuous density is</p>
+<p><span class="math display">\[
+\rho_c(x)=
+\frac{\sqrt{(b-x)(x-a)}}{2\pi c x}\,
+\mathbf 1_{[a,b]}(x),
+\qquad
+a=(1-\sqrt c)^2,\quad b=(1+\sqrt c)^2,
+\]</span></p>
+<p>with the appropriate atom at zero when the matrix has a macroscopic nullspace.</p>
+<div id="thm-marchenko-pastur" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 1 (Marchenko–Pastur)</strong></span> If <span class="math inline">\(d/n\to c\)</span> and the entries of <span class="math inline">\(G\)</span> are iid, centered, variance one, and have sufficient moments, then the empirical spectral distribution of <span class="math inline">\(n^{-1}G^\top G\)</span> converges almost surely to the Marchenko–Pastur law with aspect ratio <span class="math inline">\(c\)</span>.</p>
+<p>The key point is that the sample spectrum does <strong>not</strong> collapse to a point at one when dimension and sample size grow together.</p>
+</div>
+<p>For a non-isotropic covariance <span class="math inline">\(\Sigma\)</span>, one obtains a <em>deformed</em> Marchenko–Pastur problem. Its deterministic equivalent is encoded by a scalar fixed point for a Stieltjes-transform-like function <span class="math inline">\(m(z)\)</span>. In the PLRF normalization, the diagonal resolvent approximation takes the form</p>
+<p><span class="math display">\[
+  \mathcal R(z)_{jj}
+  =\frac{1}{j^{-\alpha}m(z)-z},
+\]</span></p>
+<p>where <span class="math inline">\(m(z)\)</span> solves</p>
+<p><span class="math display">\[
+  m(z)
+  =
+  \left[
+    1+\frac1d\sum_{j=1}^{v}
+      \frac{j^{-\alpha}}{j^{-\alpha}m(z)-z}
+  \right]^{-1}.
+\]</span></p>
+<p>This one-dimensional nonlinear equation replaces a large random matrix. Once <span class="math inline">\(m(z)\)</span> is known, contour integrals of <span class="math inline">\(\mathcal R(z)\)</span> predict the spectral quantities entering the learning curve.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Derivation by Stein's lemma">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Derivation by Stein’s lemma
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Here is the resolvent calculation behind the fixed-point equation. The purpose is to show the mechanism; we leave the concentration estimate as a lemma.</p>
+<p>Write</p>
+<p><span class="math display">\[
+\Lambda\succeq0\quad\text{deterministic},
+\qquad
+W=\frac{1}{\sqrt d}G,
+\qquad
+H=\Lambda^{1/2}WW^\top\Lambda^{1/2},
+\]</span></p>
+<p>where the entries of <span class="math inline">\(G\)</span> are independent standard Gaussians. For <span class="math inline">\(z\in\mathbb C_+\)</span>, let</p>
+<p><span class="math display">\[
+R=R(z)=(H-zI)^{-1},
+\qquad
+t_d(z)=\frac1d\operatorname{Tr}(\Lambda R),
+\qquad
+m_d(z)=\frac{1}{1+t_d(z)}.
+\]</span></p>
+<p>No power-law assumption on <span class="math inline">\(\Lambda\)</span> is needed for the derivation. By the orthogonal invariance of <span class="math inline">\(G\)</span>, we may work in an eigenbasis of <span class="math inline">\(\Lambda\)</span> and write</p>
+<p><span class="math display">\[
+\Lambda=\operatorname{diag}(\lambda_1,\ldots,\lambda_v).
+\]</span></p>
+<p>We seek an equation for the diagonal entries of <span class="math inline">\(R\)</span> in this basis. There are three elementary ingredients.</p>
+<p><strong>1. Start from the resolvent identity.</strong> Since <span class="math inline">\(R(H-zI)=I\)</span>,</p>
+<p><span class="math display">\[
+RH=I+zR.
+\tag{1}
+\]</span></p>
+<p>Factor the left-hand side as</p>
+<p><span class="math display">\[
+RH
+=
+\bigl(R\Lambda^{1/2}W\bigr)
+\bigl(W^\top\Lambda^{1/2}\bigr).
+\tag{2}
+\]</span></p>
+<p>This exposes one copy of <span class="math inline">\(W\)</span> to which we can apply Gaussian integration by parts.</p>
+<p><strong>2. Differentiate the resolvent.</strong> For a perturbation <span class="math inline">\(W\mapsto W+\varepsilon\Delta\)</span>, define the directional derivative of a matrix-valued function <span class="math inline">\(F\)</span> by</p>
+<p><span class="math display">\[
+\boxed{
+\partial_\Delta F(W)
+:=
+\left.\frac{d}{d\varepsilon}
+F(W+\varepsilon\Delta)\right|_{\varepsilon=0}.
+}
+\]</span></p>
+<p>The base point is <span class="math inline">\(W\)</span> and <span class="math inline">\(\Delta\)</span> is the perturbation direction. In particular, <span class="math inline">\(\partial_{\widetilde W}F(W)\)</span> below means that the derivative is taken at <span class="math inline">\(W\)</span> in the independent random direction <span class="math inline">\(\widetilde W\)</span>. With this notation,</p>
+<p><span class="math display">\[
+\partial_\Delta H
+=\Lambda^{1/2}(\Delta W^\top+W\Delta^\top)\Lambda^{1/2},
+\tag{3}
+\]</span></p>
+<p>and, by differentiating <span class="math inline">\(R(H-zI)=I\)</span>,</p>
+<p><span class="math display">\[
+\boxed{
+\partial_\Delta R
+=-R(\partial_\Delta H)R.
+}
+\tag{4}
+\]</span></p>
+<p><strong>3. Replace the exposed Gaussian by an independent copy.</strong> Let <span class="math inline">\(\widetilde W\)</span> be an independent copy of <span class="math inline">\(W\)</span>. For any smooth, compatible matrix-valued function <span class="math inline">\(F\)</span>,</p>
+<p><span class="math display">\[
+\boxed{
+\mathbb E\!\left[F(W)W^\top\right]
+=
+\mathbb E\!\left[
+  \bigl(\partial_{\widetilde W}F(W)\bigr)\widetilde W^\top
+\right].
+}
+\tag{5}
+\]</span></p>
+<p>This is just Stein’s lemma written probabilistically. The derivative is linear in <span class="math inline">\(\widetilde W\)</span>, and multiplication by the independent copy performs the Gaussian contraction. No coordinates or divergence notation are required.</p>
+<p>Apply (5) to</p>
+<p><span class="math display">\[
+F(W)=R(W)\Lambda^{1/2}W.
+\]</span></p>
+<p>Using the product rule and (4),</p>
+<p><span class="math display">\[
+\partial_{\widetilde W}
+\bigl(R\Lambda^{1/2}W\bigr)
+=
+-R\Lambda^{1/2}
+  (\widetilde W W^\top+W\widetilde W^\top)
+  \Lambda^{1/2}R\Lambda^{1/2}W
++
+R\Lambda^{1/2}\widetilde W.
+\tag{6}
+\]</span></p>
+<p>Multiplying (6) on the right by <span class="math inline">\(\widetilde W^\top\Lambda^{1/2}\)</span> and taking expectation gives</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbb E[RH]
+={}&amp;
+\mathbb E\!\left[
+  R\Lambda^{1/2}\widetilde W\widetilde W^\top\Lambda^{1/2}
+\right]\\
+&amp;-
+\mathbb E\!\left[
+R\Lambda^{1/2}
+(\widetilde W W^\top+W\widetilde W^\top)
+\Lambda^{1/2}R\Lambda^{1/2}W
+\widetilde W^\top\Lambda^{1/2}
+\right].
+\end{aligned}
+\tag{7}
+\]</span></p>
+<p>Now condition on <span class="math inline">\(W\)</span> and apply Wick’s formula to the two occurrences of <span class="math inline">\(\widetilde W\)</span>. It is useful to name the two contractions that occur. For a <span class="math inline">\(d\times d\)</span> matrix <span class="math inline">\(A\)</span>, define the <strong>coherent contraction</strong></p>
+<p><span class="math display">\[
+\mathsf C_{\widetilde W}[A]
+:=
+\mathbb E_{\widetilde W}
+\left[\widetilde W A\widetilde W^\top\right]
+=
+\frac1d\operatorname{Tr}(A)I_v.
+\tag{8}
+\]</span></p>
+<p>For a <span class="math inline">\(v\times v\)</span> matrix <span class="math inline">\(B\)</span> and a <span class="math inline">\(v\times d\)</span> matrix <span class="math inline">\(C\)</span>, define the <strong>incoherent contraction</strong></p>
+<p><span class="math display">\[
+\mathsf I_{\widetilde W}[B,C]
+:=
+\mathbb E_{\widetilde W}
+\left[\widetilde W^\top B C\widetilde W^\top\right]
+=
+\frac1d C^\top B^\top.
+\tag{9}
+\]</span></p>
+<p>Both identities are just</p>
+<p><span class="math display">\[
+\mathbb E[
+\widetilde W_{ia}\widetilde W_{jb}]
+=\frac1d\delta_{ij}\delta_{ab}.
+\]</span></p>
+<p>The distinction is how the indices are wired. The coherent contraction closes a loop and creates a trace times an identity. The incoherent contraction crosses the two wires and reverses the order, producing <span class="math inline">\(C^\top B^\top\)</span> rather than a trace. These are the two Wick rules we will reuse later.</p>
+<p>Apply them to (7). The first term is immediate:</p>
+<p><span class="math display">\[
+\mathbb E_{\widetilde W}
+\left[
+R\Lambda^{1/2}\widetilde W\widetilde W^\top\Lambda^{1/2}
+\right]
+=R\Lambda.
+\tag{10}
+\]</span></p>
+<p>For the first crossing term, take</p>
+<p><span class="math display">\[
+A=W^\top\Lambda^{1/2}R\Lambda^{1/2}W.
+\]</span></p>
+<p>The coherent rule gives</p>
+<p><span class="math display">\[
+-\frac1d
+\operatorname{Tr}(RH)\,R\Lambda.
+\tag{11}
+\]</span></p>
+<p>For the second crossing term, use the incoherent rule with <span class="math inline">\(B=\Lambda^{1/2}R\Lambda^{1/2}\)</span> and <span class="math inline">\(C=W\)</span>. Since <span class="math inline">\(R^\top=R\)</span>, the reversal gives</p>
+<p><span class="math display">\[
+-\frac1d RHR\Lambda.
+\tag{12}
+\]</span></p>
+<p>Therefore the entire independent-copy expectation is</p>
+<p><span class="math display">\[
+\boxed{
+\mathbb E[RH]
+=
+\mathbb E\left[
+q_d(z)R\Lambda-\frac1dRHR\Lambda
+\right],
+\qquad
+q_d(z):=1-\frac1d\operatorname{Tr}(RH).
+}
+\tag{13}
+\]</span></p>
+<p>The two terms have different origins. The scalar <span class="math inline">\(q_d\)</span> is created by the trace-producing coherent contraction. The matrix correction <span class="math inline">\(d^{-1}RHR\Lambda\)</span> is the non-trace, incoherent contraction.</p>
+<p>Using <span class="math inline">\(RH=I+zR\)</span>, the <span class="math inline">\(j\)</span>th diagonal entry of (13) becomes</p>
+<p><span class="math display">\[
+\mathbb E\!\left[
+  \bigl(\lambda_jq_d(z)-z\bigr)R_{jj}(z)
+\right]
+=
+1+\frac{\lambda_j}{d}
+\mathbb E[(RHR)_{jj}].
+\tag{14}
+\]</span></p>
+<p>The same computation with <span class="math inline">\(i\ne j\)</span> shows that the expected off-diagonal entries are negligible. The explicit final term in (14) is small for fixed <span class="math inline">\(\operatorname{Im}z&gt;0\)</span> because of the a priori resolvent bound.</p>
+<p>At this point no further integration by parts is needed. The deterministic bound</p>
+<p><span class="math display">\[
+\|R(z)\|\le \frac{1}{\operatorname{Im}z}
+\tag{15}
+\]</span></p>
+<p>controls the explicit <span class="math inline">\(d^{-1}\)</span> correction, and the remaining input is concentration of normalized traces.</p>
+<div id="lem-resolvent-trace-concentration" class="theorem lemma">
+<p><span class="theorem-title"><strong>Lemma 1 (Gaussian resolvent concentration)</strong></span> For every fixed <span class="math inline">\(z\in\mathbb C_+\)</span>, normalized resolvent traces concentrate:</p>
+<p><span class="math display">\[
+\operatorname{Var}\!\left(
+  \frac1d\operatorname{Tr}(\Lambda R(z))
+\right)\longrightarrow 0.
+\]</span></p>
+<p>The same holds for the other normalized resolvent traces in the master equation. Consequently, the scalar <span class="math inline">\(q_d(z)\)</span> and the normalized resolvent traces may be replaced by their deterministic limits in the proportional limit, under the usual boundedness assumptions on the aspect ratio and the covariance profile.</p>
+<p>The proof follows from the Gaussian Poincaré inequality together with (3), (4), and (15).</p>
+</div>
+<p>Trace concentration is used at exactly one conceptual point: it lets us factor the random scalar <span class="math inline">\(q_d(z)\)</span> from a resolvent entry. Dropping the explicit <span class="math inline">\(d^{-1}\)</span> correction in (14) gives</p>
+<p><span class="math display">\[
+\bigl(\lambda_jq(z)-z\bigr)\mathcal R_{jj}(z)=1.
+\]</span></p>
+<p>so</p>
+<p><span class="math display">\[
+\mathcal R_{jj}(z)=\frac{1}{\lambda_jq(z)-z}.
+\tag{16}
+\]</span></p>
+<p>Finally, take the normalized trace of the deterministic version of (13) and use <span class="math inline">\(RH=I+zR\)</span>. The resulting scalar relation is</p>
+<p><span class="math display">\[
+q(z)
+=
+\left[
+1+\frac1d\operatorname{Tr}(\Lambda\mathcal R(z))
+\right]^{-1}.
+\tag{17}
+\]</span></p>
+<p>Substituting (16) into (17) gives</p>
+<p><span class="math display">\[
+\boxed{
+q(z)
+=
+\left[
+1+\frac1d\sum_{j=1}^{v}
+\frac{\lambda_j}{\lambda_jq(z)-z}
+\right]^{-1}.
+}
+\tag{18}
+\]</span></p>
+<p>Renaming <span class="math inline">\(q\)</span> as <span class="math inline">\(m\)</span>, equation (18) is the deformed Marchenko–Pastur equation for a general deterministic covariance profile <span class="math inline">\((\lambda_j)\)</span>. Only now do we specialize to the PLRF covariance <span class="math inline">\(\lambda_j=j^{-\alpha}\)</span>, which gives the fixed-point equation displayed above.</p>
+</div>
+</div>
+</div>
+<div id="fig-deformed-mp-spectrum" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-deformed-mp-spectrum-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/module-02/deformed-mp-spectrum.png" class="img-fluid figure-img" style="width:72.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-deformed-mp-spectrum-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: An empirical weighted spectral density and the prediction from the resolvent fixed point. The sharp peaks and continuous part both affect optimization. The labels in the original figure use the paper’s coordinate-exponent convention. Figure from <span class="citation" data-cites="paquette2024fourplusthree">Paquette et al. (<a href="#ref-paquette2024fourplusthree" role="doc-biblioref">2024</a>)</span>.
+</figcaption>
+<div class="no-row-height column-margin column-container"></div></figure>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Why use the resolvent?">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Why use the resolvent?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The resolvent does more than package spectral functions. Its main advantage in random matrix theory is that it replaces a singular spectral object by a smooth, stable function in the upper half-plane.</p>
+<p>Let</p>
+<p><span class="math display">\[
+R(z)=(\widehat K-zI)^{-1},
+\qquad z=E+i\eta,\quad \eta&gt;0.
+\]</span></p>
+<p><strong>A priori stability.</strong> Since <span class="math inline">\(\widehat K\)</span> is self-adjoint,</p>
+<p><span class="math display">\[
+\boxed{\|R(E+i\eta)\|\le \frac1\eta.}
+\]</span></p>
+<p>This bound is deterministic: it holds before averaging and without knowing anything about the eigenvalue locations. Staying above the real axis prevents the inverse from approaching a pole.</p>
+<p><strong>A smoothed density estimator.</strong> If</p>
+<p><span class="math display">\[
+\mu_{\widehat K}
+=\frac1p\sum_{j=1}^p\delta_{\lambda_j}
+\]</span></p>
+<p>is the empirical eigenvalue distribution, then its Stieltjes transform is</p>
+<p><span class="math display">\[
+s_p(z)
+=\frac1p\operatorname{Tr}R(z)
+=\int\frac{1}{\lambda-z}\,d\mu_{\widehat K}(\lambda).
+\]</span></p>
+<p>Taking imaginary parts gives</p>
+<p><span class="math display">\[
+\frac1\pi\operatorname{Im}s_p(E+i\eta)
+=
+\int
+\underbrace{
+\frac1\pi\frac{\eta}{(E-\lambda)^2+\eta^2}
+}_{P_\eta(E-\lambda)}
+\,d\mu_{\widehat K}(\lambda)
+=(P_\eta*\mu_{\widehat K})(E).
+\]</span></p>
+<p>Thus <span class="math inline">\(\pi^{-1}\operatorname{Im}s_p(E+i\eta)\)</span> is the empirical spectral measure smoothed by a Poisson kernel of width <span class="math inline">\(\eta\)</span>. Sending <span class="math inline">\(\eta\downarrow0\)</span> recovers the density at its continuity points. The height above the axis is a resolution parameter: smaller <span class="math inline">\(\eta\)</span> sees finer spectral structure, while larger <span class="math inline">\(\eta\)</span> gives stronger stability.</p>
+<p><strong>Smoothness under matrix perturbations.</strong> For two self-adjoint matrices <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>, the resolvent identity gives</p>
+<p><span class="math display">\[
+R_A(z)-R_B(z)
+=-R_A(z)(A-B)R_B(z).
+\]</span></p>
+<p>Consequently,</p>
+<p><span class="math display">\[
+\|R_A(z)-R_B(z)\|
+\le \frac{\|A-B\|}{\eta^2}.
+\]</span></p>
+<p>Infinitesimally, if <span class="math inline">\(A\)</span> is perturbed in the direction <span class="math inline">\(\Delta\)</span>,</p>
+<p><span class="math display">\[
+\partial_\Delta R_A(z)=-R_A(z)\Delta R_A(z).
+\]</span></p>
+<p>This explicit derivative is exactly what makes Stein’s lemma, Gaussian Poincaré inequalities, and resolvent concentration convenient. Every derivative produces more resolvent factors, and every such factor is controlled by <span class="math inline">\(1/\eta\)</span>.</p>
+<p><strong>Recovering other spectral quantities.</strong> Finally, for an analytic function <span class="math inline">\(f\)</span>,</p>
+<p><span class="math display">\[
+  f(\widehat K)=\frac{1}{2\pi i}\oint_\Gamma
+  f(z)(\widehat K-zI)^{-1}\,dz.
+\]</span></p>
+<p>Thus resolvent estimates can be converted into estimates for powers, gradient-descent propagators, spectral projectors, and the forcing and kernel terms below. But functional calculus is only the final step. The reason the resolvent is so effective is the combination of spectral smoothing, a priori upper-half-plane stability, analyticity, and simple differentiation with respect to the underlying random matrix.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="sgd-risk-as-a-volterra-equation" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="sgd-risk-as-a-volterra-equation"><span class="header-section-number">5</span> SGD Risk as a Volterra Equation</h2>
+<p>Let <span class="math inline">\(e_r=W\theta_r-b\)</span> be the residual in the original coordinate space. If we replaced every stochastic gradient by its expectation, the residual would evolve linearly under the population Hessian. SGD adds a mean-zero fluctuation whose conditional variance is proportional to the current loss. Because the loss is quadratic, this second-moment recursion closes.</p>
+<p>After conditioning on <span class="math inline">\(W\)</span>, the expected population loss has the form</p>
+<p><span class="math display">\[
+\boxed{
+   P_r=F_r+\sum_{s=0}^{r-1}K_{r-1-s}P_s
+}
+\tag{V}
+\]</span></p>
+<p>where</p>
+<ul>
+<li><span class="math inline">\(F_r\)</span> is the loss propagated by the mean gradient dynamics, including the approximation error of the random feature model;</li>
+<li><span class="math inline">\(K_r\ge 0\)</span> is a memory kernel generated by stochastic-gradient noise.</li>
+</ul>
+<p>Equation (V) is a discrete convolution Volterra equation. It is a bias–variance decomposition with feedback: the deterministic part of the trajectory is the forcing <span class="math inline">\(F\)</span>, while the variance injected at time <span class="math inline">\(s\)</span> is propagated for another <span class="math inline">\(r-s\)</span> steps and contributes <span class="math inline">\(K_{r-s}P_s\)</span>.</p>
+<p>The exact forcing and kernel are random because they depend on <span class="math inline">\(W\)</span>. Random matrix theory replaces their resolvents by deterministic equivalents, yielding deterministic sequences <span class="math inline">\(\mathscr F_r\)</span>, <span class="math inline">\(\mathscr K_r\)</span>, and <span class="math inline">\(\mathscr P_r\)</span> that accurately track the SGD trajectory:</p>
+<p><span class="math display">\[
+  \mathscr P=\mathscr F+\mathscr K*\mathscr P.
+\]</span></p>
+<div class="callout callout-style-default callout-note callout-titled" title="Proof of the Gaussian Volterra equation">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof of the Gaussian Volterra equation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The closure is exact in every dimension and for every Gaussian covariance; no random matrix limit is needed. Consider first a realizable linear regression problem. Let</p>
+<p><span class="math display">\[
+x\sim\mathcal N(0,H),
+\qquad
+y=x^\top\theta_\star,
+\qquad
+e_r=\theta_r-\theta_\star,
+\]</span></p>
+<p>where <span class="math inline">\(H\)</span> is any positive semidefinite matrix. With a fresh batch of <span class="math inline">\(B\)</span> samples at every step,</p>
+<p><span class="math display">\[
+e_{r+1}=(I-\gamma\widehat H_r)e_r,
+\qquad
+\widehat H_r=\frac1B\sum_{b=1}^B x_{r,b}x_{r,b}^\top.
+\tag{12}
+\]</span></p>
+<p>The population risk is</p>
+<p><span class="math display">\[
+P_r=\mathbb E[e_r^\top H e_r]
+    =\operatorname{Tr}(HC_r),
+\qquad
+C_r=\mathbb E[e_re_r^\top].
+\tag{13}
+\]</span></p>
+<p>Everything follows from the Gaussian fourth-moment identity</p>
+<p><span class="math display">\[
+\mathbb E[xx^\top Axx^\top]
+=2HAH+\operatorname{Tr}(HA)H
+\tag{14}
+\]</span></p>
+<p>for symmetric <span class="math inline">\(A\)</span>. Indeed, the terms in the batch with two different sample indices factor, while (14) handles the equal-index terms. Therefore</p>
+<p><span class="math display">\[
+\mathbb E[\widehat H_r A\widehat H_r]
+=HAH+\frac1B
+  \left(HAH+\operatorname{Tr}(HA)H\right).
+\tag{15}
+\]</span></p>
+<p>Condition on <span class="math inline">\(e_r\)</span> in (12), expand the square, and use (15). We obtain the closed covariance recursion</p>
+<p><span class="math display">\[
+C_{r+1}
+=\underbrace{
+  (I-\gamma H)C_r(I-\gamma H)
+  +\frac{\gamma^2}{B}HC_rH
+}_{\mathcal A(C_r)}
++\frac{\gamma^2}{B}P_rH.
+\tag{16}
+\]</span></p>
+<p>Thus the matrix-valued second moment evolves under a fixed linear operator <span class="math inline">\(\mathcal A\)</span>, driven only by the scalar risk. Iterating (16) gives</p>
+<p><span class="math display">\[
+C_r
+=\mathcal A^r(C_0)
++\frac{\gamma^2}{B}
+  \sum_{s=0}^{r-1}
+  P_s\,\mathcal A^{r-1-s}(H).
+\tag{17}
+\]</span></p>
+<p>Take <span class="math inline">\(\operatorname{Tr}(H\,\cdot)\)</span> and define</p>
+<p><span class="math display">\[
+F_r=\operatorname{Tr}\!\left(H\mathcal A^r(C_0)\right),
+\qquad
+K_\ell=\frac{\gamma^2}{B}
+\operatorname{Tr}\!\left(H\mathcal A^\ell(H)\right).
+\tag{18}
+\]</span></p>
+<p>Then (17) becomes exactly</p>
+<p><span class="math display">\[
+\boxed{
+P_r=F_r+\sum_{s=0}^{r-1}K_{r-1-s}P_s.
+}
+\tag{19}
+\]</span></p>
+<p>This is the Volterra equation. The kernel is nonnegative because <span class="math inline">\(\mathcal A\)</span> preserves positive semidefinite matrices.</p>
+<p>The same argument covers a general jointly Gaussian linear prediction problem. Project the label onto the Gaussian features. The residual is uncorrelated with the features and hence, by joint Gaussianity, independent of them. Its variance contributes an additional deterministic forcing term, but the operator <span class="math inline">\(\mathcal A\)</span>, the kernel <span class="math inline">\(K\)</span>, and the Volterra closure are unchanged. Conditioning on the random feature matrix <span class="math inline">\(W\)</span> puts the PLRF problem precisely in this setting, with <span class="math inline">\(H=W^\top\Sigma W\)</span>.</p>
+</div>
+</div>
+</div>
+<div id="prp-stability" class="theorem proposition">
+<p><span class="theorem-title"><strong>Proposition 1 (Stability criterion)</strong></span> For a nonnegative convolution kernel, a bounded forcing produces a bounded solution when <span class="math display">\[
+   \|\mathscr K\|_1=\sum_{r\ge 0}\mathscr K_r&lt;1.
+\]</span> In the SGD problem, this is the learning-rate/batch-size stability condition. As the kernel norm approaches one, stochastic fluctuations are repeatedly amplified.</p>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Gaussian stability criterion">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Gaussian stability criterion
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>For Gaussian covariates, the condition can be evaluated explicitly. Let <span class="math inline">\(\lambda_1,\ldots,\lambda_p\)</span> be the eigenvalues of the feature covariance <span class="math inline">\(H\)</span>. Recall from the proof above that</p>
+<p><span class="math display">\[
+\mathcal A(C)
+=(I-\gamma H)C(I-\gamma H)
++\frac{\gamma^2}{B}HCH.
+\]</span></p>
+<p>Because the kernel starts from <span class="math inline">\(H\)</span>, only diagonal matrices in the eigenbasis of <span class="math inline">\(H\)</span> enter its calculation. On the <span class="math inline">\(i\)</span>th diagonal direction, <span class="math inline">\(\mathcal A\)</span> acts by multiplication by</p>
+<p><span class="math display">\[
+a_i
+=(1-\gamma\lambda_i)^2
++\frac{\gamma^2}{B}\lambda_i^2
+=1-2\gamma\lambda_i
++\gamma^2\left(1+\frac1B\right)\lambda_i^2.
+\]</span></p>
+<p>Consequently,</p>
+<p><span class="math display">\[
+K_r
+=\frac{\gamma^2}{B}
+\sum_{i=1}^p\lambda_i^2a_i^r.
+\]</span></p>
+<p>Provided <span class="math inline">\(a_i&lt;1\)</span> for every nonzero eigenvalue, the geometric series can be summed:</p>
+<p><span class="math display">\[
+\boxed{
+\|K\|_1
+=\frac{\gamma}{B}
+\sum_{i=1}^p
+\frac{\lambda_i}
+{2-\gamma(1+1/B)\lambda_i}.
+}
+\]</span></p>
+<p>Thus mean-square stability requires both</p>
+<p><span class="math display">\[
+\gamma\left(1+\frac1B\right)\lambda_{\max}(H)&lt;2
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\frac{\gamma}{B}
+\sum_{i=1}^p
+\frac{\lambda_i}
+{2-\gamma(1+1/B)\lambda_i}
+&lt;1.
+\]</span></p>
+<p>The first inequality makes every individual eigendirection contract. The second is genuinely collective: stochastic noise injected across <em>all</em> directions must not regenerate more risk than the dynamics dissipate. Each eigendirection contributes its variance, multiplied by its total future amplification.</p>
+<p>The trace scale can be made precise without assuming in advance that <span class="math inline">\(\gamma\)</span> is small. Since every denominator in the exact formula is at most <span class="math inline">\(2\)</span>,</p>
+<p><span class="math display">\[
+\|K\|_1
+\ge
+\frac{\gamma}{2B}\operatorname{Tr}(H).
+\]</span></p>
+<p>Hence stability necessarily requires</p>
+<p><span class="math display">\[
+\gamma&lt;
+\frac{2B}{\operatorname{Tr}(H)}.
+\]</span></p>
+<p>In the other direction, replacing every eigenvalue in the denominator by <span class="math inline">\(\lambda_{\max}=\|H\|\)</span> gives</p>
+<p><span class="math display">\[
+\|K\|_1
+\le
+\frac{\gamma\,\operatorname{Tr}(H)}
+{B\left[2-\gamma(1+1/B)\|H\|\right]}.
+\]</span></p>
+<p>It follows that the explicit condition</p>
+<p><span class="math display">\[
+\boxed{
+\gamma
+&lt;
+\frac{2B}
+{\operatorname{Tr}(H)+(B+1)\|H\|}
+}
+\]</span></p>
+<p>is sufficient for mean-square stability. Define the effective rank</p>
+<p><span class="math display">\[
+r_{\mathrm{eff}}(H)
+:=\frac{\operatorname{Tr}(H)}{\|H\|}.
+\]</span></p>
+<p>This is also the stable rank of <span class="math inline">\(H^{1/2}\)</span>. If <span class="math inline">\(\gamma_c\)</span> denotes the exact stability threshold, the necessary and sufficient bounds give</p>
+<p><span class="math display">\[
+\frac{2B}{\operatorname{Tr}(H)}
+\frac{1}{1+(B+1)/r_{\mathrm{eff}}(H)}
+\ \le\ \gamma_c\ \le\
+\frac{2B}{\operatorname{Tr}(H)}.
+\]</span></p>
+<p>Therefore, whenever the effective rank is large compared with the batch size,</p>
+<p><span class="math display">\[
+r_{\mathrm{eff}}(H)\gg B,
+\qquad\Longrightarrow\qquad
+\boxed{
+\gamma_c
+=
+\frac{2B}{\operatorname{Tr}(H)}
+\left(1+O\left(\frac{B+1}{r_{\mathrm{eff}}(H)}\right)\right).
+}
+\]</span></p>
+<p>This is the more useful interpretation of the trace threshold. The approximation is accurate because no single eigendirection carries an appreciable fraction of the total spectral mass. The collective noise from the many directions, rather than the top eigenvalue alone, determines stability.</p>
+<p><strong>Connection with critical batch size.</strong> The transition occurs when</p>
+<p><span class="math display">\[
+B_{\mathrm{crit}}\asymp r_{\mathrm{eff}}(H).
+\]</span></p>
+<p>Below this scale, increasing <span class="math inline">\(B\)</span> permits an approximately proportional increase in the stable step size:</p>
+<p><span class="math display">\[
+\gamma_c\asymp \frac{B}{\operatorname{Tr}(H)}.
+\]</span></p>
+<p>Once <span class="math inline">\(B\)</span> is comparable to or larger than the effective rank, the top-eigenvalue term can no longer be ignored and the threshold crosses over toward the full-gradient scale <span class="math inline">\(1/\|H\|\)</span>. This is a spectral version of the <strong>critical batch size</strong> in the large-batch literature: below the critical batch, more parallel samples buy an almost linear improvement; above it, the benefit saturates. See <a href="https://arxiv.org/abs/1812.06162">McCandlish et al., <em>An Empirical Model of Large-Batch Training</em></a> for the gradient-noise-scale formulation and <a href="https://proceedings.mlr.press/v80/ma18a.html">Ma, Bassily, and Belkin, <em>The Power of Interpolation</em></a> for a critical-batch transition in an interpolating model. The notions are not identical—the calculation here concerns mean-square stability rather than time-to-target—but they describe the same small-batch linear-scaling versus large-batch saturation crossover.</p>
+<p>For example, if <span class="math inline">\(H=\lambda I_p\)</span>, the exact condition reduces to</p>
+<p><span class="math display">\[
+\gamma\lambda
+&lt;
+\frac{2}{1+(p+1)/B}.
+\]</span></p>
+<p>With <span class="math inline">\(B\ll p\)</span>, the stable learning rate is of order <span class="math inline">\(B/(p\lambda)\)</span>. Increasing the batch size suppresses the collective noise feedback; as <span class="math inline">\(B\to\infty\)</span>, the condition approaches the ordinary gradient-descent threshold <span class="math inline">\(\gamma\lambda&lt;2\)</span>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="kestens-lemma-from-implicit-to-explicit" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="kestens-lemma-from-implicit-to-explicit"><span class="header-section-number">6</span> Kesten’s Lemma: From Implicit to Explicit</h2>
+<p>The Volterra equation is already numerically useful, but it is still implicit: <span class="math inline">\(\mathscr P\)</span> occurs on both sides. Formally iterating it gives the renewal series</p>
+<p><span class="math display">\[
+\mathscr P
+=\mathscr F+\mathscr K*\mathscr F
++\mathscr K^{*2}*\mathscr F+\cdots.
+\]</span></p>
+<p>For an arbitrary heavy-tailed kernel, all convolution powers could matter. Kesten’s lemma says that a subexponential tail behaves differently: one large summand dominates a long convolution. In the form needed here, if <span class="math inline">\(\mathscr K\)</span> is eventually decreasing and</p>
+<p><span class="math display">\[
+(\mathscr K*\mathscr K)_r
+\le 2(1+\varepsilon)\|\mathscr K\|_1\mathscr K_r
+\]</span></p>
+<p>for large <span class="math inline">\(r\)</span>, then the full renewal series has the same tail order as its first terms. Under a fixed margin from the stability threshold,</p>
+<p><span class="math display">\[
+  \mathscr F_r+\bigl(\mathscr K*\mathscr F\bigr)_r
+  \ \lesssim\ \mathscr P_r
+  \ \lesssim\
+  \mathscr F_r+C\bigl(\mathscr K*\mathscr F\bigr)_r.
+\]</span></p>
+<p>For the PLRF power laws this simplifies further to</p>
+<p><span class="math display">\[
+\boxed{
+\mathscr P_r
+\asymp
+\mathscr F_r+\frac{1}{\gamma B}\mathscr K_r .
+}
+\]</span></p>
+<p>This is the decisive step: it converts an implicit dynamical equation into a finite competition among explicit power laws.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Proof of the Kesten bound">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof of the Kesten bound
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>We state the renewal argument for nonnegative sequences. Let <span class="math inline">\(K_r\ge0\)</span> be summable and write</p>
+<p><span class="math display">\[
+\rho=\|K\|_1&lt;1.
+\]</span></p>
+<p>The relevant hypothesis is not merely that <span class="math inline">\(K\)</span> decays slowly. It is the following convolution-tail property.</p>
+<div id="def-subexponential-kernel" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 1 (Discrete subexponential kernel)</strong></span> A nonnegative summable sequence <span class="math inline">\(K\)</span> is subexponential if</p>
+<p><span class="math display">\[
+\frac{K_{r-s}}{K_r}\longrightarrow1
+\qquad\text{for every fixed }s,
+\tag{20}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\boxed{
+\frac{(K*K)_r}{K_r}
+\longrightarrow 2\|K\|_1=2\rho.
+}
+\tag{21}
+\]</span></p>
+<p>Equivalently, the condition needed for the upper bound is that, for every <span class="math inline">\(\varepsilon&gt;0\)</span>, there exists <span class="math inline">\(r_\varepsilon\)</span> such that</p>
+<p><span class="math display">\[
+(K*K)_r
+\le 2(1+\varepsilon)\rho K_r,
+\qquad r\ge r_\varepsilon.
+\tag{22}
+\]</span></p>
+<p>The factor <span class="math inline">\(2\)</span> corresponds to the two ways a sum can be large: the first summand is large or the second summand is large. Two moderately large summands make a negligible contribution.</p>
+</div>
+<p>Regularly varying summable sequences,</p>
+<p><span class="math display">\[
+K_r=r^{-q}L(r),
+\qquad q&gt;1,
+\]</span></p>
+<p>with <span class="math inline">\(L\)</span> slowly varying, satisfy this criterion. This is the case relevant to the power-law kernels here.</p>
+<p>Now suppose</p>
+<p><span class="math display">\[
+P=F+K*P.
+\tag{23}
+\]</span></p>
+<p>Successive substitution is justified by monotonicity and gives</p>
+<p><span class="math display">\[
+P
+=F+K*F+K^{*2}*F+\cdots.
+\tag{24}
+\]</span></p>
+<p>Every term is nonnegative. Consequently the lower bound is exact:</p>
+<p><span class="math display">\[
+\boxed{P\ge F+K*F.}
+\tag{25}
+\]</span></p>
+<p>There is no asymptotic comparison symbol in this direction.</p>
+<p>The uniform form of Kesten’s lemma upgrades the two-fold convolution criterion to <em>all</em> convolution powers: for every <span class="math inline">\(\varepsilon&gt;0\)</span>, there is a finite constant <span class="math inline">\(C_\varepsilon\)</span> such that</p>
+<p><span class="math display">\[
+K^{*n}(r)
+\le
+C_\varepsilon(1+\varepsilon)^n
+\rho^{\,n-1}K(r),
+\qquad n\ge1,\quad r\ge0.
+\tag{26}
+\]</span></p>
+<p>Here is the mechanism behind the lemma. For the two-fold convolution, split</p>
+<p><span class="math display">\[
+(K*K)(r)=
+\sum_{s\le r/2}K(s)K(r-s)
++
+\sum_{s&gt;r/2}K(s)K(r-s).
+\]</span></p>
+<p>In either half, one summand is of order <span class="math inline">\(r\)</span>. Long-tailedness allows that factor to be compared with <span class="math inline">\(K(r)\)</span>, while summing the other factor costs at most <span class="math inline">\(\rho\)</span>. Hence</p>
+<p><span class="math display">\[
+(K*K)(r)\le 2(1+\varepsilon)\rho K(r)
+\]</span></p>
+<p>for large <span class="math inline">\(r\)</span>, which is precisely (22). For the induction from <span class="math inline">\(n\)</span> to <span class="math inline">\(n+1\)</span>, split <span class="math inline">\(K^{*(n+1)}=K^{*n}*K\)</span> into a boundary region, where one variable is bounded, and a central region, where both variables are large. The boundary region contributes the factor <span class="math inline">\(\rho\)</span> and preserves the tail <span class="math inline">\(K(r)\)</span>; the subexponential criterion makes the central region negligible. Iterating this argument gives (26). The factor <span class="math inline">\((1+\varepsilon)^n\)</span> makes the estimate uniform in the convolution order <span class="math inline">\(n\)</span>, and <span class="math inline">\(C_\varepsilon\)</span> absorbs the finitely many small values of <span class="math inline">\(r\)</span>.</p>
+<p>Choose <span class="math inline">\(\varepsilon\)</span> so that <span class="math inline">\((1+\varepsilon)\rho&lt;1\)</span>. Summing (26) over <span class="math inline">\(n\ge1\)</span> yields the renewal-density bound</p>
+<p><span class="math display">\[
+U(r):=\sum_{n\ge1}K^{*n}(r)\le C K(r).
+\tag{27}
+\]</span></p>
+<p>Using (24),</p>
+<p><span class="math display">\[
+P=F+U*F\le F+C\,K*F.
+\tag{28}
+\]</span></p>
+<p>Together with (25), this proves</p>
+<p><span class="math display">\[
+F+K*F\le P\le F+C\,K*F.
+\tag{29}
+\]</span></p>
+<p>This is the form of Kesten’s lemma needed for the PLRF loss curve: the concrete <span class="math inline">\(K*K\lesssim K\)</span> criterion controls the entire renewal series.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="the-four-terms-in-the-loss" class="level2 page-columns page-full" data-number="7">
+<h2 data-number="7" class="anchored" data-anchor-id="the-four-terms-in-the-loss"><span class="header-section-number">7</span> The Four Terms in the Loss</h2>
+<p>The forcing itself has three spectral pieces. Together with the kernel, the expected loss is, up to constants,</p>
+<p><span class="math display">\[
+\boxed{
+\mathscr P(r,d)
+\asymp
+\underbrace{\mathscr F_{\rm pp}(r)}_{\text{population bias}}
++\underbrace{\mathscr F_{\rm ac}(r,d)}_{\text{embedding bias}}
++\underbrace{\mathscr F_0(d)}_{\text{model capacity}}
++\underbrace{\frac1{\gamma B}\mathscr K_{\rm pp}(r)}_{\text{stochastic variance}} .
+}
+\]</span></p>
+<div class="callout callout-style-default callout-note callout-titled" title="Where do $\mathscr F_{\rm pp}$ and $\mathscr F_{\rm ac}$ come from?">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Where do <span class="math inline">\(\mathscr F_{\rm pp}\)</span> and <span class="math inline">\(\mathscr F_{\rm ac}\)</span> come from?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The cleanest route is to define the measure before the forcing, following the measure-first presentation in <span class="citation" data-cites="ferbach2025dimension">Ferbach et al. (<a href="#ref-ferbach2025dimension" role="doc-biblioref">2025</a>)</span>. Set</p>
+<p><span class="math display">\[
+\Lambda=\operatorname{diag}(\lambda_1,\ldots,\lambda_v),
+\qquad
+H=\Lambda^{1/2}WW^\top\Lambda^{1/2},
+\qquad
+y=\Lambda^{1/2}b.
+\]</span></p>
+<p>If <span class="math inline">\(Hu_\ell=x_\ell u_\ell\)</span>, define the target-weighted empirical spectral measure</p>
+<p><span class="math display">\[
+\widehat\mu_{\mathscr F}
+=
+\sum_{\ell=1}^v
+\left|\langle u_\ell,y\rangle\right|^2\delta_{x_\ell}.
+\]</span></p>
+<p>This is the spectrum of <span class="math inline">\(H\)</span> seen in the basis of the initial residual <span class="math inline">\(y\)</span>, rather than an unweighted eigenvalue count. It is exactly the measure needed to define the forcing: for a modewise squared-residual propagator <span class="math inline">\(\varphi_r(x)\)</span>,</p>
+<p><span class="math display">\[
+\widehat{\mathscr F}(r)
+=
+\int_{\mathbb R_+}\varphi_r(x)\,
+\widehat\mu_{\mathscr F}(dx).
+\]</span></p>
+<p>For full-batch gradient descent, <span class="math inline">\(\varphi_r(x)=(1-\gamma x)^{2r}\)</span>; in the stable scaling regime it behaves like <span class="math inline">\(e^{-2\gamma rx}\)</span>. Other optimizers change the propagator but use the same measure.</p>
+<p>The Stieltjes transform of <span class="math inline">\(\widehat\mu_{\mathscr F}\)</span> is</p>
+<p><span class="math display">\[
+\int_{\mathbb R_+}\frac{\widehat\mu_{\mathscr F}(dx)}{x-z}
+=
+y^\top(H-zI)^{-1}y.
+\]</span></p>
+<p>Replacing the random resolvent by its deterministic equivalent <span class="math inline">\(\mathcal R(z)\)</span> therefore defines the deterministic forcing measure <span class="math inline">\(\mu_{\mathscr F}\)</span> through</p>
+<p><span class="math display">\[
+\int_{\mathbb R_+}\frac{\mu_{\mathscr F}(dx)}{x-z}
+=
+y^\top\mathcal R(z)y.
+\]</span></p>
+<p>Stieltjes inversion recovers its continuous part, while any atom at zero is retained by the transform. In particular, <span class="math inline">\(\mu_{\mathscr F}(\{0\})=\mathscr F_0\)</span>.</p>
+<p>Now comes the step that produces the other two pieces. In the regime used below, <span class="math inline">\(\alpha&gt;1\)</span> and <span class="math inline">\(\beta&gt;1/2\)</span>, the deterministic-equivalent estimates imply, uniformly on mesoscopic dyadic intervals <span class="math inline">\(Md^{-\alpha}\le c\le M^{-1}\)</span> for a fixed sufficiently large <span class="math inline">\(M\)</span>,</p>
+<p><span class="math display">\[
+\boxed{
+\mu_{\mathscr F}([c,2c])
+\asymp
+\underbrace{c^{\,1+(2\beta-1)/\alpha}}_{\text{population modes: population bias}}
++
+\underbrace{\frac1d c^{\,1-1/\alpha}}_{\text{feature bulk: embedding bias}}.
+}
+\]</span></p>
+<p>Thus the positive-spectrum part has the same dyadic mass as the sum of the two power-law reference measures</p>
+<p><span class="math display">\[
+d\mu_{\mathscr F_{\rm pp}}(x)
+\asymp x^{(2\beta-1)/\alpha}\,dx,
+\qquad
+d\mu_{\mathscr F_{\rm ac}}(x)
+\asymp \frac1d x^{-1/\alpha}\,dx.
+\]</span></p>
+<p>The first is the power-law envelope of the target-weighted population spectral peaks and produces the <strong>population bias</strong>. The second is the absolutely continuous bulk created by the random feature map and produces the <strong>embedding bias</strong>. Applying the approximately exponential training filter gives</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathscr F_{\rm pp}(r)
+&amp;\asymp
+\int_0^\infty e^{-2\gamma rx}
+x^{(2\beta-1)/\alpha}\,dx
+\asymp r^{-\left(1+(2\beta-1)/\alpha\right)},\\
+\mathscr F_{\rm ac}(r,d)
+&amp;\asymp
+\frac1d\int_0^\infty e^{-2\gamma rx}
+x^{-1/\alpha}\,dx
+\asymp d^{-1}r^{-1+1/\alpha}.
+\end{aligned}
+\]</span></p>
+<p>This is the missing origin of the population-bias/embedding-bias (FPP/FAC) split: it is already present in the two-term local mass law for the residual-weighted spectral measure. The optimizer only integrates those two spectral contributions against its modewise propagator.</p>
+</div>
+</div>
+</div>
+<div class="no-row-height column-margin column-container"></div><div class="callout callout-style-default callout-note callout-titled" title="Deriving the capacity floor from the deformed MP law">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Deriving the capacity floor from the deformed MP law
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The capacity floor is the population loss of the best predictor in the span of the <span class="math inline">\(d\)</span> random features. Let</p>
+<p><span class="math display">\[
+\Lambda=\operatorname{diag}(\lambda_1,\ldots,\lambda_v),
+\qquad
+H=\Lambda^{1/2}WW^\top\Lambda^{1/2},
+\qquad
+y=\Lambda^{1/2}b.
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+\mathscr F_0
+=
+\min_\theta\|\Lambda^{1/2}(W\theta-b)\|^2
+=
+\|(I-\Pi_{\operatorname{ran}H})y\|^2.
+\tag{30}
+\]</span></p>
+<p>The projector onto the nullspace of <span class="math inline">\(H\)</span> can be extracted from the resolvent:</p>
+<p><span class="math display">\[
+I-\Pi_{\operatorname{ran}H}
+=\Pi_{\ker H}
+=\lim_{\eta\downarrow0}\eta(H+\eta I)^{-1}.
+\]</span></p>
+<p>Consequently,</p>
+<p><span class="math display">\[
+\boxed{
+\mathscr F_0
+=
+\lim_{\eta\downarrow0}
+\eta\,y^\top(H+\eta I)^{-1}y.
+}
+\tag{31}
+\]</span></p>
+<p>This formula makes the connection with the deformed Marchenko–Pastur law direct: the capacity floor is the target-weighted mass at the zero eigenvalue.</p>
+<p>For <span class="math inline">\(z=-\eta\)</span>, the deterministic equivalent derived above is</p>
+<p><span class="math display">\[
+\mathcal R_{jj}(-\eta)
+=
+\frac{1}{\lambda_jm(-\eta)+\eta}.
+\tag{32}
+\]</span></p>
+<p>In the underparameterized regime <span class="math inline">\(v&gt;d\)</span>, the fixed-point solution vanishes linearly at the origin. Write</p>
+<p><span class="math display">\[
+m(-\eta)\sim\frac{\eta}{\kappa}.
+\]</span></p>
+<p>Substitution into the deformed MP fixed-point equation and then taking <span class="math inline">\(\eta\downarrow0\)</span> gives</p>
+<p><span class="math display">\[
+\boxed{
+d=\sum_{j=1}^v\frac{\lambda_j}{\lambda_j+\kappa}.
+}
+\tag{33}
+\]</span></p>
+<p>Thus <span class="math inline">\(\kappa\)</span> is the spectral cutoff at which the covariance has effective dimension <span class="math inline">\(d\)</span>. Using (32) in (31) gives the deterministic-equivalent capacity floor</p>
+<p><span class="math display">\[
+\boxed{
+\mathscr F_0
+\asymp
+\sum_{j=1}^v
+\lambda_jb_j^2
+\frac{\kappa}{\lambda_j+\kappa}.
+}
+\tag{34}
+\]</span></p>
+<p>Directions with <span class="math inline">\(\lambda_j\gg\kappa\)</span> are mostly represented by the random features and pay only the fraction <span class="math inline">\(\kappa/\lambda_j\)</span>. Directions with <span class="math inline">\(\lambda_j\ll\kappa\)</span> are mostly missed and contribute essentially their full target energy <span class="math inline">\(\lambda_jb_j^2\)</span>.</p>
+<p>Now specialize to</p>
+<p><span class="math display">\[
+\lambda_j\asymp j^{-\alpha},
+\qquad
+b_j\asymp j^{-\beta}.
+\]</span></p>
+<p>In the trace-class regime <span class="math inline">\(\alpha&gt;1\)</span> considered immediately below (and also when the ambient-to-feature aspect ratio remains controlled), the effective-dimension equation (33) gives</p>
+<p><span class="math display">\[
+\kappa\asymp d^{-\alpha}.
+\]</span></p>
+<p>Equivalently, the crossover <span class="math inline">\(\lambda_j\asymp\kappa\)</span> occurs at <span class="math inline">\(j\asymp d\)</span>. Splitting (34) at that index,</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathscr F_0
+&amp;\asymp
+\kappa\sum_{j\le d}b_j^2
++
+\sum_{j&gt;d}\lambda_jb_j^2\\
+&amp;\asymp
+d^{-\alpha}\sum_{j\le d}j^{-2\beta}
++
+\sum_{j&gt;d}j^{-\alpha-2\beta}.
+\end{aligned}
+\tag{35}
+\]</span></p>
+<p>Provided <span class="math inline">\(\alpha+2\beta&gt;1\)</span>, both sums are finite in the relevant sense. If <span class="math inline">\(\beta&lt;1/2\)</span>, the target has substantial tail energy and</p>
+<p><span class="math display">\[
+\mathscr F_0\asymp d^{-\alpha+1-2\beta}.
+\]</span></p>
+<p>If <span class="math inline">\(\beta&gt;1/2\)</span>, the leading target coordinates dominate and</p>
+<p><span class="math display">\[
+\mathscr F_0\asymp d^{-\alpha}.
+\]</span></p>
+<p>Combining the two cases,</p>
+<p><span class="math display">\[
+\boxed{
+\mathscr F_0(d)
+\asymp
+d^{-\alpha+\max\{0,1-2\beta\}}.
+}
+\tag{36}
+\]</span></p>
+<p>At <span class="math inline">\(\beta=1/2\)</span> there is the usual logarithmic correction. The capacity-floor exponent is therefore a consequence of two facts: the deformed MP law places the random-feature cutoff at the effective-dimension scale <span class="math inline">\(\kappa\asymp d^{-\alpha}\)</span>, and the target places a calculable amount of energy above and below that cutoff.</p>
+</div>
+</div>
+</div>
+<p>Above the high-dimensional line <span class="math inline">\(\alpha&gt;1\)</span>, and away from critical boundaries, the basic exponents and their statistical meanings are summarized together below. The labels “pure point” and “absolutely continuous” describe the spectral components that generate the terms. Following <span class="citation" data-cites="ferbach2025dimension">Ferbach et al. (<a href="#ref-ferbach2025dimension" role="doc-biblioref">2025</a>)</span>, we call the resulting loss contributions <strong>population bias</strong> and <strong>embedding bias</strong>.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-ferbach2025dimension" class="csl-entry" role="listitem">
+Ferbach, Damien, Katie Everett, Gauthier Gidel, Elliot Paquette, and Courtney Paquette. 2025. <span>“Dimension-Adapted Momentum Outscales SGD.”</span> <em>arXiv Preprint arXiv:2505.16098</em>. <a href="https://arxiv.org/abs/2505.16098">https://arxiv.org/abs/2505.16098</a>.
+</div></div><div class="loss-term-table">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 38%">
+<col style="width: 62%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>term and scaling</th>
+<th>interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>FPP</strong><br><span class="math inline">\(\mathscr F_{\rm pp}(r)\asymp r^{-\left(1+(2\beta-1)/\alpha\right)}\)</span></td>
+<td><strong>Population bias.</strong> Ordinary relaxation of the target error along the population spectral modes.</td>
+</tr>
+<tr class="even">
+<td><strong>FAC</strong><br><span class="math inline">\(\mathscr F_{\rm ac}(r,d)\asymp d^{-1}r^{-1+1/\alpha}\)</span></td>
+<td><strong>Embedding bias.</strong> Bias created by distortion of the population geometry under the random feature embedding; this is the displayed regime <span class="math inline">\(\beta&gt;1/2\)</span>.</td>
+</tr>
+<tr class="odd">
+<td><strong>F0</strong><br><span class="math inline">\(\mathscr F_0(d)\asymp d^{-\alpha+\max\{0,1-2\beta\}}\)</span></td>
+<td><strong>Model capacity.</strong> Irreducible approximation error from restricting the predictor to the span of <span class="math inline">\(d\)</span> random features.</td>
+</tr>
+<tr class="even">
+<td><strong>KPP</strong><br><span class="math inline">\(\mathscr K_{\rm pp}(r)\asymp r^{-2+1/\alpha}\)</span></td>
+<td><strong>Stochastic variance.</strong> Variance continuously injected by fresh mini-batches; it enters the total loss with prefactor <span class="math inline">\(1/(\gamma B)\)</span>.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The irreducible loss <span class="math inline">\(\mathscr F_0\)</span> is especially important. With a rough two-term approximation</p>
+<p><span class="math display">\[
+  \mathscr P(r,d)\asymp r^{-p}+d^{-q},
+\]</span></p>
+<p>and <span class="math inline">\(\mathsf C\asymp dr\)</span>, balancing the terms gives</p>
+<p><span class="math display">\[
+  d_\star(\mathsf C)\asymp \mathsf C^{p/(p+q)},
+  \qquad
+  \mathscr P_\star(\mathsf C)\asymp
+  \mathsf C^{-pq/(p+q)}.
+\]</span></p>
+<p>This familiar calculation is correct only when those are actually the two dominant terms. The 4+3 phase diagram records when embedding bias or stochastic variance changes the balance.</p>
+</section>
+<section id="the-43-phase-diagram" class="level2 page-columns page-full" data-number="8">
+<h2 data-number="8" class="anchored" data-anchor-id="the-43-phase-diagram"><span class="header-section-number">8</span> The 4+3 Phase Diagram</h2>
+<p>The phases are regions in the <span class="math inline">\((\alpha,\beta)\)</span>-plane in which different terms dominate the learning curve and different pairs of terms determine the compute-optimal stopping point.</p>
+<div id="fig-four-plus-three" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-four-plus-three-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/module-02/phase-diagram-paper-convention.png" class="img-fluid figure-img" style="width:82.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-four-plus-three-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: The 4+3 phase diagram. <strong>This original figure uses the paper convention on the vertical axis:</strong> its displayed <span class="math inline">\(\alpha_{\rm paper}\)</span> equals <span class="math inline">\(\alpha/2\)</span> in these notes. Thus the vertical line at <span class="math inline">\(1/2\)</span> corresponds to the covariance threshold <span class="math inline">\(\alpha=1\)</span>. Figure from <span class="citation" data-cites="paquette2024fourplusthree">Paquette et al. (<a href="#ref-paquette2024fourplusthree" role="doc-biblioref">2024</a>)</span>.
+</figcaption>
+<div class="no-row-height column-margin column-container"></div></figure>
+</div>
+<p>The four main behaviors are:</p>
+<table class="table phase-balance-table">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 36%">
+<col style="width: 54%">
+</colgroup>
+<thead>
+<tr>
+<th>
+phase
+</th>
+<th>
+dominant mechanism
+</th>
+<th>
+compute-optimal balance
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+I
+</td>
+<td>
+finite model capacity
+</td>
+<td>
+train until population bias reaches the capacity floor
+</td>
+</tr>
+<tr>
+<td>
+II
+</td>
+<td>
+embedding bias
+</td>
+<td>
+population bias meets embedding bias
+</td>
+</tr>
+<tr>
+<td>
+III
+</td>
+<td>
+embedding bias and stochastic variance
+</td>
+<td>
+stochastic variance matters before the embedding-bias regime
+</td>
+</tr>
+<tr>
+<td>
+IV
+</td>
+<td>
+model capacity and stochastic variance
+</td>
+<td>
+stochastic variance changes the capacity tradeoff
+</td>
+</tr>
+</tbody>
+</table>
+<p>Phase I splits into Ia, Ib, and Ic because the capacity scaling and admissible learning-rate scaling change below the high-dimensional line. Phase IV splits into IVa and IVb according to whether the optimum balances noise against the capacity floor or against population bias. These are the “+3” subphases.</p>
+<p>In the course convention, the clean upper-half-plane descriptions are:</p>
+<p><span class="math display">\[
+\begin{array}{lll}
+\text{Phase Ia:}&amp; \alpha&gt;1,\ \beta&lt;\tfrac12,
+  &amp;\text{capacity constrained},\\[2mm]
+\text{Phase II:}&amp; \alpha&gt;1,\ \beta&gt;\tfrac12,\ 2\beta&lt;\alpha,
+  &amp;\text{embedding-bias constrained},\\[2mm]
+\text{Phase III:}&amp; \alpha&gt;1,\ \beta&gt;\tfrac12,\ 2\beta&gt;\alpha,
+  &amp;\text{variance frustrated and embedding-bias constrained}.
+\end{array}
+\]</span></p>
+<p>In Phase III, as well as in substantial parts of Phases I and IV,</p>
+<p><span class="math display">\[
+       d_\star(\mathsf C)\asymp \mathsf C^{1/2}.
+\]</span></p>
+<p>Thus a Chinchilla-like allocation emerges from a quadratic random-feature model. It is not imposed as an ansatz; it comes from balancing the relevant spectral contributions to the loss.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Why does a scaling law break?">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Why does a scaling law break?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-11" class="callout-11-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>At finite scale, the observed slope is a local competition among several terms. For example, <span class="math display">\[
+  \mathscr P(r,d)
+  \asymp
+  c_1r^{-p_1}+c_2d^{-1}r^{-p_2}
+  +c_3d^{-q}+c_4r^{-p_3}.
+\]</span> One term can dominate for several decades and then be overtaken by another. The resulting curve has a stable-looking power law followed by a crossover. Near a phase boundary, the asymptotic regime may begin only at extremely large <span class="math inline">\(d\)</span>. A measured change in slope is therefore evidence to investigate, not automatically an optimization failure or a new fundamental law.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="reading-the-proof" class="level2 page-columns page-full" data-number="9">
+<h2 data-number="9" class="anchored" data-anchor-id="reading-the-proof"><span class="header-section-number">9</span> Reading the Proof</h2>
+<p>The proof has three main mathematical inputs.</p>
+<ol type="1">
+<li><p><strong>Random matrix theory.</strong> Replace the resolvent of <span class="math inline">\(\Sigma^{1/2}WW^\top\Sigma^{1/2}\)</span> by the deterministic fixed point <span class="math inline">\(m(z)\)</span>. This identifies the discrete, continuous, and zero spectral contributions.</p></li>
+<li><p><strong>Bias–variance dynamics.</strong> Use the exact quadratic SGD recursion to derive a convolution Volterra equation for the expected population risk.</p></li>
+<li><p><strong>Renewal asymptotics.</strong> Apply Kesten’s lemma to reduce the implicit Volterra solution to the forcing and one kernel tail, then evaluate the corresponding contour integrals using the power-law covariance.</p></li>
+</ol>
+<p>The output is the four-term loss approximation. Compute optimality then becomes a finite collection of power-law balancing problems.</p>
+<div id="fig-compute-front-volterra" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-compute-front-volterra-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/module-02/compute-front-volterra.png" class="img-fluid figure-img" style="width:96.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-compute-front-volterra-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: The deterministic Volterra prediction tracks the SGD loss curves and can be used to extract an IsoFLOP frontier. The measured model-size exponent is close to <span class="math inline">\(1/2\)</span> in this Phase II–III boundary experiment. Figure from <span class="citation" data-cites="paquette2024fourplusthree">Paquette et al. (<a href="#ref-paquette2024fourplusthree" role="doc-biblioref">2024</a>)</span>.
+</figcaption>
+<div class="no-row-height column-margin column-container"><div id="ref-paquette2024fourplusthree" class="csl-entry" role="listitem">
+Paquette, Elliot, Courtney Paquette, Lechao Xiao, and Jeffrey Pennington. 2024. <span>“4+3 Phases of Compute-Optimal Neural Scaling Laws.”</span> <em>Advances in Neural Information Processing Systems</em> 37. <a href="https://openreview.net/forum?id=aVSxwicpAk">https://openreview.net/forum?id=aVSxwicpAk</a>.
+</div></div></figure>
+</div>
+</section>
+<section id="what-the-model-teaches-us" class="level2" data-number="10">
+<h2 data-number="10" class="anchored" data-anchor-id="what-the-model-teaches-us"><span class="header-section-number">10</span> What the Model Teaches Us</h2>
+<p>Several conclusions survive the simplifications of the model.</p>
+<p>First, a scaling exponent is not solely a property of the data distribution. It can depend on the target, the representation, and the optimizer. In Phases I and II, changing SGD to gradient descent does not alter the leading compute-optimal law. In Phases III and IV, stochastic-gradient noise is one of the leading terms, so changing the algorithm can change the frontier.</p>
+<p>Second, the feature map creates an intermediate scale. More parameters lower the irreducible floor, but they also change the spectrum through which the target is learned. “Model size” is not merely a scalar capacity parameter.</p>
+<p>Third, simple models can have very long finite-size crossovers. An empirical power law can be accurate over the entire accessible range and still not be the final asymptotic law. Conversely, a drifting exponent does not by itself show that the experiment is misconfigured.</p>
+<p>Finally, the theory sharpens the practical tuning question. When scale changes, one must know which aspects of the training prescription should remain dimensionless, which should depend on width, and which should be chosen separately for heterogeneous layers. Without such a scaling prescription, intrinsic phase changes and avoidable optimization failures are difficult to distinguish.</p>
+<div id="qst-broken-scaling" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-qst figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-qst" id="qst-broken-scaling-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Question&nbsp;1: Can one formulate a tractable model in which a crossover in the observed scaling exponent can be attributed either to an intrinsic spectral transition or to a mis-scaled optimizer hyperparameter, and give a statistical test that distinguishes the two from finite compute-range data?
+</figcaption>
+<section id="open-question-broken-neural-scaling-laws" class="level3" aria-describedby="qst-broken-scaling-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" data-number="10.1">
+<h3 data-number="10.1" class="anchored" data-anchor-id="open-question-broken-neural-scaling-laws"><span class="header-section-number">10.1</span> Open question: broken neural scaling laws</h3>
+</section>
+</figure>
+</div>
+<div id="qst-heterogeneous-scaling" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-qst figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-qst" id="qst-heterogeneous-scaling-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Question&nbsp;2: For a network with layers having different covariance spectra and different widths, formulate a scaling rule for initialization, normalization, learning rates, and schedules that is preserved when the total model size is increased. Which layer controls the compute-optimal frontier?
+</figcaption>
+<section id="open-question-heterogeneous-layers" class="level3" aria-describedby="qst-heterogeneous-scaling-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" data-number="10.2">
+<h3 data-number="10.2" class="anchored" data-anchor-id="open-question-heterogeneous-layers"><span class="header-section-number">10.2</span> Open question: heterogeneous layers</h3>
+</section>
+</figure>
+</div>
+
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/elliotpaquette\.github\.io\/summer-school-2026-notes\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/elliotpaquette/summer-school-2026-notes/blob/main/modules/02-scaling-laws.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/elliotpaquette/summer-school-2026-notes/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>source-map – Power Laws in Data and Optimization</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-5685cd926c25366c96d9f1407e584118.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Power Laws in Data and Optimization</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-modules" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Modules</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-modules">    
+        <li>
+    <a class="dropdown-item" href="../modules/01-power-law-covariance.html">
+ <span class="dropdown-text">1. Power-Law Covariance</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../modules/02-scaling-laws.html">
+ <span class="dropdown-text">2. Scaling Laws</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../modules/03-momentum.html">
+ <span class="dropdown-text">3. Momentum</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../modules/04-muon.html">
+ <span class="dropdown-text">4. Muon</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-slides" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Slides</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-slides">    
+        <li>
+    <a class="dropdown-item" href="../slides/lecture-01.html">
+ <span class="dropdown-text">Lecture 1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../slides/lecture-02.html">
+ <span class="dropdown-text">Lecture 2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../slides/lecture-03.html">
+ <span class="dropdown-text">Lecture 3</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../slides/lecture-04.html">
+ <span class="dropdown-text">Lecture 4</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#source-map" id="toc-source-map" class="nav-link active" data-scroll-target="#source-map"><span class="header-section-number">1</span> Source Map</a>
+  <ul class="collapse">
+  <li><a href="#local-layout" id="toc-local-layout" class="nav-link" data-scroll-target="#local-layout"><span class="header-section-number">1.1</span> Local Layout</a></li>
+  <li><a href="#courtney-notes" id="toc-courtney-notes" class="nav-link" data-scroll-target="#courtney-notes"><span class="header-section-number">1.2</span> Courtney-Notes</a></li>
+  <li><a href="#elliot-summerschool" id="toc-elliot-summerschool" class="nav-link" data-scroll-target="#elliot-summerschool"><span class="header-section-number">1.3</span> Elliot-SummerSchool</a></li>
+  <li><a href="#powerlawcovariance" id="toc-powerlawcovariance" class="nav-link" data-scroll-target="#powerlawcovariance"><span class="header-section-number">1.4</span> PowerlawCovariance</a></li>
+  <li><a href="#fourplusthree" id="toc-fourplusthree" class="nav-link" data-scroll-target="#fourplusthree"><span class="header-section-number">1.5</span> fourplusthree</a></li>
+  <li><a href="#momentum-fixed-compute" id="toc-momentum-fixed-compute" class="nav-link" data-scroll-target="#momentum-fixed-compute"><span class="header-section-number">1.6</span> momentum-fixed-compute</a></li>
+  <li><a href="#danastar" id="toc-danastar" class="nav-link" data-scroll-target="#danastar"><span class="header-section-number">1.7</span> danastar</a></li>
+  <li><a href="#muonroot" id="toc-muonroot" class="nav-link" data-scroll-target="#muonroot"><span class="header-section-number">1.8</span> muonroot</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/elliotpaquette/summer-school-2026-notes/blob/main/planning/source-map.md" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/elliotpaquette/summer-school-2026-notes/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+
+
+
+
+
+<section id="source-map" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Source Map</h1>
+<p>Last updated: 2026-07-22.</p>
+<section id="local-layout" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="local-layout"><span class="header-section-number">1.1</span> Local Layout</h2>
+<p>The root directory is not currently a git repository. Several important source folders are symlinks:</p>
+<ul>
+<li><code>Elliot-SummerSchool -&gt; ../Summer2024/</code></li>
+<li><code>PowerlawCovariance -&gt; ../../../PowerlawCovariance/</code></li>
+<li><code>fourplusthree -&gt; ../../../SGD/FixedCompute/</code></li>
+<li><code>muonroot -&gt; ../../../muonroot/</code></li>
+</ul>
+<p>This matters for publishing: do not blindly initialize and publish this entire root as a GitHub repository. A clean notes repo should copy selected assets and cite the research sources, not commit the whole symlink farm.</p>
+</section>
+<section id="courtney-notes" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="courtney-notes"><span class="header-section-number">1.2</span> Courtney-Notes</h2>
+<p>Path: <code>Courtney-Notes/</code></p>
+<p>Contents:</p>
+<ul>
+<li><code>Chapter 1 RMT.pdf</code> through <code>Chapter 6 RMT.pdf</code></li>
+</ul>
+<p>Use:</p>
+<ul>
+<li>Likely background for accessible RMT explanations: empirical spectra, Stieltjes transforms, Marchenko-Pastur, deterministic equivalents, Dyson equation basics.</li>
+<li>These are handwritten PDFs. The relevant issue is OCR/visual inspection, not ordinary PDF text extraction. The <code>/opt/e-py</code> environment has <code>pypdf</code> and <code>pytesseract</code>, and the system has the <code>tesseract</code> binary. <code>pdf2image</code> was not available in <code>/opt/e-py</code> at the last check, so PDF-to-image conversion still needs a separate path before page-level OCR is convenient.</li>
+</ul>
+<p>Next step:</p>
+<ul>
+<li>Manually inspect the PDFs or set up a real OCR path before deciding which RMT preliminaries to adapt.</li>
+</ul>
+</section>
+<section id="elliot-summerschool" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="elliot-summerschool"><span class="header-section-number">1.3</span> Elliot-SummerSchool</h2>
+<p>Path: <code>Elliot-SummerSchool/RMTandOptimization.tex</code></p>
+<p>Role:</p>
+<ul>
+<li>Best source for existing exposition style and broad RMT/optimization background.</li>
+</ul>
+<p>Detected structure:</p>
+<ul>
+<li>Background: tensors, calculus, resolvents, perturbation formulas, spectral mapping, Stieltjes transforms.</li>
+<li>Concentration: martingales, subgaussian and subexponential concentration, Gaussian interpolation.</li>
+<li>RMT: Dyson equations, deterministic equivalents, semicircle law, sample covariance matrices, deformed MP, spike examples, power-law spectrum, conjugate kernels.</li>
+<li>Optimization: SGD, risks, streaming/online SGD, classical convergence, high-dimensional limits, correlated least squares, explicit risk curves, Volterra equations, homogenization of multipass SGD.</li>
+</ul>
+<p>Use:</p>
+<ul>
+<li>Pull notation and exposition style.</li>
+<li>Use as background scaffolding for the light RMT interludes in modules 2 and 4.</li>
+<li>Reuse proof-sketch patterns: resolvent to deterministic equivalent to risk curve.</li>
+</ul>
+</section>
+<section id="powerlawcovariance" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="powerlawcovariance"><span class="header-section-number">1.4</span> PowerlawCovariance</h2>
+<p>Primary manuscript:</p>
+<ul>
+<li><code>PowerlawCovariance/overleaf/6832219019e7681d398cecfb/main.tex</code></li>
+<li>Title: <code>Power Law Spectrum of the Random Feature Model</code></li>
+</ul>
+<p>Core claim:</p>
+<ul>
+<li>If input covariance has eigenvalues with power-law decay, the random feature covariance after Gaussian sketching and monomial activation inherits the same power-law exponent, up to logarithmic corrections.</li>
+<li>Proof ingredients include tensor linear algebra, Wick chaos expansions, dyadic head-tail decompositions, lattice counting, and concentration.</li>
+</ul>
+<p>Key sections:</p>
+<ul>
+<li>Introduction.</li>
+<li>Main results.</li>
+<li>Discussion and numerical experiments.</li>
+<li>Warm up: linear case.</li>
+<li>Higher order case.</li>
+<li>Principal term.</li>
+<li>Subleading terms and Wick chaoses.</li>
+<li>Appendix: concentration, auxiliary lemmas, Wick products, lattice point counting, CIFAR-10 experiments.</li>
+</ul>
+<p>Experiment notes:</p>
+<ul>
+<li><code>PowerlawCovariance/CIFAR_experiment/README.md</code></li>
+<li><code>PowerlawCovariance/CIFAR_experiment/figure_notes.md</code></li>
+</ul>
+<p>Useful figures:</p>
+<ul>
+<li><code>PowerlawCovariance/overleaf/6832219019e7681d398cecfb/figures/cifar10_covariance_eigenvalues.pdf</code></li>
+<li><code>PowerlawCovariance/overleaf/6832219019e7681d398cecfb/figures/figure1_plrf_and_tanh.pdf</code></li>
+<li><code>PowerlawCovariance/overleaf/6832219019e7681d398cecfb/figures/slope_across_layers_combined.pdf</code></li>
+<li><code>PowerlawCovariance/overleaf/6832219019e7681d398cecfb/figures/resnet20_trained_spectra_paper.pdf</code></li>
+<li><code>PowerlawCovariance/overleaf/6832219019e7681d398cecfb/figures/mlp_activation_comparison.pdf</code></li>
+<li><code>PowerlawCovariance/overleaf/6832219019e7681d398cecfb/figures/mlp_norm_comparison.pdf</code></li>
+</ul>
+<p>Use:</p>
+<ul>
+<li>Module 1 backbone.</li>
+<li>Main visuals for “the structure is visible” and “the structure persists.”</li>
+<li>Good place to introduce the Gram trick, tensor trick, and why random features are a tractable proxy for neural representations.</li>
+</ul>
+</section>
+<section id="fourplusthree" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="fourplusthree"><span class="header-section-number">1.5</span> fourplusthree</h2>
+<p>Primary manuscript:</p>
+<ul>
+<li><code>fourplusthree/Fixed_Compute_Final/arxiv/arxiv_version_new.tex</code></li>
+<li>Title: <code>4+3 Phases of Compute-Optimal Neural Scaling Laws</code></li>
+</ul>
+<p>Core claim:</p>
+<ul>
+<li>In the Maloney-Roberts-Sully three-parameter solvable scaling model, SGD loss curves can be represented across iteration counts, then optimized over model parameter count under compute. The phase diagram has 4 phases plus 3 subphases governed by model capacity, optimizer noise, and feature embedding.</li>
+</ul>
+<p>Key sections:</p>
+<ul>
+<li>Problem setup: SGD on Power-law Random Features.</li>
+<li>Learning dynamics of SGD.</li>
+<li>Forcing function and kernel function.</li>
+<li>The 4 Phases.</li>
+<li>Compute-optimal curves.</li>
+<li>Spectrum of the sketched kernel: random matrix theory.</li>
+<li>Self-consistent approximation for the resolvent.</li>
+<li>Asymptotics and experimental results.</li>
+</ul>
+<p>Useful figures:</p>
+<ul>
+<li><code>fourplusthree/Fixed_Compute_Final/figures/Spectrum.pdf</code></li>
+<li><code>fourplusthree/Fixed_Compute_Final/figures/scalingfig4.pdf</code></li>
+<li><code>fourplusthree/Fixed_Compute_Final/figures/toy_scaling_law.pdf</code></li>
+<li><code>fourplusthree/Presentation/CIFAR_5m_eigenvalues.pdf</code></li>
+<li><code>fourplusthree/Presentation/ChinchillaLines.pdf</code></li>
+<li><code>fourplusthree/Presentation/alphabetaVolterraOnly.pdf</code></li>
+</ul>
+<p>Use:</p>
+<ul>
+<li>Module 2 backbone.</li>
+<li>Main place to connect power-law covariance to Chinchilla-style compute thinking.</li>
+<li>Main place for the first substantial RMT flavor: sample covariance, deterministic equivalent, and the Volterra risk equation.</li>
+</ul>
+</section>
+<section id="momentum-fixed-compute" class="level2" data-number="1.6">
+<h2 data-number="1.6" class="anchored" data-anchor-id="momentum-fixed-compute"><span class="header-section-number">1.6</span> momentum-fixed-compute</h2>
+<p>Primary manuscript:</p>
+<ul>
+<li><code>momentum-fixed-compute/neurips_paper.tex</code></li>
+<li>Title: <code>Dimension-adapted Momentum Outscales SGD</code></li>
+</ul>
+<p>Core claim:</p>
+<ul>
+<li>Classical constant momentum does not improve scaling exponents over SGD in the PLRF setting, but DANA-style dimension/data-adapted Nesterov schedules can improve loss and compute-optimal scaling exponents across a broad region.</li>
+</ul>
+<p>Key sections:</p>
+<ul>
+<li>The power law random features model.</li>
+<li>Continuized analysis of stochastic momentum algorithms.</li>
+<li>Deriving scaling laws on PLRF.</li>
+<li>Using Momentum to outscale SGD.</li>
+<li>ODEs and Volterra equations.</li>
+<li>DANA-constant and DANA-decaying.</li>
+<li>Kesten’s lemma checks.</li>
+<li>PLRF experiments and LSTM language model experiments.</li>
+</ul>
+<p>Useful figures:</p>
+<ul>
+<li><code>momentum-fixed-compute/figs/comparison_algorithms_PLRF.pdf</code></li>
+<li><code>momentum-fixed-compute/figs/comparison_sgd_sgdm_all.pdf</code></li>
+<li><code>momentum-fixed-compute/figs/Phase1_ODEs.pdf</code></li>
+<li><code>momentum-fixed-compute/figs/Phase2a_ODEs.pdf</code></li>
+<li><code>momentum-fixed-compute/figs/Phase3a_ODEs.pdf</code></li>
+<li><code>momentum-fixed-compute/figs/LSTM_chinchilla_1M.pdf</code></li>
+<li><code>momentum-fixed-compute/figs/LSTM_effective_alpha_1M.pdf</code></li>
+<li><code>momentum-fixed-compute/figs/scaling_EP.pdf</code></li>
+<li><code>momentum-fixed-compute/figs/scaling2_EP.pdf</code></li>
+</ul>
+<p>Use:</p>
+<ul>
+<li>Module 3 theoretical backbone.</li>
+<li>Gives the bridge from fixed-compute laws to optimizer controls.</li>
+<li>Good source for the “constant momentum cannot change the exponent; log-time or dimension-adapted schedules can” story.</li>
+</ul>
+</section>
+<section id="danastar" class="level2" data-number="1.7">
+<h2 data-number="1.7" class="anchored" data-anchor-id="danastar"><span class="header-section-number">1.7</span> danastar</h2>
+<p>Primary manuscript:</p>
+<ul>
+<li><code>danastar/arXiv_version/arxiv_paper.tex</code></li>
+<li>Title: <code>Logarithmic-time Schedules for Scaling Language Models with Momentum</code></li>
+</ul>
+<p>Core claim:</p>
+<ul>
+<li>Large-scale language model training can benefit from time-varying schedules for AdamW-style beta parameters and weight decay. ADANA and hardened variants apply log-time scheduling with damping; reported compute efficiency gains are measured against tuned AdamW, with experiments from 45M to 2.6B parameters.</li>
+</ul>
+<p>Key sections:</p>
+<ul>
+<li>Introduction and contributions.</li>
+<li>Experimental setting.</li>
+<li>Building ADANA.</li>
+<li>Hardening ADANA: from ADANA to DanaStar MK4.</li>
+<li>Appendices on PLRF, algorithms, scaling laws, baselining, data exponent, Ademamix, sparse gradients, Hilberg/log-time, failure modes, proofs, compute.</li>
+</ul>
+<p>Useful figures:</p>
+<ul>
+<li><code>danastar/figures/scaling_comparison_main.pdf</code></li>
+<li><code>danastar/figures/compute_saved.pdf</code></li>
+<li><code>danastar/figures/gamma3_factor_scaling_chinchilla.pdf</code></li>
+<li><code>danastar/figures/ademamix_schedules.pdf</code></li>
+<li><code>danastar/figures/kappa_sweep.pdf</code></li>
+<li><code>danastar/figures/tau_stats_summary.pdf</code></li>
+<li><code>danastar/figures/scaling_comparisons/comparison_main_new.pdf</code></li>
+<li><code>danastar/figures/scaling_comparisons/weight_decay_comparison.pdf</code></li>
+<li><code>danastar/figures/lr_scaling/Enoki-AdamW-lr-scaling.pdf</code></li>
+<li><code>danastar/figures/lr_scaling/Qwen3-DanaMK4-lr-scaling.pdf</code></li>
+</ul>
+<p>Use:</p>
+<ul>
+<li>Module 3 empirical/production bridge.</li>
+<li>Source for “what theory tells you to try” and “what breaks when you deploy the idea in transformer training.”</li>
+<li>Natural place for exercises about baselining, compute saved, and broken power-law fits.</li>
+</ul>
+</section>
+<section id="muonroot" class="level2" data-number="1.8">
+<h2 data-number="1.8" class="anchored" data-anchor-id="muonroot"><span class="header-section-number">1.8</span> muonroot</h2>
+<p>Primary manuscript:</p>
+<ul>
+<li><code>muonroot/overleaf-neurips/neurips_2026.tex</code></li>
+<li>ArXiv variant: <code>muonroot/overleaf-neurips/arXiv_version/arxiv_version_main.tex</code></li>
+<li>Title: <code>Phases of Muon: When Muon Eclipses SignSGD</code></li>
+</ul>
+<p>Core claim:</p>
+<ul>
+<li>Muon-like spectral optimizers can be modeled through stochastic SignSVD on a matrix-valued least squares problem. SignSVD behaves like square-root preconditioning at large batch, but small eigenmodes can revert toward SGD-like behavior at small batch. In power-law covariance, the alpha-beta plane has phases favoring SignSVD, SignSGD, or a trade-off.</li>
+</ul>
+<p>Key sections:</p>
+<ul>
+<li>Model setup and stochastic spectral algorithms.</li>
+<li>Learning curves and exact dynamics.</li>
+<li>SignSVD and SignSGD in the isotropic setting.</li>
+<li>Anisotropic output covariance.</li>
+<li>Power-law specialization.</li>
+<li>Time to epsilon-approximate solution.</li>
+<li>Appendices: RMT setup, derivations, half-anisotropic model, power-law analysis, Volterra equation, momentum ablation.</li>
+</ul>
+<p>Useful figures:</p>
+<ul>
+<li><code>muonroot/overleaf-neurips/figures/half_aniso_risk_and_density.pdf</code></li>
+<li><code>muonroot/overleaf-neurips/figures/convergence_rate_comparison.pdf</code></li>
+<li><code>muonroot/overleaf-neurips/figures/noise_floor_comparison.pdf</code></li>
+<li><code>muonroot/overleaf-neurips/figures/signsvd_signsgd_sweep.pdf</code></li>
+<li><code>muonroot/overleaf-neurips/figures/rate_vs_B_svd_sgd.pdf</code></li>
+<li><code>muonroot/overleaf-neurips/figures/half_aniso_lr_sweep.pdf</code></li>
+<li><code>muonroot/overleaf-neurips/figures/ode_half_aniso_a1.5_b0.7_N1024_B2048.pdf</code></li>
+<li><code>muonroot/siam-talk/edinburgh-2026/figs/figure1_plrf_and_tanh.pdf</code></li>
+<li><code>muonroot/siam-talk/edinburgh-2026/figs/slope_across_layers_combined.pdf</code></li>
+</ul>
+<p>Use:</p>
+<ul>
+<li>Module 4 backbone.</li>
+<li>Shows the same power-law covariance viewpoint applied to a newer optimizer.</li>
+<li>Good place for a second RMT flavor: deterministic dynamics for spectral algorithms and power-law phase comparison.</li>
+</ul>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/elliotpaquette\.github\.io\/summer-school-2026-notes\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/elliotpaquette/summer-school-2026-notes/blob/main/planning/source-map.md" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/elliotpaquette/summer-school-2026-notes/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

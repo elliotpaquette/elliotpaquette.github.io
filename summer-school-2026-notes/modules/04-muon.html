@@ -1,0 +1,2489 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Muon and Spectral Optimizers – Power Laws in Data and Optimization</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-5685cd926c25366c96d9f1407e584118.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Power Laws in Data and Optimization</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-modules" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Modules</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-modules">    
+        <li>
+    <a class="dropdown-item" href="../modules/01-power-law-covariance.html">
+ <span class="dropdown-text">1. Power-Law Covariance</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../modules/02-scaling-laws.html">
+ <span class="dropdown-text">2. Scaling Laws</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../modules/03-momentum.html">
+ <span class="dropdown-text">3. Momentum</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../modules/04-muon.html">
+ <span class="dropdown-text">4. Muon</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-slides" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Slides</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-slides">    
+        <li>
+    <a class="dropdown-item" href="../slides/lecture-01.html">
+ <span class="dropdown-text">Lecture 1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../slides/lecture-02.html">
+ <span class="dropdown-text">Lecture 2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../slides/lecture-03.html">
+ <span class="dropdown-text">Lecture 3</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../slides/lecture-04.html">
+ <span class="dropdown-text">Lecture 4</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#spectral-optimization-of-weight-matrices" id="toc-spectral-optimization-of-weight-matrices" class="nav-link active" data-scroll-target="#spectral-optimization-of-weight-matrices"><span class="header-section-number">1</span> Spectral Optimization of Weight Matrices</a></li>
+  <li><a href="#backpropagation-produces-an-outer-product" id="toc-backpropagation-produces-an-outer-product" class="nav-link" data-scroll-target="#backpropagation-produces-an-outer-product"><span class="header-section-number">2</span> Backpropagation Produces an Outer Product</a>
+  <ul class="collapse">
+  <li><a href="#covariance-acts-from-both-sides" id="toc-covariance-acts-from-both-sides" class="nav-link" data-scroll-target="#covariance-acts-from-both-sides"><span class="header-section-number">2.1</span> Covariance acts from both sides</a></li>
+  </ul></li>
+  <li><a href="#a-matrix-valued-least-squares-surrogate" id="toc-a-matrix-valued-least-squares-surrogate" class="nav-link" data-scroll-target="#a-matrix-valued-least-squares-surrogate"><span class="header-section-number">3</span> A Matrix-Valued Least-Squares Surrogate</a></li>
+  <li><a href="#from-an-orthogonalized-gradient-to-muon" id="toc-from-an-orthogonalized-gradient-to-muon" class="nav-link" data-scroll-target="#from-an-orthogonalized-gradient-to-muon"><span class="header-section-number">4</span> From an Orthogonalized Gradient to Muon</a>
+  <ul class="collapse">
+  <li><a href="#the-relation-between-signsvd-and-muon" id="toc-the-relation-between-signsvd-and-muon" class="nav-link" data-scroll-target="#the-relation-between-signsvd-and-muon"><span class="header-section-number">4.1</span> The relation between SignSVD and Muon</a></li>
+  </ul></li>
+  <li><a href="#one-step-descent-plus-volatility" id="toc-one-step-descent-plus-volatility" class="nav-link" data-scroll-target="#one-step-descent-plus-volatility"><span class="header-section-number">5</span> One Step: Descent Plus Volatility</a></li>
+  <li><a href="#the-random-matrix-computation" id="toc-the-random-matrix-computation" class="nav-link" data-scroll-target="#the-random-matrix-computation"><span class="header-section-number">6</span> The Random-Matrix Computation</a>
+  <ul class="collapse">
+  <li><a href="#model-computation-the-double-wishart-spectrum" id="toc-model-computation-the-double-wishart-spectrum" class="nav-link" data-scroll-target="#model-computation-the-double-wishart-spectrum"><span class="header-section-number">6.1</span> Model computation: the double-Wishart spectrum</a></li>
+  <li><a href="#returning-to-the-anisotropic-gradient" id="toc-returning-to-the-anisotropic-gradient" class="nav-link" data-scroll-target="#returning-to-the-anisotropic-gradient"><span class="header-section-number">6.2</span> Returning to the anisotropic gradient</a></li>
+  <li><a href="#the-spectrum-is-not-the-descent" id="toc-the-spectrum-is-not-the-descent" class="nav-link" data-scroll-target="#the-spectrum-is-not-the-descent"><span class="header-section-number">6.3</span> The spectrum is not the descent</a></li>
+  </ul></li>
+  <li><a href="#isotropic-data-a-necessary-sanity-check" id="toc-isotropic-data-a-necessary-sanity-check" class="nav-link" data-scroll-target="#isotropic-data-a-necessary-sanity-check"><span class="header-section-number">7</span> Isotropic Data: A Necessary Sanity Check</a></li>
+  <li><a href="#half-anisotropy-removes-one-spectral-index" id="toc-half-anisotropy-removes-one-spectral-index" class="nav-link" data-scroll-target="#half-anisotropy-removes-one-spectral-index"><span class="header-section-number">8</span> Half-Anisotropy Removes One Spectral Index</a>
+  <ul class="collapse">
+  <li><a href="#the-volatility-cancellation" id="toc-the-volatility-cancellation" class="nav-link" data-scroll-target="#the-volatility-cancellation"><span class="header-section-number">8.1</span> The volatility cancellation</a></li>
+  </ul></li>
+  <li><a href="#the-half-anisotropic-deterministic-equivalent" id="toc-the-half-anisotropic-deterministic-equivalent" class="nav-link" data-scroll-target="#the-half-anisotropic-deterministic-equivalent"><span class="header-section-number">9</span> The Half-Anisotropic Deterministic Equivalent</a></li>
+  <li><a href="#large-batch-square-root-preconditioning" id="toc-large-batch-square-root-preconditioning" class="nav-link" data-scroll-target="#large-batch-square-root-preconditioning"><span class="header-section-number">10</span> Large Batch: Square-Root Preconditioning</a></li>
+  <li><a href="#small-batch-spectral-resolution-thresholding" id="toc-small-batch-spectral-resolution-thresholding" class="nav-link" data-scroll-target="#small-batch-spectral-resolution-thresholding"><span class="header-section-number">11</span> Small Batch: Spectral Resolution Thresholding</a></li>
+  <li><a href="#power-law-covariance" id="toc-power-law-covariance" class="nav-link" data-scroll-target="#power-law-covariance"><span class="header-section-number">12</span> Power-Law Covariance</a></li>
+  <li><a href="#from-mode-dynamics-to-a-phase-diagram" id="toc-from-mode-dynamics-to-a-phase-diagram" class="nav-link" data-scroll-target="#from-mode-dynamics-to-a-phase-diagram"><span class="header-section-number">13</span> From Mode Dynamics to a Phase Diagram</a></li>
+  <li><a href="#sec-muon-momentum" id="toc-sec-muon-momentum" class="nav-link" data-scroll-target="#sec-muon-momentum"><span class="header-section-number">14</span> The Role of Momentum</a>
+  <ul class="collapse">
+  <li><a href="#why-the-factor-sqrt1beta_rm-mom1-beta_rm-mom-appears" id="toc-why-the-factor-sqrt1beta_rm-mom1-beta_rm-mom-appears" class="nav-link" data-scroll-target="#why-the-factor-sqrt1beta_rm-mom1-beta_rm-mom-appears"><span class="header-section-number">14.1</span> Why the factor <span class="math inline">\(\sqrt{(1+\beta_{\rm mom})/(1-\beta_{\rm mom})}\)</span> appears</a></li>
+  <li><a href="#fixed-learning-rate-and-the-noise-floor" id="toc-fixed-learning-rate-and-the-noise-floor" class="nav-link" data-scroll-target="#fixed-learning-rate-and-the-noise-floor"><span class="header-section-number">14.2</span> Fixed learning rate and the noise floor</a></li>
+  </ul></li>
+  <li><a href="#what-the-calculation-reveals" id="toc-what-the-calculation-reveals" class="nav-link" data-scroll-target="#what-the-calculation-reveals"><span class="header-section-number">15</span> What the Calculation Reveals</a>
+  <ul class="collapse">
+  <li><a href="#matrix-structure" id="toc-matrix-structure" class="nav-link" data-scroll-target="#matrix-structure"><span class="header-section-number">15.1</span> 1. Matrix structure</a></li>
+  <li><a href="#covariance-preconditioning" id="toc-covariance-preconditioning" class="nav-link" data-scroll-target="#covariance-preconditioning"><span class="header-section-number">15.2</span> 2. Covariance preconditioning</a></li>
+  <li><a href="#spectral-resolution" id="toc-spectral-resolution" class="nav-link" data-scroll-target="#spectral-resolution"><span class="header-section-number">15.3</span> 3. Spectral resolution</a></li>
+  </ul></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">16</span> Summary</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/elliotpaquette/summer-school-2026-notes/blob/main/modules/04-muon.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/elliotpaquette/summer-school-2026-notes/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Muon and Spectral Optimizers</h1>
+<p class="subtitle lead">Module 4</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="spectral-optimization-of-weight-matrices" class="level2 page-columns page-full" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="spectral-optimization-of-weight-matrices"><span class="header-section-number">1</span> Spectral Optimization of Weight Matrices</h2>
+<p>In the first three modules, we treated power-law covariance as a useful structure in a general high-dimensional learning problem. The covariance spectrum organized the directions that were easy or difficult to learn and helped predict the resulting optimization and scaling behavior.</p>
+<p>We now focus specifically on the optimization of a weight matrix. Because the parameter is a matrix, its minibatch gradient <span class="math inline">\(G\)</span> is itself a matrix. A key recent example is <strong>Muon</strong> <span class="citation" data-cites="jordan2024muon liu2025muon">(<a href="#ref-jordan2024muon" role="doc-biblioref">Jordan et al. 2024</a>; <a href="#ref-liu2025muon" role="doc-biblioref"><span class="nocase">Liu et al.</span> 2025</a>)</span>, which approximately orthogonalizes this gradient before using it to update the weights.</p>
+<div class="no-row-height column-margin column-container"></div><p>Here is the exact operation that we will study. If</p>
+<p><span class="math display">\[
+G=U\operatorname{diag}(\sigma_1,\ldots,\sigma_r)V^\top
+\]</span></p>
+<p>is a thin singular value decomposition, define</p>
+<p><span class="math display">\[
+\boxed{\qquad
+\operatorname{SignSVD}(G)=UV^\top.
+\qquad}
+\]</span></p>
+<p>SignSVD retains the left and right singular vectors of <span class="math inline">\(G\)</span> but replaces every nonzero singular value by <span class="math inline">\(1\)</span>. Muon approximates this operation using a small number of Newton–Schulz iterations, avoiding the cost of computing an exact SVD. In this module, a <strong>spectral optimizer</strong> simply means an optimizer that transforms the singular values of a matrix gradient while retaining its singular-vector directions.</p>
+<p>Our goal is to use the activation-covariance lens developed earlier in the course to understand this idea. A weight gradient couples the activations entering a layer to the errors propagated backward through it. Covariance therefore appears on both sides of the matrix update, and a spectral optimizer acts on the interaction between those two geometries.</p>
+<div id="qst-matrix-gradient-information" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-qst figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-qst" id="qst-matrix-gradient-information-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Question&nbsp;1: The geometry of a weight-matrix update
+</figcaption>
+<div aria-describedby="qst-matrix-gradient-information-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<p>How do covariance structure and batch size determine the effect of orthogonalizing a weight-matrix gradient?</p>
+</div>
+</figure>
+</div>
+<p>We first derive the outer-product form of a weight gradient and then study what happens when the resulting minibatch matrix is replaced by <span class="math inline">\(\operatorname{SignSVD}(G)\)</span>. To separate this matrix operation from the momentum-scheduling question, the main analysis removes momentum.</p>
+</section>
+<section id="backpropagation-produces-an-outer-product" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="backpropagation-produces-an-outer-product"><span class="header-section-number">2</span> Backpropagation Produces an Outer Product</h2>
+<p>Let <span class="math inline">\((X,Y)\)</span> be a supervised example, let <span class="math inline">\(F_\theta(X)\)</span> be the output of a network, and write the population objective as</p>
+<p><span class="math display">\[
+\mathcal L(\theta)
+  =\mathbb E_{(X,Y)}
+    \left[\ell\!\left(F_\theta(X),Y\right)\right].
+\]</span></p>
+<p>Focus on one weight matrix <span class="math inline">\(W\)</span> inside the network. For a single example, let <span class="math inline">\(a\in\mathbb R^{n_{\rm in}}\)</span> be the activation entering this layer and let</p>
+<p><span class="math display">\[
+z=Wa,
+\]</span></p>
+<p>where <span class="math inline">\(z\in\mathbb R^{n_{\rm out}}\)</span> is its preactivation. Everything after this layer is absorbed into the single-example loss. Define the error backpropagated to <span class="math inline">\(z\)</span> by</p>
+<p><span class="math display">\[
+\delta
+  =\nabla_z\ell\!\left(F_\theta(X),Y\right).
+\]</span></p>
+<p>For vectors <span class="math inline">\(p\in\mathbb R^m\)</span> and <span class="math inline">\(q\in\mathbb R^n\)</span>, we use <span class="math inline">\(p\otimes q\)</span> for their matrix outer product:</p>
+<p><span class="math display">\[
+(p\otimes q)_{ij}=p_iq_j.
+\]</span></p>
+<div id="prp-weight-gradient-outer-product" class="theorem proposition">
+<p><span class="theorem-title"><strong>Proposition 1 (A Weight Gradient Is an Outer Product)</strong></span> For one example,</p>
+<p><span class="math display">\[
+\boxed{\qquad \nabla_W\ell=\delta\otimes a. \qquad}
+\]</span></p>
+<p>Consequently, a batch gradient is a sum of rank-one matrices and has rank at most the batch size.</p>
+</div>
+<p>Indeed, if <span class="math inline">\(W\)</span> is perturbed by <span class="math inline">\(dW\)</span>, then</p>
+<p><span class="math display">\[
+\begin{aligned}
+d\ell
+  &amp;=\sum_i\delta_i\,dz_i\\
+  &amp;=\sum_{i,j}\delta_i a_j\,dW_{ij}\\
+  &amp;=\left\langle\delta\otimes a,dW\right\rangle_F.
+\end{aligned}
+\]</span></p>
+<p>The coefficient of <span class="math inline">\(dW\)</span> in the Frobenius inner product is the gradient.</p>
+<p>For a minibatch of <span class="math inline">\(B\)</span> examples, the gradient is therefore</p>
+<p><span class="math display">\[
+\boxed{\qquad
+G_B=\frac1B\sum_{b=1}^B\delta_b\otimes a_b,
+\qquad
+\operatorname{rank}(G_B)\le B.
+\qquad}
+\]</span></p>
+<p>This factorization is the first appearance of the batch threshold. A batch of size <span class="math inline">\(B\)</span> can span at most <span class="math inline">\(B\)</span> matrix directions, no matter how large the weight matrix is.</p>
+<section id="covariance-acts-from-both-sides" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="covariance-acts-from-both-sides"><span class="header-section-number">2.1</span> Covariance acts from both sides</h3>
+<p>There are two geometries in the update:</p>
+<ul>
+<li>the activation covariance lives on the right of <span class="math inline">\(W\)</span>;</li>
+<li>the covariance of upstream directions lives on the left of <span class="math inline">\(W\)</span>.</li>
+</ul>
+<p>In a real network, <span class="math inline">\(\delta\)</span> and <span class="math inline">\(a\)</span> are dependent and both change during training. The model below deliberately freezes their large-scale covariance structure. That simplification lets us ask what a spectral optimizer does when the two sides already have specified spectra.</p>
+</section>
+</section>
+<section id="a-matrix-valued-least-squares-surrogate" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="a-matrix-valued-least-squares-surrogate"><span class="header-section-number">3</span> A Matrix-Valued Least-Squares Surrogate</h2>
+<p>Let</p>
+<p><span class="math display">\[
+x\sim\mathcal N(0,\Sigma_{\rm in}),
+\qquad
+y\sim\mathcal N(0,\Sigma_{\rm out})
+\]</span></p>
+<p>be independent. Think of <span class="math inline">\(x\)</span> as the activation-side direction and <span class="math inline">\(y\)</span> as a base direction on the backpropagation side. A teacher matrix <span class="math inline">\(W_\star\)</span> generates the scalar response <span class="math inline">\(\langle y\otimes x,W_\star\rangle_F\)</span>. For</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Why assume independence—and what would dependence change?">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Why assume independence—and what would dependence change?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Independence is a tractability assumption, not a claim about an actual network. In a network, the activation entering a layer and the error backpropagated through that layer are generated by the same example and the same current parameters, so they are generally dependent.</p>
+<p>The independent surrogate has two useful freedoms. The input and output dimensions may differ, and <span class="math inline">\(\Sigma_{\rm in}\)</span> and <span class="math inline">\(\Sigma_{\rm out}\)</span> may be chosen independently, with unrelated spectra and eigenvectors. More importantly, the population Hessian factorizes:</p>
+<p><span class="math display">\[
+\mathcal K(H)
+=\mathbb E[yy^\top Hxx^\top]
+=\Sigma_{\rm out}H\Sigma_{\rm in}.
+\]</span></p>
+<p>Its eigenmodes are therefore the rank-one pairs <span class="math inline">\(u_i\otimes v_j\)</span>, with eigenvalues <span class="math inline">\(\mu_i\lambda_j\)</span>. For a dependent pair <span class="math inline">\((x,y)\)</span>, the correct operator is still</p>
+<p><span class="math display">\[
+\mathcal K_{\rm joint}(H)
+=\mathbb E[yy^\top Hxx^\top],
+\]</span></p>
+<p>but it need not factorize. The paired spectrum can then be replaced by the spectrum of a genuinely coupled fourth-moment operator. This makes the resolvent and drift calculations harder, even if the qualitative mechanism survives.</p>
+<p>A tractable first extension would take <span class="math inline">\((x,y)\)</span> jointly Gaussian with block covariance</p>
+<p><span class="math display">\[
+\operatorname{Cov}
+\begin{pmatrix}x\\y\end{pmatrix}
+=
+\begin{pmatrix}
+\Sigma_{\rm in} &amp; C^\top\\
+C &amp; \Sigma_{\rm out}
+\end{pmatrix},
+\]</span></p>
+<p>or equivalently use a conditional model such as <span class="math inline">\(y=Ax+\varepsilon\)</span>. The cross-covariance <span class="math inline">\(C\)</span> would encode alignment between activation and backpropagation directions. A more faithful network model would instead study the evolving joint law of the actual pair <span class="math inline">\((a,\delta)\)</span>, possibly layer by layer and over training time.</p>
+<p><strong>Working conjecture.</strong> Generic dependence may change constants, kernels, and phase boundaries without changing the basic two-sided anisotropy mechanism or the batch-rank threshold. Strong or low-rank dependence could matter more by creating new aligned modes. This has not been established.</p>
+<p>Two natural questions are:</p>
+<ol type="1">
+<li>Does removing independence change the scaling exponents and phase diagram, or mainly the formulas used to compute them?</li>
+<li>Which joint model best captures the dependence between activations and backpropagated errors inside a trained network?</li>
+</ol>
+</div>
+</div>
+</div>
+<p><span class="math display">\[
+\Delta=W-W_\star,
+\]</span></p>
+<p>define the single-sample loss</p>
+<p><span class="math display">\[
+\ell(W;x,y)
+  =\frac12
+    \left\langle y\otimes x,\Delta\right\rangle_F^2.
+\]</span></p>
+<p>Its gradient is</p>
+<p><span class="math display">\[
+\boxed{\qquad
+\nabla_W\ell
+  =(y\otimes x)\left\langle y\otimes x,\Delta\right\rangle_F
+  =
+  \underbrace{\left[
+    y\left\langle y\otimes x,\Delta\right\rangle_F
+  \right]}_{\text{upstream error}}
+  \otimes
+  \underbrace{x}_{\text{activation}}.
+\qquad}
+\]</span></p>
+<p>Thus the surrogate retains the exact outer-product form of a layer gradient. It also isolates the two covariance operators:</p>
+<p><span class="math display">\[
+\mathbb E[\nabla_W\ell]
+  =\Sigma_{\rm out}\Delta\Sigma_{\rm in}.
+\]</span></p>
+<p>The population risk is</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathcal R(W)
+  &amp;=\frac12\mathbb E\left(y^\top\Delta x\right)^2\\
+  &amp;=\frac12
+    \operatorname{tr}\!\left(
+      \Delta^\top\Sigma_{\rm out}\Delta\Sigma_{\rm in}
+    \right).
+\end{aligned}
+\]</span></p>
+<p>The corresponding Hessian is the linear operator</p>
+<p><span class="math display">\[
+\boxed{\qquad
+\mathcal K(H)=\Sigma_{\rm out}H\Sigma_{\rm in}.
+\qquad}
+\]</span></p>
+<p>This is the matrix version of the covariance Hessian from Modules 2 and 3. It makes the left/right interpretation precise.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Why are there $N^2$ spectral modes?">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Why are there <span class="math inline">\(N^2\)</span> spectral modes?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Let</p>
+<p><span class="math display">\[
+\Sigma_{\rm out}u_i=\mu_i u_i,
+\qquad
+\Sigma_{\rm in}v_j=\lambda_j v_j.
+\]</span></p>
+<p>The rank-one matrices <span class="math inline">\(u_i\otimes v_j\)</span> are eigenvectors of the Hessian operator:</p>
+<p><span class="math display">\[
+\mathcal K(u_i\otimes v_j)
+  =\mu_i\lambda_j\,(u_i\otimes v_j).
+\]</span></p>
+<p>Writing</p>
+<p><span class="math display">\[
+\Delta=\sum_{i,j}a_{ij}(u_i\otimes v_j),
+\qquad
+a_{ij}=\langle u_i\otimes v_j,\Delta\rangle_F,
+\]</span></p>
+<p>gives</p>
+<p><span class="math display">\[
+\boxed{\qquad
+\mathcal R(W)
+  =\frac12\sum_{i,j}\mu_i\lambda_j a_{ij}^2.
+\qquad}
+\]</span></p>
+<p>For an <span class="math inline">\(N\times N\)</span> matrix, the natural eigenbasis therefore contains <span class="math inline">\(N^2\)</span> <strong>pairs</strong> <span class="math inline">\((i,j)\)</span>. Equivalently,</p>
+<p><span class="math display">\[
+\operatorname{vec}\!\left(\mathcal K(H)\right)
+  =(\Sigma_{\rm in}\otimes\Sigma_{\rm out})\operatorname{vec}(H).
+\]</span></p>
+<p>The paired spectrum <span class="math inline">\(\{\mu_i\lambda_j\}\)</span> is the matrix analogue of the one-index covariance spectrum in vector regression.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled" title="The setup in one sentence">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>The setup in one sentence
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The toy problem is ordinary least squares in the <span class="math inline">\(N^2\)</span>-dimensional feature <span class="math inline">\(y\otimes x\)</span>, but it preserves the matrix layout that a spectral optimizer uses and exposes the activation and backpropagation covariances separately.</p>
+</div>
+</div>
+</section>
+<section id="from-an-orthogonalized-gradient-to-muon" class="level2 page-columns page-full" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="from-an-orthogonalized-gradient-to-muon"><span class="header-section-number">4</span> From an Orthogonalized Gradient to Muon</h2>
+<p>Take a thin singular value decomposition of the minibatch gradient,</p>
+<p><span class="math display">\[
+G=U\operatorname{diag}(\sigma_1,\ldots,\sigma_r)V^\top,
+\qquad
+r=\operatorname{rank}(G).
+\]</span></p>
+<p>A spectral update keeps <span class="math inline">\(U\)</span> and <span class="math inline">\(V\)</span> but transforms the singular values:</p>
+<p><span class="math display">\[
+\widetilde G
+  =\varphi(GG^\top)G
+  =U\operatorname{diag}\!\left(
+    \varphi(\sigma_k^2)\sigma_k
+  \right)V^\top.
+\]</span></p>
+<p>One useful axis is the <strong>spectral power</strong> <span class="math inline">\(p\)</span>. On the nonzero singular subspace, take</p>
+<p><span class="math display">\[
+\varphi_p(s)=s^{(p-1)/2},
+\qquad
+\widetilde G_p
+  =(GG^\top)^{(p-1)/2}G
+  =U\Sigma^pV^\top,
+\]</span></p>
+<p>where <span class="math inline">\(\Sigma=\operatorname{diag}(\sigma_1,\ldots,\sigma_r)\)</span>. Thus an inverse power in the preconditioner need not invert the final spectrum: it sends <span class="math inline">\(\sigma\)</span> to <span class="math inline">\(\sigma^p\)</span>.</p>
+<div id="tbl-spectral-update-family" class="quarto-float quarto-figure quarto-figure-center anchored" data-tbl-colwidths="[16,34,50]">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-spectral-update-family-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Spectral update family
+</figcaption>
+<div aria-describedby="tbl-spectral-update-family-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 34%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Update</th>
+<th style="text-align: left;">Formula</th>
+<th style="text-align: left;">Spectral action and interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">SGD</td>
+<td style="text-align: left;"><span class="math inline">\(G=U\Sigma V^\top\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\sigma\mapsto\sigma\)</span>. Retains the magnitude hierarchy of the gradient.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Spectral power <span class="math inline">\(p\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(U\Sigma^pV^\top\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\sigma\mapsto\sigma^p\)</span>. Values <span class="math inline">\(0&lt;p&lt;1\)</span> interpolate between full flattening and SGD; <span class="math inline">\(p&lt;0\)</span> reverses the singular-value ordering and requires damping or truncation near zero.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SignSVD / exact Muon core</td>
+<td style="text-align: left;"><span class="math inline">\(UV^\top\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\sigma\mapsto1\)</span>. Completely flattens the nonzero spectrum.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Instantaneous Shampoo</td>
+<td style="text-align: left;"><span class="math inline">\((GG^\top)^{\dagger/4}G(G^\top G)^{\dagger/4}\)</span></td>
+<td style="text-align: left;">Also <span class="math inline">\(\sigma\mapsto1\)</span>: with no accumulation or damping, the two inverse fourth roots produce the exact polar factor.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Finite-NS Muon</td>
+<td style="text-align: left;"><span class="math inline">\(\operatorname{NS}_K(G)\)</span></td>
+<td style="text-align: left;">Approximates <span class="math inline">\(\sigma\mapsto1\)</span> using a small fixed number of matrix multiplications.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>The table is a family, not a ranking. Recent work studies fractional and even inverted spectra, and finds that full flattening is not uniformly the empirical winner; the preferred exponent depends on the task and training regime <span class="citation" data-cites="dong2026muonp shumaylov2026muonspecial">(<a href="#ref-dong2026muonp" role="doc-biblioref">Dong and Sawin 2026</a>; <a href="#ref-shumaylov2026muonspecial" role="doc-biblioref">Shumaylov et al. 2026</a>)</span>. The polar map <span class="math inline">\(p=0\)</span> is therefore an especially important point on a broader design axis, rather than the only plausible spectral transformation.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-dong2026muonp" class="csl-entry" role="listitem">
+Dong, Yihe, and Will Sawin. 2026. <span>“<span>Muon</span><sup>p</sup>: <span>Muon</span> with Fractional Spectral Powers.”</span> <em>arXiv Preprint arXiv:2606.13867</em>. <a href="https://arxiv.org/abs/2606.13867">https://arxiv.org/abs/2606.13867</a>.
+</div><div id="ref-shumaylov2026muonspecial" class="csl-entry" role="listitem">
+Shumaylov, Zakhar, Nathaël Da Costa, Peter Zaika, et al. 2026. <span>“<span>Muon</span> Is Not That Special: Random or Inverted Spectra Work Just as Well.”</span> <em>arXiv Preprint arXiv:2605.11181</em>. <a href="https://arxiv.org/abs/2605.11181">https://arxiv.org/abs/2605.11181</a>.
+</div></div><p>For SignSVD,</p>
+<p><span class="math display">\[
+\boxed{\qquad
+\operatorname{polar}(G)
+  =(GG^\top)^{\dagger/2}G
+  =UV^\top.
+\qquad}
+\]</span></p>
+<p>The dagger denotes the pseudoinverse on the nonzero singular space. SignSVD equalizes nonzero singular values while retaining their singular vectors. It is therefore basis-covariant:</p>
+<p><span class="math display">\[
+\operatorname{polar}(QGR^\top)
+  =Q\,\operatorname{polar}(G)\,R^\top
+\]</span></p>
+<p>for orthogonal <span class="math inline">\(Q,R\)</span>.</p>
+<p>Entrywise SignSGD instead sends each matrix entry to its sign. It is sensitive to the coordinate basis. When Adam’s two moment parameters are set to zero, its normalized update reduces to this entrywise sign rule, making SignSGD a tractable Adam-like comparator <span class="citation" data-cites="bernstein2018signsgd xiao2025exact">(<a href="#ref-bernstein2018signsgd" role="doc-biblioref">Bernstein et al. 2018</a>; <a href="#ref-xiao2025exact" role="doc-biblioref">Xiao et al. 2025</a>)</span>.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-bernstein2018signsgd" class="csl-entry" role="listitem">
+Bernstein, Jeremy, Yu-Xiang Wang, Kamyar Azizzadenesheli, and Animashree Anandkumar. 2018. <span>“<span class="nocase">signSGD</span>: Compressed Optimisation for Non-Convex Problems.”</span> <em>Proceedings of the 35th International Conference on Machine Learning</em>, Proceedings of machine learning research, vol. 80: 560–69. <a href="https://proceedings.mlr.press/v80/bernstein18a.html">https://proceedings.mlr.press/v80/bernstein18a.html</a>.
+</div></div><section id="the-relation-between-signsvd-and-muon" class="level3 page-columns page-full" data-number="4.1">
+<h3 data-number="4.1" class="anchored" data-anchor-id="the-relation-between-signsvd-and-muon"><span class="header-section-number">4.1</span> The relation between SignSVD and Muon</h3>
+<p>Orthogonalized-gradient and stochastic spectral-descent methods predate Muon <span class="citation" data-cites="carlson2015stochastic tuddenham2022orthogonalising">(<a href="#ref-carlson2015stochastic" role="doc-biblioref">Carlson et al. 2015</a>; <a href="#ref-tuddenham2022orthogonalising" role="doc-biblioref">Tuddenham et al. 2022</a>)</span>. It is also closely related to Shampoo <span class="citation" data-cites="gupta2018shampoo">(<a href="#ref-gupta2018shampoo" role="doc-biblioref">Gupta et al. 2018</a>)</span>. In a stylized form, standard Muon forms a momentum buffer and applies a few Newton–Schulz iterations to that buffer:</p>
+<div class="no-row-height column-margin column-container"><div id="ref-carlson2015stochastic" class="csl-entry" role="listitem">
+Carlson, David, Volkan Cevher, and Lawrence Carin. 2015. <span>“Stochastic Spectral Descent for Restricted <span>Boltzmann</span> Machines.”</span> <em>Proceedings of the 18th International Conference on Artificial Intelligence and Statistics</em>, Proceedings of machine learning research, vol. 38: 111–19. <a href="https://proceedings.mlr.press/v38/carlson15.html">https://proceedings.mlr.press/v38/carlson15.html</a>.
+</div><div id="ref-tuddenham2022orthogonalising" class="csl-entry" role="listitem">
+Tuddenham, Mark, Adam Prügel-Bennett, and Jonathan Hare. 2022. <span>“Orthogonalising Gradients to Speed up Neural Network Optimisation.”</span> <em>International Conference on Learning Representations</em>. <a href="https://openreview.net/forum?id=-cII-Vju5C">https://openreview.net/forum?id=-cII-Vju5C</a>.
+</div><div id="ref-gupta2018shampoo" class="csl-entry" role="listitem">
+Gupta, Vineet, Tomer Koren, and Yoram Singer. 2018. <span>“Shampoo: Preconditioned Stochastic Tensor Optimization.”</span> <em>Proceedings of the 35th International Conference on Machine Learning</em>, Proceedings of machine learning research, vol. 80: 1842–50. <a href="https://proceedings.mlr.press/v80/gupta18a.html">https://proceedings.mlr.press/v80/gupta18a.html</a>.
+</div></div><p><span class="math display">\[
+\begin{aligned}
+M_{t+1}&amp;=\beta_{\rm mom}M_t+G_t,\\
+W_{t+1}&amp;=W_t-\eta\,
+  \operatorname{NS}_K(M_{t+1}).
+\end{aligned}
+\]</span></p>
+<p>Muon’s practical implementations contain important normalization and scaling choices. Relative to exact SignSVD, its two additional choices are separable:</p>
+<ol type="1">
+<li>use momentum before orthogonalization;</li>
+<li>approximate the polar factor without computing an SVD <span class="citation" data-cites="jordan2024muon liu2025muon">(<a href="#ref-jordan2024muon" role="doc-biblioref">Jordan et al. 2024</a>; <a href="#ref-liu2025muon" role="doc-biblioref"><span class="nocase">Liu et al.</span> 2025</a>)</span>.</li>
+</ol>
+<div class="no-row-height column-margin column-container"><div id="ref-liu2025muon" class="csl-entry" role="listitem">
+<span class="nocase">Liu, Jingyuan, Jianlin Su, Xingcheng Yao, et al.</span> 2025. <span>“<span>Muon</span> Is Scalable for <span>LLM</span> Training.”</span> <em>arXiv Preprint arXiv:2502.16982</em>. <a href="https://arxiv.org/abs/2502.16982">https://arxiv.org/abs/2502.16982</a>.
+</div></div><div class="callout callout-style-default callout-note callout-titled" title="In what sense is Muon an implementation of Shampoo?">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>In what sense is Muon an implementation of Shampoo?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>For a matrix gradient <span class="math inline">\(G=U\Sigma V^\top\)</span>, remove Shampoo’s accumulation and damping and take inverse powers only on the nonzero singular subspace. Its two-sided matrix update becomes</p>
+<p><span class="math display">\[
+\begin{aligned}
+(GG^\top)^{\dagger/4}G(G^\top G)^{\dagger/4}
+&amp;=(U\Sigma^{-1/2}U^\top)
+  (U\Sigma V^\top)
+  (V\Sigma^{-1/2}V^\top)\\
+&amp;=UV^\top
+=\operatorname{polar}(G).
+\end{aligned}
+\]</span></p>
+<p>Thus <strong>instantaneous, no-damping Shampoo is algebraically the exact Muon core</strong>. Adding momentum before this operation gives the usual conceptual description of Muon <span class="citation" data-cites="jordan2024muon">(<a href="#ref-jordan2024muon" role="doc-biblioref">Jordan et al. 2024</a>)</span>. This identity is deliberately narrow: full Shampoo maintains historical left and right Gram matrices and applies inverse fourth roots to those accumulated statistics. It is not generally the same optimizer as Muon <span class="citation" data-cites="eschenhagen2026clarifying">(<a href="#ref-eschenhagen2026clarifying" role="doc-biblioref">Eschenhagen et al. 2026</a>)</span>.</p>
+<p>The implementation difference matters. Shampoo’s inverse-root route must decide how to damp or truncate very small eigenvalues and normally requires an eigendecomposition or an inverse-root iteration. Muon instead approximates the instantaneous polar factor with matrix multiplications. Jordan reports that the coupled inverse-fourth-root iteration used in Shampoo required float32 to avoid numerical instability, whereas the Newton–Schulz polar iteration ran stably in bfloat16 <span class="citation" data-cites="jordan2024muon">(<a href="#ref-jordan2024muon" role="doc-biblioref">Jordan et al. 2024</a>)</span>. In this specific sense, Muon is a substantially more numerically robust, accelerator-friendly implementation of the instantaneous Shampoo update—not a replacement for Shampoo’s temporal adaptation.</p>
+<p>A recent public debugging exchange between Rohan Anil and Keller Jordan, together with the <a href="https://github.com/facebookresearch/optimizers/issues/265">follow-up issue filed by Anil</a>, makes the small-eigenvalue issue unusually concrete: truncating the inverse power near zero, so that it behaved like a pseudoinverse, materially changed the reported Shampoo benchmark. That record is more useful here than a screenshot because the equations, code fragment, and surrounding context remain searchable and accessible.</p>
+</div>
+</div>
+</div>
+<div class="no-row-height column-margin column-container"></div><div class="no-row-height column-margin column-container"><div id="ref-eschenhagen2026clarifying" class="csl-entry" role="listitem">
+Eschenhagen, Runa, Anna Cai, Tsung-Hsien Lee, and Hao-Jun Michael Shi. 2026. <span>“Clarifying <span>Shampoo</span>: Adapting Spectral Descent to Stochasticity and the Parameter Trajectory.”</span> <em>arXiv Preprint arXiv:2602.09314</em>. <a href="https://arxiv.org/abs/2602.09314">https://arxiv.org/abs/2602.09314</a>.
+</div></div><div class="no-row-height column-margin column-container"></div><div class="callout callout-style-default callout-note callout-titled" title="How do the Newton--Schulz iterations work?">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>How do the Newton–Schulz iterations work?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Newton–Schulz is a fixed-point method for computing the polar factor without forming an SVD. Begin by normalizing the matrix to have Frobenius norm one:</p>
+<p><span class="math display">\[
+X_0=\frac{G}{\|G\|_F+\varepsilon}.
+\]</span></p>
+<p>This normalization is cheap: <span class="math inline">\(\|G\|_F^2\)</span> is just the sum of the squared entries. It also guarantees</p>
+<p><span class="math display">\[
+\|X_0\|_{\rm op}\le \|X_0\|_F\approx1.
+\]</span></p>
+<p>When many singular values contribute to the Frobenius norm, each normalized singular value is much smaller than one. For example, if <span class="math inline">\(r\)</span> singular values have comparable size, they begin at order <span class="math inline">\(r^{-1/2}\)</span>. The initialization is therefore dimension-dependently small even though the Frobenius norm has been set to one.</p>
+<p>The classical polar iteration is</p>
+<p><span class="math display">\[
+X_{k+1}
+  =\frac12\left(3X_k-X_kX_k^\top X_k\right).
+\]</span></p>
+<p>If <span class="math inline">\(X_k=U\operatorname{diag}(s_{k,i})V^\top\)</span>, the singular vectors remain fixed and each singular value follows the scalar iteration</p>
+<p><span class="math display">\[
+s_{k+1}=\frac12\left(3s_k-s_k^3\right).
+\]</span></p>
+<p>For <span class="math inline">\(0&lt;s_k\le1\)</span>, this map drives <span class="math inline">\(s_k\)</span> toward the attracting fixed point <span class="math inline">\(s=1\)</span>. Thus Newton–Schulz tries to map all nonzero singular values to one using only matrix multiplications.</p>
+<p>A common Muon implementation uses the more aggressive quintic iteration</p>
+<p><span class="math display">\[
+\begin{aligned}
+A_k&amp;=X_kX_k^\top,\\
+X_{k+1}
+  &amp;=aX_k+\left(bA_k+cA_k^2\right)X_k,
+\end{aligned}
+\]</span></p>
+<p>with</p>
+<p><span class="math display">\[
+(a,b,c)=(3.4445,-4.7750,2.0315).
+\]</span></p>
+<p>Its scalar map is</p>
+<p><span class="math display">\[
+s_{k+1}=a s_k+b s_k^3+c s_k^5.
+\]</span></p>
+<p>Near zero its slope is <span class="math inline">\(a=3.4445\)</span>, rather than <span class="math inline">\(3/2\)</span> for the classical iteration. This quickly lifts the many very small singular values created by Frobenius normalization. The tradeoff is that these practical coefficients are designed for a small, fixed number of iterations—typically five—and do not compute the exact polar factor to high precision. They rapidly move the spectrum toward order-one values, which is the approximation to SignSVD used by Muon <span class="citation" data-cites="jordan2024muon">(<a href="#ref-jordan2024muon" role="doc-biblioref">Jordan et al. 2024</a>)</span>.</p>
+</div>
+</div>
+</div>
+<div class="no-row-height column-margin column-container"><div id="ref-jordan2024muon" class="csl-entry" role="listitem">
+Jordan, Keller, Yuchen Jin, Vlado Boza, et al. 2024. <span>“<span>Muon</span>: An Optimizer for Hidden Layers in Neural Networks.”</span> <em>Online</em>. <a href="https://kellerjordan.github.io/posts/muon/">https://kellerjordan.github.io/posts/muon/</a>.
+</div></div><p>This module sets <span class="math inline">\(\beta_{\rm mom}=0\)</span> and replaces the finite Newton–Schulz map by the exact polar factor. The resulting algorithm is SignSVD. This isolates the spectral transformation from both the polynomial approximation and the temporal averaging. In the present surrogate, the later comparison in <a href="#sec-muon-momentum" class="quarto-xref">Section&nbsp;14</a> gives no evidence that momentum is the source of Muon’s benefit: no-momentum finite-NS Muon follows SignSVD, while momentum raises the noise-floor coefficient. That is evidence about this model, not a universal claim about transformer training.</p>
+</section>
+</section>
+<section id="one-step-descent-plus-volatility" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="one-step-descent-plus-volatility"><span class="header-section-number">5</span> One Step: Descent Plus Volatility</h2>
+<p>For a minibatch <span class="math inline">\((x_b,y_b)_{b=1}^B\)</span>, define the residuals</p>
+<p><span class="math display">\[
+d_b
+  =\left\langle y_b\otimes x_b,\Delta\right\rangle_F.
+\]</span></p>
+<p>The minibatch gradient is</p>
+<p><span class="math display">\[
+\boxed{\qquad
+G(\Delta)
+  =\frac1B\sum_{b=1}^B
+    d_b\,(y_b\otimes x_b).
+\qquad}
+\]</span></p>
+<p>It is random, depends on the current error <span class="math inline">\(\Delta\)</span>, and has rank at most <span class="math inline">\(B\)</span>. Let <span class="math inline">\(S=\operatorname{polar}(G)\)</span> and update</p>
+<p><span class="math display">\[
+\Delta^+=\Delta-\eta S.
+\]</span></p>
+<p>In the paired covariance basis, set</p>
+<p><span class="math display">\[
+a_{ij}=u_i^\top\Delta v_j,
+\qquad
+s_{ij}=u_i^\top S v_j,
+\qquad
+q_{ij}=a_{ij}^2.
+\]</span></p>
+<p>The exact one-step expansion is</p>
+<p><span class="math display">\[
+\boxed{\qquad
+q_{ij}^+
+  =q_{ij}-2\eta a_{ij}s_{ij}+\eta^2s_{ij}^2.
+\qquad}
+\]</span></p>
+<p>The two new terms have different meanings:</p>
+<ul>
+<li><span class="math inline">\(a_{ij}s_{ij}\)</span> is the alignment of the update with the current error and produces descent;</li>
+<li><span class="math inline">\(s_{ij}^2\)</span> is the squared update placed into that mode and produces stochastic volatility.</li>
+</ul>
+<p>In the proportional high-dimensional limit, these random quantities self-average. Define deterministic kernels by</p>
+<p><span class="math display">\[
+\mathbb E[a_{ij}s_{ij}\mid\Delta]
+  \simeq
+  \frac{\mathfrak d_{ij}}{\sqrt{\mathcal R}}q_{ij},
+\qquad
+\mathbb E[s_{ij}^2\mid\Delta]
+  \simeq
+  \mathfrak v_{ij}.
+\]</span></p>
+<p>The projected risks then follow the closed recursion</p>
+<p><span class="math display">\[
+\boxed{
+q_{ij}(t+1)
+=q_{ij}(t)
+-\frac{2\eta\mathfrak d_{ij}(t)}
+       {\sqrt{\mathcal R(t)}}q_{ij}(t)
++\eta^2\mathfrak v_{ij}(t),
+}
+\]</span></p>
+<p>with</p>
+<p><span class="math display">\[
+\mathcal R(t)
+  =\frac12\sum_{i,j}\mu_i\lambda_jq_{ij}(t).
+\]</span></p>
+<p>This is the same descent-versus-variance architecture that appeared for SGD in Modules 2 and 3. What has changed is the state space: the modes are pairs, and the kernels must describe the singular vectors of a random matrix-valued gradient.</p>
+<div class="callout callout-style-default callout-important callout-titled" title="What random matrix theory has to compute">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>What random matrix theory has to compute
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Once <span class="math inline">\(\mathfrak d_{ij}\)</span> and <span class="math inline">\(\mathfrak v_{ij}\)</span> are known, the stochastic optimizer has been replaced by a deterministic dynamical system. The random matrix calculation is the map</p>
+<p><span class="math display">\[
+(\Sigma_{\rm out},\Sigma_{\rm in},B,\varphi)
+\longmapsto
+(\mathfrak d_{ij},\mathfrak v_{ij}).
+\]</span></p>
+</div>
+</div>
+</section>
+<section id="the-random-matrix-computation" class="level2 page-columns page-full" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="the-random-matrix-computation"><span class="header-section-number">6</span> The Random-Matrix Computation</h2>
+<p>The spectral transform depends on the risk-normalized Gram matrix and its two resolvents,</p>
+<p><span class="math display">\[
+H=\frac{GG^\top}{2\mathcal R},\qquad
+R(z)=(H-zI)^{-1},\qquad
+\widetilde R(z)=\left(\frac{G^\top G}{2\mathcal R}-zI\right)^{-1}.
+\]</span></p>
+<p>Write <span class="math inline">\(\gamma_{\rm out}=n_{\rm out}/B\)</span> and <span class="math inline">\(\gamma_{\rm in}=n_{\rm in}/B\)</span>. The density of the eigenvalues of <span class="math inline">\(H\)</span> is recovered from the imaginary part of the normalized trace of <span class="math inline">\(R(z)\)</span>.</p>
+<section id="model-computation-the-double-wishart-spectrum" class="level3" data-number="6.1">
+<h3 data-number="6.1" class="anchored" data-anchor-id="model-computation-the-double-wishart-spectrum"><span class="header-section-number">6.1</span> Model computation: the double-Wishart spectrum</h3>
+<p>First remove the dependence between the residuals and the data. Let <span class="math inline">\(Y\in\mathbb R^{n_{\rm out}\times B}\)</span> and <span class="math inline">\(X\in\mathbb R^{n_{\rm in}\times B}\)</span> be independent standard Gaussian matrices, and let <span class="math inline">\(D\)</span> be a deterministic diagonal matrix. Consider</p>
+<p><span class="math display">\[
+G_0=\frac1B YDX^\top,\qquad
+H_0=G_0G_0^\top=\frac1B YCY^\top,\qquad
+C=\frac1B DX^\top XD.
+\]</span></p>
+<p>Conditioned on <span class="math inline">\(X\)</span>, the matrix <span class="math inline">\(H_0\)</span> is an ordinary sample covariance matrix whose population matrix is the random matrix <span class="math inline">\(C\)</span>. When <span class="math inline">\(D=I\)</span>, <span class="math inline">\(C\)</span> is itself a companion Wishart matrix. Thus <span class="math inline">\(H_0\)</span> is a <strong>double-Wishart</strong> matrix: one Marchenko–Pastur computation is nested inside another.</p>
+<p>Let <span class="math inline">\(\nu_C\)</span> be the limiting empirical eigenvalue distribution of <span class="math inline">\(C\)</span>, and set</p>
+<p><span class="math display">\[
+R_0(z)=(H_0-zI)^{-1},\qquad
+m_{H_0}(z)=\frac1{n_{\rm out}}\operatorname{tr}R_0(z).
+\]</span></p>
+<p>The outer Marchenko–Pastur step is summarized by a scalar <span class="math inline">\(q(z)\)</span>:</p>
+<p><span class="math display">\[
+\boxed{
+\begin{aligned}
+q(z)
+  &amp;=
+  \left[
+    1+\int
+    \frac{t}{\gamma_{\rm out}q(z)t-z}\,d\nu_C(t)
+  \right]^{-1},\\
+m_{H_0}(z)
+  &amp;=
+  \frac1{\gamma_{\rm out}}
+  \int\frac{1}{\gamma_{\rm out}q(z)t-z}\,d\nu_C(t)
+  +\frac{\gamma_{\rm out}^{-1}-1}{z}.
+\end{aligned}
+}
+\]</span></p>
+<p>The boundary value <span class="math inline">\(\pi^{-1}\operatorname{Im}m_{H_0}(x+i0^+)\)</span> is the spectral density. The last term accounts for the different numbers of zero eigenvalues in the two rectangular companion matrices.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Derivation by matrix Stein's lemma">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Derivation by matrix Stein’s lemma
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Condition on <span class="math inline">\(C\)</span> and write <span class="math inline">\(p=n_{\rm out}\)</span> and <span class="math inline">\(\gamma_{\rm out}=p/B\)</span>. The matrix</p>
+<p><span class="math display">\[
+\widehat H_0
+  =\frac1B C^{1/2}Y^\top YC^{1/2}
+\]</span></p>
+<p>has the same nonzero eigenvalues as <span class="math inline">\(H_0\)</span>. Set</p>
+<p><span class="math display">\[
+W=\frac1{\sqrt p}Y^\top,\qquad
+\Lambda=\gamma_{\rm out}C,\qquad
+\widehat H_0=\Lambda^{1/2}WW^\top\Lambda^{1/2},
+\qquad
+\widehat R=(\widehat H_0-zI)^{-1}.
+\]</span></p>
+<p>This is now exactly the deformed-Wishart setup from Module 2, conditional on <span class="math inline">\(C\)</span>. For a perturbation <span class="math inline">\(W\mapsto W+\varepsilon\Delta\)</span>, define</p>
+<p><span class="math display">\[
+\partial_\Delta F(W)
+  =\left.\frac{d}{d\varepsilon}
+    F(W+\varepsilon\Delta)\right|_{\varepsilon=0}.
+\]</span></p>
+<p>The two directional derivatives needed below are</p>
+<p><span class="math display">\[
+\partial_\Delta\widehat H_0
+  =\Lambda^{1/2}
+   (\Delta W^\top+W\Delta^\top)
+   \Lambda^{1/2},
+\qquad
+\partial_\Delta\widehat R
+  =-\widehat R
+    (\partial_\Delta\widehat H_0)
+    \widehat R.
+\]</span></p>
+<p>Let <span class="math inline">\(\widetilde W\)</span> be an independent copy of <span class="math inline">\(W\)</span>. Matrix Gaussian integration by parts says that, for every smooth compatible matrix-valued function <span class="math inline">\(F\)</span>,</p>
+<p><span class="math display">\[
+\boxed{\qquad
+\mathbb E\!\left[F(W)W^\top\mid C\right]
+=
+\mathbb E\!\left[
+  \bigl(\partial_{\widetilde W}F(W)\bigr)
+  \widetilde W^\top
+  \,\middle|\,C
+\right].
+\qquad}
+\]</span></p>
+<p>The independent direction replaces all entrywise derivatives at once. Apply this identity to</p>
+<p><span class="math display">\[
+F(W)=\widehat R\Lambda^{1/2}W.
+\]</span></p>
+<p>The product rule gives</p>
+<p><span class="math display">\[
+\begin{aligned}
+\partial_{\widetilde W}
+  (\widehat R\Lambda^{1/2}W)
+={}&amp;
+-\widehat R\Lambda^{1/2}
+(\widetilde W W^\top+W\widetilde W^\top)
+\Lambda^{1/2}\widehat R\Lambda^{1/2}W\\
+&amp;+\widehat R\Lambda^{1/2}\widetilde W.
+\end{aligned}
+\]</span></p>
+<p>Multiplying by <span class="math inline">\(\widetilde W^\top\Lambda^{1/2}\)</span> performs two possible Wick contractions. For a <span class="math inline">\(p\times p\)</span> matrix <span class="math inline">\(A\)</span>,</p>
+<p><span class="math display">\[
+\underbrace{
+\mathbb E_{\widetilde W}
+[\widetilde W A\widetilde W^\top]
+}_{\text{coherent}}
+=\frac1p\operatorname{tr}(A)I_B.
+\]</span></p>
+<p>This closes an index loop and produces a normalized trace. The crossed pairing obeys</p>
+<p><span class="math display">\[
+\underbrace{
+\mathbb E_{\widetilde W}
+[\widetilde W^\top B_0C_0\widetilde W^\top]
+}_{\text{incoherent}}
+=\frac1p C_0^\top B_0^\top.
+\]</span></p>
+<p>It reverses the matrix order and produces an explicit <span class="math inline">\(p^{-1}\)</span> matrix correction rather than a trace. Carrying out the two contractions gives the conditional master equation</p>
+<p><span class="math display">\[
+\boxed{
+\mathbb E[\widehat R\widehat H_0\mid C]
+=
+\mathbb E\!\left[
+q_p(z)\widehat R\Lambda
+-\frac1p\widehat R\widehat H_0\widehat R\Lambda
+\,\middle|\,C
+\right],
+\qquad
+q_p(z)
+  =1-\frac1p\operatorname{tr}(\widehat R\widehat H_0).
+}
+\]</span></p>
+<p>The first term is the coherent contribution. The second is the incoherent correction. For fixed <span class="math inline">\(\operatorname{Im}z&gt;0\)</span>, the resolvent bound <span class="math inline">\(\|\widehat R(z)\|\le(\operatorname{Im}z)^{-1}\)</span> makes the explicit <span class="math inline">\(p^{-1}\)</span> correction negligible. Gaussian concentration then lets <span class="math inline">\(q_p(z)\)</span> be replaced by its deterministic limit <span class="math inline">\(q(z)\)</span>. Using <span class="math inline">\(\widehat R\widehat H_0=I+z\widehat R\)</span> gives</p>
+<p><span class="math display">\[
+\widehat R(z)
+\simeq
+\bigl(\gamma_{\rm out}q(z)C-zI\bigr)^{-1}.
+\]</span></p>
+<p>Finally,</p>
+<p><span class="math display">\[
+q(z)
+=
+\left[
+1+\frac1B
+\operatorname{tr}\!\left(
+C(\gamma_{\rm out}q(z)C-zI)^{-1}
+\right)
+\right]^{-1}.
+\]</span></p>
+<p>Replacing the normalized trace by the integral against <span class="math inline">\(\nu_C\)</span> gives the first boxed equation above. Since <span class="math inline">\(H_0\)</span> and <span class="math inline">\(\widehat H_0\)</span> have the same nonzero eigenvalues,</p>
+<p><span class="math display">\[
+\operatorname{tr}R_0(z)
+  -\operatorname{tr}\widehat R(z)
+  =\frac{B-p}{z},
+\]</span></p>
+<p>which gives the displayed formula for <span class="math inline">\(m_{H_0}\)</span>.</p>
+</div>
+</div>
+</div>
+<p>The inner law <span class="math inline">\(\nu_C\)</span> is found by applying the same matrix-Stein calculation to <span class="math inline">\(C=DX^\top XD/B\)</span>. For <span class="math inline">\(D=I\)</span>, it is the companion Marchenko–Pastur law with aspect ratio <span class="math inline">\(\gamma_{\rm in}\)</span>. For deterministic <span class="math inline">\(D\)</span>, it is the deformed law generated by the empirical distribution of <span class="math inline">\(D^2\)</span>. The spectrum of <span class="math inline">\(H_0\)</span> is therefore the multiplicative composition of the two Marchenko–Pastur laws, with the law of <span class="math inline">\(D^2\)</span> inserted between them. In the square case <span class="math inline">\(n_{\rm out}=n_{\rm in}=B\)</span> and <span class="math inline">\(D=I\)</span>, this is the order-two Fuss–Catalan law.</p>
+</section>
+<section id="returning-to-the-anisotropic-gradient" class="level3 page-columns page-full" data-number="6.2">
+<h3 data-number="6.2" class="anchored" data-anchor-id="returning-to-the-anisotropic-gradient"><span class="header-section-number">6.2</span> Returning to the anisotropic gradient</h3>
+<p>Population covariances replace the scalar deterministic equivalent by one that is diagonal in the covariance eigenbases. Define the two weighted traces:</p>
+<p><span class="math display">\[
+\sigma=\frac1B\operatorname{tr}(R\Sigma_{\rm out}),
+\qquad
+\widetilde\sigma
+  =\frac1B\operatorname{tr}(\widetilde R\Sigma_{\rm in}).
+\]</span></p>
+<p>For Gaussian residual weights, the full fixed point is:</p>
+<p><span class="math display">\[
+\boxed{
+\begin{aligned}
+\sigma
+  &amp;=\frac1B\sum_i\frac{\mu_i}{\widetilde s_1\mu_i-z},
+&amp;\qquad
+\widetilde\sigma
+  &amp;=\frac1B\sum_j\frac{\lambda_j}{s_1\lambda_j-z},\\
+s_1
+  &amp;=\widetilde s_1\frac{\sigma}{\widetilde\sigma},
+&amp;
+\widetilde s_1\sigma
+  &amp;=f(\xi),\qquad
+    \xi=\frac1{\sqrt{-2z\sigma\widetilde\sigma}}.
+\end{aligned}
+}
+\]</span></p>
+<p>The scalar closure is <span class="math inline">\(f(\xi)=\mathbb E[V^2/(V^2+2\xi^2)]
+=1-\sqrt\pi\,\xi e^{\xi^2}\operatorname{erfc}(\xi)\)</span> for <span class="math inline">\(V\sim\mathcal N(0,1)\)</span>. The corresponding resolvent equivalents are:</p>
+<p><span class="math display">\[
+\mathbb E R(z)\simeq
+  (\widetilde s_1\Sigma_{\rm out}-zI)^{-1},
+\qquad
+\mathbb E\widetilde R(z)\simeq
+  (s_1\Sigma_{\rm in}-zI)^{-1}.
+\]</span></p>
+<p>The function <span class="math inline">\(f\)</span> records the limiting distribution of the diagonal residual weights. It does not arise from their dependence on the Gaussian data.</p>
+<div id="fig-muon-resolvent-validation" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-muon-resolvent-validation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/figures/module-04/resolvent-density-validation.png" class="img-fluid figure-img" style="width:68.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-muon-resolvent-validation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: The imaginary part of the fixed-point resolvent trace (dashed) matches Monte Carlo simulation (solid) for a doubly anisotropic example. The spectral density is recovered from the boundary value <span class="math inline">\(\pi^{-1}\operatorname{Im}\sigma(x+i0^+)\)</span>. Figure from <span class="citation" data-cites="paquette2026phasesmuon">Paquette et al. (<a href="#ref-paquette2026phasesmuon" role="doc-biblioref">2026</a>)</span>.
+</figcaption>
+<div class="no-row-height column-margin column-container"></div></figure>
+</div>
+</section>
+<section id="the-spectrum-is-not-the-descent" class="level3" data-number="6.3">
+<h3 data-number="6.3" class="anchored" data-anchor-id="the-spectrum-is-not-the-descent"><span class="header-section-number">6.3</span> The spectrum is not the descent</h3>
+<p>Return to the actual residual diagonal</p>
+<p><span class="math display">\[
+\widehat D
+  =\operatorname{diag}\left(
+    \frac{d_1}{\sqrt{2\mathcal R}},\ldots,
+    \frac{d_B}{\sqrt{2\mathcal R}}
+  \right),
+\qquad
+\frac{G}{\sqrt{2\mathcal R}}
+  =\frac1B Y\widehat D X^\top.
+\]</span></p>
+<p>The entries of <span class="math inline">\(\widehat D\)</span> are asymptotically standard normal, but each one is built from the same <span class="math inline">\(x_b\)</span> and <span class="math inline">\(y_b\)</span> appearing in the corresponding column of the gradient. In the normalized trace calculation for the spectrum, derivatives of this coupled diagonal generate only incoherent or lower-order terms. Consequently, the limiting bulk spectrum is the same as if <span class="math inline">\(\widehat D\)</span> were an independent diagonal matrix with the same empirical distribution.</p>
+<p>That replacement is not valid for descent. The spectrum records the singular values of <span class="math inline">\(G\)</span>, but descent also needs their overlap with the current error <span class="math inline">\(\Delta\)</span>. Indeed, if <span class="math inline">\(\widehat D\)</span> were independent with a symmetric law, the global sign change <span class="math inline">\(\widehat D\mapsto-\widehat D\)</span> would leave <span class="math inline">\(R(z)\)</span> unchanged and reverse <span class="math inline">\(G\)</span>, forcing <span class="math inline">\(\mathbb E[R(z)G]=0\)</span>. The coupled residuals break this independence and produce a nonzero one-resolvent observable:</p>
+<p><span class="math display">\[
+\mathbb E\!\left[R(z)G\mid\Delta\right]
+\simeq
+c(z)\,
+R_{\rm eq}(z)\Sigma_{\rm out}\Delta\Sigma_{\rm in}
+\widetilde R_{\rm eq}(z),
+\]</span></p>
+<p>where <span class="math inline">\(c(z)\)</span> is a scalar determined by the same fixed point. In the paired covariance basis this becomes</p>
+<p><span class="math display">\[
+u_i^\top\mathbb E[R(z)G\mid\Delta]v_j
+\simeq
+c(z)\,
+\frac{\mu_i\lambda_j\,a_{ij}}
+{(\widetilde s_1\mu_i-z)(s_1\lambda_j-z)}.
+\]</span></p>
+<p>The spectral transform is recovered from</p>
+<p><span class="math display">\[
+\varphi(H)G
+  =-\frac1{2\pi i}\oint\varphi(z)R(z)G\,dz.
+\]</span></p>
+<p>Thus the same Stein–resolvent computation is repeated with <span class="math inline">\(G\)</span> inserted as an observable. Coupling the residuals to the data leaves the bulk spectral density unchanged at leading order, but it creates the overlap proportional to <span class="math inline">\(\Delta\)</span> that produces the descent kernel. The final coefficient is</p>
+<p><span class="math display">\[
+\boxed{
+\mathfrak d_{ij}
+=-\frac{2\sqrt{\mathcal R}\,\mu_i\lambda_j}{\pi}
+\int_0^\infty
+x\,\varphi(2\mathcal R x)\,
+\operatorname{Im}\!\left[
+\frac{\xi^2f(\xi)}
+{(\widetilde s_1\mu_i-z)(s_1\lambda_j-z)}
+\right]_{z=x+i0^+}\,dx.
+}
+\]</span></p>
+<p>All the quantities inside the integral are obtained from the fixed point in the preceding subsection. For SignSVD, <span class="math inline">\(\varphi(s)=s^{-1/2}\)</span> and</p>
+<p><span class="math display">\[
+\sqrt{\mathcal R}\,\varphi(2\mathcal R x)=\frac1{\sqrt{2x}},
+\]</span></p>
+<p>so <span class="math inline">\(\mathfrak d_{ij}\)</span> is independent of the current risk. The half-anisotropic specialization below reduces the contour integral to a one-dimensional square-root spectral moment.</p>
+</section>
+</section>
+<section id="isotropic-data-a-necessary-sanity-check" class="level2 page-columns page-full" data-number="7">
+<h2 data-number="7" class="anchored" data-anchor-id="isotropic-data-a-necessary-sanity-check"><span class="header-section-number">7</span> Isotropic Data: A Necessary Sanity Check</h2>
+<p>First take</p>
+<p><span class="math display">\[
+\Sigma_{\rm in}=\Sigma_{\rm out}=I_N.
+\]</span></p>
+<p>All paired modes are exchangeable, so the <span class="math inline">\(N^2\)</span> projected recursions collapse to one scalar recursion:</p>
+<p><span class="math display">\[
+\mathcal R(t+1)
+  =\mathcal R(t)
+   -2\eta\mathfrak d\sqrt{\mathcal R(t)}
+   +\frac{\eta^2}{2}\mathfrak v.
+\]</span></p>
+<p>For square <span class="math inline">\(N\times N\)</span> matrices, the kernels are</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Algorithm</th>
+<th style="text-align: right;">Drift <span class="math inline">\(\mathfrak d\)</span></th>
+<th style="text-align: right;">Volatility <span class="math inline">\(\mathfrak v\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>SignSVD</td>
+<td style="text-align: right;"><span class="math inline">\(C(N/B)\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(\min\{B,N\}\)</span></td>
+</tr>
+<tr class="even">
+<td>SignSGD</td>
+<td style="text-align: right;"><span class="math inline">\(\mathcal N_B/\sqrt\pi\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(N^2\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Here</p>
+<p><span class="math display">\[
+\mathcal N_B
+  =\mathbb E\left[
+    \left(\sum_{b=1}^B x_b^2y_b^2\right)^{1/2}
+  \right]
+  \sim\sqrt B,
+\]</span></p>
+<p>and <span class="math inline">\(C(N/B)\)</span> is the scalar obtained from the fixed-point spectral density.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Where do the isotropic SignSGD kernels come from?">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Where do the isotropic SignSGD kernels come from?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>For entrywise SignSGD, set <span class="math inline">\(S=\operatorname{sign}(G)\)</span> instead of <span class="math inline">\(S=\operatorname{polar}(G)\)</span>. Fix one gradient entry <span class="math inline">\((p,n)\)</span> and assume the error is diffuse, so no single entry of <span class="math inline">\(\Delta\)</span> contributes a macroscopic fraction of <span class="math inline">\(\|\Delta\|_F^2=2\mathcal R\)</span>. Separate the matching coordinate from the residual:</p>
+<p><span class="math display">\[
+d_b
+=y_{bp}x_{bn}\Delta_{pn}+\zeta_b+\text{negligible cross terms}.
+\]</span></p>
+<p>After deleting row <span class="math inline">\(p\)</span> and column <span class="math inline">\(n\)</span>, an SVD of the remaining error matrix writes <span class="math inline">\(\zeta_b\)</span> as a sum of independent products of Gaussians. A local limit theorem gives convergence of its <strong>density</strong>, not only its distribution:</p>
+<p><span class="math display">\[
+\zeta_b
+\ \overset{\rm density}{\approx}\
+\sqrt{2\mathcal R}\,z_b,
+\qquad z_b\sim\mathcal N(0,1).
+\]</span></p>
+<p>Density convergence is the relevant statement because the expectation of a sign is controlled by the density at zero. Conditional on <span class="math inline">\(\{y_{bp},x_{bn}\}_{b=1}^B\)</span>, the minibatch-gradient entry becomes</p>
+<p><span class="math display">\[
+G_{pn}
+\approx
+\frac1B\sum_{b=1}^B
+\left[
+y_{bp}^2x_{bn}^2\Delta_{pn}
++y_{bp}x_{bn}\sqrt{2\mathcal R}\,z_b
+\right].
+\]</span></p>
+<p>Write this as <span class="math inline">\(G_{pn}=\mu+Z\)</span>, where <span class="math inline">\(Z\)</span> is conditionally centered and symmetric. Its conditional signal and variance are</p>
+<p><span class="math display">\[
+\mu
+=\frac{\Delta_{pn}}B\sum_{b=1}^B y_{bp}^2x_{bn}^2,
+\qquad
+\operatorname{Var}(Z)
+=\frac{2\mathcal R}{B^2}
+\sum_{b=1}^B y_{bp}^2x_{bn}^2.
+\]</span></p>
+<p>For a centered Gaussian <span class="math inline">\(Z\)</span> with standard deviation <span class="math inline">\(s\)</span> and a small shift <span class="math inline">\(\mu\)</span>,</p>
+<p><span class="math display">\[
+\mathbb E[\operatorname{sign}(Z+\mu)]
+=2\Phi(\mu/s)-1
+=\sqrt{\frac2\pi}\frac{\mu}{s}
++O\!\left((\mu/s)^3\right).
+\]</span></p>
+<p>Substitution and averaging over the exposed coordinates give</p>
+<p><span class="math display">\[
+\mathbb E[\operatorname{sign}(G_{pn})\mid\Delta]
+\simeq
+\sqrt{\frac2\pi}\,
+\frac{\mathcal N_B}{\sqrt{2\mathcal R}}\,
+\Delta_{pn}.
+\]</span></p>
+<p>Since <span class="math inline">\(\mathcal N_B\sim\sqrt B\)</span>, the isotropic drift kernel is</p>
+<p><span class="math display">\[
+\boxed{\qquad
+\mathfrak d_{pn}^{\rm SignSGD}
+=\frac{\mathcal N_B}{\sqrt\pi}
+\sim\sqrt{\frac B\pi}.
+\qquad}
+\]</span></p>
+<p>The volatility is simpler. Every entry of <span class="math inline">\(S=\operatorname{sign}(G)\)</span> equals <span class="math inline">\(\pm1\)</span> almost surely, so</p>
+<p><span class="math display">\[
+s_{pn}^2=1,
+\qquad
+\mathfrak v_{pn}^{\rm SignSGD}=1,
+\qquad
+\|S\|_F^2=n_{\rm out}n_{\rm in}.
+\]</span></p>
+<p>Consequently, its exact quadratic contribution to the total risk is</p>
+<p><span class="math display">\[
+\boxed{\qquad
+\text{SignSGD volatility}
+=\frac{\eta^2}{2}\,n_{\rm out}n_{\rm in}.
+\qquad}
+\]</span></p>
+<p>These are the two SignSGD entries in the isotropic comparison table <span class="citation" data-cites="xiao2025exact">(<a href="#ref-xiao2025exact" role="doc-biblioref">Xiao et al. 2025</a>)</span>.</p>
+</div>
+</div>
+</div>
+<div class="no-row-height column-margin column-container"></div><p>Minimizing the next-step risk over <span class="math inline">\(\eta\)</span> gives</p>
+<p><span class="math display">\[
+\eta_\star(t)
+  =\frac{2\mathfrak d\sqrt{\mathcal R(t)}}{\mathfrak v}.
+\]</span></p>
+<p>Consequently,</p>
+<p><span class="math display">\[
+\frac{\eta_\star^{\rm SignSVD}}
+     {\eta_\star^{\rm SignSGD}}
+\asymp
+\begin{cases}
+\sqrt N,&amp;B\ge N,\\[2mm]
+N/\sqrt B,&amp;B\le N.
+\end{cases}
+\]</span></p>
+<p>The learning rates have very different normalizations, but after each method is tuned, their contraction rates agree up to absolute constants.</p>
+<div class="callout callout-style-default callout-important callout-titled" title="Isotropy removes the reason to precondition">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Isotropy removes the reason to precondition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>On isotropic data, SignSVD and SignSGD are essentially tied after tuning. Muon’s spectral geometry becomes useful only when the covariance is anisotropic.</p>
+</div>
+</div>
+</section>
+<section id="half-anisotropy-removes-one-spectral-index" class="level2" data-number="8">
+<h2 data-number="8" class="anchored" data-anchor-id="half-anisotropy-removes-one-spectral-index"><span class="header-section-number">8</span> Half-Anisotropy Removes One Spectral Index</h2>
+<p>Now set</p>
+<p><span class="math display">\[
+\Sigma_{\rm in}=I_N,
+\qquad
+\Sigma_{\rm out}
+  =U\operatorname{diag}(\mu_1,\ldots,\mu_N)U^\top.
+\]</span></p>
+<p>For comparison with the coordinate-dependent SignSGD update, take <span class="math inline">\(U\)</span> to be a generic Haar-distributed eigenbasis. SignSVD itself is insensitive to this choice because its update is basis-covariant.</p>
+<p>Because every input eigenvalue equals one, define the <strong>row-projected risks</strong></p>
+<p><span class="math display">\[
+\boxed{\qquad
+r_i(t)
+  =\sum_{j=1}^Nq_{ij}(t)
+  =\|\Delta_t^\top u_i\|^2.
+\qquad}
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+\boxed{\qquad
+\mathcal R(t)
+  =\frac12\sum_{i=1}^N\mu_i r_i(t).
+\qquad}
+\]</span></p>
+<p>The state has collapsed from <span class="math inline">\(N^2\)</span> paired order parameters to <span class="math inline">\(N\)</span> time-dependent row norms. The isotropic side has not disappeared; it has been summed into a Euclidean norm.</p>
+<p>The row risks satisfy</p>
+<p><span class="math display">\[
+\boxed{
+r_i(t+1)
+=r_i(t)
+-\frac{2\eta\mathfrak d_i}
+       {\sqrt{\mathcal R(t)}}r_i(t)
++\eta^2\mathfrak v_i.
+}
+\]</span></p>
+<p>This is the simplifier that makes the half-anisotropic model analytically and pedagogically useful.</p>
+<section id="the-volatility-cancellation" class="level3" data-number="8.1">
+<h3 data-number="8.1" class="anchored" data-anchor-id="the-volatility-cancellation"><span class="header-section-number">8.1</span> The volatility cancellation</h3>
+<p>The cleanest calculation in the module is exact and finite-dimensional.</p>
+<div id="prp-signsvd-volatility-cancellation" class="theorem proposition">
+<p><span class="theorem-title"><strong>Proposition 2 (SignSVD Volatility Is a Projection)</strong></span> Let <span class="math inline">\(S=\operatorname{polar}(G)=U_rV_r^\top\)</span> be the SignSVD update. In the row-risk recursion, the quadratic update term is</p>
+<p><span class="math display">\[
+\boxed{\qquad
+\|S^\top u_i\|^2
+  =u_i^\top P_{\operatorname{col}(G)}u_i.
+\qquad}
+\]</span></p>
+<p>If <span class="math inline">\(B\ge N\)</span> and the square gradient has full row rank, this equals <span class="math inline">\(1\)</span> for every mode. If <span class="math inline">\(B&lt;N\)</span>, the volatility weights satisfy</p>
+<p><span class="math display">\[
+0\le \mathfrak v_i\le1,
+\qquad
+\sum_{i=1}^N\mathfrak v_i=B
+\]</span></p>
+<p>in the generic rank-<span class="math inline">\(B\)</span> case.</p>
+</div>
+<p>To see the cancellation, expand the row norm:</p>
+<p><span class="math display">\[
+\begin{aligned}
+r_i^+
+&amp;=\|(\Delta-\eta S)^\top u_i\|^2\\
+&amp;=r_i
+  -2\eta\langle\Delta^\top u_i,S^\top u_i\rangle
+  +\eta^2\|S^\top u_i\|^2.
+\end{aligned}
+\]</span></p>
+<p>Since <span class="math inline">\(S=U_rV_r^\top\)</span>,</p>
+<p><span class="math display">\[
+SS^\top
+  =U_rV_r^\top V_rU_r^\top
+  =U_rU_r^\top
+  =P_{\operatorname{col}(G)}.
+\]</span></p>
+<p>Therefore</p>
+<p><span class="math display">\[
+\|S^\top u_i\|^2
+  =u_i^\top SS^\top u_i
+  =u_i^\top P_{\operatorname{col}(G)}u_i.
+\]</span></p>
+<p>If <span class="math inline">\(G\)</span> has full row rank, the projector is <span class="math inline">\(I\)</span>. Below the threshold it is a rank-<span class="math inline">\(B\)</span> projector, and summing over an orthonormal basis gives</p>
+<p><span class="math display">\[
+\sum_i u_i^\top P_{\operatorname{col}(G)}u_i
+  =\operatorname{tr}P_{\operatorname{col}(G)}
+  =B.
+\]</span></p>
+<p>The transform <span class="math inline">\(\sigma_k\mapsto1\)</span> is what makes the singular values cancel. For a general spectral map,</p>
+<p><span class="math display">\[
+SS^\top
+  =U_r\operatorname{diag}
+   \left(\varphi(\sigma_k^2)^2\sigma_k^2\right)U_r^\top,
+\]</span></p>
+<p>so the volatility retains a nontrivial spectral weight.</p>
+<div class="callout callout-style-default callout-important callout-titled" title="Why orthogonalization simplifies variance">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Why orthogonalization simplifies variance
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Above the batch threshold, SignSVD injects exactly the same squared update into every output covariance mode. Below it, volatility is nothing more than participation in the batch-resolved column space. This is the cancellation that turns a difficult two-resolvent variance calculation into a projector identity.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="the-half-anisotropic-deterministic-equivalent" class="level2" data-number="9">
+<h2 data-number="9" class="anchored" data-anchor-id="the-half-anisotropic-deterministic-equivalent"><span class="header-section-number">9</span> The Half-Anisotropic Deterministic Equivalent</h2>
+<p>Set</p>
+<p><span class="math display">\[
+\gamma=\frac NB.
+\]</span></p>
+<p>Because the input spectrum is now <span class="math inline">\(\lambda_j=1\)</span>, the second spectral sum in the full fixed point becomes algebraic:</p>
+<p><span class="math display">\[
+\boxed{
+\begin{aligned}
+\sigma
+  &amp;=\frac1B\sum_{i=1}^N
+    \frac{\mu_i}{\widetilde s_1\mu_i-z},\\
+\widetilde s_1\sigma
+  &amp;=f(\xi),\\
+\widetilde\sigma
+  &amp;=\frac{f(\xi)-\gamma}{z},\\
+s_1
+  &amp;=z+\frac{\gamma}{\widetilde\sigma},\\
+\xi
+  &amp;=\frac1{\sqrt{-2z\sigma\widetilde\sigma}}.
+\end{aligned}
+}
+\]</span></p>
+<p>There is now only one nontrivial population spectral sum. For mode <span class="math inline">\(i\)</span>, define the projected spectral density</p>
+<p><span class="math display">\[
+\rho_i(x)
+  =\frac1\pi\operatorname{Im}
+    \left[
+      \frac1{\widetilde s_1(x+i0^+)\mu_i-x}
+    \right].
+\]</span></p>
+<p>For SignSVD the two kernels are simply</p>
+<p><span class="math display">\[
+\boxed{
+\mathfrak d_i
+  =\frac1\gamma\int_0^\infty\sqrt x\,\rho_i(x)\,dx,
+\qquad
+\mathfrak v_i
+  =\int_0^\infty\rho_i(x)\,dx.
+}
+\]</span></p>
+<p>The drift is the square-root moment of the mode-projected batch spectrum. The volatility is its total mass, which agrees with the projection identity above.</p>
+</section>
+<section id="large-batch-square-root-preconditioning" class="level2" data-number="10">
+<h2 data-number="10" class="anchored" data-anchor-id="large-batch-square-root-preconditioning"><span class="header-section-number">10</span> Large Batch: Square-Root Preconditioning</h2>
+<p>Suppose <span class="math inline">\(B\ge N\)</span>, or <span class="math inline">\(\gamma\le1\)</span>. Every output mode is resolved and the kernels reduce to</p>
+<p><span class="math display">\[
+\boxed{\qquad
+\mathfrak d_i=\sqrt{\frac{\mu_i}{\gamma}},
+\qquad
+\mathfrak v_i=1.
+\qquad}
+\]</span></p>
+<p>Ignoring the volatility for a moment, introduce the algorithmic time</p>
+<p><span class="math display">\[
+d\tau=\frac{\eta}{\sqrt{\mathcal R(t)}}\,dt.
+\]</span></p>
+<p>The row modes decay as</p>
+<p><span class="math display">\[
+\frac{dr_i}{d\tau}
+  =-2\sqrt{\frac{\mu_i}{\gamma}}\,r_i.
+\]</span></p>
+<p>Ordinary gradient descent instead uses the population gradient <span class="math inline">\(\Sigma_{\rm out}\Delta\)</span> and therefore has mode rate proportional to <span class="math inline">\(\mu_i\)</span>:</p>
+<p><span class="math display">\[
+\frac{dr_i}{dt}
+  \propto-2\mu_i r_i.
+\]</span></p>
+<p>At the operator level,</p>
+<p><span class="math display">\[
+\text{gradient descent:}\quad
+-\mathcal K(\Delta),
+\qquad
+\text{SignSVD drift:}\quad
+-\mathcal K^{1/2}(\Delta)
+\]</span></p>
+<p>up to the common risk and aspect-ratio normalization. A condition number <span class="math inline">\(\kappa\)</span> is therefore reduced to <span class="math inline">\(\sqrt\kappa\)</span>, just as in classical acceleration on a strongly convex quadratic.</p>
+<p>The same conclusion holds when the nontrivial spectrum is on the activation side. Transposing the entire model exchanges the two covariance factors and leaves the square-root mechanism unchanged.</p>
+<div class="callout callout-style-default callout-important callout-titled" title="Large-batch conclusion">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Large-batch conclusion
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Once the batch resolves every matrix direction, SignSVD turns a covariance eigenvalue <span class="math inline">\(\mu_i\)</span> into an effective drift of order <span class="math inline">\(\sqrt{\mu_i}\)</span>. This is the precise sense in which it acts as a square-root preconditioner.</p>
+</div>
+</div>
+</section>
+<section id="small-batch-spectral-resolution-thresholding" class="level2 page-columns page-full" data-number="11">
+<h2 data-number="11" class="anchored" data-anchor-id="small-batch-spectral-resolution-thresholding"><span class="header-section-number">11</span> Small Batch: Spectral Resolution Thresholding</h2>
+<p>Now suppose <span class="math inline">\(B&lt;N\)</span>. To avoid confusing it with the input eigenvalues <span class="math inline">\(\lambda_j\)</span>, introduce a positive resolution scale <span class="math inline">\(\Lambda\)</span> defined implicitly by</p>
+<p><span class="math display">\[
+\boxed{\qquad
+B=\sum_{i=1}^N
+\frac{\Lambda\mu_i}{1+\Lambda\mu_i}.
+\qquad}
+\]</span></p>
+<p>Define</p>
+<p><span class="math display">\[
+w_i=\frac1{1+\Lambda\mu_i}.
+\]</span></p>
+<p>Then the SignSVD volatility is</p>
+<p><span class="math display">\[
+\boxed{\qquad
+\mathfrak v_i
+  =1-w_i
+  =\frac{\Lambda\mu_i}{1+\Lambda\mu_i}.
+\qquad}
+\]</span></p>
+<p>The identity defining <span class="math inline">\(\Lambda\)</span> is exactly the rank sum rule <span class="math inline">\(\sum_i\mathfrak v_i=B\)</span>.</p>
+<p>The drift has the accurate aggregate approximation</p>
+<p><span class="math display">\[
+\boxed{\qquad
+\mathfrak d_i
+\approx
+\frac{\mu_i\sqrt B}
+{\sqrt{N\left(\mu_i+\pi/(2\Lambda)\right)}}.
+\qquad}
+\]</span></p>
+<p>There are two asymptotic behaviors:</p>
+<p><span class="math display">\[
+\mathfrak d_i
+\approx
+\begin{cases}
+\sqrt{\mu_i}\sqrt{B/N},
+  &amp;\Lambda\mu_i\gg1
+   \quad\text{resolved},\\[2mm]
+\mu_i\sqrt{2\Lambda B/(\pi N)},
+  &amp;\Lambda\mu_i\ll1
+   \quad\text{unresolved}.
+\end{cases}
+\]</span></p>
+<p>Resolved modes receive the square-root-preconditioned drift. Unresolved modes have drift linear in <span class="math inline">\(\mu_i\)</span>, the same spectral power as SGD. Batch size is therefore a <strong>spectral resolution scale</strong>, not merely a variance-reduction parameter.</p>
+<div id="fig-half-anisotropic-drift-volatility" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-half-anisotropic-drift-volatility-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/figures/module-04/half-anisotropic-drift-volatility.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-half-anisotropic-drift-volatility-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Drift (top) and volatility (bottom) across covariance modes for <span class="math inline">\(\mu_i=i^{-1.5}\)</span>. Orange markers are Gaussian Monte Carlo; curves are the deterministic approximations. For <span class="math inline">\(\gamma=N/B&lt;1\)</span>, all modes are resolved and volatility is one. For <span class="math inline">\(\gamma&gt;1\)</span>, the vertical line marks the resolution boundary: tail modes cross from square-root drift toward SGD-like linear drift, while their projector participation falls below one. Figure from <span class="citation" data-cites="paquette2026phasesmuon">Paquette et al. (<a href="#ref-paquette2026phasesmuon" role="doc-biblioref">2026</a>)</span>.
+</figcaption>
+<div class="no-row-height column-margin column-container"></div></figure>
+</div>
+</section>
+<section id="power-law-covariance" class="level2 page-columns page-full" data-number="12">
+<h2 data-number="12" class="anchored" data-anchor-id="power-law-covariance"><span class="header-section-number">12</span> Power-Law Covariance</h2>
+<p>Specialize to</p>
+<p><span class="math display">\[
+\mu_i=i^{-\alpha},
+\qquad
+r_i(0)=i^{-\beta},
+\qquad
+\alpha&gt;0.
+\]</span></p>
+<p>The initial risk is finite in the infinite-dimensional idealization when</p>
+<p><span class="math display">\[
+\alpha+\beta&gt;1.
+\]</span></p>
+<p>This uses the same course convention as the previous modules: <span class="math inline">\(\alpha\)</span> is the decay exponent of covariance eigenvalues.</p>
+<p>The resolution boundary is</p>
+<p><span class="math display">\[
+i_\#=\Lambda^{1/\alpha},
+\]</span></p>
+<p>because <span class="math inline">\(\Lambda\mu_i\asymp1\)</span> there. For <span class="math inline">\(B&lt;N\)</span>,</p>
+<p><span class="math display">\[
+i_\#
+\asymp
+\begin{cases}
+B,
+  &amp;\alpha&gt;1,\\[2mm]
+B/\log(N/B),
+  &amp;\alpha=1
+  \quad\text{up to logarithmic placement},\\[2mm]
+B^{1/\alpha}/N^{1/\alpha-1},
+  &amp;0&lt;\alpha&lt;1.
+\end{cases}
+\]</span></p>
+<p>For a trace-class spectrum <span class="math inline">\(\alpha&gt;1\)</span>, a batch resolves order <span class="math inline">\(B\)</span> leading modes. For a higher-rank spectrum <span class="math inline">\(\alpha&lt;1\)</span>, it may resolve much less. The example</p>
+<p><span class="math display">\[
+\alpha=\frac12
+\qquad\Longrightarrow\qquad
+i_\#\asymp\frac{B^2}{N}
+\]</span></p>
+<p>is particularly sharp: a batch <span class="math inline">\(B\asymp\sqrt N\)</span> resolves only order-one modes. Once <span class="math inline">\(B\ge N\)</span>, all modes are resolved and this threshold disappears.</p>
+<div id="prp-half-anisotropic-summary" class="theorem proposition">
+<p><span class="theorem-title"><strong>Proposition 3 (Half-Anisotropic SignSVD Summary)</strong></span> For power-law covariance, SignSVD has two spectral regimes:</p>
+<p><span class="math display">\[
+\begin{array}{c|c|c}
+&amp;\text{drift}&amp;\text{volatility}\\ \hline
+\text{resolved head}
+  &amp;\sqrt{\mu_i}\sqrt{B/N}
+  &amp;1\\[1mm]
+\text{unresolved tail}
+  &amp;\mu_i\sqrt{2\Lambda B/(\pi N)}
+  &amp;\Lambda\mu_i
+\end{array}
+\]</span></p>
+<p>The batch selects the boundary. Above <span class="math inline">\(B=N\)</span>, the entire spectrum lies in the first row.</p>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="What are the half-anisotropic SignSGD kernels?">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>What are the half-anisotropic SignSGD kernels?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-12" class="callout-12-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The phase comparison below uses entrywise SignSGD in the same half-anisotropic model. The local-limit conditioning from the isotropic calculation, now summed over the isotropic input index, gives</p>
+<p><span class="math display">\[
+\boxed{\qquad
+\mathfrak d_i^{\rm SignSGD}
+=\frac{\mu_i\mathcal N_B}{\sqrt{\pi\overline\mu}},
+\qquad
+\overline\mu=\frac1N\sum_{k=1}^N\mu_k.
+\qquad}
+\]</span></p>
+<p>Thus SignSGD retains drift proportional to <span class="math inline">\(\mu_i\)</span>, rather than the <span class="math inline">\(\sqrt{\mu_i}\)</span> drift produced by resolved SignSVD modes <span class="citation" data-cites="xiao2025exact">(<a href="#ref-xiao2025exact" role="doc-biblioref">Xiao et al. 2025</a>)</span>.</p>
+<p>Its volatility also remembers the coordinate basis. Entries in different output rows are correlated, and the bivariate local limit theorem makes <span class="math inline">\((G_{pn},G_{kn})\)</span> asymptotically Gaussian. If their correlation is <span class="math inline">\(\rho_{pk}\)</span>, the Gaussian arcsine law gives</p>
+<p><span class="math display">\[
+\mathbb E[
+\operatorname{sign}(G_{pn})
+\operatorname{sign}(G_{kn})]
+\simeq
+\frac2\pi\arcsin(\rho_{pk}),
+\qquad
+\rho_{pk}
+=\frac{(\Sigma_{\rm out})_{pk}}
+{\sqrt{(\Sigma_{\rm out})_{pp}
+        (\Sigma_{\rm out})_{kk}}}.
+\]</span></p>
+<p>Recall that <span class="math inline">\(\Sigma_{\rm out}=U\operatorname{diag}(\mu_1,\ldots,\mu_N)U^\top\)</span> with a generic Haar eigenbasis. Its diagonal entries concentrate around <span class="math inline">\(\overline\mu\)</span>, while its off-diagonal entries are small enough that <span class="math inline">\(\arcsin\rho=\rho+o(\rho)\)</span>. Projecting the sign covariance onto <span class="math inline">\(u_i\)</span> gives the row volatility</p>
+<p><span class="math display">\[
+\boxed{\qquad
+\mathfrak v_i^{\rm SignSGD}
+=n_{\rm in}
+\left[
+1+\frac2\pi
+\left(\frac{\mu_i}{\overline\mu}-1\right)
+\right].
+\qquad}
+\]</span></p>
+<p>Unlike SignSVD volatility, this is not a projector cancellation: it retains the coordinate-basis correlations created by the output covariance.</p>
+</div>
+</div>
+</div>
+<div class="no-row-height column-margin column-container"><div id="ref-xiao2025exact" class="csl-entry" role="listitem">
+Xiao, Ke Liang, Noah Marshall, Atish Agarwala, and Elliot Paquette. 2025. <span>“Exact Risk Curves of <span class="nocase">signSGD</span> in High Dimensions: Quantifying Preconditioning and Noise-Compression Effects.”</span> <em>International Conference on Learning Representations</em>. <a href="https://openreview.net/forum?id=FZa1UCC9SC">https://openreview.net/forum?id=FZa1UCC9SC</a>.
+</div></div></section>
+<section id="from-mode-dynamics-to-a-phase-diagram" class="level2 page-columns page-full" data-number="13">
+<h2 data-number="13" class="anchored" data-anchor-id="from-mode-dynamics-to-a-phase-diagram"><span class="header-section-number">13</span> From Mode Dynamics to a Phase Diagram</h2>
+<p>To compare algorithms at a common accuracy, choose a constant learning rate whose limiting risk is <span class="math inline">\(\epsilon\)</span>. For kernels <span class="math inline">\((\mathfrak d_i,\mathfrak v_i)\)</span>, define</p>
+<p><span class="math display">\[
+\mathcal S
+  =\sum_{i=1}^N
+   \frac{\mu_i\mathfrak v_i}{2\mathfrak d_i},
+\qquad
+\eta^\star=\frac{2\sqrt\epsilon}{\mathcal S}.
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+t_{4\epsilon}
+  =\inf\{t\ge0:\mathcal R(t)\le4\epsilon\}
+\]</span></p>
+<p>is a matched-noise-floor time to accuracy. This avoids comparing two algorithms at the same numerical learning rate even though their natural normalizations differ by powers of <span class="math inline">\(N\)</span>.</p>
+<p>In the fully resolved regime <span class="math inline">\(B\ge N\)</span>, the main power-law result is as follows <span class="citation" data-cites="paquette2026phasesmuon">(<a href="#ref-paquette2026phasesmuon" role="doc-biblioref">Paquette et al. 2026</a>)</span>.</p>
+<div class="no-row-height column-margin column-container"></div><div id="thm-muon-time-to-accuracy" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 1 (Power-Law Time to Accuracy)</strong></span> Let <span class="math inline">\(\gamma=N/B\le1\)</span>, <span class="math inline">\(\mu_i=i^{-\alpha}\)</span>, <span class="math inline">\(r_i(0)=i^{-\beta}\)</span>, and <span class="math inline">\(\alpha+\beta&gt;1\)</span>. With the matched learning rate above, the leading <span class="math inline">\(\epsilon\to0\)</span> scalings are</p>
+<p><span class="math display">\[
+t_{4\epsilon}^{\rm SignSVD}
+\asymp
+\begin{cases}
+\gamma N^{1-\alpha/2}
+\epsilon^{-\alpha/[2(\alpha+\beta-1)]},
+  &amp;\beta&lt;1,\\[2mm]
+\mathcal S_{\rm SignSVD}\epsilon^{-1/2},
+  &amp;\beta&gt;1,
+\end{cases}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+t_{4\epsilon}^{\rm SignSGD}
+\asymp
+\begin{cases}
+\dfrac{\pi N^2\overline\mu}{B}
+\epsilon^{-\alpha/(\alpha+\beta-1)},
+  &amp;\beta&lt;\alpha+1,\\[3mm]
+\mathcal S_{\rm SignSGD}\epsilon^{-1/2},
+  &amp;\beta&gt;\alpha+1,
+\end{cases}
+\]</span></p>
+<p>where <span class="math inline">\(\overline\mu=N^{-1}\sum_i\mu_i\)</span>. The displayed first SignSVD branch is stated for <span class="math inline">\(0&lt;\alpha&lt;2\)</span>; boundary cases carry logarithmic corrections.</p>
+</div>
+<p>The different thresholds come from the different drift powers:</p>
+<p><span class="math display">\[
+\mathfrak d_i^{\rm SignSVD}\propto\mu_i^{1/2},
+\qquad
+\mathfrak d_i^{\rm SignSGD}\propto\mu_i.
+\]</span></p>
+<p>This divides the <span class="math inline">\((\alpha,\beta)\)</span> plane into three qualitative regions:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Region</th>
+<th>Target range</th>
+<th>Outcome</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>A: tail-heavy / hard</td>
+<td><span class="math inline">\(\beta&lt;1\)</span></td>
+<td>SignSVD is polynomially favored as <span class="math inline">\(\epsilon\to0\)</span>.</td>
+</tr>
+<tr class="even">
+<td>B: intermediate</td>
+<td><span class="math inline">\(1&lt;\beta&lt;\alpha+1\)</span></td>
+<td>Curves cross: SignSGD can be better early, SignSVD better at high accuracy.</td>
+</tr>
+<tr class="odd">
+<td>C: head-heavy / easy</td>
+<td><span class="math inline">\(\beta&gt;\alpha+1\)</span></td>
+<td>Both have the <span class="math inline">\(\epsilon^{-1/2}\)</span> branch; SignSGD is favored under this asymptotic normalization.</td>
+</tr>
+</tbody>
+</table>
+<p>The terminology is about where the target places its mass. A small <span class="math inline">\(\beta\)</span> means substantial error remains in weak covariance directions. Those are exactly the directions helped by square-root preconditioning. A large <span class="math inline">\(\beta\)</span> puts most error in the already-easy spectral head, where the cost of orthogonalization need not buy a better asymptotic rate.</p>
+<div id="fig-muon-vs-signsgd-phase-a" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-muon-vs-signsgd-phase-a-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/figures/module-04/muon-vs-signsgd-phase-a.png" class="img-fluid figure-img" style="width:82.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-muon-vs-signsgd-phase-a-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Muon and SignSGD in the tail-heavy region <span class="math inline">\((\alpha,\beta)=(1.5,0.7)\)</span> with <span class="math inline">\(N=1024\)</span> and <span class="math inline">\(B=2048\)</span>. Each color uses a learning rate matched to a target risk. The gray slopes show the distinct power-law predictions, and the time-to-target markers follow them. Figure from <span class="citation" data-cites="paquette2026phasesmuon">Paquette et al. (<a href="#ref-paquette2026phasesmuon" role="doc-biblioref">2026</a>)</span>.
+</figcaption>
+<div class="no-row-height column-margin column-container"></div></figure>
+</div>
+</section>
+<section id="sec-muon-momentum" class="level2 page-columns page-full" data-number="14">
+<h2 data-number="14" class="anchored" data-anchor-id="sec-muon-momentum"><span class="header-section-number">14</span> The Role of Momentum</h2>
+<p>The calculation above uses an exact polar factor and no momentum. The first idealization is mild in this model: applying five Newton–Schulz iterations to each instantaneous gradient closely follows the exact SignSVD trajectory.</p>
+<div id="fig-muon-vs-signsvd" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-muon-vs-signsvd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/figures/module-04/muon-vs-signsvd-phase-a.png" class="img-fluid figure-img" style="width:94.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-muon-vs-signsvd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: No-momentum Muon with five Newton–Schulz iterations follows the exact SignSVD prediction across a sweep of target risks in the large-batch half-anisotropic model. Solid curves are deterministic SignSVD trajectories; dashed curves are Muon simulations. The small displacement is a finite-size and finite-iteration effect. Figure from <span class="citation" data-cites="paquette2026phasesmuon">Paquette et al. (<a href="#ref-paquette2026phasesmuon" role="doc-biblioref">2026</a>)</span>.
+</figcaption>
+<div class="no-row-height column-margin column-container"></div></figure>
+</div>
+<p>Momentum changes the update in a different way. Instead of orthogonalizing <span class="math inline">\(G_t\)</span>, Muon first forms</p>
+<p><span class="math display">\[
+M_t=\beta_{\rm mom}M_{t-1}+G_t
+\]</span></p>
+<p>and orthogonalizes <span class="math inline">\(M_t\)</span>. Multiplying <span class="math inline">\(M_t\)</span> by a scalar does not change its polar factor, so the important effect is not the overall size of the buffer. It is the temporal correlation between successive orthogonalized updates.</p>
+<section id="why-the-factor-sqrt1beta_rm-mom1-beta_rm-mom-appears" class="level3" data-number="14.1">
+<h3 data-number="14.1" class="anchored" data-anchor-id="why-the-factor-sqrt1beta_rm-mom1-beta_rm-mom-appears"><span class="header-section-number">14.1</span> Why the factor <span class="math inline">\(\sqrt{(1+\beta_{\rm mom})/(1-\beta_{\rm mom})}\)</span> appears</h3>
+<p>The basic calculation is the integrated autocorrelation of an AR(1) process. Suppose a scalar component <span class="math inline">\(\xi_t\)</span> of the update has stationary variance <span class="math inline">\(v\)</span> and lag-<span class="math inline">\(k\)</span> correlation</p>
+<p><span class="math display">\[
+\operatorname{Corr}(\xi_t,\xi_{t+k})
+  \approx\beta_{\rm mom}^{\,k}.
+\]</span></p>
+<p>Over <span class="math inline">\(T\)</span> steps,</p>
+<p><span class="math display">\[
+\begin{aligned}
+\operatorname{Var}\left(\sum_{t=1}^T\xi_t\right)
+&amp;\approx
+Tv\left(1+2\sum_{k=1}^{\infty}\beta_{\rm mom}^{\,k}\right)\\
+&amp;=
+Tv\,\frac{1+\beta_{\rm mom}}{1-\beta_{\rm mom}}.
+\end{aligned}
+\]</span></p>
+<p>Thus the standard deviation of the accumulated perturbation is inflated by</p>
+<p><span class="math display">\[
+\boxed{\qquad
+\sqrt{\frac{1+\beta_{\rm mom}}{1-\beta_{\rm mom}}}.
+\qquad}
+\]</span></p>
+<p>Equivalently, <span class="math inline">\(T\)</span> correlated updates contain only</p>
+<p><span class="math display">\[
+T_{\rm eff}
+  \approx T\,\frac{1-\beta_{\rm mom}}{1+\beta_{\rm mom}}
+\]</span></p>
+<p>independent updates. This is a heuristic for Muon because the polar map is nonlinear: it assumes that the orthogonalized buffer inherits the leading AR(1) correlation of the buffer itself.</p>
+</section>
+<section id="fixed-learning-rate-and-the-noise-floor" class="level3 page-columns page-full" data-number="14.2">
+<h3 data-number="14.2" class="anchored" data-anchor-id="fixed-learning-rate-and-the-noise-floor"><span class="header-section-number">14.2</span> Fixed learning rate and the noise floor</h3>
+<p>The effect can be measured through an effective noise coefficient <span class="math inline">\(\mathcal N_{\rm eff}\)</span> defined by the stationary risk relation</p>
+<p><span class="math display">\[
+\mathcal R_\infty
+  \approx
+  \left(\frac{\eta\mathcal N_{\rm eff}}2\right)^2.
+\]</span></p>
+<p>At a fixed learning rate <span class="math inline">\(\eta\)</span>, a larger <span class="math inline">\(\mathcal N_{\rm eff}\)</span> therefore means a higher noise floor. Conversely, to compare runs at a fixed target floor <span class="math inline">\(\epsilon\)</span>, use one constant learning rate throughout each run,</p>
+<p><span class="math display">\[
+\eta^\star(\beta_{\rm mom})
+  =\frac{2\sqrt\epsilon}
+         {\mathcal N_{\rm eff}(\beta_{\rm mom})}.
+\]</span></p>
+<p>On the half-anisotropic model with <span class="math inline">\(N=1024\)</span> and <span class="math inline">\(B=2048\)</span>, the same calibration was performed in three different power-law target regimes. The measured coefficient was essentially independent of the target regime and followed</p>
+<p><span class="math display">\[
+\mathcal N_{\rm eff}(\beta_{\rm mom})
+\approx
+\rho\,\mathcal N_{\rm eff}(0)
+\sqrt{\frac{1+\beta_{\rm mom}}{1-\beta_{\rm mom}}},
+\qquad
+\rho\approx0.842,
+\]</span></p>
+<p>for the nonzero momentum values <span class="citation" data-cites="paquette2026phasesmuon">(<a href="#ref-paquette2026phasesmuon" role="doc-biblioref">Paquette et al. 2026</a>)</span>. The constant <span class="math inline">\(\rho\)</span> absorbs the renormalization introduced by the nonlinear polar map.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-paquette2026phasesmuon" class="csl-entry" role="listitem">
+Paquette, Elliot, Noah Marshall, Lucas Benigni, Guangyuan Wang, Atish Agarwala, and Courtney Paquette. 2026. <span>“Phases of <span>Muon</span>: When <span>Muon</span> Eclipses <span>SignSGD</span>.”</span> <em>arXiv Preprint arXiv:2605.09552</em>. <a href="https://arxiv.org/abs/2605.09552">https://arxiv.org/abs/2605.09552</a>.
+</div></div><table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;"><span class="math inline">\(\beta_{\rm mom}\)</span></th>
+<th style="text-align: right;">measured <span class="math inline">\(\mathcal N_{\rm eff}\)</span></th>
+<th style="text-align: right;">AR(1) prediction with <span class="math inline">\(\rho=0.842\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(0\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(9.97\)</span></td>
+<td style="text-align: right;">baseline</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><span class="math inline">\(0.90\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(36.90\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(36.59\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(0.95\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(52.49\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(52.43\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><span class="math inline">\(0.99\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(117.33\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(118.42\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>The square-root dependence gives a close match with a single <span class="math inline">\(\beta_{\rm mom}\)</span>-independent prefactor. In these experiments, momentum did not change the measured time-to-accuracy exponent; it increased the noise-floor coefficient. Consequently, at a fixed <span class="math inline">\(\eta\)</span> the limiting risk was worse, while matching a fixed <span class="math inline">\(\epsilon\)</span> required a smaller learning rate. This conclusion concerns the half-anisotropic quadratic model and does not by itself determine whether momentum is beneficial in a changing neural network.</p>
+</section>
+</section>
+<section id="what-the-calculation-reveals" class="level2" data-number="15">
+<h2 data-number="15" class="anchored" data-anchor-id="what-the-calculation-reveals"><span class="header-section-number">15</span> What the Calculation Reveals</h2>
+<p>The half-anisotropic model separates three effects that are easily conflated in experiments.</p>
+<section id="matrix-structure" class="level3" data-number="15.1">
+<h3 data-number="15.1" class="anchored" data-anchor-id="matrix-structure"><span class="header-section-number">15.1</span> 1. Matrix structure</h3>
+<p>The gradient is not an arbitrary <span class="math inline">\(N^2\)</span>-vector. It is a sum of <span class="math inline">\(B\)</span> outer products. SignSVD uses the left and right singular bases created by that factorization.</p>
+</section>
+<section id="covariance-preconditioning" class="level3" data-number="15.2">
+<h3 data-number="15.2" class="anchored" data-anchor-id="covariance-preconditioning"><span class="header-section-number">15.2</span> 2. Covariance preconditioning</h3>
+<p>When the batch resolves a mode, SignSVD changes its effective drift from <span class="math inline">\(\mu_i\)</span> to <span class="math inline">\(\sqrt{\mu_i}\)</span>. This is a basis-free square-root preconditioner.</p>
+</section>
+<section id="spectral-resolution" class="level3" data-number="15.3">
+<h3 data-number="15.3" class="anchored" data-anchor-id="spectral-resolution"><span class="header-section-number">15.3</span> 3. Spectral resolution</h3>
+<p>When <span class="math inline">\(B&lt;N\)</span>, the update sees only a rank-<span class="math inline">\(B\)</span> subspace. The resolved head is preconditioned, while the unresolved tail returns to SGD-like drift. The critical batch is therefore tied to matrix width and spectral decay, not only to the scalar variance of a gradient estimate.</p>
+<p>These effects are visible because the random matrix calculation predicts the whole learning curve. A one-step comparison would identify the update geometry but miss the coupling through the current risk and the accumulation of volatility.</p>
+</section>
+</section>
+<section id="summary" class="level2" data-number="16">
+<h2 data-number="16" class="anchored" data-anchor-id="summary"><span class="header-section-number">16</span> Summary</h2>
+<ol type="1">
+<li>A weight-matrix gradient from one example is an outer product of upstream error and activation.</li>
+<li>The bilinear least-squares Hessian acts from both sides: <span class="math inline">\(\mathcal K(H)=\Sigma_{\rm out}H\Sigma_{\rm in}\)</span>.</li>
+<li>Its natural eigenmodes are pairs <span class="math inline">\((u_i,v_j)\)</span> with eigenvalues <span class="math inline">\(\mu_i\lambda_j\)</span>, giving <span class="math inline">\(N^2\)</span> projected risks.</li>
+<li>SignSVD is the exact polar-factor update. Instantaneous, no-damping Shampoo gives the same update, while no-momentum Muon approximates it with a finite Newton–Schulz map.</li>
+<li>Projected risk always decomposes into descent and volatility.</li>
+<li>The drift and volatility kernels are deterministic spectral functionals of a self-consistent resolvent, an extension of Marchenko–Pastur theory.</li>
+<li>Half-anisotropy collapses <span class="math inline">\(N^2\)</span> paired risks to <span class="math inline">\(N\)</span> row norms.</li>
+<li>SignSVD volatility becomes a column-space projector; it is exactly one per mode when <span class="math inline">\(B\ge N\)</span>.</li>
+<li>Large-batch SignSVD produces square-root covariance drift.</li>
+<li>Small batch creates a resolution boundary: the head is preconditioned and the tail is SGD-like.</li>
+<li>With power-law covariance, whether SignSVD helps depends on both the data exponent <span class="math inline">\(\alpha\)</span> and target exponent <span class="math inline">\(\beta\)</span>.</li>
+<li>Momentum correlates successive orthogonalized updates; in the half-anisotropic model its measured noise coefficient grows like <span class="math inline">\(\sqrt{(1+\beta_{\rm mom})/(1-\beta_{\rm mom})}\)</span>.</li>
+</ol>
+<!--
+## Exercises
+
+1. **Backprop outer product.** Repeat the proof of
+   @prp-weight-gradient-outer-product when the layer includes a bias. What is
+   the batch gradient of the bias?
+
+2. **Two-sided Hessian.** Starting from
+   $\mathcal R(W)=\tfrac12\mathbb E
+   \langle y\otimes x,\Delta\rangle_F^2$, derive both the
+   population gradient and Hessian operator. Verify the eigenpair
+   $(u_i\otimes v_j,\mu_i\lambda_j)$.
+
+3. **Rank and batch.** Write the bilinear minibatch gradient as a sum of
+   $B$ outer products. Prove its rank is at most
+   $\min\{n_{\rm out},n_{\rm in},B\}$.
+
+4. **Polar volatility.** Prove @prp-signsvd-volatility-cancellation for a
+   rectangular matrix. What changes if $G$ has rank strictly less than $B$?
+
+5. **General spectral map.** For
+   $S=\varphi(GG^\top)G$, derive $SS^\top$ in the singular basis. Find all
+   scalar maps $\varphi$ for which every nonzero singular direction contributes
+   the same volatility.
+
+6. **Half-anisotropic collapse.** Sum the paired recursion over $j$ when
+   $\Sigma_{\rm in}=I$. Identify exactly where rotational symmetry is used.
+
+7. **Resolution scalar.** Show that
+   $B=\sum_i\Lambda\mu_i/(1+\Lambda\mu_i)$ has a unique positive solution
+   when $B<N$. Prove that increasing $B$ increases $\Lambda$ and the number of
+   resolved modes.
+
+8. **Power-law threshold.** Approximate the resolution equation by an
+   integral for $\mu_i=i^{-\alpha}$. Recover $i_\#\asymp B$ for
+   $\alpha>1$ and
+   $i_\#\asymp B^{1/\alpha}/N^{1/\alpha-1}$ for $\alpha<1$.
+
+9. **Square-root conditioning.** For eigenvalues in
+   $[\mu_{\min},\mu_{\max}]$, compare the slowest-to-fastest drift ratio for
+   gradient descent and fully resolved SignSVD.
+
+10. **Read the phases.** Fix $\alpha=1.5$ and classify targets with
+    $\beta=0.7,1.5,3$. Which method should win early, and which should win at
+    high accuracy?
+
+11. **Open modeling question.** In a nonlinear network, the upstream error and
+    activation are dependent. Propose a measurable replacement for
+    $(\Sigma_{\rm out},\Sigma_{\rm in})$ and explain which step of the
+    deterministic-equivalent argument is most likely to fail.
+-->
+
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/elliotpaquette\.github\.io\/summer-school-2026-notes\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/elliotpaquette/summer-school-2026-notes/blob/main/modules/04-muon.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/elliotpaquette/summer-school-2026-notes/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
