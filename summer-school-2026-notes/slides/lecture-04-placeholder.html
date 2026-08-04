@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>source-map – Power Laws in Data and Optimization</title>
+<title>Lecture 4 slides – Power Laws in Data and Optimization</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -79,7 +79,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="../styles.css">
 </head>
 
-<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-fixed fullcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -320,290 +320,47 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#source-map" id="toc-source-map" class="nav-link active" data-scroll-target="#source-map"><span class="header-section-number">1</span> Source Map</a>
-  <ul class="collapse">
-  <li><a href="#local-layout" id="toc-local-layout" class="nav-link" data-scroll-target="#local-layout"><span class="header-section-number">1.1</span> Local Layout</a></li>
-  <li><a href="#courtney-notes" id="toc-courtney-notes" class="nav-link" data-scroll-target="#courtney-notes"><span class="header-section-number">1.2</span> Courtney-Notes</a></li>
-  <li><a href="#elliot-summerschool" id="toc-elliot-summerschool" class="nav-link" data-scroll-target="#elliot-summerschool"><span class="header-section-number">1.3</span> Elliot-SummerSchool</a></li>
-  <li><a href="#powerlawcovariance" id="toc-powerlawcovariance" class="nav-link" data-scroll-target="#powerlawcovariance"><span class="header-section-number">1.4</span> PowerlawCovariance</a></li>
-  <li><a href="#fourplusthree" id="toc-fourplusthree" class="nav-link" data-scroll-target="#fourplusthree"><span class="header-section-number">1.5</span> fourplusthree</a></li>
-  <li><a href="#momentum-fixed-compute" id="toc-momentum-fixed-compute" class="nav-link" data-scroll-target="#momentum-fixed-compute"><span class="header-section-number">1.6</span> momentum-fixed-compute</a></li>
-  <li><a href="#danastar" id="toc-danastar" class="nav-link" data-scroll-target="#danastar"><span class="header-section-number">1.7</span> danastar</a></li>
-  <li><a href="#muonroot" id="toc-muonroot" class="nav-link" data-scroll-target="#muonroot"><span class="header-section-number">1.8</span> muonroot</a></li>
-  </ul></li>
-  </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/elliotpaquette/summer-school-2026-notes/blob/main/planning/source-map.md" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/elliotpaquette/summer-school-2026-notes/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
-    </div>
+    
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Lecture 4 slides</h1>
+<p class="subtitle lead">Muon and spectral optimizers</p>
+</div>
 
 
 
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
 
 
-<section id="source-map" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> Source Map</h1>
-<p>Last updated: 2026-07-22.</p>
-<section id="local-layout" class="level2" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="local-layout"><span class="header-section-number">1.1</span> Local Layout</h2>
-<p>The root directory is not currently a git repository. Several important source folders are symlinks:</p>
-<ul>
-<li><code>Elliot-SummerSchool -&gt; ../Summer2024/</code></li>
-<li><code>PowerlawCovariance -&gt; ../../../PowerlawCovariance/</code></li>
-<li><code>fourplusthree -&gt; ../../../SGD/FixedCompute/</code></li>
-<li><code>muonroot -&gt; ../../../muonroot/</code></li>
-</ul>
-<p>This matters for publishing: do not blindly initialize and publish this entire root as a GitHub repository. A clean notes repo should copy selected assets and cite the research sources, not commit the whole symlink farm.</p>
-</section>
-<section id="courtney-notes" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="courtney-notes"><span class="header-section-number">1.2</span> Courtney-Notes</h2>
-<p>Path: <code>Courtney-Notes/</code></p>
-<p>Contents:</p>
-<ul>
-<li><code>Chapter 1 RMT.pdf</code> through <code>Chapter 6 RMT.pdf</code></li>
-</ul>
-<p>Use:</p>
-<ul>
-<li>Likely background for accessible RMT explanations: empirical spectra, Stieltjes transforms, Marchenko-Pastur, deterministic equivalents, Dyson equation basics.</li>
-<li>These are handwritten PDFs. The relevant issue is OCR/visual inspection, not ordinary PDF text extraction. The <code>/opt/e-py</code> environment has <code>pypdf</code> and <code>pytesseract</code>, and the system has the <code>tesseract</code> binary. <code>pdf2image</code> was not available in <code>/opt/e-py</code> at the last check, so PDF-to-image conversion still needs a separate path before page-level OCR is convenient.</li>
-</ul>
-<p>Next step:</p>
-<ul>
-<li>Manually inspect the PDFs or set up a real OCR path before deciding which RMT preliminaries to adapt.</li>
-</ul>
-</section>
-<section id="elliot-summerschool" class="level2" data-number="1.3">
-<h2 data-number="1.3" class="anchored" data-anchor-id="elliot-summerschool"><span class="header-section-number">1.3</span> Elliot-SummerSchool</h2>
-<p>Path: <code>Elliot-SummerSchool/RMTandOptimization.tex</code></p>
-<p>Role:</p>
-<ul>
-<li>Best source for existing exposition style and broad RMT/optimization background.</li>
-</ul>
-<p>Detected structure:</p>
-<ul>
-<li>Background: tensors, calculus, resolvents, perturbation formulas, spectral mapping, Stieltjes transforms.</li>
-<li>Concentration: martingales, subgaussian and subexponential concentration, Gaussian interpolation.</li>
-<li>RMT: Dyson equations, deterministic equivalents, semicircle law, sample covariance matrices, deformed MP, spike examples, power-law spectrum, conjugate kernels.</li>
-<li>Optimization: SGD, risks, streaming/online SGD, classical convergence, high-dimensional limits, correlated least squares, explicit risk curves, Volterra equations, homogenization of multipass SGD.</li>
-</ul>
-<p>Use:</p>
-<ul>
-<li>Pull notation and exposition style.</li>
-<li>Use as background scaffolding for the light RMT interludes in modules 2 and 4.</li>
-<li>Reuse proof-sketch patterns: resolvent to deterministic equivalent to risk curve.</li>
-</ul>
-</section>
-<section id="powerlawcovariance" class="level2" data-number="1.4">
-<h2 data-number="1.4" class="anchored" data-anchor-id="powerlawcovariance"><span class="header-section-number">1.4</span> PowerlawCovariance</h2>
-<p>Primary manuscript:</p>
-<ul>
-<li><code>PowerlawCovariance/overleaf/6832219019e7681d398cecfb/main.tex</code></li>
-<li>Title: <code>Power Law Spectrum of the Random Feature Model</code></li>
-</ul>
-<p>Core claim:</p>
-<ul>
-<li>If input covariance has eigenvalues with power-law decay, the random feature covariance after Gaussian sketching and monomial activation inherits the same power-law exponent, up to logarithmic corrections.</li>
-<li>Proof ingredients include tensor linear algebra, Wick chaos expansions, dyadic head-tail decompositions, lattice counting, and concentration.</li>
-</ul>
-<p>Key sections:</p>
-<ul>
-<li>Introduction.</li>
-<li>Main results.</li>
-<li>Discussion and numerical experiments.</li>
-<li>Warm up: linear case.</li>
-<li>Higher order case.</li>
-<li>Principal term.</li>
-<li>Subleading terms and Wick chaoses.</li>
-<li>Appendix: concentration, auxiliary lemmas, Wick products, lattice point counting, CIFAR-10 experiments.</li>
-</ul>
-<p>Experiment notes:</p>
-<ul>
-<li><code>PowerlawCovariance/CIFAR_experiment/README.md</code></li>
-<li><code>PowerlawCovariance/CIFAR_experiment/figure_notes.md</code></li>
-</ul>
-<p>Useful figures:</p>
-<ul>
-<li><code>PowerlawCovariance/overleaf/6832219019e7681d398cecfb/figures/cifar10_covariance_eigenvalues.pdf</code></li>
-<li><code>PowerlawCovariance/overleaf/6832219019e7681d398cecfb/figures/figure1_plrf_and_tanh.pdf</code></li>
-<li><code>PowerlawCovariance/overleaf/6832219019e7681d398cecfb/figures/slope_across_layers_combined.pdf</code></li>
-<li><code>PowerlawCovariance/overleaf/6832219019e7681d398cecfb/figures/resnet20_trained_spectra_paper.pdf</code></li>
-<li><code>PowerlawCovariance/overleaf/6832219019e7681d398cecfb/figures/mlp_activation_comparison.pdf</code></li>
-<li><code>PowerlawCovariance/overleaf/6832219019e7681d398cecfb/figures/mlp_norm_comparison.pdf</code></li>
-</ul>
-<p>Use:</p>
-<ul>
-<li>Module 1 backbone.</li>
-<li>Main visuals for “the structure is visible” and “the structure persists.”</li>
-<li>Good place to introduce the Gram trick, tensor trick, and why random features are a tractable proxy for neural representations.</li>
-</ul>
-</section>
-<section id="fourplusthree" class="level2" data-number="1.5">
-<h2 data-number="1.5" class="anchored" data-anchor-id="fourplusthree"><span class="header-section-number">1.5</span> fourplusthree</h2>
-<p>Primary manuscript:</p>
-<ul>
-<li><code>fourplusthree/Fixed_Compute_Final/arxiv/arxiv_version_new.tex</code></li>
-<li>Title: <code>4+3 Phases of Compute-Optimal Neural Scaling Laws</code></li>
-</ul>
-<p>Core claim:</p>
-<ul>
-<li>In the Maloney-Roberts-Sully three-parameter solvable scaling model, SGD loss curves can be represented across iteration counts, then optimized over model parameter count under compute. The phase diagram has 4 phases plus 3 subphases governed by model capacity, optimizer noise, and feature embedding.</li>
-</ul>
-<p>Key sections:</p>
-<ul>
-<li>Problem setup: SGD on Power-law Random Features.</li>
-<li>Learning dynamics of SGD.</li>
-<li>Forcing function and kernel function.</li>
-<li>The 4 Phases.</li>
-<li>Compute-optimal curves.</li>
-<li>Spectrum of the sketched kernel: random matrix theory.</li>
-<li>Self-consistent approximation for the resolvent.</li>
-<li>Asymptotics and experimental results.</li>
-</ul>
-<p>Useful figures:</p>
-<ul>
-<li><code>fourplusthree/Fixed_Compute_Final/figures/Spectrum.pdf</code></li>
-<li><code>fourplusthree/Fixed_Compute_Final/figures/scalingfig4.pdf</code></li>
-<li><code>fourplusthree/Fixed_Compute_Final/figures/toy_scaling_law.pdf</code></li>
-<li><code>fourplusthree/Presentation/CIFAR_5m_eigenvalues.pdf</code></li>
-<li><code>fourplusthree/Presentation/ChinchillaLines.pdf</code></li>
-<li><code>fourplusthree/Presentation/alphabetaVolterraOnly.pdf</code></li>
-</ul>
-<p>Use:</p>
-<ul>
-<li>Module 2 backbone.</li>
-<li>Main place to connect power-law covariance to Chinchilla-style compute thinking.</li>
-<li>Main place for the first substantial RMT flavor: sample covariance, deterministic equivalent, and the Volterra risk equation.</li>
-</ul>
-</section>
-<section id="momentum-fixed-compute" class="level2" data-number="1.6">
-<h2 data-number="1.6" class="anchored" data-anchor-id="momentum-fixed-compute"><span class="header-section-number">1.6</span> momentum-fixed-compute</h2>
-<p>Primary manuscript:</p>
-<ul>
-<li><code>momentum-fixed-compute/neurips_paper.tex</code></li>
-<li>Title: <code>Dimension-adapted Momentum Outscales SGD</code></li>
-</ul>
-<p>Core claim:</p>
-<ul>
-<li>Classical constant momentum does not improve scaling exponents over SGD in the PLRF setting, but DANA-style dimension/data-adapted Nesterov schedules can improve loss and compute-optimal scaling exponents across a broad region.</li>
-</ul>
-<p>Key sections:</p>
-<ul>
-<li>The power law random features model.</li>
-<li>Continuized analysis of stochastic momentum algorithms.</li>
-<li>Deriving scaling laws on PLRF.</li>
-<li>Using Momentum to outscale SGD.</li>
-<li>ODEs and Volterra equations.</li>
-<li>DANA-constant and DANA-decaying.</li>
-<li>Kesten’s lemma checks.</li>
-<li>PLRF experiments and LSTM language model experiments.</li>
-</ul>
-<p>Useful figures:</p>
-<ul>
-<li><code>momentum-fixed-compute/figs/comparison_algorithms_PLRF.pdf</code></li>
-<li><code>momentum-fixed-compute/figs/comparison_sgd_sgdm_all.pdf</code></li>
-<li><code>momentum-fixed-compute/figs/Phase1_ODEs.pdf</code></li>
-<li><code>momentum-fixed-compute/figs/Phase2a_ODEs.pdf</code></li>
-<li><code>momentum-fixed-compute/figs/Phase3a_ODEs.pdf</code></li>
-<li><code>momentum-fixed-compute/figs/LSTM_chinchilla_1M.pdf</code></li>
-<li><code>momentum-fixed-compute/figs/LSTM_effective_alpha_1M.pdf</code></li>
-<li><code>momentum-fixed-compute/figs/scaling_EP.pdf</code></li>
-<li><code>momentum-fixed-compute/figs/scaling2_EP.pdf</code></li>
-</ul>
-<p>Use:</p>
-<ul>
-<li>Module 3 theoretical backbone.</li>
-<li>Gives the bridge from fixed-compute laws to optimizer controls.</li>
-<li>Good source for the “constant momentum cannot change the exponent; log-time or dimension-adapted schedules can” story.</li>
-</ul>
-</section>
-<section id="danastar" class="level2" data-number="1.7">
-<h2 data-number="1.7" class="anchored" data-anchor-id="danastar"><span class="header-section-number">1.7</span> danastar</h2>
-<p>Primary manuscript:</p>
-<ul>
-<li><code>danastar/arXiv_version/arxiv_paper.tex</code></li>
-<li>Title: <code>Logarithmic-time Schedules for Scaling Language Models with Momentum</code></li>
-</ul>
-<p>Core claim:</p>
-<ul>
-<li>Large-scale language model training can benefit from time-varying schedules for AdamW-style beta parameters and weight decay. ADANA and hardened variants apply log-time scheduling with damping; reported compute efficiency gains are measured against tuned AdamW, with experiments from 45M to 2.6B parameters.</li>
-</ul>
-<p>Key sections:</p>
-<ul>
-<li>Introduction and contributions.</li>
-<li>Experimental setting.</li>
-<li>Building ADANA.</li>
-<li>Hardening ADANA: from ADANA to DanaStar MK4.</li>
-<li>Appendices on PLRF, algorithms, scaling laws, baselining, data exponent, Ademamix, sparse gradients, Hilberg/log-time, failure modes, proofs, compute.</li>
-</ul>
-<p>Useful figures:</p>
-<ul>
-<li><code>danastar/figures/scaling_comparison_main.pdf</code></li>
-<li><code>danastar/figures/compute_saved.pdf</code></li>
-<li><code>danastar/figures/gamma3_factor_scaling_chinchilla.pdf</code></li>
-<li><code>danastar/figures/ademamix_schedules.pdf</code></li>
-<li><code>danastar/figures/kappa_sweep.pdf</code></li>
-<li><code>danastar/figures/tau_stats_summary.pdf</code></li>
-<li><code>danastar/figures/scaling_comparisons/comparison_main_new.pdf</code></li>
-<li><code>danastar/figures/scaling_comparisons/weight_decay_comparison.pdf</code></li>
-<li><code>danastar/figures/lr_scaling/Enoki-AdamW-lr-scaling.pdf</code></li>
-<li><code>danastar/figures/lr_scaling/Qwen3-DanaMK4-lr-scaling.pdf</code></li>
-</ul>
-<p>Use:</p>
-<ul>
-<li>Module 3 empirical/production bridge.</li>
-<li>Source for “what theory tells you to try” and “what breaks when you deploy the idea in transformer training.”</li>
-<li>Natural place for exercises about baselining, compute saved, and broken power-law fits.</li>
-</ul>
-</section>
-<section id="muonroot" class="level2" data-number="1.8">
-<h2 data-number="1.8" class="anchored" data-anchor-id="muonroot"><span class="header-section-number">1.8</span> muonroot</h2>
-<p>Primary manuscript:</p>
-<ul>
-<li><code>muonroot/overleaf-neurips/neurips_2026.tex</code></li>
-<li>ArXiv variant: <code>muonroot/overleaf-neurips/arXiv_version/arxiv_version_main.tex</code></li>
-<li>Title: <code>Phases of Muon: When Muon Eclipses SignSGD</code></li>
-</ul>
-<p>Core claim:</p>
-<ul>
-<li>Muon-like spectral optimizers can be modeled through stochastic SignSVD on a matrix-valued least squares problem. SignSVD behaves like square-root preconditioning at large batch, but small eigenmodes can revert toward SGD-like behavior at small batch. In power-law covariance, the alpha-beta plane has phases favoring SignSVD, SignSGD, or a trade-off.</li>
-</ul>
-<p>Key sections:</p>
-<ul>
-<li>Model setup and stochastic spectral algorithms.</li>
-<li>Learning curves and exact dynamics.</li>
-<li>SignSVD and SignSGD in the isotropic setting.</li>
-<li>Anisotropic output covariance.</li>
-<li>Power-law specialization.</li>
-<li>Time to epsilon-approximate solution.</li>
-<li>Appendices: RMT setup, derivations, half-anisotropic model, power-law analysis, Volterra equation, momentum ablation.</li>
-</ul>
-<p>Useful figures:</p>
-<ul>
-<li><code>muonroot/overleaf-neurips/figures/half_aniso_risk_and_density.pdf</code></li>
-<li><code>muonroot/overleaf-neurips/figures/convergence_rate_comparison.pdf</code></li>
-<li><code>muonroot/overleaf-neurips/figures/noise_floor_comparison.pdf</code></li>
-<li><code>muonroot/overleaf-neurips/figures/signsvd_signsgd_sweep.pdf</code></li>
-<li><code>muonroot/overleaf-neurips/figures/rate_vs_B_svd_sgd.pdf</code></li>
-<li><code>muonroot/overleaf-neurips/figures/half_aniso_lr_sweep.pdf</code></li>
-<li><code>muonroot/overleaf-neurips/figures/ode_half_aniso_a1.5_b0.7_N1024_B2048.pdf</code></li>
-<li><code>muonroot/siam-talk/edinburgh-2026/figs/figure1_plrf_and_tanh.pdf</code></li>
-<li><code>muonroot/siam-talk/edinburgh-2026/figs/slope_across_layers_combined.pdf</code></li>
-</ul>
-<p>Use:</p>
-<ul>
-<li>Module 4 backbone.</li>
-<li>Shows the same power-law covariance viewpoint applied to a newer optimizer.</li>
-<li>Good place for a second RMT flavor: deterministic dynamics for spectral algorithms and power-law phase comparison.</li>
-</ul>
+</header>
 
 
-</section>
-</section>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Beamer deck in progress
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The Lecture 4 slides are being revised and rehearsed. The finished Beamer PDF will replace this page when it is ready.</p>
+</div>
+</div>
+<p><a href="../modules/04-muon.html">Read the Module 4 web notes</a>.</p>
+
+
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -1024,4 +781,4 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/elliotpaquette/summer-school-2026-notes/blob/main/planning/source-map.md" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/elliotpaquette/summer-school-2026-notes/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/elliotpaquette/summer-school-2026-notes/blob/main/slides/lecture-04-placeholder.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/elliotpaquette/summer-school-2026-notes/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
