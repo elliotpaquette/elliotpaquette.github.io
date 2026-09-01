@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-09-09">
+
+<title>Lecture 3: Gaussian Width – High-Dimensional Probability</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-5685cd926c25366c96d9f1407e584118.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">High-Dimensional Probability</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-lectures" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Lectures</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-lectures">    
+        <li>
+    <a class="dropdown-item" href="../lectures/01-curse-of-dimensionality.html">
+ <span class="dropdown-text">1. The Curse of Dimensionality</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/02-convex-hulls.html">
+ <span class="dropdown-text">2. Convex Hulls and Sparse Approximation</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/03-gaussian-width.html">
+ <span class="dropdown-text">3. Gaussian Width</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/04-tails.html">
+ <span class="dropdown-text">4. Tails of Random Variables</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/05-orlicz-norms.html">
+ <span class="dropdown-text">5. Geometric Discrepancy and Orlicz Norms</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/06-bernstein-dimension-reduction.html">
+ <span class="dropdown-text">6. Bernstein’s Inequality and Dimension Reduction</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/07-coordinate-embeddings.html">
+ <span class="dropdown-text">7. Coordinate Embeddings</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/08-extreme-singular-values.html">
+ <span class="dropdown-text">8. Extreme Singular Values</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../exercises/index.html"> 
+<span class="menu-text">Exercises</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-course" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Course</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-course">    
+        <li>
+    <a class="dropdown-item" href="../course/index.html">
+ <span class="dropdown-text">Fall 2026</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../course/calendar.html">
+ <span class="dropdown-text">Calendar</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../references.html"> 
+<span class="menu-text">References</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#definition-and-first-properties" id="toc-definition-and-first-properties" class="nav-link active" data-scroll-target="#definition-and-first-properties"><span class="header-section-number">1</span> Definition and first properties</a></li>
+  <li><a href="#convex-bodies-norms-and-dual-norms" id="toc-convex-bodies-norms-and-dual-norms" class="nav-link" data-scroll-target="#convex-bodies-norms-and-dual-norms"><span class="header-section-number">2</span> Convex bodies, norms, and dual norms</a></li>
+  <li><a href="#finite-sets-and-gaussian-maxima" id="toc-finite-sets-and-gaussian-maxima" class="nav-link" data-scroll-target="#finite-sets-and-gaussian-maxima"><span class="header-section-number">3</span> Finite sets and Gaussian maxima</a></li>
+  <li><a href="#a-harder-example-sparse-vectors" id="toc-a-harder-example-sparse-vectors" class="nav-link" data-scroll-target="#a-harder-example-sparse-vectors"><span class="header-section-number">4</span> A harder example: sparse vectors</a></li>
+  <li><a href="#width-and-metric-entropy" id="toc-width-and-metric-entropy" class="nav-link" data-scroll-target="#width-and-metric-entropy"><span class="header-section-number">5</span> Width and metric entropy</a></li>
+  <li><a href="#looking-ahead" id="toc-looking-ahead" class="nav-link" data-scroll-target="#looking-ahead"><span class="header-section-number">6</span> Looking ahead</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Lecture 3: Gaussian Width</h1>
+<p class="subtitle lead">Random directions as a measure of geometric complexity</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 9, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Covering numbers describe a set at a chosen resolution. Gaussian width instead asks how far the set extends in a random direction. It is a single number, but it remembers surprisingly subtle information about geometry, convexity, and statistical complexity.</p>
+<p>Throughout, <span class="math inline">\(g\sim N(0,I_d)\)</span> is a standard Gaussian vector in <span class="math inline">\(\mathbb R^d\)</span>.</p>
+<section id="definition-and-first-properties" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="definition-and-first-properties"><span class="header-section-number">1</span> Definition and first properties</h2>
+<div id="def-gaussian-width" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 1 (Gaussian width)</strong></span> For a bounded set <span class="math inline">\(T\subseteq\mathbb R^d\)</span>, its <strong>Gaussian width</strong> is <span class="math display">\[
+w(T)=\mathbb E\sup_{t\in T}\langle g,t\rangle.
+\]</span> The support function <span class="math display">\[
+h_T(x)=\sup_{t\in T}\langle x,t\rangle
+\]</span> therefore satisfies <span class="math inline">\(w(T)=\mathbb Eh_T(g)\)</span>.</p>
+</div>
+<p>The width is translation invariant. Indeed, <span class="math display">\[
+w(T+a)=w(T)+\mathbb E\langle g,a\rangle=w(T).
+\]</span> It is also monotone, homogeneous for nonnegative scalars, and subadditive under Minkowski addition: <span class="math display">\[
+w(S+T)=w(S)+w(T).
+\]</span></p>
+<div id="prp-width-convexification" class="theorem proposition">
+<p><span class="theorem-title"><strong>Proposition 1 (Width ignores convexification)</strong></span> For every bounded <span class="math inline">\(T\subseteq\mathbb R^d\)</span>, <span class="math display">\[
+w(T)=w(\operatorname{conv}T)=w(\overline{\operatorname{conv}}T).
+\]</span></p>
+</div>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof (via the support function)">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof (via the support function)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>For every fixed <span class="math inline">\(x\)</span>, a linear functional takes the same supremum over <span class="math inline">\(T\)</span> and over its convex hull: <span class="math display">\[
+\sup_{y\in\operatorname{conv}T}\langle x,y\rangle
+=\sup_{t\in T}\langle x,t\rangle.
+\]</span> Continuity of the functional gives the same statement after closure. Apply this pointwise with <span class="math inline">\(x=g\)</span> and take expectations.</p>
+</div>
+</div>
+</div>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof (directly on the process)">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof (directly on the process)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>By Carathéodory’s theorem, every <span class="math inline">\(t\in\operatorname{conv}T\)</span> is a finite convex combination <span class="math inline">\(t=\sum_i\lambda_it_i\)</span> with <span class="math inline">\(t_i\in T\)</span>, <span class="math inline">\(\lambda_i\geq0\)</span>, <span class="math inline">\(\sum_i\lambda_i=1\)</span>. For fixed <span class="math inline">\(g\)</span>, <span class="math display">\[
+\langle g,t\rangle=\sum_i\lambda_i\langle g,t_i\rangle
+\leq\sum_i\lambda_i\sup_{s\in T}\langle g,s\rangle
+=\sup_{s\in T}\langle g,s\rangle.
+\]</span> Taking the supremum over <span class="math inline">\(t\in\operatorname{conv}T\)</span> and then expectations gives <span class="math inline">\(w(\operatorname{conv}T)\leq w(T)\)</span>; the reverse inequality holds because <span class="math inline">\(T\subseteq\operatorname{conv}T\)</span>.</p>
+</div>
+</div>
+</div>
+<p>This is an important contrast with covering numbers. Convexification can add many points and greatly change the covering number at a fine scale, but it does not change Gaussian width at all.</p>
+<div id="prp-width-symmetrization" class="theorem proposition">
+<p><span class="theorem-title"><strong>Proposition 2 (Width and the symmetrized set)</strong></span> For every bounded <span class="math inline">\(T\subseteq\mathbb R^d\)</span>, <span class="math display">\[
+w(T)=\frac12w(T-T).
+\]</span></p>
+</div>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The set <span class="math inline">\(T-T\)</span> is the Minkowski sum <span class="math inline">\(T+(-T)\)</span>, so by the additivity noted above, <span class="math display">\[
+w(T-T)=w(T)+w(-T).
+\]</span> Since <span class="math inline">\(-g\stackrel{d}{=}g\)</span>, <span class="math display">\[
+w(-T)=\mathbb E\sup_{t\in T}\langle g,-t\rangle
+=\mathbb E\sup_{t\in T}\langle -g,t\rangle=w(T).
+\]</span> Combining the two displays gives <span class="math inline">\(w(T-T)=2w(T)\)</span>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="convex-bodies-norms-and-dual-norms" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="convex-bodies-norms-and-dual-norms"><span class="header-section-number">2</span> Convex bodies, norms, and dual norms</h2>
+<p>A closed, convex, centrally symmetric set <span class="math inline">\(B\subseteq\mathbb R^d\)</span> with <span class="math inline">\(0\)</span> in its interior is called a <strong>convex body</strong>. Convex bodies correspond exactly to norms: a body <span class="math inline">\(B\)</span> determines the norm <span class="math display">\[
+\|x\|_B=\inf\{t&gt;0:x/t\in B\},
+\]</span> and every norm <span class="math inline">\(\|\cdot\|\)</span> determines the body <span class="math inline">\(B=\{x:\|x\|\leq1\}\)</span>. To a convex body <span class="math inline">\(B\)</span> we also associate its <strong>polar set</strong> <span class="math display">\[
+B^\circ=\{x:\langle x,y\rangle\leq1\text{ for all }y\in B\},
+\]</span> which is again a convex body, and is exactly the unit ball of the dual norm: <span class="math display">\[
+\|y\|_*=\sup_{\|x\|\leq1}\langle x,y\rangle,\qquad B^\circ=\{y:\|y\|_*\leq1\}.
+\]</span> In this language, <span class="math display">\[
+w(B)=\mathbb E\sup_{x\in B}\langle g,x\rangle=\mathbb E\|g\|_{B^\circ}.
+\]</span> Thus the Gaussian width of a convex body is the expected dual norm of a Gaussian vector.</p>
+<div id="exm-standard-widths" class="theorem example">
+<p><span class="theorem-title"><strong>Example 1 (Widths of standard sets)</strong></span> The following estimates hold with universal implicit constants: <span class="math display">\[
+\begin{aligned}
+w(B_2^d)&amp;=\mathbb E\|g\|_2\asymp\sqrt d,\\
+w(B_1^d)&amp;=\mathbb E\|g\|_\infty\asymp\sqrt{\log d},\\
+w(B_\infty^d)&amp;=\mathbb E\|g\|_1\asymp d.
+\end{aligned}
+\]</span></p>
+</div>
+<p>These three sets live in the same ambient space but have very different Gaussian sizes. Width sees geometry that dimension alone cannot distinguish.</p>
+<div class="callout callout-style-simple callout-tip callout-titled" title="Exercise: sharper asymptotics">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Exercise: sharper asymptotics
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The order-of-magnitude estimates above hide genuine structure that is worth computing exactly. A moment computation for <span class="math inline">\(\|g\|_2^2\)</span> gives <span class="math display">\[
+w(B_2^d)=\sqrt d-O(1/\sqrt d),
+\]</span> and a sharp Gaussian tail bound applied to <span class="math inline">\(\mathbb E\|g\|_\infty=\int_0^\infty\mathbb P(\max_i|g_i|\geq t)\,dt\)</span> gives <span class="math display">\[
+w(B_1^d)=\sqrt{2\log d}-\frac{\log\log d}{\sqrt{2\log d}}
++O\!\left(\frac1{\sqrt{\log d}}\right).
+\]</span> More generally, work out the exact rate of <span class="math inline">\(w(B_p^d)\)</span> as a function of <span class="math inline">\(d\)</span> for each <span class="math inline">\(1\leq p\leq\infty\)</span>; it interpolates between the <span class="math inline">\(\sqrt{\log d}\)</span> rate at <span class="math inline">\(p=1\)</span> and the linear rate at <span class="math inline">\(p=\infty\)</span>, passing through <span class="math inline">\(\sqrt d\)</span> at <span class="math inline">\(p=2\)</span>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="finite-sets-and-gaussian-maxima" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="finite-sets-and-gaussian-maxima"><span class="header-section-number">3</span> Finite sets and Gaussian maxima</h2>
+<p>The basic calculation for a finite set is an exponential-moment argument.</p>
+<div id="prp-finite-width" class="theorem proposition">
+<p><span class="theorem-title"><strong>Proposition 3 (Width of a finite set)</strong></span> Suppose <span class="math inline">\(T=\{t_1,\ldots,t_m\}\subseteq RB_2^d\)</span> and <span class="math inline">\(m\geq2\)</span>. Then <span class="math display">\[
+w(T)\leq R\sqrt{2\log m}.
+\]</span></p>
+</div>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>For every <span class="math inline">\(\lambda&gt;0\)</span>, <span class="math display">\[
+\begin{aligned}
+\exp\left(\lambda\mathbb E\max_i\langle g,t_i\rangle\right)
+&amp;\leq \mathbb E\exp\left(\lambda\max_i\langle g,t_i\rangle\right)\\
+&amp;\leq \sum_{i=1}^m\mathbb Ee^{\lambda\langle g,t_i\rangle}\\
+&amp;=\sum_{i=1}^m e^{\lambda^2\|t_i\|_2^2/2}\\
+&amp;\leq m e^{\lambda^2R^2/2}.
+\end{aligned}
+\]</span> Taking logarithms gives <span class="math display">\[
+w(T)\leq\frac{\log m}{\lambda}+\frac{\lambda R^2}{2}.
+\]</span> The choice <span class="math inline">\(\lambda=\sqrt{2\log m}/R\)</span> minimizes the right-hand side.</p>
+</div>
+</div>
+</div>
+<p>For the vertices <span class="math inline">\(T=\{\pm e_1,\ldots,\pm e_d\}\)</span>, the proposition gives the correct <span class="math inline">\(\sqrt{\log d}\)</span> scale. By <a href="#prp-width-convexification" class="quarto-xref">Proposition&nbsp;1</a>, the same scale is the width of the entire <span class="math inline">\(\ell^1\)</span> ball.</p>
+</section>
+<section id="a-harder-example-sparse-vectors" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="a-harder-example-sparse-vectors"><span class="header-section-number">4</span> A harder example: sparse vectors</h2>
+<div id="exm-sparse-width" class="theorem example">
+<p><span class="theorem-title"><strong>Example 2 (Sparse unit vectors)</strong></span> Let <span class="math display">\[
+U_s=\{x\in B_2^d:|\operatorname{supp}(x)|\leq s\}
+\]</span> be the set of unit-norm vectors supported on at most <span class="math inline">\(s\)</span> coordinates, for a fixed <span class="math inline">\(s\leq d\)</span>. Then <span class="math display">\[
+w(U_s)\asymp\sqrt{s\log(ed/s)}.
+\]</span></p>
+</div>
+<p>Unlike the examples above, <span class="math inline">\(U_s\)</span> resists both of our tools at once: it is neither finite (so <a href="#prp-finite-width" class="quarto-xref">Proposition&nbsp;3</a> does not apply) nor convex (so we cannot reduce to a ball via <a href="#prp-width-convexification" class="quarto-xref">Proposition&nbsp;1</a>). In fact <span class="math display">\[
+w(U_s)=\mathbb E\sqrt{(g_{(1)}^*)^2+\cdots+(g_{(s)}^*)^2},
+\]</span> where <span class="math inline">\(g_{(1)}^*\geq\cdots\geq g_{(d)}^*\)</span> is the decreasing rearrangement of <span class="math inline">\(|g_1|,\ldots,|g_d|\)</span> — not an expression we can evaluate with the tools built so far. Bounding suprema of Gaussian processes over sets that are neither finite nor convex is exactly the problem that <strong>chaining</strong>, developed later in the course, is built to solve.</p>
+<p>This raises the natural question behind the rest of the lecture: how do we estimate the supremum of a general Gaussian process from the geometry of the index set alone? Sudakov’s inequality is the first, one-scale answer.</p>
+</section>
+<section id="width-and-metric-entropy" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="width-and-metric-entropy"><span class="header-section-number">5</span> Width and metric entropy</h2>
+<p>A well-separated set forces a Gaussian process to have a large maximum. The result that formalizes this principle is Sudakov’s minoration.</p>
+<div id="thm-sudakov" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 1 (Sudakov minoration)</strong></span> There is a universal constant <span class="math inline">\(c&gt;0\)</span> such that every bounded <span class="math inline">\(T\subseteq\mathbb R^d\)</span> satisfies <span class="math display">\[
+w(T)\geq c\varepsilon
+\sqrt{\log N(T,\|\cdot\|_2,\varepsilon)}
+\]</span> for every <span class="math inline">\(\varepsilon&gt;0\)</span>. Equivalently, <span class="math display">\[
+\log N(T,\varepsilon)
+\leq C\frac{w(T)^2}{\varepsilon^2}
+\]</span> for a universal <span class="math inline">\(C\)</span>.</p>
+</div>
+<div class="callout callout-style-simple callout-note callout-titled" title="Proof roadmap">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof roadmap
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Choose a maximal <span class="math inline">\(\varepsilon\)</span>-packing <span class="math inline">\(t_1,\ldots,t_m\)</span>. The Gaussian variables <span class="math inline">\(X_i=\langle g,t_i\rangle\)</span> satisfy <span class="math display">\[
+\mathbb E(X_i-X_j)^2=\|t_i-t_j\|_2^2&gt;\varepsilon^2.
+\]</span> A Gaussian comparison argument reduces the problem to the expected maximum of <span class="math inline">\(m\)</span> independent Gaussians with variance of order <span class="math inline">\(\varepsilon^2\)</span>, which is of order <span class="math inline">\(\varepsilon\sqrt{\log m}\)</span>. The comparison theorem and its proof will be developed in the Gaussian-process part of the course.</p>
+</div>
+</div>
+</div>
+<p>Sudakov’s inequality says that width controls the entropy at each individual scale. There is a companion principle in the other direction, Dudley’s inequality, which aggregates the entropy at <em>every</em> scale into a single bound on <span class="math inline">\(w(T)\)</span>. We postpone even stating it until we have built chaining, the technique that both proves it and that will let us finally bound quantities like <span class="math inline">\(w(U_s)\)</span> from <a href="#exm-sparse-width" class="quarto-xref">Example&nbsp;2</a> above.</p>
+<!--
+Dudley's inequality:
+$$
+w(T)\lesssim
+\int_0^{\operatorname{diam}(T)}
+\sqrt{\log N(T,\varepsilon)}\,d\varepsilon.
+$$
+Understanding why the integral uses all scales, and why it may not be sharp,
+is the content of the chaining chapters.
+-->
+<!--
+## Concentration of the support function
+
+The random variable
+$$
+Z_T=\sup_{t\in T}\langle g,t\rangle
+$$
+does not merely have mean $w(T)$; it is concentrated near that mean.
+
+::: {#lem-support-lipschitz name="The support function is Lipschitz"}
+If $R=\sup_{t\in T}\|t\|_2$, then $h_T$ is $R$-Lipschitz:
+$$
+|h_T(x)-h_T(y)|\leq R\|x-y\|_2.
+$$
+:::
+
+::: {.callout-note .proof-fold collapse="true" appearance="simple" title="Proof"}
+For every $t\in T$,
+$$
+\langle x,t\rangle
+\leq \langle y,t\rangle+\langle x-y,t\rangle
+\leq h_T(y)+R\|x-y\|_2.
+$$
+Take the supremum over $t$, and then interchange $x$ and $y$.
+:::
+
+The Gaussian concentration theorem for Lipschitz functions therefore gives
+$$
+\mathbb P\{|Z_T-w(T)|\geq u\}
+\leq 2\exp\left(-\frac{u^2}{2R^2}\right).
+$$
+This is the first appearance of a recurring pattern:
+
+- the mean is controlled by a geometric complexity such as width;
+- fluctuations around the mean are controlled by a Lipschitz radius.
+
+These are different pieces of information and should not be conflated.
+-->
+<!--
+## A question of scale
+
+For the Euclidean ball, $w(B_2^d)\asymp\sqrt d$ and
+$R=1$. Its Gaussian support function has a mean of order $\sqrt d$ but
+fluctuations of order one. This separation between the size of an object and
+the size of its fluctuations is one of the characteristic phenomena of high
+dimension.
+-->
+</section>
+<section id="looking-ahead" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="looking-ahead"><span class="header-section-number">6</span> Looking ahead</h2>
+<p>Sudakov’s proof, once completed, will rest on a comparison theorem for Gaussian processes — a way to compare <span class="math inline">\(\mathbb E\sup_tX_t\)</span> across two processes from a comparison of their covariance structures. Before we can prove that, we need sharper control of individual Gaussian and sub-Gaussian tails. The next lecture builds exactly that: a reusable calculus of exponential moments for sums and maxima of random variables.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/elliotpaquette\.github\.io\/high-dimensional-probability\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

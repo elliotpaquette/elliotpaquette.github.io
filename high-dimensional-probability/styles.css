@@ -1,0 +1,155 @@
+:root {
+  --hdp-accent: #245f73;
+  --hdp-accent-soft: #eaf3f5;
+  --hdp-warm: #865f21;
+}
+
+.theorem {
+  --statement-accent: var(--hdp-accent);
+  margin: 1.35rem 0;
+  padding: 1rem 1.15rem;
+  border-inline-start: 0.22rem solid var(--statement-accent);
+  border-radius: 0.2rem;
+  background-color: color-mix(in srgb, var(--statement-accent) 7%, var(--bs-body-bg));
+}
+
+.theorem .theorem-title {
+  display: block;
+  margin-bottom: 0.55rem;
+  color: var(--statement-accent);
+  font-style: normal;
+  font-weight: 650;
+}
+
+.theorem.definition,
+.theorem.example {
+  --statement-accent: #496b42;
+}
+
+.theorem.exercise {
+  --statement-accent: #7b5420;
+}
+
+.callout.callout-style-simple > .callout-header {
+  font-weight: 620;
+}
+
+.proof-fold {
+  margin-top: -0.3rem;
+  margin-bottom: 1.3rem;
+}
+
+.home-intro {
+  max-width: 56rem;
+  margin: 0 auto 2rem;
+  font-size: 1.08rem;
+}
+
+.home-thesis {
+  margin: 1.4rem 0;
+  padding: 1rem 1.15rem;
+  border-left: 0.24rem solid var(--hdp-accent);
+  background: var(--hdp-accent-soft);
+}
+
+.theme-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 1rem;
+  margin: 1.2rem 0 2rem;
+}
+
+.theme-card {
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--bs-border-color);
+  border-radius: 0.35rem;
+  background: var(--bs-body-bg);
+}
+
+.theme-card h3 {
+  margin-top: 0;
+  font-size: 1.08rem;
+}
+
+.theme-card p:last-child {
+  margin-bottom: 0;
+}
+
+.theme-card.is-future {
+  opacity: 0.82;
+}
+
+.theme-status {
+  color: var(--bs-secondary-color);
+  font-size: 0.86rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.calendar-table table {
+  width: 100%;
+}
+
+.calendar-table td:first-child,
+.calendar-table th:first-child {
+  white-space: nowrap;
+  width: 9rem;
+}
+
+.calendar-table td:nth-child(2),
+.calendar-table th:nth-child(2) {
+  width: 8rem;
+}
+
+.calendar-table tr.calendar-break td {
+  background: color-mix(in srgb, var(--hdp-warm) 10%, var(--bs-body-bg));
+}
+
+body.quarto-dark {
+  --hdp-accent: #78bed0;
+  --hdp-accent-soft: #19323a;
+}
+
+body.quarto-dark .theorem.definition,
+body.quarto-dark .theorem.example {
+  --statement-accent: #8fbd84;
+}
+
+body.quarto-dark .theorem.exercise {
+  --statement-accent: #e0b36e;
+}
+
+@media (max-width: 600px) {
+  .calendar-table {
+    font-size: 0.92rem;
+  }
+
+  .calendar-table td:first-child,
+  .calendar-table th:first-child {
+    width: auto;
+    white-space: normal;
+  }
+}
+
+@media print {
+  .navbar,
+  .quarto-title-meta-heading,
+  #quarto-margin-sidebar,
+  .quarto-secondary-nav {
+    display: none !important;
+  }
+
+  .callout-collapse.collapse,
+  .callout-collapse .callout-body-container {
+    display: block !important;
+  }
+}
+
+/* Wide display equations scroll inside their box instead of overflowing it. */
+mjx-container[display="true"] {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.15rem 0;
+}

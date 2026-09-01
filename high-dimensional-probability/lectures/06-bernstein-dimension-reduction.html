@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-09-21">
+
+<title>Lecture 6: Bernstein’s Inequality and Dimension Reduction – High-Dimensional Probability</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-5685cd926c25366c96d9f1407e584118.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">High-Dimensional Probability</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-lectures" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Lectures</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-lectures">    
+        <li>
+    <a class="dropdown-item" href="../lectures/01-curse-of-dimensionality.html">
+ <span class="dropdown-text">1. The Curse of Dimensionality</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/02-convex-hulls.html">
+ <span class="dropdown-text">2. Convex Hulls and Sparse Approximation</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/03-gaussian-width.html">
+ <span class="dropdown-text">3. Gaussian Width</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/04-tails.html">
+ <span class="dropdown-text">4. Tails of Random Variables</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/05-orlicz-norms.html">
+ <span class="dropdown-text">5. Geometric Discrepancy and Orlicz Norms</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/06-bernstein-dimension-reduction.html">
+ <span class="dropdown-text">6. Bernstein’s Inequality and Dimension Reduction</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/07-coordinate-embeddings.html">
+ <span class="dropdown-text">7. Coordinate Embeddings</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/08-extreme-singular-values.html">
+ <span class="dropdown-text">8. Extreme Singular Values</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../exercises/index.html"> 
+<span class="menu-text">Exercises</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-course" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Course</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-course">    
+        <li>
+    <a class="dropdown-item" href="../course/index.html">
+ <span class="dropdown-text">Fall 2026</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../course/calendar.html">
+ <span class="dropdown-text">Calendar</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../references.html"> 
+<span class="menu-text">References</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#sums-of-independent-random-variables" id="toc-sums-of-independent-random-variables" class="nav-link active" data-scroll-target="#sums-of-independent-random-variables"><span class="header-section-number">1</span> Sums of independent random variables</a></li>
+  <li><a href="#bernsteins-condition" id="toc-bernsteins-condition" class="nav-link" data-scroll-target="#bernsteins-condition"><span class="header-section-number">2</span> Bernstein’s condition</a></li>
+  <li><a href="#bernsteins-inequality" id="toc-bernsteins-inequality" class="nav-link" data-scroll-target="#bernsteins-inequality"><span class="header-section-number">3</span> Bernstein’s inequality</a></li>
+  <li><a href="#dimension-reduction" id="toc-dimension-reduction" class="nav-link" data-scroll-target="#dimension-reduction"><span class="header-section-number">4</span> Dimension reduction</a></li>
+  <li><a href="#where-we-go-next" id="toc-where-we-go-next" class="nav-link" data-scroll-target="#where-we-go-next"><span class="header-section-number">5</span> Where we go next</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Lecture 6: Bernstein’s Inequality and Dimension Reduction</h1>
+<p class="subtitle lead">From sub-exponential tails to random projections</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 21, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Lecture 5 showed that sums of independent sub-Gaussian variables add their variance proxies, a Pythagorean theorem for <span class="math inline">\(\psi_2\)</span> control. Without <span class="math inline">\(\psi_2\)</span> control on the summands, no Gaussian tail is available at all: a single heavy-tailed term dominates a sum no matter how many other terms are added to it. Bernstein’s inequality is what replaces the Gaussian tail when only <span class="math inline">\(\psi_1\)</span> control, sub-exponential tails, is available. We then use it to answer a geometric question: how few dimensions does a random projection need in order to almost preserve all pairwise distances among <span class="math inline">\(n\)</span> points?</p>
+<section id="sums-of-independent-random-variables" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="sums-of-independent-random-variables"><span class="header-section-number">1</span> Sums of independent random variables</h2>
+<p>Recall the Pythagorean theorem of Lecture 5. If <span class="math inline">\(X_1,\ldots,X_n\)</span> are independent, mean-zero, and <span class="math inline">\(V_i\)</span>-subgaussian, then <span class="math display">\[
+\mathbb E\exp\Big(\lambda\sum_{i=1}^nX_i\Big)
+=\prod_{i=1}^n\mathbb Ee^{\lambda X_i}
+\leq\prod_{i=1}^n\exp\Big(\frac{\lambda^2V_i}2\Big),
+\]</span> so the sum is <span class="math inline">\(\big(\sum_iV_i\big)\)</span>-subgaussian, and for every <span class="math inline">\(t\geq0\)</span> <span class="math display">\[
+\mathbb P\Big\{\sum_{i=1}^nX_i&gt;t\Big\}
+\leq\exp\left(-\frac{t^2}{2\sum_{i=1}^nV_i}\right).
+\]</span></p>
+<p>Now suppose the <span class="math inline">\(X_i\)</span> are controlled only in the <span class="math inline">\(\psi_1\)</span> norm. A single variable with <span class="math inline">\(\|X\|_{\psi_1}&lt;\infty\)</span> has an exponential tail, by the Markov-inequality direction of the equivalence theorem in Lecture 5: <span class="math display">\[
+\mathbb P\{|X|\geq t\}\leq2\exp\left(-\frac t{\|X\|_{\psi_1}}\right)
+\qquad(t\geq0).
+\]</span> This tail is genuinely heavier than Gaussian, and it does not go away when <span class="math inline">\(X\)</span> is added to other independent variables. So a sum of <span class="math inline">\(\psi_1\)</span>-controlled variables cannot satisfy an unconditional Gaussian tail bound, and a new inequality is needed.</p>
+<div class="callout callout-style-simple callout-note callout-titled" title="Centering costs only a constant">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Centering costs only a constant
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Write <span class="math inline">\(K=\|X\|_{\psi_1}\)</span>. Since <span class="math inline">\(u\leq e^u-1\)</span> for <span class="math inline">\(u\geq0\)</span>, <span class="math display">\[
+|\mathbb EX|\leq\mathbb E|X|\leq K\,\mathbb E\big(e^{|X|/K}-1\big)\leq K .
+\]</span> By Cauchy–Schwarz, <span class="math display">\[
+\mathbb Ee^{|X-\mathbb EX|/(2K)}
+\leq e^{|\mathbb EX|/(2K)}\,\big(\mathbb Ee^{|X|/K}\big)^{1/2}
+\leq\sqrt{2e},
+\]</span> and Markov’s inequality gives, for every <span class="math inline">\(t\geq0\)</span>, <span class="math display">\[
+\mathbb P\{|X-\mathbb EX|\geq t\}\leq3\exp\left(-\frac t{2\|X\|_{\psi_1}}\right).
+\]</span> So the centered variable has the same tail scale, up to a factor <span class="math inline">\(2\)</span>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="bernsteins-condition" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="bernsteins-condition"><span class="header-section-number">2</span> Bernstein’s condition</h2>
+<p>The Gaussian tail of Lecture 4 came from a bound on the moment generating function valid for <em>every</em> <span class="math inline">\(\lambda\)</span>. With only <span class="math inline">\(\psi_1\)</span> control, or only a bound on <span class="math inline">\(\|X\|_{L^\infty}\)</span>, the same Gaussian-type bound still holds, but only for <span class="math inline">\(\lambda\)</span> in a bounded window.</p>
+<div id="lem-bernstein-mgf" class="theorem lemma">
+<p><span class="theorem-title"><strong>Lemma 1 (Bernstein’s condition)</strong></span> Let <span class="math inline">\(X\)</span> be a random variable.</p>
+<ol type="1">
+<li>If <span class="math inline">\(\|X\|_{\psi_1}&lt;\infty\)</span>, then for every <span class="math inline">\(\lambda\)</span> with <span class="math inline">\(|\lambda|\,\|X\|_{\psi_1}\leq\frac12\)</span>, <span class="math display">\[
+\mathbb Ee^{\lambda X}\leq\exp\!\big(\lambda\,\mathbb EX+4\lambda^2\|X\|_{\psi_1}^2\big).
+\]</span></li>
+<li>If <span class="math inline">\(\|X\|_{L^\infty}&lt;\infty\)</span>, then for every <span class="math inline">\(\lambda\)</span> with <span class="math inline">\(|\lambda|\,\|X\|_{L^\infty}\leq\frac12\)</span>, <span class="math display">\[
+\mathbb Ee^{\lambda X}\leq\exp\!\Big(\lambda\,\mathbb EX+\frac{\sqrt e}2\lambda^2\,\mathbb EX^2\Big).
+\]</span></li>
+</ol>
+</div>
+<p>Dividing by <span class="math inline">\(e^{\lambda\mathbb EX}\)</span>, both statements bound the moment generating function of the centered variable <span class="math inline">\(X-\mathbb EX\)</span> by <span class="math inline">\(\exp(C_0\lambda^2\sigma^2)\)</span> in the window, with <span class="math inline">\(\sigma^2=\|X\|_{\psi_1}^2\)</span> and <span class="math inline">\(C_0=4\)</span> in the first case, and <span class="math inline">\(\sigma^2=\mathbb EX^2\)</span> and <span class="math inline">\(C_0=\sqrt e/2\)</span> in the second.</p>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Let <span class="math inline">\(M(\lambda)=\mathbb Ee^{\lambda X}\)</span>. Then <span class="math display">\[
+M(0)=1,
+\qquad
+M'(0)=\mathbb EX,
+\qquad
+M''(\lambda)=\mathbb E\big(X^2e^{\lambda X}\big).
+\]</span> Taylor’s formula with integral remainder gives, for every <span class="math inline">\(\lambda\)</span>, <span class="math display">\[
+M(\lambda)=1+\lambda\,\mathbb EX+\int_0^\lambda(\lambda-s)M''(s)\,ds .
+\]</span> If <span class="math inline">\(M''(s)\leq B\)</span> on the interval between <span class="math inline">\(0\)</span> and <span class="math inline">\(\lambda\)</span>, then <span class="math display">\[
+M(\lambda)\leq1+\lambda\,\mathbb EX+\frac{B\lambda^2}2
+\leq\exp\Big(\lambda\,\mathbb EX+\frac{B\lambda^2}2\Big),
+\]</span> using <span class="math inline">\(1+u\leq e^u\)</span>. It remains to bound <span class="math inline">\(M''\)</span> in each case.</p>
+<p><strong>Part 1.</strong> Rescale so that <span class="math inline">\(\|X\|_{\psi_1}=1\)</span>, that is <span class="math inline">\(\mathbb Ee^{|X|}\leq2\)</span>, and take <span class="math inline">\(|\lambda|\leq\frac12\)</span>. Every Taylor term of <span class="math inline">\(e^{|X|}-1\)</span> is at most the whole, so <span class="math display">\[
+\frac{\mathbb EX^4}{4!}\leq\mathbb E\big(e^{|X|}-1\big)\leq1,
+\qquad\text{i.e.}\qquad
+\mathbb EX^4\leq24 .
+\]</span> By Cauchy–Schwarz and <span class="math inline">\(2|\lambda|\leq1\)</span>, <span class="math display">\[
+\begin{aligned}
+M''(\lambda)=\mathbb E\big(X^2e^{\lambda X}\big)
+&amp;\leq\big(\mathbb EX^4\big)^{1/2}\big(\mathbb Ee^{2\lambda X}\big)^{1/2}\\
+&amp;\leq\sqrt{24}\,\big(\mathbb Ee^{|X|}\big)^{1/2}
+\leq\sqrt{48}&lt;7 .
+\end{aligned}
+\]</span> So <span class="math inline">\(B=7\)</span> works, and <span class="math inline">\(7/2\leq4\)</span>. Undoing the rescaling gives the claim.</p>
+<p><strong>Part 2.</strong> Here <span class="math inline">\(|\lambda X|\leq|\lambda|\,\|X\|_{L^\infty}\leq\frac12\)</span> pointwise, so <span class="math display">\[
+M''(\lambda)=\mathbb E\big(X^2e^{\lambda X}\big)\leq\sqrt e\,\mathbb EX^2 ,
+\]</span> a bound not depending on <span class="math inline">\(\lambda\)</span> within the window. Take <span class="math inline">\(B=\sqrt e\,\mathbb EX^2\)</span>.</p>
+</div>
+</div>
+</div>
+<p>Part 2 uses the true second moment rather than a proxy, and is the sharper statement whenever <span class="math inline">\(X\)</span> happens to be bounded. Part 1 needs only sub-exponential tails, at the cost of using <span class="math inline">\(\|X\|_{\psi_1}^2\)</span> in place of <span class="math inline">\(\mathbb EX^2\)</span>.</p>
+</section>
+<section id="bernsteins-inequality" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="bernsteins-inequality"><span class="header-section-number">3</span> Bernstein’s inequality</h2>
+<div id="cor-bernstein" class="theorem corollary">
+<p><span class="theorem-title"><strong>Corollary 1 (Bernstein’s inequality, <span class="math inline">\(\psi_1\)</span> version)</strong></span> Let <span class="math inline">\(X=\sum_{i=1}^nX_i\)</span> with <span class="math inline">\(X_1,\ldots,X_n\)</span> independent. There is an absolute constant <span class="math inline">\(c&gt;0\)</span> such that, for every <span class="math inline">\(t\geq0\)</span>, <span class="math display">\[
+\begin{aligned}
+&amp;\mathbb P\{|X-\mathbb EX|&gt;t\}\\
+&amp;\quad\leq2\exp\left(-c\min\left\{\frac t{\max_i\|X_i\|_{\psi_1}},\ \frac{t^2}{\sum_i\|X_i\|_{\psi_1}^2}\right\}\right).
+\end{aligned}
+\]</span></p>
+</div>
+<div id="cor-bernstein-linf" class="theorem corollary">
+<p><span class="theorem-title"><strong>Corollary 2 (Bernstein’s inequality, <span class="math inline">\(L^2\)</span>–<span class="math inline">\(L^\infty\)</span> version)</strong></span> Under the same hypotheses, for every <span class="math inline">\(t\geq0\)</span>, <span class="math display">\[
+\begin{aligned}
+&amp;\mathbb P\{|X-\mathbb EX|&gt;t\}\\
+&amp;\quad\leq2\exp\left(-c\min\left\{\frac t{\max_i\|X_i\|_{L^\infty}},\ \frac{t^2}{\sum_i\mathbb EX_i^2}\right\}\right).
+\end{aligned}
+\]</span></p>
+</div>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Both versions follow from the same argument. Let <span class="math inline">\(R\)</span> be the maximum of the <span class="math inline">\(\|X_i\|_{\psi_1}\)</span> (respectively <span class="math inline">\(\|X_i\|_{L^\infty}\)</span>), let <span class="math inline">\(V\)</span> be the sum of the <span class="math inline">\(\|X_i\|_{\psi_1}^2\)</span> (respectively <span class="math inline">\(\mathbb EX_i^2\)</span>), and let <span class="math inline">\(C_0=4\)</span>, which dominates the constants in both parts of <a href="#lem-bernstein-mgf" class="quarto-xref">Lemma&nbsp;1</a>.</p>
+<p><strong>Step 1: the moment generating function.</strong> For every <span class="math inline">\(\lambda\)</span> with <span class="math inline">\(|\lambda|R\leq\frac12\)</span>, each <span class="math inline">\(X_i\)</span> satisfies the hypothesis of <a href="#lem-bernstein-mgf" class="quarto-xref">Lemma&nbsp;1</a>, so by independence <span class="math display">\[
+\mathbb Ee^{\lambda(X-\mathbb EX)}
+=\prod_{i=1}^n\mathbb Ee^{\lambda(X_i-\mathbb EX_i)}
+\leq\exp\big(C_0\lambda^2V\big).
+\]</span></p>
+<p><strong>Step 2: Chernoff’s method.</strong> For <span class="math inline">\(t\geq0\)</span> and <span class="math inline">\(0\leq\lambda\leq1/(2R)\)</span>, <span class="math display">\[
+\mathbb P\{X-\mathbb EX\geq t\}
+\leq\exp\big(C_0\lambda^2V-\lambda t\big).
+\]</span> The exponent is a parabola in <span class="math inline">\(\lambda\)</span>, minimized at <span class="math inline">\(\lambda^*=t/(2C_0V)\)</span>. There are two cases.</p>
+<p><em>Case 1: <span class="math inline">\(\lambda^*\leq1/(2R)\)</span>.</em> The unconstrained minimizer is feasible, and it gives <span class="math display">\[
+\mathbb P\{X-\mathbb EX\geq t\}\leq\exp\left(-\frac{t^2}{4C_0V}\right).
+\]</span></p>
+<p><em>Case 2: <span class="math inline">\(\lambda^*&gt;1/(2R)\)</span>.</em> Equivalently <span class="math inline">\(V&lt;Rt/C_0\)</span>. Use the boundary value <span class="math inline">\(\lambda=1/(2R)\)</span> instead: <span class="math display">\[
+\exp\left(-\frac t{2R}+\frac{C_0V}{4R^2}\right)
+\leq\exp\left(-\frac t{2R}+\frac t{4R}\right)
+=\exp\left(-\frac t{4R}\right).
+\]</span> This is a weaker bound than the Gaussian one of Case 1 would be, since the Gaussian bound is the minimum of the parabola. It is the genuinely new, linear-in-<span class="math inline">\(t\)</span> tail.</p>
+<p>Combining the two cases, and using <span class="math inline">\(C_0=4\)</span>, <span class="math display">\[
+\mathbb P\{X-\mathbb EX\geq t\}
+\leq\exp\left(-\min\left\{\frac t{4R},\frac{t^2}{16V}\right\}\right)
+\leq\exp\left(-\frac1{16}\min\left\{\frac tR,\frac{t^2}V\right\}\right).
+\]</span> The same argument applied to <span class="math inline">\(-X\)</span> bounds the lower tail. A union bound over the two tails gives the claim with <span class="math inline">\(c=1/16\)</span>.</p>
+</div>
+</div>
+</div>
+<p>The two terms in the minimum trade off. For small <span class="math inline">\(t\)</span> the Gaussian term <span class="math inline">\(t^2/V\)</span> is the smaller one, and the tail is driven by the total variance-like quantity <span class="math inline">\(V\)</span>. Once <span class="math inline">\(t\)</span> grows past the scale <span class="math inline">\(V/R\)</span>, the exponential term <span class="math inline">\(t/R\)</span> takes over. From then on the tail is governed by the single heaviest summand, and averaging over the other terms cannot improve it.</p>
+</section>
+<section id="dimension-reduction" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="dimension-reduction"><span class="header-section-number">4</span> Dimension reduction</h2>
+<p><strong>Question.</strong> How large a dimension is needed to embed <span class="math inline">\(n\)</span> points of a Euclidean space so that all pairwise distances are approximately preserved?</p>
+<p>Let <span class="math inline">\(X\)</span> be a <span class="math inline">\(K\times d\)</span> matrix whose entries are i.i.d., mean-zero, of variance <span class="math inline">\(1\)</span>, and <span class="math inline">\(1\)</span>-subgaussian. Standard Gaussian or Rademacher entries are examples. Fix a unit vector <span class="math inline">\(t\in\mathbb R^d\)</span>. The coordinates of <span class="math inline">\(Xt\)</span> are <span class="math display">\[
+(Xt)_j=\sum_{\ell=1}^dX_{j\ell}\,t_\ell,
+\qquad 1\leq j\leq K,
+\]</span> and they are i.i.d. across <span class="math inline">\(j\)</span>, since each uses its own row of <span class="math inline">\(X\)</span>. Each <span class="math inline">\((Xt)_j\)</span> has mean zero and <span class="math display">\[
+\mathbb E(Xt)_j^2=\sum_{\ell=1}^dt_\ell^2=1 .
+\]</span> Each summand <span class="math inline">\(X_{j\ell}t_\ell\)</span> is <span class="math inline">\(t_\ell^2\)</span>-subgaussian, so by the Pythagorean theorem of Lecture 5, <span class="math inline">\((Xt)_j\)</span> is <span class="math inline">\(\big(\sum_\ell t_\ell^2\big)\)</span>-subgaussian, that is, <span class="math inline">\(1\)</span>-subgaussian. The sub-Gaussian–<span class="math inline">\(\psi_2\)</span> comparison of Lecture 5 then gives <span class="math inline">\(\|(Xt)_j\|_{\psi_2}\leq2\)</span>, and directly from the definition of the Orlicz norms, <span class="math display">\[
+\big\|(Xt)_j^2\big\|_{\psi_1}=\big\|(Xt)_j\big\|_{\psi_2}^2\leq4 .
+\]</span> So <span class="math inline">\(\|Xt\|_2^2\)</span> is a sum of <span class="math inline">\(K\)</span> independent, sub-exponential random variables, each of mean <span class="math inline">\(1\)</span>. This is exactly the setting of Bernstein’s inequality.</p>
+<div id="prp-random-projection" class="theorem proposition">
+<p><span class="theorem-title"><strong>Proposition 1 (A random projection preserves one length)</strong></span> There is an absolute constant <span class="math inline">\(c&gt;0\)</span> such that, for every unit vector <span class="math inline">\(t\in\mathbb R^d\)</span> and every <span class="math inline">\(\varepsilon\in(0,1]\)</span>, <span class="math display">\[
+\mathbb P\left\{\left|\frac1K\|Xt\|_2^2-1\right|&gt;\varepsilon\right\}
+\leq2\exp\big(-cK\varepsilon^2\big).
+\]</span></p>
+</div>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Apply <a href="#cor-bernstein" class="quarto-xref">Corollary&nbsp;1</a> to the sum <span class="math inline">\(\|Xt\|_2^2=\sum_{j=1}^K(Xt)_j^2\)</span>, whose mean is <span class="math inline">\(K\)</span>, at the level <span class="math inline">\(K\varepsilon\)</span>. Here <span class="math display">\[
+\max_j\big\|(Xt)_j^2\big\|_{\psi_1}\leq4,
+\qquad
+\sum_{j=1}^K\big\|(Xt)_j^2\big\|_{\psi_1}^2\leq16K ,
+\]</span> so the two terms in the minimum are at least <span class="math inline">\(K\varepsilon/4\)</span> and <span class="math inline">\(K\varepsilon^2/16\)</span>. Since <span class="math inline">\(\varepsilon\leq1\)</span>, the minimum is at least <span class="math inline">\(K\varepsilon^2/16\)</span>.</p>
+</div>
+</div>
+</div>
+<p>A single random matrix <span class="math inline">\(\frac1{\sqrt K}X\)</span> therefore preserves the length of a <em>fixed</em> vector with overwhelming probability once <span class="math inline">\(K\)</span> is moderately large. Preserving every pairwise distance among <span class="math inline">\(n\)</span> fixed points simultaneously is a union bound away.</p>
+<div id="thm-johnson-lindenstrauss" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 1 (Johnson–Lindenstrauss)</strong></span> Let <span class="math inline">\(x_1,\ldots,x_n\in\mathbb R^d\)</span> with <span class="math inline">\(n\geq2\)</span>, and let <span class="math inline">\(\varepsilon\in(0,1)\)</span>. There is an integer <span class="math display">\[
+K\leq\frac{C\log n}{\varepsilon^2}
+\]</span> and a linear map <span class="math inline">\(A:\mathbb R^d\to\mathbb R^K\)</span> such that <span class="math display">\[
+(1-\varepsilon)\|x_i-x_j\|_2\leq\|Ax_i-Ax_j\|_2\leq(1+\varepsilon)\|x_i-x_j\|_2
+\qquad\text{for all }1\leq i&lt;j\leq n .
+\]</span> Here <span class="math inline">\(C\)</span> is an absolute constant.</p>
+</div>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Let <span class="math inline">\(A=\frac1{\sqrt K}X\)</span> with <span class="math inline">\(X\)</span> as above. For each pair <span class="math inline">\(i&lt;j\)</span> with <span class="math inline">\(x_i\neq x_j\)</span>, let <span class="math display">\[
+t_{ij}=\frac{x_i-x_j}{\|x_i-x_j\|_2},
+\qquad\text{so that}\qquad
+\frac{\|Ax_i-Ax_j\|_2^2}{\|x_i-x_j\|_2^2}=\frac1K\|Xt_{ij}\|_2^2 .
+\]</span> There are at most <span class="math inline">\(n^2/2\)</span> such pairs. By <a href="#prp-random-projection" class="quarto-xref">Proposition&nbsp;1</a> and a union bound, <span class="math display">\[
+\mathbb P\left\{\left|\frac1K\|Xt_{ij}\|_2^2-1\right|\leq\varepsilon\ \text{ for every pair }i&lt;j\right\}
+\geq1-n^2\exp\big(-cK\varepsilon^2\big),
+\]</span> which is positive as soon as <span class="math inline">\(K&gt;2\log n/(c\varepsilon^2)\)</span>. Fix such a <span class="math inline">\(K\)</span> and a matrix <span class="math inline">\(X\)</span> in the event above. Then for every pair, <span class="math display">\[
+\sqrt{1-\varepsilon}\leq\frac{\|Ax_i-Ax_j\|_2}{\|x_i-x_j\|_2}\leq\sqrt{1+\varepsilon},
+\]</span> and <span class="math inline">\(\sqrt{1-\varepsilon}\geq1-\varepsilon\)</span>, <span class="math inline">\(\sqrt{1+\varepsilon}\leq1+\varepsilon\)</span> give the claim. Pairs with <span class="math inline">\(x_i=x_j\)</span> satisfy it trivially.</p>
+</div>
+</div>
+</div>
+<p>The embedding dimension depends only on the <em>number</em> of points, and only logarithmically. The ambient dimension <span class="math inline">\(d\)</span> plays no role at all. The proof gives more than existence: a random matrix with the right scaling works with probability close to <span class="math inline">\(1\)</span>.</p>
+<div class="callout callout-style-simple callout-note callout-titled" title="The logarithm is necessary">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>The logarithm is necessary
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>There are configurations of <span class="math inline">\(n\)</span> points for which <span class="math inline">\(\log n\)</span> dimensions are genuinely needed. Let <span class="math inline">\(x_j=e_j\)</span> be the standard basis vectors of <span class="math inline">\(\mathbb R^n\)</span>, so that <span class="math display">\[
+\|e_i-e_j\|_2=\sqrt2\qquad\text{for all }i\neq j .
+\]</span> Let <span class="math inline">\(\varepsilon\leq\frac14\)</span> and let <span class="math inline">\(f\)</span> be <em>any</em> map from <span class="math inline">\(\{e_1,\ldots,e_n\}\)</span> into <span class="math inline">\(\mathbb R^k\)</span> that preserves all pairwise distances up to a factor <span class="math inline">\(1\pm\varepsilon\)</span>. Translating, we may assume <span class="math inline">\(f(e_1)=0\)</span>. Then for every <span class="math inline">\(j\)</span>, <span class="math display">\[
+\|f(e_j)\|_2\leq(1+\varepsilon)\sqrt2\leq2 ,
+\]</span> so every <span class="math inline">\(f(e_j)\)</span> lies in the ball <span class="math inline">\(2B_2^k\)</span>. On the other hand, for <span class="math inline">\(i\neq j\)</span>, <span class="math display">\[
+\|f(e_i)-f(e_j)\|_2\geq(1-\varepsilon)\sqrt2\geq1 .
+\]</span> So <span class="math inline">\(\{f(e_j)\}_{j=1}^n\)</span> is a <span class="math inline">\(1\)</span>-separated subset of <span class="math inline">\(2B_2^k\)</span>. By the covering–packing comparison and the volume bound of Lecture 1, <span class="math display">\[
+n\leq M(2B_2^k,1)\leq N(2B_2^k,\tfrac12)=N(B_2^k,\tfrac14)\leq9^k ,
+\]</span> and therefore <span class="math inline">\(k\geq(\log n)/\log9\)</span>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="where-we-go-next" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="where-we-go-next"><span class="header-section-number">5</span> Where we go next</h2>
+<p>Bernstein’s inequality closes the calculus of sums we have been building since Lecture 4: Gaussian, sub-Gaussian, and now sub-exponential tails all fit into one Chernoff-method framework. The next lecture puts this machinery to work on a more structural question, coordinate embeddings, before we turn, over the following weeks, to the extreme singular values of random matrices.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/elliotpaquette\.github\.io\/high-dimensional-probability\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

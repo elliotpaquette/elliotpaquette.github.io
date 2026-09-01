@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-09-23">
+
+<title>Lecture 7: Coordinate Embeddings – High-Dimensional Probability</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-5685cd926c25366c96d9f1407e584118.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">High-Dimensional Probability</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-lectures" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Lectures</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-lectures">    
+        <li>
+    <a class="dropdown-item" href="../lectures/01-curse-of-dimensionality.html">
+ <span class="dropdown-text">1. The Curse of Dimensionality</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/02-convex-hulls.html">
+ <span class="dropdown-text">2. Convex Hulls and Sparse Approximation</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/03-gaussian-width.html">
+ <span class="dropdown-text">3. Gaussian Width</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/04-tails.html">
+ <span class="dropdown-text">4. Tails of Random Variables</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/05-orlicz-norms.html">
+ <span class="dropdown-text">5. Geometric Discrepancy and Orlicz Norms</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/06-bernstein-dimension-reduction.html">
+ <span class="dropdown-text">6. Bernstein’s Inequality and Dimension Reduction</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/07-coordinate-embeddings.html">
+ <span class="dropdown-text">7. Coordinate Embeddings</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/08-extreme-singular-values.html">
+ <span class="dropdown-text">8. Extreme Singular Values</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../exercises/index.html"> 
+<span class="menu-text">Exercises</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-course" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Course</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-course">    
+        <li>
+    <a class="dropdown-item" href="../course/index.html">
+ <span class="dropdown-text">Fall 2026</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../course/calendar.html">
+ <span class="dropdown-text">Calendar</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../references.html"> 
+<span class="menu-text">References</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#sampling-coordinates" id="toc-sampling-coordinates" class="nav-link active" data-scroll-target="#sampling-coordinates"><span class="header-section-number">1</span> Sampling coordinates</a></li>
+  <li><a href="#sparsity-defeats-coordinate-sampling" id="toc-sparsity-defeats-coordinate-sampling" class="nav-link" data-scroll-target="#sparsity-defeats-coordinate-sampling"><span class="header-section-number">2</span> Sparsity defeats coordinate sampling</a></li>
+  <li><a href="#a-first-concentration-bound" id="toc-a-first-concentration-bound" class="nav-link" data-scroll-target="#a-first-concentration-bound"><span class="header-section-number">3</span> A first concentration bound</a></li>
+  <li><a href="#a-sharper-bound-the-empirical-orlicz-norm" id="toc-a-sharper-bound-the-empirical-orlicz-norm" class="nav-link" data-scroll-target="#a-sharper-bound-the-empirical-orlicz-norm"><span class="header-section-number">4</span> A sharper bound: the empirical Orlicz norm</a></li>
+  <li><a href="#where-we-go-next" id="toc-where-we-go-next" class="nav-link" data-scroll-target="#where-we-go-next"><span class="header-section-number">5</span> Where we go next</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Lecture 7: Coordinate Embeddings</h1>
+<p class="subtitle lead">Sampling coordinates instead of projecting</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 23, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>The Johnson–Lindenstrauss map of Lecture 6 is a dense random matrix: every output coordinate is a combination of every input coordinate. A cheaper idea is to keep a random subset of the coordinates and discard the rest. This works for some vectors and fails badly for others. The dividing line is how evenly a vector spreads its mass over its coordinates, and making that precise is the main business of this lecture.</p>
+<section id="sampling-coordinates" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="sampling-coordinates"><span class="header-section-number">1</span> Sampling coordinates</h2>
+<p>Fix <span class="math inline">\(\delta\in(0,1)\)</span>. Let <span class="math inline">\(I\subseteq\{1,\ldots,n\}\)</span> be a random set that contains each index independently with probability <span class="math inline">\(\delta\)</span>. For <span class="math inline">\(x\in\mathbb R^n\)</span>, let <span class="math display">\[
+x_I:=\sum_{i\in I}\langle x,e_i\rangle e_i
+\]</span> be the vector <span class="math inline">\(x\)</span> with every coordinate outside <span class="math inline">\(I\)</span> set to zero. Each coordinate survives with probability <span class="math inline">\(\delta\)</span>, so <span class="math display">\[
+\mathbb E\|x_I\|_2^2=\delta\|x\|_2^2 ,
+\]</span> and <span class="math inline">\(\|x_I\|_2^2/\delta\)</span> is an unbiased estimate of <span class="math inline">\(\|x\|_2^2\)</span>. For a class <span class="math inline">\(T\)</span> of vectors of interest we would like <span class="math display">\[
+\sup_{x\in T}\left|\frac{\|x_I\|_2^2}{\delta\|x\|_2^2}-1\right|
+\qquad\text{to be small,}
+\]</span> while sampling as few coordinates as possible. The number of sampled coordinates is <span class="math inline">\(|I|\)</span>, whose expectation is <span class="math inline">\(\delta n\)</span>.</p>
+</section>
+<section id="sparsity-defeats-coordinate-sampling" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="sparsity-defeats-coordinate-sampling"><span class="header-section-number">2</span> Sparsity defeats coordinate sampling</h2>
+<p>No choice of <span class="math inline">\(\delta&lt;1\)</span> works for every bounded set. Consider <span class="math display">\[
+T=\{\sqrt n\,e_j:1\leq j\leq n\},
+\]</span> so that every <span class="math inline">\(x\in T\)</span> has <span class="math inline">\(\|x\|_2^2=n\)</span>. For <span class="math inline">\(x=\sqrt n\,e_j\)</span>, <span class="math display">\[
+\frac{\|x_I\|_2^2}{\delta\|x\|_2^2}
+=\begin{cases}1/\delta&amp;\text{if }j\in I,\\[2pt]0&amp;\text{if }j\notin I.\end{cases}
+\]</span> The estimate is never close to <span class="math inline">\(1\)</span> unless <span class="math inline">\(\delta\)</span> is close to <span class="math inline">\(1\)</span>. A vector whose mass sits in a single coordinate is either fully sampled or fully missed.</p>
+<div id="def-flat" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 1 (Flat vectors)</strong></span> A vector <span class="math inline">\(x\in\mathbb R^n\)</span> is <strong>flat with constant <span class="math inline">\(C\)</span></strong> if <span class="math display">\[
+\|x\|_\infty^2\leq\frac Cn\|x\|_2^2 .
+\]</span></p>
+</div>
+<p>The reverse inequality holds for every vector, since <span class="math display">\[
+\|x\|_2^2=\sum_{i=1}^nx_i^2\leq n\|x\|_\infty^2 .
+\]</span> Flatness therefore says that no single coordinate carries more than <span class="math inline">\(C\)</span> times its fair share <span class="math inline">\(1/n\)</span> of the squared norm. The vectors <span class="math inline">\(\sqrt n\,e_j\)</span> above are as far from flat as possible.</p>
+<div class="callout callout-style-simple callout-note callout-titled" title="Random vectors are almost, but not quite, flat">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Random vectors are almost, but not quite, flat
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Let <span class="math inline">\(x\)</span> have i.i.d. <span class="math inline">\(N(0,1)\)</span> entries. Then <span class="math display">\[
+\|x\|_2^2\approx n
+\qquad\text{but}\qquad
+\|x\|_\infty^2\approx2\log n .
+\]</span> So <span class="math inline">\(x\)</span> is flat only with a constant <span class="math inline">\(C\approx2\log n\)</span> that grows with <span class="math inline">\(n\)</span>. This gap will cost a factor of <span class="math inline">\(\log n\)</span> in the first bound below. Removing it is the point of the second half of the lecture.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="a-first-concentration-bound" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="a-first-concentration-bound"><span class="header-section-number">3</span> A first concentration bound</h2>
+<p>Fix <span class="math inline">\(x\in\mathbb R^n\)</span> and write <span class="math display">\[
+\|x_I\|_2^2=\sum_{i=1}^nY_i,
+\qquad
+Y_i:=\mathbb 1\{i\in I\}\,x_i^2 .
+\]</span> The <span class="math inline">\(Y_i\)</span> are independent. Each equals <span class="math inline">\(x_i^2\)</span> with probability <span class="math inline">\(\delta\)</span> and <span class="math inline">\(0\)</span> otherwise, so <span class="math display">\[
+\mathbb EY_i=\delta x_i^2,
+\qquad
+|Y_i|\leq\|x\|_\infty^2,
+\qquad
+\mathbb EY_i^2=\delta x_i^4 .
+\]</span> This is exactly the setting of the <span class="math inline">\(L^2\)</span>–<span class="math inline">\(L^\infty\)</span> version of Bernstein’s inequality from Lecture 6.</p>
+<div id="prp-coordinate-concentration" class="theorem proposition">
+<p><span class="theorem-title"><strong>Proposition 1 (A first coordinate-sampling bound)</strong></span> There is an absolute constant <span class="math inline">\(c&gt;0\)</span> such that, for every <span class="math inline">\(x\in\mathbb R^n\)</span> and every <span class="math inline">\(t\geq0\)</span>, <span class="math display">\[
+\begin{aligned}
+&amp;\mathbb P\left\{\left|\|x_I\|_2^2-\delta\|x\|_2^2\right|\geq t\right\}\\
+&amp;\quad\leq2\exp\left(-c\min\left\{\frac t{\|x\|_\infty^2},\ \frac{t^2}{\delta\|x\|_4^4}\right\}\right).
+\end{aligned}
+\]</span></p>
+</div>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Apply the <span class="math inline">\(L^2\)</span>–<span class="math inline">\(L^\infty\)</span> Bernstein inequality to <span class="math inline">\(\sum_iY_i\)</span>, using <span class="math display">\[
+\max_i\|Y_i\|_{L^\infty}\leq\|x\|_\infty^2
+\qquad\text{and}\qquad
+\sum_i\mathbb EY_i^2=\delta\sum_ix_i^4=\delta\|x\|_4^4 .
+\]</span></p>
+</div>
+</div>
+</div>
+<p>The bound is more useful in relative form.</p>
+<div id="cor-coordinate-relative" class="theorem corollary">
+<p><span class="theorem-title"><strong>Corollary 1 (Relative error, first version)</strong></span> For every <span class="math inline">\(x\in\mathbb R^n\)</span> and every <span class="math inline">\(\varepsilon\in(0,1]\)</span>, <span class="math display">\[
+\begin{aligned}
+&amp;\mathbb P\left\{\left|\frac{\|x_I\|_2^2}{\delta\|x\|_2^2}-1\right|\geq\varepsilon\right\}\\
+&amp;\quad\leq2\exp\left(-c\,\varepsilon^2\delta n\cdot\frac{\|x\|_2^2}{n\|x\|_\infty^2}\right).
+\end{aligned}
+\]</span></p>
+</div>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Take <span class="math inline">\(t=\varepsilon\delta\|x\|_2^2\)</span> in <a href="#prp-coordinate-concentration" class="quarto-xref">Proposition&nbsp;1</a>. The two terms in the minimum become <span class="math display">\[
+\frac t{\|x\|_\infty^2}=\varepsilon\delta\,\frac{\|x\|_2^2}{\|x\|_\infty^2}
+\qquad\text{and}\qquad
+\frac{t^2}{\delta\|x\|_4^4}=\varepsilon^2\delta\,\frac{\|x\|_2^4}{\|x\|_4^4}.
+\]</span> Since <span class="math inline">\(\|x\|_4^4=\sum_ix_i^4\leq\|x\|_\infty^2\|x\|_2^2\)</span>, the second term is at least <span class="math inline">\(\varepsilon^2\delta\|x\|_2^2/\|x\|_\infty^2\)</span>. As <span class="math inline">\(\varepsilon\leq1\)</span>, so is the first.</p>
+</div>
+</div>
+</div>
+<p>The exponent has a natural shape. The factor <span class="math inline">\(\varepsilon^2\delta n\)</span> is what a sample of <span class="math inline">\(\delta n\)</span> independent coordinates would give at relative accuracy <span class="math inline">\(\varepsilon\)</span>. It is multiplied by the ratio <span class="math display">\[
+\frac{\|x\|_2^2}{n\|x\|_\infty^2}\in\Big[\frac1n,\,1\Big],
+\]</span> which equals <span class="math inline">\(1\)</span> for a vector with all coordinates of equal size, is at least <span class="math inline">\(1/C\)</span> for a vector that is flat with constant <span class="math inline">\(C\)</span>, and is <span class="math inline">\(1/n\)</span> for <span class="math inline">\(\sqrt n\,e_j\)</span>.</p>
+<p><strong>Union bound.</strong> Let <span class="math inline">\(x_1,\ldots,x_N\)</span> be fixed vectors. By <a href="#cor-coordinate-relative" class="quarto-xref">Corollary&nbsp;1</a> and a union bound, every one of the <span class="math inline">\(N\)</span> relative errors is at most <span class="math inline">\(\varepsilon\)</span> with probability at least <span class="math display">\[
+1-2N\exp\left(-c\,\varepsilon^2\delta n\cdot\min_j\frac{\|x_j\|_2^2}{n\|x_j\|_\infty^2}\right),
+\]</span> which is positive as soon as <span class="math display">\[
+\delta n\;\geq\;\frac{C\log(2N)}{\varepsilon^2}\cdot\max_j\frac{n\|x_j\|_\infty^2}{\|x_j\|_2^2}.
+\]</span> For vectors that are flat with a fixed constant this is <span class="math inline">\(\delta n\gtrsim(\log N)/\varepsilon^2\)</span>: the same number of coordinates as the Johnson–Lindenstrauss dimension of Lecture 6. For i.i.d. <span class="math inline">\(N(0,1)\)</span> vectors the ratio is <span class="math inline">\(\|x\|_2^2/(n\|x\|_\infty^2)\approx1/(2\log n)\)</span>, so we need <span class="math display">\[
+\delta n\gtrsim\frac{(\log N)(\log n)}{\varepsilon^2}.
+\]</span> This is a factor <span class="math inline">\(\log n\)</span> more than we would like, and it is exactly the flatness gap noted above.</p>
+</section>
+<section id="a-sharper-bound-the-empirical-orlicz-norm" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="a-sharper-bound-the-empirical-orlicz-norm"><span class="header-section-number">4</span> A sharper bound: the empirical Orlicz norm</h2>
+<p>The loss came from bounding <em>every</em> coordinate by the single largest one, <span class="math inline">\(\|x\|_\infty\)</span>. For a Gaussian vector only a handful of coordinates are as large as <span class="math inline">\(\sqrt{2\log n}\)</span>, and a sharper argument should pay only for how many coordinates are actually large. The right bookkeeping device is an Orlicz norm applied not to a random variable but to the empirical distribution of a vector’s own coordinates.</p>
+<div id="def-chi-norm" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2 (The empirical <span class="math inline">\(\chi_\alpha^n\)</span> norm)</strong></span> For <span class="math inline">\(a\in\mathbb R^n\)</span>, let <span class="math inline">\(A\)</span> be a uniformly random coordinate of <span class="math inline">\(a\)</span>, so <span class="math inline">\(A=a_j\)</span> with probability <span class="math inline">\(1/n\)</span> for each <span class="math inline">\(j\)</span>. Define <span class="math display">\[
+\|a\|_{\chi_\alpha^n}:=\|A\|_{\psi_\alpha}.
+\]</span></p>
+</div>
+<p>One consequence of the definition is immediate. Lecture 5 showed <span class="math inline">\(\sqrt{\mathbb EX^2}\leq\|X\|_{\psi_2}\)</span> for every random variable <span class="math inline">\(X\)</span>, and here <span class="math inline">\(\mathbb EA^2=\|a\|_2^2/n\)</span>. Hence <span id="eq-chi-lower"><span class="math display">\[
+\|a\|_2^2\leq n\|a\|_{\chi_2^n}^2
+\qquad\text{for every }a\in\mathbb R^n .
+\tag{1}\]</span></span></p>
+<p>To see what the <span class="math inline">\(\chi_2^n\)</span> norm measures, translate the tail bound on <span class="math inline">\(A\)</span> into a statement about the sorted coordinates of <span class="math inline">\(a\)</span>.</p>
+<div id="lem-order-statistics" class="theorem lemma">
+<p><span class="theorem-title"><strong>Lemma 1 (A tail bound is a decay condition on order statistics)</strong></span> Let <span class="math inline">\(|a_1^*|\geq|a_2^*|\geq\cdots\geq|a_n^*|\)</span> be the absolute values of the coordinates of <span class="math inline">\(a\)</span> in decreasing order, and let <span class="math inline">\(V&gt;0\)</span>. Then <span class="math display">\[
+\begin{aligned}
+&amp;\mathbb P\{|A|\geq t\}\leq2e^{-t^2/V}\quad\text{for every }t&gt;0\\
+&amp;\qquad\Longleftrightarrow\\
+&amp;|a_j^*|^2\leq V\log\frac{2n}j\quad\text{for every }1\leq j\leq n .
+\end{aligned}
+\]</span></p>
+</div>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Since <span class="math inline">\(A\)</span> is uniform on the <span class="math inline">\(n\)</span> coordinates, <span class="math display">\[
+\begin{aligned}
+\mathbb P\{|A|\geq t\}&amp;=\frac1n\#\{i:|a_i|\geq t\},\\
+\#\{i:|a_i|\geq t\}\geq j&amp;\iff|a_j^*|\geq t .
+\end{aligned}
+\]</span></p>
+<p><strong>Forward direction.</strong> Fix <span class="math inline">\(j\)</span> with <span class="math inline">\(a_j^*\neq0\)</span> and take <span class="math inline">\(t=|a_j^*|\)</span>. At least <span class="math inline">\(j\)</span> coordinates are at least <span class="math inline">\(t\)</span> in absolute value, so the tail bound gives <span class="math display">\[
+\frac jn\leq2e^{-|a_j^*|^2/V},
+\qquad\text{i.e.}\qquad
+|a_j^*|^2\leq V\log\frac{2n}j .
+\]</span> If <span class="math inline">\(a_j^*=0\)</span> the right-hand inequality is trivial.</p>
+<p><strong>Reverse direction.</strong> Fix <span class="math inline">\(t&gt;0\)</span>. If <span class="math inline">\(t&gt;|a_1^*|\)</span> the left-hand side is <span class="math inline">\(0\)</span>. Otherwise let <span class="math inline">\(j\)</span> be the number of coordinates with <span class="math inline">\(|a_i|\geq t\)</span>, so <span class="math inline">\(1\leq j\leq n\)</span> and <span class="math inline">\(t\leq|a_j^*|\)</span>. Then <span class="math display">\[
+\mathbb P\{|A|\geq t\}=\frac jn\leq2e^{-|a_j^*|^2/V}\leq2e^{-t^2/V},
+\]</span> where the first inequality is the assumed decay condition at index <span class="math inline">\(j\)</span>.</p>
+</div>
+</div>
+</div>
+<p>So a bound on <span class="math inline">\(\|a\|_{\chi_2^n}\)</span> says that the sorted coordinates of <span class="math inline">\(a\)</span> decay at least as fast as the order statistics of <span class="math inline">\(n\)</span> independent variables with a Gaussian tail. This is a global shape condition on <span class="math inline">\(a\)</span>, not a worst-case bound on a single coordinate. Taking <span class="math inline">\(j=1\)</span> shows the two are related by at most a logarithm: <span class="math display">\[
+\|a\|_\infty^2\leq\|a\|_{\chi_2^n}^2\log(2n).
+\]</span></p>
+<div id="prp-random-vector-flat" class="theorem proposition">
+<p><span class="theorem-title"><strong>Proposition 2 (Random vectors have bounded <span class="math inline">\(\chi_2^n\)</span> norm)</strong></span> Let <span class="math inline">\(a\in\mathbb R^n\)</span> have independent, mean-zero, <span class="math inline">\(V\)</span>-subgaussian entries, and let <span class="math inline">\(r&gt;0\)</span>. With probability at least <span class="math inline">\(1-3(2n)^{-r}\)</span>, <span class="math display">\[
+|a_j^*|^2\leq2(3+r)V\log\frac{2n}j
+\qquad\text{for every }1\leq j\leq n .
+\]</span> On this event, <span class="math inline">\(\mathbb P\{|A|\geq t\}\leq2\exp\big(-t^2/(2(3+r)V)\big)\)</span> for every <span class="math inline">\(t&gt;0\)</span>, and consequently <span class="math display">\[
+\|a\|_{\chi_2^n}\leq\sqrt{6(3+r)V}.
+\]</span></p>
+</div>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>By the sub-Gaussian tail bound of Lecture 4, each entry satisfies <span class="math inline">\(\mathbb P\{|a_i|\geq t\}\leq2e^{-t^2/(2V)}\)</span>. Set <span class="math display">\[
+t_j:=\sqrt{2(3+r)V\log(2n/j)},
+\qquad\text{so that}\qquad
+2e^{-t_j^2/(2V)}=2\Big(\frac j{2n}\Big)^{3+r}.
+\]</span> The event <span class="math inline">\(\{|a_j^*|\geq t_j\}\)</span> requires at least <span class="math inline">\(j\)</span> of the entries to exceed <span class="math inline">\(t_j\)</span> in absolute value. Taking a union bound over the <span class="math inline">\(\binom nj\)</span> choices of which <span class="math inline">\(j\)</span> entries, and using independence, <span class="math display">\[
+\begin{aligned}
+\mathbb P\{|a_j^*|\geq t_j\}
+&amp;\leq\binom nj\Big[2\Big(\frac j{2n}\Big)^{3+r}\Big]^j\\
+&amp;\leq\Big(\frac{en}j\Big)^j\Big[2\Big(\frac j{2n}\Big)^{3+r}\Big]^j\\
+&amp;=\Big[\frac e4\Big(\frac jn\Big)^2\Big(\frac j{2n}\Big)^r\Big]^j .
+\end{aligned}
+\]</span> Now <span class="math inline">\((j/n)^2\leq1\)</span>, and since <span class="math inline">\(j\leq n\)</span> and <span class="math inline">\(j\leq2^{j-1}\)</span>, <span class="math display">\[
+\Big(\frac j{2n}\Big)^{rj}
+=\Big(\frac{j^j}{2^jn^j}\Big)^r
+\leq\Big(\frac j{2^jn}\Big)^r
+\leq(2n)^{-r}.
+\]</span> Hence <span class="math inline">\(\mathbb P\{|a_j^*|\geq t_j\}\leq(e/4)^j(2n)^{-r}\)</span>, and summing over <span class="math inline">\(j\)</span>, <span class="math display">\[
+\mathbb P\{\exists j:|a_j^*|\geq t_j\}
+\leq(2n)^{-r}\sum_{j\geq1}\Big(\frac e4\Big)^j
+=\frac e{4-e}(2n)^{-r}
+\leq3(2n)^{-r}.
+\]</span> On the complementary event, <span class="math inline">\(|a_j^*|^2&lt;2(3+r)V\log(2n/j)\)</span> for every <span class="math inline">\(j\)</span>, so <a href="#lem-order-statistics" class="quarto-xref">Lemma&nbsp;1</a> with <span class="math inline">\(V\)</span> replaced by <span class="math inline">\(2(3+r)V\)</span> gives the stated tail bound for <span class="math inline">\(A\)</span>. Finally, the tail-to-<span class="math inline">\(\psi_2\)</span> direction of the equivalence theorem of Lecture 5, with prefactor <span class="math inline">\(2\)</span> and scale <span class="math inline">\(\sigma=\sqrt{2(3+r)V}\)</span>, gives <span class="math inline">\(\|A\|_{\psi_2}\leq\sqrt3\,\sigma=\sqrt{6(3+r)V}\)</span>.</p>
+</div>
+</div>
+</div>
+<p>The bound on <span class="math inline">\(\|a\|_{\chi_2^n}\)</span> is <strong>dimension-free</strong>: it does not grow with <span class="math inline">\(n\)</span>, whereas <span class="math inline">\(\|a\|_\infty\approx\sqrt{2V\log n}\)</span> does. The empirical norm discards exactly the information that made <span class="math inline">\(\|\cdot\|_\infty\)</span> pessimistic.</p>
+<div class="callout callout-style-simple callout-note callout-titled" title="The same holds for a uniformly random direction">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>The same holds for a uniformly random direction
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Let <span class="math inline">\(a\)</span> be uniform on the sphere of radius <span class="math inline">\(\sqrt n\)</span>, so that <span class="math inline">\(\|a\|_2^2=n\)</span> exactly. Write <span class="math inline">\(a=\sqrt n\,g/\|g\|_2\)</span> with <span class="math inline">\(g\)</span> a standard Gaussian vector. By Bernstein’s inequality (Lecture 6) applied to <span class="math inline">\(\|g\|_2^2=\sum_ig_i^2\)</span>, <span class="math display">\[
+\mathbb P\{\|g\|_2^2\leq n/2\}\leq2e^{-cn}.
+\]</span> On the complementary event <span class="math inline">\(|a_j^*|\leq\sqrt2\,|g_j^*|\)</span> for every <span class="math inline">\(j\)</span>, so <a href="#prp-random-vector-flat" class="quarto-xref">Proposition&nbsp;2</a> for <span class="math inline">\(g\)</span> (with <span class="math inline">\(V=1\)</span>) transfers to <span class="math inline">\(a\)</span> with the constant <span class="math inline">\(2(3+r)\)</span> replaced by <span class="math inline">\(4(3+r)\)</span>. So a random direction also has <span class="math inline">\(\|a\|_{\chi_2^n}=O(1)\)</span> with probability <span class="math inline">\(1-O(n^{-r})\)</span>.</p>
+</div>
+</div>
+</div>
+<p>We can now redo the concentration bound with <span class="math inline">\(\|a\|_{\chi_2^n}\)</span> in place of <span class="math inline">\(\|a\|_\infty\)</span>.</p>
+<div id="thm-coordinate-concentration-sharp" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 1 (Coordinate sampling controlled by the <span class="math inline">\(\chi_2^n\)</span> norm)</strong></span> There is an absolute constant <span class="math inline">\(c&gt;0\)</span> such that, for every <span class="math inline">\(a\in\mathbb R^n\)</span> with <span class="math inline">\(\|a\|_{\chi_2^n}\leq r\)</span> and every <span class="math inline">\(t\geq0\)</span>, <span class="math display">\[
+\begin{aligned}
+&amp;\mathbb P\left\{\left|\|a_I\|_2^2-\delta\|a\|_2^2\right|\geq t\right\}\\
+&amp;\quad\leq2\exp\left(-c\min\left\{\frac t{r^2},\ \frac{t^2}{\delta nr^4}\right\}\right).
+\end{aligned}
+\]</span></p>
+</div>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>Step 1: the moment generating function.</strong> As before, <span class="math inline">\(\|a_I\|_2^2=\sum_jY_j\)</span> with <span class="math inline">\(Y_j=\mathbb 1\{j\in I\}a_j^2\)</span> independent. For each <span class="math inline">\(j\)</span> and every real <span class="math inline">\(\lambda\)</span>, <span class="math display">\[
+\begin{aligned}
+\mathbb Ee^{\lambda(Y_j-\delta a_j^2)}
+&amp;=\Big(1+\delta\big[e^{\lambda a_j^2}-1\big]\Big)e^{-\lambda\delta a_j^2}\\
+&amp;\leq\exp\Big(\delta\big[e^{\lambda a_j^2}-1-\lambda a_j^2\big]\Big),
+\end{aligned}
+\]</span> using <span class="math inline">\(1+u\leq e^u\)</span>. Multiplying over <span class="math inline">\(j\)</span> and recognizing an average over the uniformly random coordinate <span class="math inline">\(A\)</span> of <a href="#def-chi-norm" class="quarto-xref">Definition&nbsp;2</a>, <span class="math display">\[
+\mathbb Ee^{\lambda(\|a_I\|_2^2-\delta\|a\|_2^2)}
+\leq\exp\big(\delta n\,\varphi(\lambda)\big),
+\]</span> where <span class="math display">\[
+\varphi(\lambda):=\mathbb E\big[e^{\lambda A^2}-1-\lambda A^2\big].
+\]</span></p>
+<p><strong>Step 2: bounding <span class="math inline">\(\varphi\)</span>.</strong> Since <span class="math inline">\(\|A\|_{\psi_2}\leq r\)</span> we have <span class="math inline">\(\mathbb Ee^{A^2/r^2}\leq2\)</span>. Each Taylor term of <span class="math inline">\(e^{A^2/r^2}-1\)</span> is at most the whole, so <span class="math display">\[
+\mathbb EA^4\leq2!\,r^4=2r^4,
+\qquad
+\mathbb EA^8\leq4!\,r^8=24r^8.
+\]</span> For <span class="math inline">\(\lambda\leq0\)</span>, the inequality <span class="math inline">\(e^{-u}-1+u\leq u^2/2\)</span> for <span class="math inline">\(u\geq0\)</span> gives <span class="math display">\[
+\varphi(\lambda)\leq\frac{\lambda^2}2\mathbb EA^4\leq\lambda^2r^4 .
+\]</span> For <span class="math inline">\(0\leq\lambda\leq1/(2r^2)\)</span>, we have <span class="math inline">\(\varphi(0)=\varphi'(0)=0\)</span> and, by Cauchy–Schwarz, <span class="math display">\[
+\begin{aligned}
+\varphi''(\lambda)=\mathbb E\big[A^4e^{\lambda A^2}\big]
+&amp;\leq\big(\mathbb EA^8\big)^{1/2}\big(\mathbb Ee^{2\lambda A^2}\big)^{1/2}\\
+&amp;\leq\sqrt{24}\,r^4\cdot\sqrt2
+=\sqrt{48}\,r^4,
+\end{aligned}
+\]</span> using <span class="math inline">\(2\lambda\leq1/r^2\)</span> in the last step. Integrating twice, <span class="math inline">\(\varphi(\lambda)\leq\sqrt{12}\,\lambda^2r^4\leq4\lambda^2r^4\)</span>. In either case, <span class="math display">\[
+\mathbb Ee^{\lambda(\|a_I\|_2^2-\delta\|a\|_2^2)}\leq\exp\big(4\delta nr^4\lambda^2\big)
+\qquad\text{for }|\lambda|\leq\frac1{2r^2}.
+\]</span></p>
+<p><strong>Step 3: Chernoff.</strong> This is the situation of the proof of Bernstein’s inequality in Lecture 6, with <span class="math inline">\(R=r^2\)</span> in the role of the range and <span class="math inline">\(V=\delta nr^4\)</span> in the role of the variance. Explicitly, for <span class="math inline">\(t\geq0\)</span>, <span class="math display">\[
+\mathbb P\{\|a_I\|_2^2-\delta\|a\|_2^2\geq t\}
+\leq\inf_{0\leq\lambda\leq1/(2r^2)}\exp\big(4\delta nr^4\lambda^2-\lambda t\big).
+\]</span> The unconstrained minimizer is <span class="math inline">\(\lambda=t/(8\delta nr^4)\)</span>. If it is feasible, it gives <span class="math inline">\(\exp(-t^2/(16\delta nr^4))\)</span>. Otherwise <span class="math inline">\(t&gt;4\delta nr^2\)</span>, and the boundary value <span class="math inline">\(\lambda=1/(2r^2)\)</span> gives <span class="math display">\[
+\exp\Big(\delta n-\frac t{2r^2}\Big)
+\leq\exp\Big(\frac t{4r^2}-\frac t{2r^2}\Big)
+=\exp\Big(-\frac t{4r^2}\Big).
+\]</span> The lower tail is identical, using the bound for <span class="math inline">\(\lambda\leq0\)</span>. A union bound over the two tails gives the claim with <span class="math inline">\(c=1/16\)</span>.</p>
+</div>
+</div>
+</div>
+<div id="cor-coordinate-relative-sharp" class="theorem corollary">
+<p><span class="theorem-title"><strong>Corollary 2 (Relative error, sharp version)</strong></span> For every <span class="math inline">\(a\in\mathbb R^n\)</span> and every <span class="math inline">\(\varepsilon\in(0,1]\)</span>, <span class="math display">\[
+\begin{aligned}
+&amp;\mathbb P\left\{\left|\frac{\|a_I\|_2^2}{\delta\|a\|_2^2}-1\right|\geq\varepsilon\right\}\\
+&amp;\quad\leq2\exp\left(-c\,\varepsilon^2\delta n\cdot\Big(\frac{\|a\|_2^2}{n\|a\|_{\chi_2^n}^2}\Big)^2\right).
+\end{aligned}
+\]</span></p>
+</div>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Take <span class="math inline">\(r=\|a\|_{\chi_2^n}\)</span> and <span class="math inline">\(t=\varepsilon\delta\|a\|_2^2\)</span> in <a href="#thm-coordinate-concentration-sharp" class="quarto-xref">Theorem&nbsp;1</a>. The two terms in the minimum are <span class="math display">\[
+\frac t{r^2}=\varepsilon\delta\,\frac{\|a\|_2^2}{r^2}
+\qquad\text{and}\qquad
+\frac{t^2}{\delta nr^4}=\varepsilon^2\delta n\Big(\frac{\|a\|_2^2}{nr^2}\Big)^2 .
+\]</span> Their ratio, second over first, is <span class="math inline">\(\varepsilon\|a\|_2^2/(nr^2)\)</span>, which is at most <span class="math inline">\(1\)</span> by <a href="#eq-chi-lower" class="quarto-xref">Equation&nbsp;1</a> and <span class="math inline">\(\varepsilon\leq1\)</span>. So the second term is the minimum.</p>
+</div>
+</div>
+</div>
+<p>Compare this with <a href="#cor-coordinate-relative" class="quarto-xref">Corollary&nbsp;1</a>. The exponent is again <span class="math inline">\(\varepsilon^2\delta n\)</span> times a flatness ratio, but the ratio now involves <span class="math inline">\(\|a\|_{\chi_2^n}\)</span> instead of <span class="math inline">\(\|a\|_\infty\)</span>. By <a href="#eq-chi-lower" class="quarto-xref">Equation&nbsp;1</a> the new ratio lies in <span class="math inline">\((0,1]\)</span>, and it equals a constant precisely when the coordinates of <span class="math inline">\(a\)</span> are spread out in the order-statistics sense of <a href="#lem-order-statistics" class="quarto-xref">Lemma&nbsp;1</a>.</p>
+<p><strong>Union bound, sharp version.</strong> Let <span class="math inline">\(a\)</span> have i.i.d. <span class="math inline">\(N(0,1)\)</span> entries. Then <span class="math inline">\(\|a\|_2^2\approx n\)</span>, and by <a href="#prp-random-vector-flat" class="quarto-xref">Proposition&nbsp;2</a> <span class="math inline">\(\|a\|_{\chi_2^n}\)</span> is bounded by an absolute constant with probability <span class="math inline">\(1-O(n^{-r})\)</span>. On that event the flatness ratio is bounded below by an absolute constant, so <span class="math display">\[
+\begin{aligned}
+&amp;\mathbb P\left\{\left|\frac{\|a_I\|_2^2}{\delta\|a\|_2^2}-1\right|\geq\varepsilon\right\}\\
+&amp;\quad\leq2\exp\big(-c\,\varepsilon^2\delta n\big).
+\end{aligned}
+\]</span> For <span class="math inline">\(N\)</span> such vectors a union bound succeeds once <span class="math display">\[
+\delta n\gtrsim\frac{\log N}{\varepsilon^2},
+\]</span> with no factor of <span class="math inline">\(\log n\)</span>. The expected number of sampled coordinates now matches the Johnson–Lindenstrauss dimension of Lecture 6, and the flatness gap of the first bound is gone.</p>
+</section>
+<section id="where-we-go-next" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="where-we-go-next"><span class="header-section-number">5</span> Where we go next</h2>
+<p>Coordinate sampling is our first example of a genuinely <em>structured</em> random matrix, sparse rather than dense like Johnson–Lindenstrauss. Its success hinged on a geometric property of the vectors involved, flatness, rather than on the sampling scheme alone. The next several lectures turn to random matrices in general, starting with the extreme singular values of a random matrix and the net arguments used to control them.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/elliotpaquette\.github\.io\/high-dimensional-probability\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-08-31">
+
+<title>Lecture 1: The Curse of Dimensionality – High-Dimensional Probability</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-5685cd926c25366c96d9f1407e584118.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">High-Dimensional Probability</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-lectures" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Lectures</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-lectures">    
+        <li>
+    <a class="dropdown-item" href="../lectures/01-curse-of-dimensionality.html">
+ <span class="dropdown-text">1. The Curse of Dimensionality</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/02-convex-hulls.html">
+ <span class="dropdown-text">2. Convex Hulls and Sparse Approximation</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/03-gaussian-width.html">
+ <span class="dropdown-text">3. Gaussian Width</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/04-tails.html">
+ <span class="dropdown-text">4. Tails of Random Variables</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/05-orlicz-norms.html">
+ <span class="dropdown-text">5. Geometric Discrepancy and Orlicz Norms</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/06-bernstein-dimension-reduction.html">
+ <span class="dropdown-text">6. Bernstein’s Inequality and Dimension Reduction</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/07-coordinate-embeddings.html">
+ <span class="dropdown-text">7. Coordinate Embeddings</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/08-extreme-singular-values.html">
+ <span class="dropdown-text">8. Extreme Singular Values</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../exercises/index.html"> 
+<span class="menu-text">Exercises</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-course" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Course</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-course">    
+        <li>
+    <a class="dropdown-item" href="../course/index.html">
+ <span class="dropdown-text">Fall 2026</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../course/calendar.html">
+ <span class="dropdown-text">Calendar</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../references.html"> 
+<span class="menu-text">References</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#approximating-the-integral" id="toc-approximating-the-integral" class="nav-link active" data-scroll-target="#approximating-the-integral"><span class="header-section-number">1</span> Approximating the integral</a></li>
+  <li><a href="#covers-and-packings" id="toc-covers-and-packings" class="nav-link" data-scroll-target="#covers-and-packings"><span class="header-section-number">2</span> Covers and packings</a></li>
+  <li><a href="#volumetric-estimates" id="toc-volumetric-estimates" class="nav-link" data-scroll-target="#volumetric-estimates"><span class="header-section-number">3</span> Volumetric estimates</a></li>
+  <li><a href="#a-more-refined-notion-of-dimension" id="toc-a-more-refined-notion-of-dimension" class="nav-link" data-scroll-target="#a-more-refined-notion-of-dimension"><span class="header-section-number">4</span> A more refined notion of dimension</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Lecture 1: The Curse of Dimensionality</h1>
+<p class="subtitle lead">Integration, metric entropy, and volume</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">August 31, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>High-dimensional probability studies what happens where probability meets spaces of many dimensions, and one of its first lessons is that geometric intuition tuned to <span class="math inline">\(\mathbb R^2\)</span> and <span class="math inline">\(\mathbb R^3\)</span> is an unreliable guide there: simple questions about the shape, size, or extent of a set in high dimensions routinely have answers that feel wrong even once proved. One of the most effective ways to regain control is, perhaps surprisingly, to bring in randomness. Certain probabilistic phenomena become easier to work with, not harder, as the dimension grows, and they let us bypass difficulties that would otherwise be intractable.</p>
+<p>The opening part of this course takes up a question that has to be settled before any of this can be made precise: what does it even mean for a set to be high-dimensional? When a set is not a linear space, the dimension learned in linear algebra may not be defined at all, and even when it is defined, it is often not the notion of size that actually governs the problem at hand. We will develop other, more refined notions of dimension—different ways of measuring how large or complicated a set is—and see how they connect to statistics, approximation theory, optimization, and a range of other phenomena in probability theory, many of which turn out, on inspection, to be facets of this same question.</p>
+<p>We start with a concrete problem that already displays the tension between deterministic and probabilistic approaches to a high-dimensional question: approximating an integral.</p>
+<section id="approximating-the-integral" class="level2 page-columns page-full" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="approximating-the-integral"><span class="header-section-number">1</span> Approximating the integral</h2>
+<p>Let <span class="math inline">\(f:[0,1]^d\to\mathbb R\)</span>, and suppose we want to estimate its integral from finitely many evaluations of <span class="math inline">\(f\)</span>: <span class="math display">\[
+I(f)=\int_{[0,1]^d}f(x)\,\mathrm{d}x.
+\]</span></p>
+<div id="def-lipschitz-map" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 1 (Lipschitz map)</strong></span> Let <span class="math inline">\((X,d_X)\)</span> and <span class="math inline">\((Y,d_Y)\)</span> be metric spaces. A map <span class="math inline">\(f:X\to Y\)</span> is <strong><span class="math inline">\(L\)</span>-Lipschitz</strong> if <span class="math display">\[
+d_Y\big(f(x),f(x')\big)\leq Ld_X(x,x')
+\qquad\text{for every }x,x'\in X.
+\]</span> The least possible <span class="math inline">\(L\)</span> is the <strong>Lipschitz constant</strong> of <span class="math inline">\(f\)</span>, denoted <span class="math inline">\(\operatorname{Lip}(f)\)</span>. A map is called <strong>Lipschitz</strong> if <span class="math inline">\(\operatorname{Lip}(f)&lt;\infty\)</span>.</p>
+<p><strong>Convention for these notes.</strong> If <span class="math inline">\(X\subseteq\mathbb R^d\)</span> and <span class="math inline">\(Y\subseteq\mathbb R^m\)</span> and no metrics are specified, then both spaces are equipped with their Euclidean metrics. In particular, for a function <span class="math inline">\(f:X\to\mathbb R\)</span>, the condition is <span class="math display">\[
+|f(x)-f(x')|\leq L\|x-x'\|_2
+\qquad\text{for every }x,x'\in X.
+\]</span></p>
+</div>
+<p>Assume now that <span class="math inline">\(f\)</span> is <span class="math inline">\(L\)</span>-Lipschitz. Fix an integer <span class="math inline">\(m\geq 1\)</span>, divide each coordinate interval into <span class="math inline">\(m\)</span> intervals of length <span class="math inline">\(h=1/m\)</span>, and let <span class="math inline">\(\mathcal Q_m\)</span> be the resulting partition of <span class="math inline">\([0,1]^d\)</span> into <span class="math inline">\(m^d\)</span> cubes. If <span class="math inline">\(c_Q\)</span> denotes the center of <span class="math inline">\(Q\)</span>, the corresponding midpoint approximation is <span class="math display">\[
+I_m(f)=\sum_{Q\in\mathcal Q_m}|Q|f(c_Q)
+=\frac{1}{m^d}\sum_{Q\in\mathcal Q_m}f(c_Q).
+\]</span> Every <span class="math inline">\(x\in Q\)</span> satisfies <span class="math display">\[
+\|x-c_Q\|_2\leq\frac{\sqrt d}{2m}.
+\]</span> The Lipschitz property therefore gives <span class="math display">\[
+\begin{aligned}
+|I(f)-I_m(f)|
+&amp;\leq \sum_{Q\in\mathcal Q_m}
+   \int_Q |f(x)-f(c_Q)|\,\mathrm{d}x\\
+&amp;\leq \sum_{Q\in\mathcal Q_m}
+   |Q|L\frac{\sqrt d}{2m}\\
+&amp;=\frac{L\sqrt d}{2m}.
+\end{aligned}
+\]</span></p>
+<p>To guarantee an error of at most <span class="math inline">\(\varepsilon\)</span>, it is therefore enough to take <span class="math display">\[
+m_\varepsilon
+=\max\left\{1,\left\lceil\frac{L\sqrt d}{2\varepsilon}\right\rceil\right\}
+\]</span> subintervals in each coordinate. The grid then uses <span class="math inline">\(N_\varepsilon=m_\varepsilon^d\)</span> evaluations. In the nontrivial regime <span class="math inline">\(0&lt;\varepsilon\leq L\sqrt d/2\)</span>, <span class="math display">\[
+\left(\frac{L\sqrt d}{2\varepsilon}\right)^d
+\leq N_\varepsilon
+\leq
+\left(\frac{L\sqrt d}{\varepsilon}\right)^d.
+\]</span> Thus, for fixed <span class="math inline">\(d\)</span> and <span class="math inline">\(L\)</span>, this grid construction has cost <span class="math inline">\(N_\varepsilon\asymp_{d,L}\varepsilon^{-d}\)</span>. At a fixed accuracy, its cost grows at least exponentially with the dimension. This is a basic instance of what is called the <strong>curse of dimensionality</strong>: resolving each of <span class="math inline">\(d\)</span> coordinates at <span class="math inline">\(m\)</span> possible values produces <span class="math inline">\(m^d\)</span> combinations. Bellman introduced the phrase in his study of multistage optimization and dynamic programming <span class="citation" data-cites="bellman1957">(<a href="#ref-bellman1957" role="doc-biblioref">Bellman 1957</a>)</span>; here our concern is only its elementary appearance in numerical integration.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-bellman1957" class="csl-entry" role="listitem">
+Bellman, Richard. 1957. <em>Dynamic Programming</em>. Princeton University Press. <a href="https://doi.org/10.1515/9781400835386">https://doi.org/10.1515/9781400835386</a>.
+</div></div><p>There is a different strategy. Let <span class="math inline">\(X_1,\ldots,X_N\)</span> be independent and uniform on <span class="math inline">\([0,1]^d\)</span>, and set <span class="math display">\[
+\widehat I_N(f)=\frac1N\sum_{i=1}^N f(X_i).
+\]</span></p>
+<div id="prp-monte-carlo" class="theorem proposition">
+<p><span class="theorem-title"><strong>Proposition 1 (Monte Carlo integration)</strong></span> If <span class="math inline">\(f(X_1)\)</span> has finite variance <span class="math inline">\(\sigma^2\)</span>, then <span class="math display">\[
+\mathbb E\widehat I_N(f)=I(f),\qquad
+\mathbb E|\widehat I_N(f)-I(f)|^2=\frac{\sigma^2}{N}.
+\]</span> Consequently, <span class="math display">\[
+\mathbb P\big\{|\widehat I_N(f)-I(f)|\geq t\big\}
+\leq \frac{\sigma^2}{Nt^2}.
+\]</span></p>
+</div>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Independence and linearity give <span class="math display">\[
+\mathbb E\widehat I_N(f)=\mathbb Ef(X_1)=I(f).
+\]</span> Writing <span class="math inline">\(Y_i=f(X_i)-I(f)\)</span>, the cross terms vanish and hence <span class="math display">\[
+\mathbb E\left|\frac1N\sum_{i=1}^N Y_i\right|^2
+=\frac1{N^2}\sum_{i=1}^N\mathbb EY_i^2
+=\frac{\sigma^2}{N}.
+\]</span> Chebyshev’s inequality gives the probability bound.</p>
+</div>
+</div>
+</div>
+<p>The root-mean-square error is <span class="math display">\[
+\left(\mathbb E|\widehat I_N(f)-I(f)|^2\right)^{1/2}
+=\frac{\sigma}{\sqrt N}.
+\]</span> Consequently, to make the root-mean-square error at most <span class="math inline">\(\varepsilon\)</span>, it is enough to take <span class="math display">\[
+N\geq \frac{\sigma^2}{\varepsilon^2}.
+\]</span> If instead we want <span class="math display">\[
+\mathbb P\big\{|\widehat I_N(f)-I(f)|\geq\varepsilon\big\}
+\leq\delta,
+\]</span> Chebyshev’s inequality gives the sufficient condition <span class="math display">\[
+N\geq\frac{\sigma^2}{\delta\varepsilon^2}.
+\]</span></p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p><strong>Amplifying confidence.</strong> The factor <span class="math inline">\(\delta^{-1}\)</span> comes from the elementary Chebyshev bound, not from a fundamental limitation of randomization. With only a finite-variance assumption, a median-of-means estimator reduces the failure probability to <span class="math inline">\(\delta\)</span> using <span class="math display">\[
+N\lesssim \frac{\sigma^2}{\varepsilon^2}
+\log\frac1\delta
+\]</span> evaluations. Under bounded or sub-Gaussian assumptions, the ordinary sample mean has a similar exponentially small failure probability. We will develop both mechanisms later.</p>
+</div></div><p>Thus, when <span class="math inline">\(\sigma^2\)</span> and the confidence level <span class="math inline">\(\delta\)</span> are fixed, Monte Carlo uses on the order of <span class="math inline">\(\varepsilon^{-2}\)</span> function evaluations, rather than the <span class="math inline">\(\varepsilon^{-d}\)</span> evaluations used by the grid. Still, the exponent <span class="math inline">\(2\)</span> does not depend on <span class="math inline">\(d\)</span>; any dimensional dependence is confined to <span class="math inline">\(\sigma^2\)</span>.</p>
+<div id="rem-quantifier" class="proof remark">
+<p><span class="proof-title"><em>Remark 1</em> (A quantifier switch). </span>The two guarantees above are not answers to the same question. The grid bound holds <strong>for every</strong> <span class="math inline">\(L\)</span>-Lipschitz <span class="math inline">\(f\)</span> at once, using <strong>one fixed</strong> set of <span class="math inline">\(N_\varepsilon\)</span> points: <span class="math display">\[
+\sup_{\operatorname{Lip}(f)\leq L}\big|I(f)-I_{m_\varepsilon}(f)\big|
+\leq\varepsilon.
+\]</span> The Monte Carlo bound reverses the order of the quantifiers: <strong>fix</strong> <span class="math inline">\(f\)</span> first, and only then ask a <strong>random</strong> set of points to do well, on average, for that one <span class="math inline">\(f\)</span>: <span class="math display">\[
+\mathbb E\big|\widehat I_N(f)-I(f)\big|^2=\frac{\sigma^2}{N}.
+\]</span> These are genuinely different tasks. Choosing points after <span class="math inline">\(f\)</span> is known—or estimating one <span class="math inline">\(f\)</span> at a time—is far easier than certifying, once and for all, a set of points whose accuracy holds simultaneously across an entire infinite class of functions. Most of what one does in practice looks like the second kind of task, a handful of functions estimated one at a time, which is exactly why Monte Carlo already gets the right answer so often.</p>
+<p>Still, the first kind of task is a natural question in its own right: is there a single set of points—deterministic, or produced by some random mechanism—whose accuracy is guaranteed <strong>uniformly</strong> over every <span class="math inline">\(L\)</span>-Lipschitz <span class="math inline">\(f\)</span>, at something like Monte Carlo’s cost <span class="math inline">\(\varepsilon^{-2}\)</span> rather than the grid’s <span class="math inline">\(\varepsilon^{-d}\)</span>? Answering questions of this kind is one of the goals of this course. Notice, though, that the grid’s exponential cost came entirely from the geometry of the class of <span class="math inline">\(L\)</span>-Lipschitz functions being approximated, not from any particular choice of algorithm. Before we can ask whether <span class="math inline">\(\varepsilon^{-2}\)</span> is achievable uniformly over that class, we need a way to measure how large or complicated the class is in the first place.</p>
+</div>
+<p>This is an opening theme of the course: familiar low-dimensional intuition can make high-dimensional geometry and computation look forbidding, while probabilistic methods often reveal dimension-insensitive structure. High-dimensional probability develops the notions of size and complexity—and the probabilistic intuition—needed to understand when this happens and how to use it. The rest of this lecture begins that development, not yet for function classes like the <span class="math inline">\(L\)</span>-Lipschitz maps, but for more basic geometric objects—cubes and balls—where the right notion of size can be pinned down concretely.</p>
+</section>
+<section id="covers-and-packings" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="covers-and-packings"><span class="header-section-number">2</span> Covers and packings</h2>
+<p>We now turn from approximating a single numerical quantity to measuring the complexity of a set. (Eventually, per <a href="#rem-quantifier" class="quarto-xref">Remark&nbsp;1</a>, we want the set to be a class of functions; for now it is enough to consider an abstract set.) Let <span class="math inline">\((T,\rho)\)</span> be a metric space. Our goal is to quantify the size, approximability, and complexity of <span class="math inline">\(T\)</span>—and of its subsets—using only the distances between points. Covering numbers ask how many representative points are needed to approximate a set at a chosen resolution, while packing numbers ask how many mutually distinguishable points it can contain. In Euclidean space these quantities can be compared with volume; in a general metric space they provide a useful substitute for volume.</p>
+<div id="def-covering-number" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2 (Covering number)</strong></span> An <strong><span class="math inline">\(\varepsilon\)</span>-net</strong> of <span class="math inline">\(T\)</span> is a set <span class="math inline">\(A\subseteq T\)</span> such that every <span class="math inline">\(t\in T\)</span> satisfies <span class="math inline">\(\rho(t,a)\leq\varepsilon\)</span> for some <span class="math inline">\(a\in A\)</span>. The <strong>covering number</strong> is <span class="math display">\[
+N(T,\rho,\varepsilon)
+=\min\{|A|:A\text{ is an }\varepsilon\text{-net of }T\}.
+\]</span> When the metric is understood, we write <span class="math inline">\(N(T,\varepsilon)\)</span>.</p>
+</div>
+<div id="def-packing-number" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 3 (Packing number)</strong></span> An <strong><span class="math inline">\(\varepsilon\)</span>-packing</strong> is a set <span class="math inline">\(A\subseteq T\)</span> whose distinct points satisfy <span class="math inline">\(\rho(a,a')&gt;\varepsilon\)</span>. The largest possible size of such a set is the <strong>packing number</strong> <span class="math inline">\(M(T,\rho,\varepsilon)\)</span>.</p>
+</div>
+<p>Covering asks how economically we can approximate every point. Packing asks how many genuinely distinguishable points the space contains.</p>
+<div id="lem-cover-packing" class="theorem lemma">
+<p><span class="theorem-title"><strong>Lemma 1 (Covering–packing comparison)</strong></span> For every <span class="math inline">\(\varepsilon&gt;0\)</span>, <span class="math display">\[
+N(T,\varepsilon)
+\leq M(T,\varepsilon)
+\leq N(T,\varepsilon/2),
+\]</span> provided the relevant maxima and minima exist. The same inequalities hold with the usual infimum and supremum conventions.</p>
+</div>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Choose a maximal <span class="math inline">\(\varepsilon\)</span>-separated set <span class="math inline">\(A\)</span>. If some <span class="math inline">\(t\in T\)</span> were farther than <span class="math inline">\(\varepsilon\)</span> from every point of <span class="math inline">\(A\)</span>, then <span class="math inline">\(A\cup\{t\}\)</span> would still be <span class="math inline">\(\varepsilon\)</span>-separated. Thus <span class="math inline">\(A\)</span> is an <span class="math inline">\(\varepsilon\)</span>-net, proving the first inequality.</p>
+<p>For the second, cover <span class="math inline">\(T\)</span> by balls of radius <span class="math inline">\(\varepsilon/2\)</span>. No such ball can contain two points of an <span class="math inline">\(\varepsilon\)</span>-packing, since two points in one ball are at distance at most <span class="math inline">\(\varepsilon\)</span>. Therefore every packing has at most one point per covering ball.</p>
+</div>
+</div>
+</div>
+<div id="exm-cube-cover" class="theorem example">
+<p><span class="theorem-title"><strong>Example 1 (A grid cover of the cube)</strong></span> For <span class="math inline">\(T=[0,1]^d\)</span> with the <span class="math inline">\(\ell^\infty\)</span> metric, a regular grid gives <span class="math display">\[
+N([0,1]^d,\|\cdot\|_\infty,\varepsilon)
+\leq \left(1+\frac1\varepsilon\right)^d.
+\]</span> This is exactly the combinatorial growth encountered in deterministic integration.</p>
+</div>
+</section>
+<section id="volumetric-estimates" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="volumetric-estimates"><span class="header-section-number">3</span> Volumetric estimates</h2>
+<p>Volume turns a geometric cover into a counting argument. Let <span class="math inline">\(B_2^d\)</span> denote the Euclidean unit ball and let <span class="math inline">\(v_d=\operatorname{vol}(B_2^d)\)</span>.</p>
+<div id="prp-euclidean-ball-volume" class="theorem proposition">
+<p><span class="theorem-title"><strong>Proposition 2 (Volume of the Euclidean ball)</strong></span> For every <span class="math inline">\(d\geq1\)</span>, <span class="math display">\[
+v_d=\frac{\pi^{d/2}}{\Gamma(d/2+1)}.
+\]</span> In particular, <span class="math inline">\(v_d^{1/d}\asymp d^{-1/2}\)</span>.</p>
+</div>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Evaluate the Gaussian integral in Cartesian coordinates: <span class="math display">\[
+\int_{\mathbb R^d}e^{-\|x\|_2^2}\,\mathrm{d}x=\pi^{d/2}.
+\]</span> In polar coordinates the same integral is <span class="math display">\[
+d v_d\int_0^\infty e^{-r^2}r^{d-1}\,\mathrm{d}r
+=\frac{d v_d}{2}\Gamma(d/2).
+\]</span> Since <span class="math inline">\(\Gamma(d/2+1)=(d/2)\Gamma(d/2)\)</span>, the formula follows. Stirling’s formula then gives <span class="math inline">\(v_d^{1/d}\asymp d^{-1/2}\)</span>.</p>
+</div>
+</div>
+</div>
+<p>Thus a radius-one Euclidean ball has rapidly vanishing volume, even though its diameter remains <span class="math inline">\(2\)</span>. More importantly, scaling is exponential: <span class="math display">\[
+\operatorname{vol}(rB_2^d)=r^d v_d.
+\]</span></p>
+<div id="thm-ball-covering" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 1 (Covering a Euclidean ball)</strong></span> For <span class="math inline">\(0&lt;\varepsilon\leq1\)</span>, <span class="math display">\[
+\varepsilon^{-d}
+\leq N(B_2^d,\varepsilon)
+\leq \left(1+\frac{2}{\varepsilon}\right)^d.
+\]</span></p>
+</div>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>If <span class="math inline">\(N\)</span> balls of radius <span class="math inline">\(\varepsilon\)</span> cover <span class="math inline">\(B_2^d\)</span>, subadditivity of volume gives <span class="math display">\[
+v_d\leq N\varepsilon^d v_d,
+\]</span> which proves the lower bound.</p>
+<p>For the upper bound, let <span class="math inline">\(x_1,\ldots,x_M\)</span> be a maximal <span class="math inline">\(\varepsilon\)</span>-separated subset of <span class="math inline">\(B_2^d\)</span>. The balls <span class="math inline">\(x_i+(\varepsilon/2)B_2^d\)</span> are disjoint and lie inside <span class="math inline">\((1+\varepsilon/2)B_2^d\)</span>. Comparing volumes gives <span class="math display">\[
+M(\varepsilon/2)^d v_d
+\leq (1+\varepsilon/2)^d v_d,
+\]</span> so <span class="math inline">\(M\leq(1+2/\varepsilon)^d\)</span>. By <a href="#lem-cover-packing" class="quarto-xref">Lemma&nbsp;1</a>, this maximal packing is also an <span class="math inline">\(\varepsilon\)</span>-net.</p>
+</div>
+</div>
+</div>
+<p>The theorem is both useful and discouraging. It provides a universal finite discretization of the ball, but the price is exponential in <span class="math inline">\(d\)</span>.</p>
+</section>
+<section id="a-more-refined-notion-of-dimension" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="a-more-refined-notion-of-dimension"><span class="header-section-number">4</span> A more refined notion of dimension</h2>
+<p>The number <span class="math inline">\(d\)</span> in <a href="#exm-cube-cover" class="quarto-xref">Example&nbsp;1</a> and <a href="#thm-ball-covering" class="quarto-xref">Theorem&nbsp;1</a> is the dimension of the ambient space, but the quantity that actually controlled the covering number was volume: how the measure of a ball scales as its radius shrinks. Dimension is only a summary of that scaling, and a lossy one—it says nothing about the position, shape, or sparsity of the set being covered. Ambient dimension is sometimes the right complexity parameter, but often it is too crude. A finite set, a sparse set, or the image of a low-dimensional model may have a much smaller covering number than the entire ambient ball, even though all three sit inside the same <span class="math inline">\(\mathbb R^d\)</span>. Covering numbers, and the volume comparisons used to bound them, are the more faithful notion of size; this is the refinement of dimension we were after, and it is the tool that will let us return to <a href="#rem-quantifier" class="quarto-xref">Remark&nbsp;1</a> and measure the complexity of a class of functions such as the <span class="math inline">\(L\)</span>-Lipschitz maps, rather than of a ball or a cube.</p>
+<p>The next lectures develop two more flexible ideas:</p>
+<ol type="1">
+<li>approximate a convex combination by a sparse average; and</li>
+<li>measure a set by how large it looks in a random Gaussian direction.</li>
+</ol>
+<p>These are early examples of a general strategy: identify the part of the geometry that a random process can actually see.</p>
+
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/elliotpaquette\.github\.io\/high-dimensional-probability\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
