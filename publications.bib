@@ -1,10 +1,441 @@
+@ARTICLE{EverettPaquette01,
+       author = {{Everett}, Katie and {Paquette}, Elliot},
+        title = "{Dynamics of Stochastic Momentum with Sparse Updates in High Dimensions}",
+      journal = {arXiv e-prints},
+     keywords = {Machine Learning, Optimization and Control},
+         year = 2026,
+        month = may,
+          eid = {arXiv:2605.28961},
+        pages = {arXiv:2605.28961},
+     abstract = "{Existing theory of momentum assumes that gradients arrive at every
+        parameter at a roughly constant rate, an assumption violated in
+        practice by heavy-tailed data distributions and modern
+        architectures. We theoretically analyze the dynamics of two
+        tractable models of momentum under sparse updates: a least
+        squares model with sparse inputs and a logistic regression model
+        with a rare class. Both admit exact closed-form second-moment
+        dynamics whose high-dimensional limits we characterize across
+        three scaling exponents for sparsity, batch size, and momentum
+        decay. The phase structure on both problems is governed by the
+        ratio of two intrinsic timescales: a momentum retention
+        timescale (how many active updates the buffer survives) and a
+        learning timescale (how many active updates it takes to reduce
+        the squared error). When learning is much slower than retention,
+        the limit matches SGD; when learning is faster, the system is
+        unstable; where the timescales coincide, we recover classical
+        heavy-ball dynamics. The oscillatory dynamics occur at different
+        momentum values for different token sparsity, creating a
+        spectral conflict for global momentum across token
+        frequencies.}",
+          doi = {10.48550/arXiv.2605.28961},
+archivePrefix = {arXiv},
+       eprint = {2605.28961},
+ primaryClass = {stat.ML},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/2026arXiv260528961E},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
+
+
+@ARTICLE{PMBWAP01,
+       author = {{Paquette}, Elliot and {Marshall}, Noah and {Benigni}, Lucas and {Wang}, Guangyuan and {Agarwala}, Atish and {Paquette}, Courtney},
+        title = "{Phases of Muon: When Muon Eclipses SignSGD}",
+      journal = {arXiv e-prints},
+     keywords = {Optimization and Control, Machine Learning},
+         year = 2026,
+        month = may,
+          eid = {arXiv:2605.09552},
+        pages = {arXiv:2605.09552},
+     abstract = "{Recently, Muon and related spectral optimizers have demonstrated
+        strong empirical performance as scalable stochastic methods,
+        often outperforming Adam. Yet their behaviour remains poorly
+        understood. We analyze stochastic spectral optimizers, including
+        Muon, on a high-dimensional matrix-valued least squares problem.
+        We derive explicit deterministic dynamics that provide a
+        tractable framework for studying learning behaviour with a focus
+        on (stochastic) SignSVD, which Muon approximates, and
+        (stochastic) SignSGD, the latter serving as a proxy for Adam.
+        Our analysis shows that for large batch size, SignSVD performs a
+        square-root preconditioning with respect to the data covariance
+        spectrum, while for small batch size smaller eigenmodes behave
+        like SGD, slowing down convergence. We contrast with SignSGD
+        which for generic covariance performs no preconditioning and has
+        no transition, leading to different optimal learning rates and
+        convergence characteristics. The two methods match up to a
+        constant factor with isotropic data, but behave differently with
+        anisotropic data. An analysis of a power law covariance model
+        with data exponent $\alpha$ and target exponent $\beta$ shows
+        there are three phases in the $(\alpha,\beta)$ plane: one where
+        SignSGD is uniformly favored, one where SignSVD is uniformly
+        favored, and a third where the two methods exhibit a trade-off
+        in performance.}",
+          doi = {10.48550/arXiv.2605.09552},
+archivePrefix = {arXiv},
+       eprint = {2605.09552},
+ primaryClass = {math.OC},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/2026arXiv260509552P},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
+
+
+@ARTICLE{LiuPaquetteSous01,
+       author = {{Liu}, Andy Zeyi and {Paquette}, Elliot and {Sous}, John},
+        title = "{Spectral Lens: Activation and Gradient Spectra as Diagnostics of LLM Optimization}",
+      journal = {arXiv e-prints},
+     keywords = {Machine Learning},
+         year = 2026,
+        month = may,
+          eid = {arXiv:2605.05683},
+        pages = {arXiv:2605.05683},
+     abstract = "{Training loss and throughput can hide distinct internal
+        representation in language-model training. To examine these
+        hidden mechanics, we use spectral measurements as practical and
+        operational diagnostics. Using a controlled family of decoder-
+        only models adapted from the modded NanoGPT codebase, we
+        introduce an empirical protocol based on activation covariance
+        and per-sample gradient SVD spectra. This dual-view reveals
+        three empirical findings and one mechanistic explanation. First,
+        batch size acts as a latent determinant of representation
+        geometry: runs that reach equal loss settle into systematically
+        distinct activation spectra. Second, the activation covariance
+        tail measured early in training reliably forecasts downstream
+        token efficiency. Third, movement of the activation spectrum
+        head (leading modes), together with gradient spectra,
+        characterizes underlying learning-dynamics changes, separating
+        learning-side architectural improvements from primarily
+        execution-side gains. These predictive and diagnostic signals
+        persist across the 12-, 36-, and 48-layer model tiers. Finally,
+        a mechanistic model proves the main observations and explains
+        how activation covariance spectra correlate with task-aligned
+        feature learning.}",
+          doi = {10.48550/arXiv.2605.05683},
+archivePrefix = {arXiv},
+       eprint = {2605.05683},
+ primaryClass = {stat.ML},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/2026arXiv260505683L},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
+
+
+@ARTICLE{PaquetteXiaoZhu01,
+       author = {{Paquette}, Elliot and {Xiao}, Ke Liang and {Zhu}, Yizhe},
+        title = "{Power-Law Spectrum of the Random Feature Model}",
+      journal = {arXiv e-prints},
+     keywords = {Machine Learning, Probability},
+         year = 2026,
+        month = mar,
+          eid = {arXiv:2603.14578},
+        pages = {arXiv:2603.14578},
+     abstract = "{Scaling laws for neural networks, in which the loss decays as a
+        power-law in the number of parameters, data, and compute, depend
+        fundamentally on the spectral structure of the data covariance,
+        with power-law eigenvalue decay appearing ubiquitously in vision
+        and language tasks. A central question is whether this spectral
+        structure is preserved or destroyed when data passes through the
+        basic building block of a neural network: a random linear
+        projection followed by a nonlinear activation. We study this
+        question for the random feature model: given data $x \sim
+        N(0,H)\in \mathbb{R}^v$ where $H$ has $\alpha$-power-law
+        spectrum ($\lambda_j(H) \asymp j^{-\alpha}$, $\alpha> 1$), a
+        Gaussian sketch matrix $W \in \mathbb{R}^{v\times d}$, and an
+        entrywise monomial $f(y) = y^{p}$, we characterize the
+        eigenvalues of the population random-feature covariance
+        $\mathbb{E}_{x}[\frac{1}{d}f(W^\top x)^{\otimes 2}]$. We prove
+        matching upper and lower bounds: for all $1 \leq j \leq c_1 d
+        \log^{-(p+1)}(d)$, the $j$-th eigenvalue is of order
+        $\left(\log^{p-1}(j+1)/j\right)^\alpha$. For $c_1 d
+        \log^{-(p+1)}(d)\leq j\leq d$, the $j$-th eigenvalue is of order
+        $j^{-\alpha}$ up to a polylog factor. That is, the power-law
+        exponent $\alpha$ is inherited exactly from the input
+        covariance, modified only by a logarithmic correction that
+        depends on the monomial degree $p$. The proof combines a dyadic
+        head-tail decomposition with Wick chaos expansions for higher-
+        order monomials and random matrix concentration inequalities.}",
+          doi = {10.48550/arXiv.2603.14578},
+archivePrefix = {arXiv},
+       eprint = {2603.14578},
+ primaryClass = {stat.ML},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/2026arXiv260314578P},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
+
+
+@ARTICLE{FanMaPaquetteWang01,
+       author = {{Fan}, Zhou and {Ma}, Renyuan and {Paquette}, Elliot and {Wang}, Zhichao},
+        title = "{Anisotropic local law for non-separable sample covariance matrices}",
+      journal = {arXiv e-prints},
+     keywords = {Probability, Applications, Machine Learning},
+         year = 2026,
+        month = feb,
+          eid = {arXiv:2602.17960},
+        pages = {arXiv:2602.17960},
+     abstract = "{We establish local laws for sample covariance matrices $K =
+        N^{-1}\sum_{i=1}^N \g_i\g_i^*$ where the random vectors $\g_1,
+        \ldots, \g_N \in \R^n$ are independent with common covariance
+        $Σ$. Previous work has largely focused on the separable model
+        $\g = Σ^{1/2}\w$ with $\w$ having independent entries, but this
+        structure is rarely present in statistical applications
+        involving dependent or nonlinearly transformed data. Under a
+        concentration assumption for quadratic forms $\g^*A\g$, we prove
+        an optimal averaged local law showing that the Stieltjes
+        transform of $K$ converges to its deterministic limit uniformly
+        down to the optimal scale $η\geq N^{-1+\eps}$. Under an
+        additional structural assumption on the cumulant tensors of $\g$
+        -- which interpolates between the highly structured case of
+        independent entries and generic dependence -- we establish the
+        full anisotropic local law, providing entrywise control of the
+        resolvent $(K-zI)^{-1}$ in arbitrary directions. We discuss
+        several classes of non-separable examples satisfying our
+        assumptions, including conditionally mean-zero distributions,
+        the random features model $\g = σ(X\w)$ arising in machine
+        learning, and Gaussian measures with nonlinear tilting. The
+        proofs introduce a tensor network framework for analyzing
+        fluctuation averaging in the presence of higher-order cumulant
+        structure.}",
+archivePrefix = {arXiv},
+       eprint = {2602.17960},
+ primaryClass = {math.PR},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/2026arXiv260217960F},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
+
+
+@ARTICLE{Ferbach02,
+       author = {{Ferbach}, Damien and {Paquette}, Courtney and {Gidel}, Gauthier and {Everett}, Katie and {Paquette}, Elliot},
+        title = "{Logarithmic-time Schedules for Scaling Language Models with Momentum}",
+      journal = {arXiv e-prints},
+     keywords = {Machine Learning, Optimization and Control},
+         year = 2026,
+        month = feb,
+          eid = {arXiv:2602.05298},
+        pages = {arXiv:2602.05298},
+     abstract = "{In practice, the hyperparameters $(β_1, β_2)$ and weight-decay $λ$ in
+        AdamW are typically kept at fixed values. Is there any reason to
+        do otherwise? We show that for large-scale language model
+        training, the answer is yes: by exploiting the power-law
+        structure of language data, one can design time-varying
+        schedules for $(β_1, β_2, λ)$ that deliver substantial
+        performance gains. We study logarithmic-time scheduling, in
+        which the optimizer's gradient memory horizon grows with
+        training time. Although naive variants of this are unstable, we
+        show that suitable damping mechanisms restore stability while
+        preserving the benefits of longer memory. Based on this, we
+        present ADANA, an AdamW-like optimizer that couples log-time
+        schedules with explicit damping to balance stability and
+        performance. We empirically evaluate ADANA across transformer
+        scalings (45M to 2.6B parameters), comparing against AdamW,
+        Muon, and AdEMAMix. When properly tuned, ADANA achieves up to
+        40\% compute efficiency relative to a tuned AdamW, with gains
+        that persist--and even improve--as model scale increases. We
+        further show that similar benefits arise when applying
+        logarithmic-time scheduling to AdEMAMix, and that logarithmic-
+        time weight-decay alone can yield significant improvements.
+        Finally, we present variants of ADANA that mitigate potential
+        failure modes and improve robustness.}",
+          doi = {10.48550/arXiv.2602.05298},
+archivePrefix = {arXiv},
+       eprint = {2602.05298},
+ primaryClass = {stat.ML},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/2026arXiv260205298F},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
+@ARTICLE{Lin01,
+       author = {{Lin}, Shurong and {Kolaczyk}, Eric D. and {Smith}, Adam and {Paquette}, Elliot},
+        title = "{High-Dimensional Privacy-Utility Dynamics of Noisy Stochastic Gradient Descent on Least Squares}",
+      journal = {arXiv e-prints},
+     keywords = {Machine Learning},
+         year = 2025,
+        month = oct,
+          eid = {arXiv:2510.16687},
+        pages = {arXiv:2510.16687},
+     abstract = "{The interplay between optimization and privacy has become a central
+        theme in privacy-preserving machine learning. Noisy stochastic
+        gradient descent (SGD) has emerged as a cornerstone algorithm,
+        particularly in large-scale settings. These variants of gradient
+        methods inject carefully calibrated noise into each update to
+        achieve differential privacy, the gold standard notion of
+        rigorous privacy guarantees. Prior work primarily provides
+        various bounds on statistical risk and privacy loss for noisy
+        SGD, yet the \textbackslashtextit\{exact\} behavior of the
+        process remains unclear, particularly in high-dimensional
+        settings. This work leverages a diffusion approach to analyze
+        noisy SGD precisely, providing a continuous-time perspective
+        that captures both statistical risk evolution and privacy loss
+        dynamics in high dimensions. Moreover, we study a variant of
+        noisy SGD that does not require explicit knowledge of gradient
+        sensitivity, unlike existing work that assumes or enforces
+        sensitivity through gradient clipping. Specifically, we focus on
+        the least squares problem with $\ell_2$ regularization.}",
+          doi = {10.48550/arXiv.2510.16687},
+archivePrefix = {arXiv},
+       eprint = {2510.16687},
+ primaryClass = {stat.ML},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/2025arXiv251016687L},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
+
+
+@ARTICLE{BenigniPaquette01,
+       author = {{Benigni}, Lucas and {Paquette}, Elliot},
+        title = "{Eigenvalue distribution of the Neural Tangent Kernel in the quadratic scaling}",
+      journal = {arXiv e-prints},
+     keywords = {Probability, Machine Learning},
+         year = 2025,
+        month = aug,
+          eid = {arXiv:2508.20036},
+        pages = {arXiv:2508.20036},
+     abstract = "{We compute the asymptotic eigenvalue distribution of the neural tangent
+        kernel of a two-layer neural network under a specific scaling of
+        dimension. Namely, if $X\in\mathbb{R}^{n\times d}$ is an i.i.d
+        random matrix, $W\in\mathbb{R}^{d\times p}$ is an i.i.d
+        $\mathcal{N}(0,1)$ matrix and $D\in\mathbb{R}^{p\times p}$ is a
+        diagonal matrix with i.i.d bounded entries, we consider the
+        matrix $$\mathrm{NTK} = \frac{1}{d} XX^\top \odot \frac{1}{p} \sigma'\left(\frac{1}{\sqrt{d}}XW\right) D^2 \sigma'\left(\frac{1}{\sqrt{d}}XW\right)^\top$$
+        where $\sigma$ is a pseudo-Lipschitz function applied entrywise and under the scaling $\frac{n}{dp}\to \gamma_1$ and $\frac{p}{d}\to \gamma_2$. We
+        describe the asymptotic distribution as the free multiplicative
+        convolution of the Marchenko--Pastur distribution with a
+        deterministic distribution depending on $\sigma$ and $D$.}",
+          doi = {10.48550/arXiv.2508.20036},
+archivePrefix = {arXiv},
+       eprint = {2508.20036},
+ primaryClass = {math.PR},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/2025arXiv250820036B},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
+
+
+@ARTICLE{LambertPaquette04,
+       author = {{Lambert}, Gaultier and {Paquette}, Elliot},
+        title = "{Bulk asymptotics of the Gaussian $\beta$-ensemble characteristic polynomial}",
+      journal = {arXiv e-prints},
+     keywords = {Probability, Mathematical Physics, 60B20},
+         year = 2025,
+        month = aug,
+          eid = {arXiv:2508.01458},
+        pages = {arXiv:2508.01458},
+     abstract = "{The Gaussian $\beta$-ensemble (G$\beta$E) is a fundamental model in random
+        matrix theory. In this paper, we provide a comprehensive
+        asymptotic description of the characteristic polynomial of the
+        G$\beta$E anywhere in the bulk of the spectrum that simultaneously
+        captures both local-scale fluctuations (governed by the Sine-$\beta$
+        point process) and global/mesoscopic log-correlated Gaussian
+        structure, which is accurate down to vanishing errors as
+        $N\to\infty$. As immediate corollaries, we obtain several
+        important results: (1) convergence of characteristic polynomial
+        ratios to the stochastic zeta function, extending known results
+        from Valko and Virag to the G$\beta$E; (2) a martingale
+        approximation of the log-characteristic polynomial which
+        immediately recovers the central limit theorem from Bourgade,
+        Mody and Pain; (3) a description of the order one correction to
+        the martingale in terms of the stochastic Airy function.}",
+          doi = {10.48550/arXiv.2508.01458},
+archivePrefix = {arXiv},
+       eprint = {2508.01458},
+ primaryClass = {math.PR},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/2025arXiv250801458L},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
+
+@ARTICLE{Ferbach01,
+       author = {{Ferbach}, Damien and {Everett}, Katie and {Gidel}, Gauthier and {Paquette}, Elliot and {Paquette}, Courtney},
+        title = "{Dimension-adapted Momentum Outscales SGD}",
+      journal = {NeurIPS Spotlight},
+     keywords = {Machine Learning, Optimization and Control},
+         year = 2025,
+        month = dec,
+          eid = {arXiv:2505.16098},
+        pages = {arXiv:2505.16098},
+     abstract = "{We investigate scaling laws for stochastic momentum algorithms with small batch on the power law random features model, parameterized by data complexity, target complexity, and model size. When trained with a stochastic momentum algorithm, our analysis reveals four distinct loss curve shapes determined by varying data-target complexities. While traditional stochastic gradient descent with momentum (SGD-M) yields identical scaling law exponents to SGD, dimension-adapted Nesterov acceleration (DANA) improves these exponents by scaling momentum hyperparameters based on model size and data complexity. This outscaling phenomenon, which also improves compute-optimal scaling behavior, is achieved by DANA across a broad range of data and target complexities, while traditional methods fall short. Extensive experiments on high-dimensional synthetic quadratics validate our theoretical predictions and large-scale text experiments with LSTMs show DANA's improved loss exponents over SGD hold in a practical setting.}",
+          doi = {10.48550/arXiv.2505.16098},
+archivePrefix = {arXiv},
+       eprint = {2505.16098},
+ primaryClass = {stat.ML},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/2025arXiv250516098F},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
+
+@ARTICLE{NajnudelPaquetteSimm02,
+       author = {{Najnudel}, Joseph and {Paquette}, Elliot and {Simm}, Nick and {Vu}, Truong},
+        title = "{The Fourier coefficients of the holomorphic multiplicative chaos in the limit of large frequency}",
+      journal = {arXiv e-prints},
+     keywords = {Mathematics - Probability},
+         year = 2025,
+        month = feb,
+          eid = {arXiv:2502.14863},
+        pages = {arXiv:2502.14863},
+     abstract = "{The holomorphic multiplicative chaos (HMC) is a holomorphic analogue of
+        the Gaussian multiplicative chaos. It arises naturally as the
+        limit in large matrix size of the characteristic polynomial of
+        Haar unitary, and more generally circular-$\beta$-ensemble,
+        random matrices. We consider the Fourier coefficients of the
+        holomorphic multiplicative chaos in the $L^1$-phase, and we show
+        that appropriately normalized, this converges in distribution to
+        a complex normal random variable, scaled by the total mass of
+        the Gaussian multiplicative chaos measure on the unit circle. We
+        further generalize this to a process convergence, showing the
+        joint convergence of consecutive Fourier coefficients. As a
+        corollary, we derive convergence in law of the secular
+        coefficients of sublinear index of the circular-$\beta$-ensemble
+        for all $\beta > 2$.}",
+          doi = {10.48550/arXiv.2502.14863},
+archivePrefix = {arXiv},
+       eprint = {2502.14863},
+ primaryClass = {math.PR},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/2025arXiv250214863N},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
+
+@ARTICLE{Painchaud01,
+       author = {{Painchaud}, Vincent and {Paquette}, Elliot},
+        title = "{Operator level soft edge to bulk transition in $\beta$-ensembles via canonical systems}",
+      journal = {arXiv e-prints},
+     keywords = {Mathematics - Probability, Mathematical Physics, Mathematics - Spectral Theory},
+         year = 2025,
+        month = feb,
+          eid = {arXiv:2502.10305},
+        pages = {arXiv:2502.10305},
+     abstract = "{The stochastic Airy and sine operators, which are respectively a random
+        Sturm-Liouville operator and a random Dirac operator,
+        characterize the soft edge and bulk scaling limits of
+        $\beta$-ensembles. Dirac and Sturm-Liouville operators are
+        distinct operator classes which can both be represented as
+        canonical systems, which gives a unified framework for defining
+        important properties, such as their spectral data. Seeing both
+        as canonical systems, we prove that in a suitable high-energy
+        scaling limit, the Airy operator converges to the sine operator.
+        We prove this convergence in the vague topology of canonical
+        systems' coefficient matrices, and deduce the convergence of the
+        associated Weyl-Titchmarsh functions and spectral measures. Our
+        proof relies on a coupling between the Brownian paths that drive
+        the two operators, under which the convergence holds in
+        probability. This extends the corresponding result at the level
+        of the eigenvalue point processes, proven by Valk{\'o} and
+        Vir{\'a}g (2009) by comparison to the Gaussian $\beta$-ensemble.}",
+          doi = {10.48550/arXiv.2502.10305},
+archivePrefix = {arXiv},
+       eprint = {2502.10305},
+ primaryClass = {math.PR},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/2025arXiv250210305P},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
+
 @ARTICLE{MXAP02,
        author = {{Xiao}, Ke Liang and {Marshall}, Noah and {Agarwala}, Atish and {Paquette}, Elliot},
         title = "{Exact Risk Curves of signSGD in High-Dimensions: Quantifying Preconditioning and Noise-Compression Effects}",
-      journal = {arXiv e-prints},
+      journal = {ICML},
      keywords = {Statistics - Machine Learning, Computer Science - Machine Learning},
-         year = 2024,
-        month = nov,
+         year = 2025,
      abstract = "{In recent years, signSGD has garnered interest as both a practical
         optimizer as well as a simple model to understand adaptive
         optimizers like Adam. Though there is a general consensus that
@@ -31,7 +462,8 @@ archivePrefix = {arXiv},
 @article{MXAP01,
       title={A Clipped Trip: the Dynamics of SGD with Gradient Clipping in High-Dimensions}, 
       author={Noah Marshall and Ke Liang Xiao and Atish Agarwala and Elliot Paquette},
-      year={2024},
+      year={2025},
+	  journal={ICLR},
       eprint={2406.11733},
       archivePrefix={arXiv},
       primaryClass={stat.ML},
@@ -71,13 +503,20 @@ archivePrefix = {arXiv},
 }
 
 @article{LVP01,
-      title={Matrix Dyson equation for correlated linearizations and test error of random features regression}, 
-      author={Hugo Latourelle-Vigeant and Elliot Paquette},
-      year={2023},
-      eprint={2312.09194},
-      archivePrefix={arXiv},
-      primaryClass={math.ST},
-	  abstract = {This paper develops some theory of the matrix Dyson equation (MDE) for correlated linearizations and uses it to solve a problem on asymptotic deterministic equivalent for the test error in random features regression. The theory developed for the correlated MDE includes existence-uniqueness, spectral support bounds, and stability properties of the MDE. This theory is new for constructing deterministic equivalents for pseudoresolvents of a class of correlated linear pencils. In the application, this theory is used to give a deterministic equivalent of the test error in random features ridge regression, in a proportional scaling regime, wherein we have conditioned on both training and test datasets.}
+	    title = {Dyson equation for correlated linearizations and test error of random features regression},
+	   author = {Latourelle-Vigeant, Hugo and Paquette, Elliot},
+	  journal = {Random Matrices Theory Appl.},
+	 fjournal = {Random Matrices. Theory and Applications},
+	   volume = {15},
+	   number = {01},
+	     year = {2026},
+	    pages = {2550026},
+	      doi = {10.1142/S2010326325500261},
+	     issn = {2010-3263},
+	  eprint = {2312.09194},
+	archivePrefix = {arXiv},
+	primaryClass = {math.ST},
+	 abstract = {This paper develops some theory of the matrix Dyson equation (MDE) for correlated linearizations and uses it to solve a problem on asymptotic deterministic equivalent for the test error in random features regression. The theory developed for the correlated MDE includes existence-uniqueness, spectral support bounds, and stability properties of the MDE. This theory is new for constructing deterministic equivalents for pseudoresolvents of a class of correlated linear pencils. In the application, this theory is used to give a deterministic equivalent of the test error in random features ridge regression, in a proportional scaling regime, wherein we have conditioned on both training and test datasets.}
 }
 
 
@@ -113,7 +552,6 @@ archivePrefix = {arXiv},
     url = {https://doi.org/10.1093/imaiai/iaae028},
     eprint = {2308.08977},
 archivePrefix = {arXiv},
-       eprint = {2006.04299},
  primaryClass = {math.OC}
  }
 
@@ -166,17 +604,20 @@ abstract = {We give a description of the high-dimensional limit of one-pass sing
 	abstract= {This is a survey summarizing our approach to high-dimensional optimization.}
 }
 
-
-
 @ARTICLE{PaquetteZeitouni03,
        author = {{Paquette}, Elliot and {Zeitouni}, Ofer},
         title = "{The extremal landscape for the C$\beta$E ensemble}",
-      journal = {Forum of Mathematics, Sigma},
+   JOURNAL = {Forum Math. Sigma},
+  FJOURNAL = {Forum of Mathematics. Sigma},
      keywords = {Mathematics - Probability},
-         year = 2022,
-        month = sep,
-          eid = {arXiv:2209.06743},
-        pages = {118pp},
+    VOLUME = {13},
+      YEAR = {2025},
+     PAGES = {126},
+      ISSN = {2050-5094},
+   MRCLASS = {60G70 (60B20)},
+  MRNUMBER = {4849370},
+         DOI = {10.1017/fms.2024.129},
+       URL = {https://doi.org/10.1017/fms.2024.129},
 archivePrefix = {arXiv},
        eprint = {2209.06743},
  primaryClass = {math.PR},
@@ -185,6 +626,28 @@ archivePrefix = {arXiv},
       abstract = {We consider the extremes of the logarithm of the characteristic polynomial of matrices from the C$\beta$E ensemble. We prove convergence in distribution of the centered maxima (of the real and imaginary parts) towards the sum of a Gumbel variable and another independent variable, which we characterize as the total mass of a ``derivative martingale''. We also provide a description of the landscape near extrema points.}
 }
 
+
+@article {PPAP01,
+    AUTHOR = {Paquette, Courtney and Paquette, Elliot and Adlam, Ben and Pennington, Jeffrey},
+     TITLE = {Homogenization of {SGD} in high-dimensions: exact dynamics and
+              generalization properties},
+   JOURNAL = {Math. Program.},
+  FJOURNAL = {Mathematical Programming},
+  keywords = {Mathematics - Statistics Theory, Mathematics - Optimization and Control, Mathematics - Probability, Statistics - Machine Learning},
+    VOLUME = {214},
+      YEAR = {2025},
+    NUMBER = {1-2},
+     PAGES = {1--90},
+	 archivePrefix = {arXiv},
+       eprint = {2205.07069},
+ primaryClass = {math.ST},
+      ISSN = {0025-5610,1436-4646},
+   MRCLASS = {90C15 (15B52 60H10 68T05)},
+  MRNUMBER = {4996103},
+       DOI = {10.1007/s10107-024-02171-3},
+       URL = {https://doi.org/10.1007/s10107-024-02171-3},
+  abstract = {We develop a stochastic differential equation, called homogenized SGD, for analyzing the dynamics of stochastic gradient descent (SGD) on a high-dimensional random least squares problem with  $\ell^2$-regularization. We show that homogenized SGD is the high-dimensional equivalence of SGD -- for any quadratic statistic (e.g., population risk with quadratic loss), the statistic under the iterates of SGD converges to the statistic under homogenized SGD when the number of samples  n  and number of features  d  are polynomially related. By analyzing homogenized SGD, we provide exact non-asymptotic high-dimensional expressions for the generalization performance of SGD in terms of a solution of a Volterra integral equation. Further we provide the exact value of the limiting excess risk in the case of quadratic losses when trained by SGD. The analysis is formulated for data matrices and target vectors that satisfy a family of resolvent conditions, which can roughly be viewed as a weak (non-quantitative) form of delocalization of sample-side singular vectors of the data. Several motivating applications are provided including sample covariance matrices with independent samples and random features with non-generative model targets.}
+}
 
 @inproceedings{PPAP02,
        author = {{Paquette}, Courtney and {Paquette}, Elliot and {Adlam}, Ben and {Pennington}, Jeffrey},
@@ -204,24 +667,6 @@ archivePrefix = {arXiv},
        adsurl = {https://ui.adsabs.harvard.edu/abs/2022arXiv220607252P},
       adsnote = {Provided by the SAO/NASA Astrophysics Data System},
       abstract = {Stochastic gradient descent (SGD) is a pillar of modern machine learning, serving as the go-to optimization algorithm for a diverse array of problems. While the empirical success of SGD is often attributed to its computational efficiency and favorable generalization behavior, neither effect is well understood and disentangling them remains an open problem. Even in the simple setting of convex quadratic problems, worst-case analyses give an asymptotic convergence rate for SGD that is no better than full-batch gradient descent (GD), and the purported implicit regularization effects of SGD lack a precise explanation. In this work, we study the dynamics of multi-pass SGD on high-dimensional convex quadratics and establish an asymptotic equivalence to a stochastic differential equation, which we call homogenized stochastic gradient descent (HSGD), whose solutions we characterize explicitly in terms of a Volterra integral equation. These results yield precise formulas for the learning and risk trajectories, which reveal a mechanism of implicit conditioning that explains the efficiency of SGD relative to GD. We also prove that the noise from SGD negatively impacts generalization performance, ruling out the possibility of any type of implicit regularization in this context. Finally, we show how to adapt the HSGD formalism to include streaming SGD, which allows us to produce an exact prediction for the excess risk of multi-pass SGD relative to that of streaming SGD (bootstrap risk).}
-}
-
-
-
-@ARTICLE{PPAP01,
-       author = {{Paquette}, Courtney and {Paquette}, Elliot and {Adlam}, Ben and {Pennington}, Jeffrey},
-        title = "{Homogenization of SGD in high-dimensions: Exact dynamics and generalization properties}",
-      journal = {Mathematical Programming},
-     keywords = {Mathematics - Statistics Theory, Mathematics - Optimization and Control, Mathematics - Probability, Statistics - Machine Learning},
-         year = 2022,
-        month = may,
-        pages = {64pp},
-archivePrefix = {arXiv},
-       eprint = {2205.07069},
- primaryClass = {math.ST},
-       adsurl = {https://ui.adsabs.harvard.edu/abs/2022arXiv220507069P},
-      adsnote = {Provided by the SAO/NASA Astrophysics Data System},
-      abstract = {We develop a stochastic differential equation, called homogenized SGD, for analyzing the dynamics of stochastic gradient descent (SGD) on a high-dimensional random least squares problem with  $\ell^2$-regularization. We show that homogenized SGD is the high-dimensional equivalence of SGD -- for any quadratic statistic (e.g., population risk with quadratic loss), the statistic under the iterates of SGD converges to the statistic under homogenized SGD when the number of samples  n  and number of features  d  are polynomially related. By analyzing homogenized SGD, we provide exact non-asymptotic high-dimensional expressions for the generalization performance of SGD in terms of a solution of a Volterra integral equation. Further we provide the exact value of the limiting excess risk in the case of quadratic losses when trained by SGD. The analysis is formulated for data matrices and target vectors that satisfy a family of resolvent conditions, which can roughly be viewed as a weak (non-quantitative) form of delocalization of sample-side singular vectors of the data. Several motivating applications are provided including sample covariance matrices with independent samples and random features with non-generative model targets.}
 }
 
 @inproceedings{LeeChengPaquettePaquette,
@@ -1046,7 +1491,6 @@ MRREVIEWER = {David\ B.\ Penman},
 	title = "Anchored expansion, speed and the Poisson--Voronoi tessellation in symmetric spaces",
 	volume = "46",
 	year = "2018"}
-	}
 
 
 @ARTICLE{JohnsonPaquette01,
