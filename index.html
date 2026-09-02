@@ -15,41 +15,17 @@
 	      svg: {fontCache: 'global'}
 	    };
     </script>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
-    <script src="./bibtex_js.js" type="text/javascript" charset="utf-8"></script>
-    <bibtex src="./publications.bib"></bibtex>
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">    
 
     <style>
 html,body,span,h1 {
   font-family: "Times New Roman", Times, serif;
   font-size: 17px;
 }
-	    bibtex { display: none; }
-	    .searchbar { margin-left:0px;}
-	    #bibtex_errors { margin-top:10px; color: red;}
-	    h1.header {margin-left:8px;}
-	    h1.YEAR { font-size: 17px; font-weight: bold; display: inline; margin-left:8px;}
-	    .invalidImageSrc {
-	      color:#fff;
-	      width: 10px;
-	      height: 10px;
-	      border: 10px solid black;
-	      padding: 5px;
-	      background-color: #ccc;
-	    }
-
-	    ::placeholder{ 
-	      color: red;
-	      opacity: 1;
-	    }
     </style>
 
     <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="assets/css/publications.css" />
 
   </head>
   <body class>
@@ -205,163 +181,43 @@ html,body,span,h1 {
 
       <!-- Section -->
       <section class="wrapper style2" id="research">
-	<div class="inner" > 
-	  <div class="flex flex-2">
-	    <div class="col col2">
-	      <h3>RESEARCH</h3>
+	<div class="inner">
+	  <h3>RESEARCH</h3>
 
-	      <p>
-	      On the publications page below, I have put my preprints and publications.
-	      This includes the <em>abstract</em> and for some, a pretty picture.  You can also 
-	      find most of this information through these other means:</p>
+	  <p>
+	  My work falls into two research programs. Each is described below, with its
+	  papers listed on the publications page; earlier and miscellaneous work in
+	  probability makes up a third section there. You can also find most of this
+	  information through these other means:</p>
 
-	      <p>
-	      <a href="Research/CV.pdf"><u>CV</u></a> * 
-	      <a href="https://scholar.google.com/citations?user=JXXJluMAAAAJ&hl=en&oi=ao"><u>Google Scholar</u></a> * 
-	      <a href="https://arxiv.org/search/?query=elliot+paquette&searchtype=all"><u>arXiv</u></a>
-	      </p>
+	  <p>
+	  <a href="Research/CV.pdf"><u>CV</u></a> * 
+	  <a href="https://scholar.google.com/citations?user=JXXJluMAAAAJ&hl=en&oi=ao"><u>Google Scholar</u></a> * 
+	  <a href="https://arxiv.org/search/?query=elliot+paquette&searchtype=all"><u>arXiv</u></a>
+	  </p>
 
-	      <h3>Papers</h3>
-	      <div class="container-fluid">
-		<div class="searchbar">
+<!-- BEGIN generated research programs -->
+<div class="prog-grid">
+<div class="prog-card" style="--accent:#6fb3c9">
+  <h4>Random matrix theory</h4>
+  <p class="prog-card-sub">β-ensembles, characteristic polynomials, and log-correlated fields</p>
+  <p>The characteristic polynomial of a random matrix is, after taking logarithms, a field that is almost — but not quite — Gaussian and log-correlated.</p>
+  <p class="prog-card-more"><a href="publications.html#rmt"><u>24 papers &rarr;</u></a></p>
+</div>
+<div class="prog-card" style="--accent:#d8a860">
+  <h4>Machine learning theory</h4>
+  <p class="prog-card-sub">scaling laws, high-dimensional optimization, and the dynamics of training</p>
+  <p>Training a large model is a high-dimensional stochastic process, and in the limit where the number of parameters and the amount of data both grow it acquires a deterministic description.</p>
+  <p class="prog-card-more"><a href="publications.html#ml"><u>24 papers &rarr;</u></a></p>
+</div>
+</div>
+<p>Earlier and miscellaneous work in probability &mdash; random graphs, geometry and topology &mdash; is collected in a third section of <a href="publications.html#prob"><u>22 papers</u></a>.</p>
+<p><a href="publications.html" class="button">All publications</a></p>
+<!-- END generated research programs -->
 
-		  <div style="float:left;">
-		    <input style="color:white;" type="text" class="bibtex_search form-control" id="searchbar" placeholder="Search publications">
-		    <span class="help-block" style="color:white;">Example: random matrices, Delaunay, topology</span>
-		  </div>
-		</div>
-	      </div>
-
-	      <div class="bibtex_structure">
-		<div class="group year" extra="DESC number">
-		  <a href="#top" style="display: inline"><em>(Top of the page)</em></a>
-		  <div style="padding-bottom:10px;"></div>
-		  <div class="sort journal" extra="ASC string">
-		    <div class="templates"></div>
-		  </div>
-		</div>
-	      </div>
-
-	      <div id="bibtex_display">
-
-		<div class="if bibtex_template" style="display: none;">
-		  <ul> <li>
-		      <div class="if author">
-			<span class="author"></span><span>.</span>
-			<span class="if title"><b><span class="title"></span></b>,</span>
-		      </div>
-		      <div>
-			<span class="if journal"><em><span class="journal"></span></em>,</span>
-			<span class="if booktitle">In <em><span class="booktitle"></span></em>,</span>
-			<span class="if editor"><span class="editor"></span> (editors),</span>
-			<span class="if publisher"><em><span class="publisher"></span></em>,</span>
-			<span class="if institution"><span class="institution"></span>,</span>
-			<span class="if address"><span class="address"></span>,</span>
-			<span class="if volume"><span class="volume"></span>,</span>
-			<span class="if journal number">(<span class="number"></span>),</span>
-			<span class="if pages"> pages <span class="pages"></span>,</span>
-			<span class="if month"><span class="month"></span>,</span>
-			<span class="if year"><span class="year"></span>.</span>
-			<span class="if note"><span class="note"></span>.</span>
-
-			<a class="bibtexVar" 
-			   role="button" 
-			   data-toggle="collapse" 
-			   href="#abs+BIBTEXKEY+" 
-			   aria-expanded="false" 
-			   aria-controls="abs+BIBTEXKEY+" 
-			   extra="BIBTEXKEY">
-			  [abstract]
-			</a>
-			<a class="bibtexVar" 
-			   role="button" 
-			   data-toggle="collapse" 
-			   href="#bib+BIBTEXKEY+" 
-			   aria-expanded="false" 
-			   aria-controls="bib+BIBTEXKEY+" 
-			   extra="BIBTEXKEY">
-			  [BibTeX]
-			</a>
-			<span class="if eprint">
-			  <a class="bibtexVar" 
-			     role="button" 
-			     href="https://arxiv.org/abs/+EPRINT+" 
-			     extra="EPRINT">
-			    [arXiv]
-			  </a></span>
-			  <span class="if doi">
-			    <a class="bibtexVar" 
-			       role="button" 
-			       href="https://doi.org/+DOI+" 
-			       extra="DOI">
-			      [Journal]
-			    </a>
-			  </span>
-		      </div>
-		      <div class="bibtexVar collapse" id="bib+BIBTEXKEY+" extra="BIBTEXKEY">
-			<div class="well">
-			  <pre><span class="bibtexraw noread"></span></pre>
-			</div>
-		      </div>
-		      <div class="bibtexVar collapse" 
-			   id="abs+BIBTEXKEY+" extra="BIBTEXKEY">
-			<div style="
-				    margin: 10px;
-				    padding: 10px; 
-				    border: 2px solid black;
-				    background-color: white;"
-
-			     class="image left">
-			  <img class="bibtexVar"
-			       src="media/+BIBTEXKEY+.png" 
-			       alt=""
-			       extra="BIBTEXKEY"
-			       ></img>
-			</div>
-			<div style="border-top: 2px solid white;">
-			  <span class="abstract"></span>
-			</div>
-
-		      </div>
-
-
-			<!--
-
-     <div style="
-     overflow: hidden; 
-     max-width: 500px;
-     padding: 10px; 
-     border: 2px solid white;"
-     >
-     <div style="
-     max-height: 430px; 
-     max-width: 430px; 
-     margin: 10px;
-     padding: 10px; 
-     border: 2px solid black;
-     background-color: white;" >
-     <img class="bibtexVar"
-     style="max-width:400px; max-height:400px;"
-     src="media/+BIBTEXKEY+.png" 
-     alt=""
-     extra="BIBTEXKEY"
-     ></img>
-     </div>
-     <div>
-     <span class="abstract"></span>
-     </div>
-     </div> -->
-		      </div>
-		      <div style="display:none"><span class="bibtextype"></span></div>
-		      <div style="display:none"><span class="if topic"><span class="topic"></span></span></div>
-		    </li></ul>
-		</div>
-	      </div>
-	    </div>
-	  </div>
+	</div>
       </section>
 
-      <!-- Section -->
       <section class="wrapper
 		      style1" id="teaching">
 	<div class="inner">
@@ -424,14 +280,6 @@ html,body,span,h1 {
 	</div>
       </footer>
 
-      <!-- Scripts -->
-      <!-- Latest compiled and minified JavaScript -->
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-      <script>
-	setTimeout(async function () {
-		  await MathJax.typesetPromise()
-		}, 3000)
-      </script>
 
 
 
