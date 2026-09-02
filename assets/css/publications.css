@@ -87,10 +87,12 @@
 
 .pub-list { display: flex; flex-direction: column; gap: .55rem; }
 .pub {
-  display: grid; grid-template-columns: 3.1rem 12rem 1fr; gap: 1rem; align-items: start;
+  display: grid; grid-template-columns: 3.1rem 1fr; gap: 1rem; align-items: start;
   border: 1px solid transparent; border-radius: .35rem; padding: .85rem .9rem;
   background: #fff; transition: border-color .15s, background .15s;
 }
+/* flow-root so the body contains the floated figure and the card grows to fit it */
+.pub-body { display: flow-root; }
 .pub:hover { border-color: color-mix(in srgb, var(--accent) 38%, var(--rule)); }
 .pub.is-pinned { border-color: color-mix(in srgb, var(--accent) 55%, var(--rule)); }
 .pub[hidden], .program[hidden], .prog-tail[hidden] { display: none !important; }
@@ -99,7 +101,7 @@
   font-variant-numeric: tabular-nums; visibility: hidden;
 }
 .pub.is-year-first .pub-year { visibility: visible; }
-.pub-fig { align-self: start; }
+.pub-fig { float: left; width: 12rem; margin: .2rem 1.15rem .55rem 0; }
 .pub-fig img, .pub-fig svg {
   display: block; width: 100%; height: auto; max-height: 10rem;
   object-fit: contain; border-radius: .2rem; background: var(--soft);
@@ -130,20 +132,18 @@
   border-radius: .8rem; padding: .05rem .55rem; font-size: .78rem;
   font-variant: all-small-caps; letter-spacing: .04em; vertical-align: .05em;
 }
-.pub-panel { margin: .7rem 0 0 2.4rem; }
+.pub-panel { margin: .6rem 0 0; }
 .pub-panel[hidden] { display: none !important; }
-.pub-panel p { margin: 0; padding: .8rem 1rem; background: var(--soft);
-  border-radius: .25rem; font-size: .95rem; }
-.pub-abstract { animation: pub-fade .16s ease-out; }
+.pub-abstract {
+  font-size: .94rem; color: #3b434c; text-align: justify; hyphens: auto;
+  animation: pub-fade .16s ease-out;
+}
+/* A wide inline formula must scroll inside itself rather than push the card out */
+.pub-abstract mjx-container { max-width: 100%; overflow-x: auto; overflow-y: hidden; }
 @keyframes pub-fade { from { opacity: 0 } to { opacity: 1 } }
 @media (prefers-reduced-motion: reduce) {
   .pub-abstract { animation: none }
   .prog-bar-chev { transition: none }
-}
-.pub-bibtex {
-  padding: .8rem 1rem; background: #f6f7f8; border: 1px solid var(--rule);
-  border-radius: .25rem; overflow-x: auto; font-size: .8rem; line-height: 1.45;
-  font-family: ui-monospace, "SF Mono", Menlo, monospace; white-space: pre;
 }
 .pubs-empty { color: var(--muted); font-style: italic; padding: 1rem 0; }
 
@@ -169,17 +169,39 @@
 .prog-allpubs { margin-top: 2.5rem; }
 
 @media (max-width: 900px) {
-  .pub { grid-template-columns: 2.8rem 9.5rem 1fr; gap: .8rem; }
+  .pub { grid-template-columns: 2.8rem 1fr; gap: .8rem; }
+  .pub-fig { width: 10rem; margin-right: .9rem; }
 }
+
+/* Narrow: the figure stops floating and centres, the text runs full width
+   underneath it, and the actions become a stacked column of tap targets. */
 @media (max-width: 736px) {
-  .pub { grid-template-columns: 1fr; gap: .6rem; }
+  .pub { grid-template-columns: 1fr; gap: .35rem; padding: 1rem .9rem; }
   .pub-year {
     visibility: visible; text-align: left; font-variant: all-small-caps;
     letter-spacing: .06em; font-size: .9rem;
   }
-  .pub-fig { max-width: 13rem; }
+  .pub-fig {
+    float: none; width: auto; max-width: 15rem; margin: 0 auto .9rem;
+  }
+  .pub-fig img, .pub-fig svg { max-height: 12rem; }
+  .pub-head { justify-content: flex-start; }
   .pub-authors, .pub-venue, .pub-links, .pub-panel, .pub-note { margin-left: 0; }
-  .pub-cross { margin-left: 0; }
+  .pub-links {
+    display: flex; flex-direction: column; align-items: stretch; gap: 0;
+    margin-top: .9rem; font-size: .98rem;
+  }
+  .pub-links a, .pub-links .pub-toggle {
+    display: block; width: 100%; padding: .7rem .1rem; text-align: left;
+    border: 0; border-top: 1px solid var(--rule); border-radius: 0;
+  }
+  .pub-links a:last-child, .pub-links .pub-toggle:last-child { border-bottom: 1px solid var(--rule); }
+  .pub-links a:hover, .pub-links .pub-toggle:hover { border-bottom-color: var(--rule); }
+  .pub-cross {
+    margin-left: 0; border-top: 1px solid var(--rule); padding: .7rem .1rem;
+    font-size: .9rem;
+  }
+  .pub-abstract { text-align: left; }
   .pubs-wrap { padding: 1.5rem 1rem 3rem; }
   .prog-drawer { padding: 1rem .8rem .4rem; }
 }
