@@ -46,14 +46,6 @@
   letter-spacing: .04em; }
 .prog-overview { max-width: 46rem; margin: 0 0 1.5rem; }
 .prog-overview p { margin: 0 0 .9rem; }
-.prog-thesis {
-  border-left: .24rem solid var(--accent-ink, var(--accent)); background: var(--soft);
-  padding: .85rem 1rem; border-radius: .2rem; margin: 1.1rem 0 0; color: var(--ink);
-}
-.prog-thesis strong {
-  color: var(--accent-ink, var(--accent)); font-weight: 400; font-variant: all-small-caps;
-  letter-spacing: .06em; margin-right: .15rem;
-}
 .prog-tail {
   font-size: 1rem; color: var(--muted); font-variant: all-small-caps; letter-spacing: .05em;
   border-top: 1px solid var(--rule); padding-top: 1rem; margin: 2rem 0 .5rem;
@@ -162,7 +154,6 @@
   border: 1px solid rgba(255,255,255,.22); border-left: .3rem solid var(--accent);
 }
 .prog-home button.prog-bar:hover { background: rgba(255,255,255,.12); }
-.prog-overview .prog-thesis strong { color: var(--accent-ink, var(--accent)); }
 .prog-drawer h3.pub-title { color: var(--ink); }
 .prog-drawer .pub-authors { color: var(--ink); }
 .prog-drawer .pub-venue, .prog-drawer .pub-note, .prog-drawer h3.prog-tail,
