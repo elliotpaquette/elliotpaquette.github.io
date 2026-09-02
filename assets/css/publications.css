@@ -235,6 +235,7 @@
   display: block; width: 100%; height: auto; max-height: 9rem;
   object-fit: contain; border-radius: .2rem; background: var(--soft);
 }
+.prog-figs-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .prog-fig-wide { grid-column: 1 / -1; }
 .prog-fig-wide img { max-height: none; width: 100%; }
 .prog-fig-cap {
@@ -242,7 +243,7 @@
   color: var(--muted);
 }
 @media (max-width: 736px) {
-  .prog-figs { grid-template-columns: 1fr; }
+  .prog-figs, .prog-figs-3 { grid-template-columns: 1fr; }
   .prog-fig-wide img { max-height: none; }
 }
 
