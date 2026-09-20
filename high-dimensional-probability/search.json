@@ -214,7 +214,7 @@
     "href": "exercises/index.html",
     "title": "Exercises",
     "section": "",
-    "text": "Exercise sheets are distributed as PDFs. Students should work on every problem and come to the quiz section ready to discuss their solutions.\n\n\n\nSheet\nDiscussion\nExercises\nDownload\n\n\n\n\n1\nFriday, September 11\nVershynin (first edition), 4.2.5, 4.2.9, 4.2.10, 4.2.16\nPDF\n\n\n2\nFriday, September 18\nGaussian maxima and Gaussian width; Vershynin (first edition), 2.2.10, 2.3.5\nPDF\n\n\n\nThe edition is stated because exercise numbering changed in the second edition."
+    "text": "Exercise sheets are distributed as PDFs. Students should work on every problem and come to the quiz section ready to discuss their solutions.\n\n\n\nSheet\nDiscussion\nExercises\nDownload\n\n\n\n\n1\nFriday, September 11\nVershynin (first edition), 4.2.5, 4.2.9, 4.2.10, 4.2.16\nPDF\n\n\n2\nFriday, September 18\nGaussian maxima and Gaussian width; Vershynin (first edition), 2.2.10, 2.3.5\nPDF\n\n\n3\nFriday, September 25\nOrlicz norms, moment growth and tails, norm concentration, and sparse Gaussian width\nPDF New: September 20\n\n\n\nThe edition is stated because exercise numbering changed in the second edition."
   },
   {
     "objectID": "course/index.html",
@@ -333,7 +333,7 @@
     "href": "index.html#fall-2026",
     "title": "High-Dimensional Probability",
     "section": "Fall 2026",
-    "text": "Fall 2026\nCourse logistics live separately from the durable notes. See the course page, the date-by-date calendar, and the exercise sheets.\n\n\n\n\n\n\nNoteFor discussion Friday, September 11\n\n\n\nDownload Exercise Sheet 1 (PDF). The sheet contains Exercises 4.2.5, 4.2.9, 4.2.10, and 4.2.16 from the first edition of Vershynin’s High-Dimensional Probability."
+    "text": "Fall 2026\nCourse logistics live separately from the durable notes. See the course page, the date-by-date calendar, and the exercise sheets.\n\n\n\n\n\n\nNoteNew: September 20 · Exercise Sheet 3\n\n\n\nDownload Exercise Sheet 3 (PDF), for discussion Friday, September 25. The sheet covers Orlicz norms, moment growth and tail bounds, concentration of the Euclidean norm, and Gaussian width of sparse vectors."
   },
   {
     "objectID": "lectures/02-convex-hulls.html",
