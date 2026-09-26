@@ -214,7 +214,56 @@
     "href": "exercises/index.html",
     "title": "Exercises",
     "section": "",
-    "text": "Exercise sheets are distributed as PDFs. Students should work on every problem and come to the quiz section ready to discuss their solutions.\n\n\n\nSheet\nDiscussion\nExercises\nDownload\n\n\n\n\n1\nFriday, September 11\nVershynin (first edition), 4.2.5, 4.2.9, 4.2.10, 4.2.16\nPDF\n\n\n2\nFriday, September 18\nGaussian maxima and Gaussian width; Vershynin (first edition), 2.2.10, 2.3.5\nPDF\n\n\n3\nFriday, September 25\nOrlicz norms, moment growth and tails, norm concentration, and sparse Gaussian width\nPDF New: September 20\n\n\n\nThe edition is stated because exercise numbering changed in the second edition."
+    "text": "Exercise sheets are distributed as PDFs. Students should work on every problem and come to the quiz section ready to discuss their solutions.\n\n\n\nSheet\nDiscussion\nExercises\nDownload\n\n\n\n\n1\nFriday, September 11\nVershynin (first edition), 4.2.5, 4.2.9, 4.2.10, 4.2.16\nPDF\n\n\n2\nFriday, September 18\nGaussian maxima and Gaussian width; Vershynin (first edition), 2.2.10, 2.3.5\nPDF\n\n\n3\nFriday, September 25\nOrlicz norms, moment growth and tails, norm concentration, and sparse Gaussian width\nPDF\n\n\n4\nFriday, October 2\nCoordinate sampling, randomized Hadamard embeddings, and quadratic forms and norm deviations on nets\nPDF New: September 26\n\n\n\nThe edition is stated because exercise numbering changed in the second edition."
+  },
+  {
+    "objectID": "course/homework-01.html",
+    "href": "course/homework-01.html",
+    "title": "Homework 1",
+    "section": "",
+    "text": "Every student should work on every problem. Presentation responsibilities will rotate during the quiz section, and Kevin Xiao will communicate the assignments privately. If you are exceptionally unable to give your assigned presentation, you must arrange to present the problem independently to Kevin.\nThere is no public presenter list. Quiz-section logistics and presentation dates will be announced separately.\nProblems 1–3 are adapted from exercises in the first edition of Vershynin’s High-Dimensional Probability (Vershynin 2018). The edition is specified because exercise numbering changed in later versions."
+  },
+  {
+    "objectID": "course/homework-01.html#working-and-presentation-rules",
+    "href": "course/homework-01.html#working-and-presentation-rules",
+    "title": "Homework 1",
+    "section": "",
+    "text": "Every student should work on every problem. Presentation responsibilities will rotate during the quiz section, and Kevin Xiao will communicate the assignments privately. If you are exceptionally unable to give your assigned presentation, you must arrange to present the problem independently to Kevin.\nThere is no public presenter list. Quiz-section logistics and presentation dates will be announced separately.\nProblems 1–3 are adapted from exercises in the first edition of Vershynin’s High-Dimensional Probability (Vershynin 2018). The edition is specified because exercise numbering changed in later versions."
+  },
+  {
+    "objectID": "course/homework-01.html#problems",
+    "href": "course/homework-01.html#problems",
+    "title": "Homework 1",
+    "section": "Problems",
+    "text": "Problems\n\nExercise 1 (Covering with external centers) Let \\(K\\subseteq \\mathbb R^d\\), and write \\(N(K,\\varepsilon)\\) for the smallest number of closed Euclidean balls of radius \\(\\varepsilon\\) whose centers lie in \\(K\\) and whose union contains \\(K\\). Let \\(N^{\\mathrm{ext}}(K,\\varepsilon)\\) be the corresponding number when the centers may lie anywhere in \\(\\mathbb R^d\\).\nProve that \\[\nN^{\\mathrm{ext}}(K,\\varepsilon)\n\\leq N(K,\\varepsilon)\n\\leq N^{\\mathrm{ext}}(K,\\varepsilon/2).\n\\]\nAdapted from Exercise 4.2.9 of Vershynin (2018).\n\n\nExercise 2 (Approximate monotonicity) Give a counterexample to the assertion that \\[\nL\\subseteq K \\quad\\Longrightarrow\\quad\nN(L,\\varepsilon)\\leq N(K,\\varepsilon)\n\\] when the centers in each covering number are required to lie in the set being covered. Then prove the approximate statement \\[\nL\\subseteq K \\quad\\Longrightarrow\\quad\nN(L,\\varepsilon)\\leq N(K,\\varepsilon/2).\n\\]\nAdapted from Exercise 4.2.10 of Vershynin (2018).\n\n\nExercise 3 (Small-ball probabilities) Let \\(X_1,\\ldots,X_N\\) be independent nonnegative random variables with continuous distributions. Suppose that every \\(X_i\\) has a density bounded by \\(1\\).\n\nShow that, for every \\(t&gt;0\\), \\[\n\\mathbb E e^{-tX_i}\\leq \\frac1t.\n\\]\nDeduce that, for every \\(\\varepsilon&gt;0\\), \\[\n\\mathbb P\\left\\{\\sum_{i=1}^N X_i\\leq \\varepsilon N\\right\\}\n\\leq (e\\varepsilon)^N.\n\\]\n\nFor the second part, apply the exponential Markov inequality to \\(-\\sum_i X_i\\) and optimize the free parameter. Adapted from Exercise 2.2.10 of Vershynin (2018).\n\nVershynin, Roman. 2018. High-Dimensional Probability: An Introduction with Applications in Data Science. Cambridge University Press. https://doi.org/10.1017/9781108231596.\n\n\nExercise 4 (Gaussian width of an \\(\\ell^p\\) ball) Let \\[\nB_p^d=\\{x\\in\\mathbb R^d:\\|x\\|_p\\leq 1\\},\n\\] and let \\(G\\sim N(0,I_d)\\). For \\(1&lt;p&lt;\\infty\\), compute the order in \\(d\\) of \\[\nw(B_p^d)=\\mathbb E\\sup_{x\\in B_p^d}\\langle G,x\\rangle.\n\\] Your answer should be sharp up to constants depending only on \\(p\\). Identify the dual exponent and explain separately what happens at the endpoint \\(p=1\\).\n\n\nExercise 5 (A lower bound for the Gaussian maximum) Let \\(Z\\sim N(0,1)\\) and let \\(G=(G_1,\\ldots,G_d)\\) have independent standard normal coordinates.\n\nProve the following consequence of the Paley–Zygmund inequality: for every nonnegative random variable \\(Y\\) with \\(0&lt;\\mathbb EY^2&lt;\\infty\\) and every \\(0&lt;\\theta&lt;1\\), \\[\n\\mathbb P\\{Y\\geq \\theta\\mathbb EY\\}\n\\geq (1-\\theta)^2\\frac{(\\mathbb EY)^2}{\\mathbb EY^2}.\n\\]\nApply an appropriate version of this argument to a Gaussian tail and show that \\[\n\\mathbb E\\|G\\|_\\infty\\geq \\sqrt{2\\log d}-o(1)\n\\] as \\(d\\to\\infty\\).\n\nMake the meaning of the \\(o(1)\\) term in your argument explicit."
+  },
+  {
+    "objectID": "course/calendar.html",
+    "href": "course/calendar.html",
+    "title": "Fall 2026 Calendar",
+    "section": "",
+    "text": "This calendar uses McGill’s approved Fall 2026 academic dates. Lecture topics after September 14 are a working plan and will change as the notes develop. The midterm date is tentative."
+  },
+  {
+    "objectID": "course/calendar.html#teaching-calendar",
+    "href": "course/calendar.html#teaching-calendar",
+    "title": "Fall 2026 Calendar",
+    "section": "Teaching calendar",
+    "text": "Teaching calendar\n\n\n\n\nDate\nMeeting\nTopic\n\n\n\n\nMon Aug 31\nLecture 1\nThe curse of dimensionality: integration, Monte Carlo, covers, and volume\n\n\nWed Sep 2\nLecture 2\nConvex hulls and sparse approximation: Carathéodory and Maurey’s method\n\n\nMon Sep 7\n—\nNo class — Labour Day\n\n\nWed Sep 9\nLecture 3\nGaussian width: dual norms, convexification, and entropy\n\n\nMon Sep 14\nLecture 4\nTails of random variables: sub-Gaussian variables and Chernoff bounds\n\n\nWed Sep 16\nLecture 5\nGeometric discrepancy and Orlicz norms\n\n\nMon Sep 21\nLecture 6\nBernstein’s inequality and dimension reduction\n\n\nWed Sep 23\nLecture 7\nCoordinate embeddings\n\n\nMon Sep 28\nLecture 8\nExtreme singular values I: nets and operator norms\n\n\nWed Sep 30\nLecture 9\nExtreme singular values II: small-ball estimates\n\n\nMon Oct 5\nLecture 10\nExtreme singular values III: rectangular sub-Gaussian matrices\n\n\nWed Oct 7\nLecture 11\nMax-cut and a first combinatorial optimization application\n\n\nFri Oct 9–Wed Oct 14\n—\nNo class — Fall Reading Break\n\n\nMon Oct 19\nLecture 12\nGaussian random matrices\n\n\nWed Oct 21\nLecture 13\nGrothendieck’s inequality I\n\n\nMon Oct 26\nLecture 14\nGrothendieck’s inequality II and midterm review\n\n\nWed Oct 28\n—\nTentative in-class midterm\n\n\nMon Nov 2\nLecture 15\nCovariance estimation I\n\n\nWed Nov 4\nLecture 16\nCovariance estimation II\n\n\nMon Nov 9\nLecture 17\nGaussian processes and Dudley’s entropy integral\n\n\nWed Nov 11\nLecture 18\nGaussian and Lipschitz concentration\n\n\nMon Nov 16\nLecture 19\nGaussian width revisited\n\n\nWed Nov 18\nLecture 20\nApplications of Gaussian width\n\n\nMon Nov 23\nLecture 21\nGeneric chaining I\n\n\nWed Nov 25\nLecture 22\nGeneric chaining II\n\n\nMon Nov 30\nLecture 23\nConcentration of energy on the sphere\n\n\nWed Dec 2\nLecture 24\nThe smallest singular value problem\n\n\nThu Dec 3\nLecture 25\nMonday make-up schedule: synthesis and applications"
+  },
+  {
+    "objectID": "course/calendar.html#academic-dates",
+    "href": "course/calendar.html#academic-dates",
+    "title": "Fall 2026 Calendar",
+    "section": "Academic dates",
+    "text": "Academic dates\n\nMonday, August 31: classes begin.\nMonday, September 7: Labour Day; classes cancelled.\nTuesday, September 15: add/drop deadline.\nTuesday, September 22: withdrawal-with-refund deadline.\nFriday, October 9–Wednesday, October 14: Fall Reading Break; classes cancelled.\nTuesday, October 27: withdrawal-without-refund deadline.\nThursday, December 3: Monday-schedule make-up day.\nFriday, December 4: classes end.\nDecember 5–6: study days.\nMonday, December 7: examinations begin.\n\nThe official McGill calendar takes precedence if any institutional date changes."
+  },
+  {
+    "objectID": "course/calendar.html#quiz-section",
+    "href": "course/calendar.html#quiz-section",
+    "title": "Fall 2026 Calendar",
+    "section": "Quiz section",
+    "text": "Quiz section\nHomework presentations will take place in a separate quiz section. Its day, time, and room are still to be announced, so no section meetings have been invented on this calendar. Kevin Xiao will communicate the private presenter rotation."
   },
   {
     "objectID": "course/index.html",
@@ -259,55 +308,6 @@
     "text": "Working character of the course pages\nThe lecture notes are intended to become evergreen. Dates, rooms, homework procedures, and assessment information on pages under Course apply only to the Fall 2026 offering and may be revised during internal course preparation."
   },
   {
-    "objectID": "course/calendar.html",
-    "href": "course/calendar.html",
-    "title": "Fall 2026 Calendar",
-    "section": "",
-    "text": "This calendar uses McGill’s approved Fall 2026 academic dates. Lecture topics after September 14 are a working plan and will change as the notes develop. The midterm date is tentative."
-  },
-  {
-    "objectID": "course/calendar.html#teaching-calendar",
-    "href": "course/calendar.html#teaching-calendar",
-    "title": "Fall 2026 Calendar",
-    "section": "Teaching calendar",
-    "text": "Teaching calendar\n\n\n\n\nDate\nMeeting\nTopic\n\n\n\n\nMon Aug 31\nLecture 1\nThe curse of dimensionality: integration, Monte Carlo, covers, and volume\n\n\nWed Sep 2\nLecture 2\nConvex hulls and sparse approximation: Carathéodory and Maurey’s method\n\n\nMon Sep 7\n—\nNo class — Labour Day\n\n\nWed Sep 9\nLecture 3\nGaussian width: dual norms, convexification, and entropy\n\n\nMon Sep 14\nLecture 4\nTails of random variables: sub-Gaussian variables and Chernoff bounds\n\n\nWed Sep 16\nLecture 5\nGeometric discrepancy and Orlicz norms\n\n\nMon Sep 21\nLecture 6\nBernstein’s inequality and dimension reduction\n\n\nWed Sep 23\nLecture 7\nCoordinate embeddings\n\n\nMon Sep 28\nLecture 8\nExtreme singular values I: nets and operator norms\n\n\nWed Sep 30\nLecture 9\nExtreme singular values II: small-ball estimates\n\n\nMon Oct 5\nLecture 10\nExtreme singular values III: rectangular sub-Gaussian matrices\n\n\nWed Oct 7\nLecture 11\nMax-cut and a first combinatorial optimization application\n\n\nFri Oct 9–Wed Oct 14\n—\nNo class — Fall Reading Break\n\n\nMon Oct 19\nLecture 12\nGaussian random matrices\n\n\nWed Oct 21\nLecture 13\nGrothendieck’s inequality I\n\n\nMon Oct 26\nLecture 14\nGrothendieck’s inequality II and midterm review\n\n\nWed Oct 28\n—\nTentative in-class midterm\n\n\nMon Nov 2\nLecture 15\nCovariance estimation I\n\n\nWed Nov 4\nLecture 16\nCovariance estimation II\n\n\nMon Nov 9\nLecture 17\nGaussian processes and Dudley’s entropy integral\n\n\nWed Nov 11\nLecture 18\nGaussian and Lipschitz concentration\n\n\nMon Nov 16\nLecture 19\nGaussian width revisited\n\n\nWed Nov 18\nLecture 20\nApplications of Gaussian width\n\n\nMon Nov 23\nLecture 21\nGeneric chaining I\n\n\nWed Nov 25\nLecture 22\nGeneric chaining II\n\n\nMon Nov 30\nLecture 23\nConcentration of energy on the sphere\n\n\nWed Dec 2\nLecture 24\nThe smallest singular value problem\n\n\nThu Dec 3\nLecture 25\nMonday make-up schedule: synthesis and applications"
-  },
-  {
-    "objectID": "course/calendar.html#academic-dates",
-    "href": "course/calendar.html#academic-dates",
-    "title": "Fall 2026 Calendar",
-    "section": "Academic dates",
-    "text": "Academic dates\n\nMonday, August 31: classes begin.\nMonday, September 7: Labour Day; classes cancelled.\nTuesday, September 15: add/drop deadline.\nTuesday, September 22: withdrawal-with-refund deadline.\nFriday, October 9–Wednesday, October 14: Fall Reading Break; classes cancelled.\nTuesday, October 27: withdrawal-without-refund deadline.\nThursday, December 3: Monday-schedule make-up day.\nFriday, December 4: classes end.\nDecember 5–6: study days.\nMonday, December 7: examinations begin.\n\nThe official McGill calendar takes precedence if any institutional date changes."
-  },
-  {
-    "objectID": "course/calendar.html#quiz-section",
-    "href": "course/calendar.html#quiz-section",
-    "title": "Fall 2026 Calendar",
-    "section": "Quiz section",
-    "text": "Quiz section\nHomework presentations will take place in a separate quiz section. Its day, time, and room are still to be announced, so no section meetings have been invented on this calendar. Kevin Xiao will communicate the private presenter rotation."
-  },
-  {
-    "objectID": "course/homework-01.html",
-    "href": "course/homework-01.html",
-    "title": "Homework 1",
-    "section": "",
-    "text": "Every student should work on every problem. Presentation responsibilities will rotate during the quiz section, and Kevin Xiao will communicate the assignments privately. If you are exceptionally unable to give your assigned presentation, you must arrange to present the problem independently to Kevin.\nThere is no public presenter list. Quiz-section logistics and presentation dates will be announced separately.\nProblems 1–3 are adapted from exercises in the first edition of Vershynin’s High-Dimensional Probability (Vershynin 2018). The edition is specified because exercise numbering changed in later versions."
-  },
-  {
-    "objectID": "course/homework-01.html#working-and-presentation-rules",
-    "href": "course/homework-01.html#working-and-presentation-rules",
-    "title": "Homework 1",
-    "section": "",
-    "text": "Every student should work on every problem. Presentation responsibilities will rotate during the quiz section, and Kevin Xiao will communicate the assignments privately. If you are exceptionally unable to give your assigned presentation, you must arrange to present the problem independently to Kevin.\nThere is no public presenter list. Quiz-section logistics and presentation dates will be announced separately.\nProblems 1–3 are adapted from exercises in the first edition of Vershynin’s High-Dimensional Probability (Vershynin 2018). The edition is specified because exercise numbering changed in later versions."
-  },
-  {
-    "objectID": "course/homework-01.html#problems",
-    "href": "course/homework-01.html#problems",
-    "title": "Homework 1",
-    "section": "Problems",
-    "text": "Problems\n\nExercise 1 (Covering with external centers) Let \\(K\\subseteq \\mathbb R^d\\), and write \\(N(K,\\varepsilon)\\) for the smallest number of closed Euclidean balls of radius \\(\\varepsilon\\) whose centers lie in \\(K\\) and whose union contains \\(K\\). Let \\(N^{\\mathrm{ext}}(K,\\varepsilon)\\) be the corresponding number when the centers may lie anywhere in \\(\\mathbb R^d\\).\nProve that \\[\nN^{\\mathrm{ext}}(K,\\varepsilon)\n\\leq N(K,\\varepsilon)\n\\leq N^{\\mathrm{ext}}(K,\\varepsilon/2).\n\\]\nAdapted from Exercise 4.2.9 of Vershynin (2018).\n\n\nExercise 2 (Approximate monotonicity) Give a counterexample to the assertion that \\[\nL\\subseteq K \\quad\\Longrightarrow\\quad\nN(L,\\varepsilon)\\leq N(K,\\varepsilon)\n\\] when the centers in each covering number are required to lie in the set being covered. Then prove the approximate statement \\[\nL\\subseteq K \\quad\\Longrightarrow\\quad\nN(L,\\varepsilon)\\leq N(K,\\varepsilon/2).\n\\]\nAdapted from Exercise 4.2.10 of Vershynin (2018).\n\n\nExercise 3 (Small-ball probabilities) Let \\(X_1,\\ldots,X_N\\) be independent nonnegative random variables with continuous distributions. Suppose that every \\(X_i\\) has a density bounded by \\(1\\).\n\nShow that, for every \\(t&gt;0\\), \\[\n\\mathbb E e^{-tX_i}\\leq \\frac1t.\n\\]\nDeduce that, for every \\(\\varepsilon&gt;0\\), \\[\n\\mathbb P\\left\\{\\sum_{i=1}^N X_i\\leq \\varepsilon N\\right\\}\n\\leq (e\\varepsilon)^N.\n\\]\n\nFor the second part, apply the exponential Markov inequality to \\(-\\sum_i X_i\\) and optimize the free parameter. Adapted from Exercise 2.2.10 of Vershynin (2018).\n\nVershynin, Roman. 2018. High-Dimensional Probability: An Introduction with Applications in Data Science. Cambridge University Press. https://doi.org/10.1017/9781108231596.\n\n\nExercise 4 (Gaussian width of an \\(\\ell^p\\) ball) Let \\[\nB_p^d=\\{x\\in\\mathbb R^d:\\|x\\|_p\\leq 1\\},\n\\] and let \\(G\\sim N(0,I_d)\\). For \\(1&lt;p&lt;\\infty\\), compute the order in \\(d\\) of \\[\nw(B_p^d)=\\mathbb E\\sup_{x\\in B_p^d}\\langle G,x\\rangle.\n\\] Your answer should be sharp up to constants depending only on \\(p\\). Identify the dual exponent and explain separately what happens at the endpoint \\(p=1\\).\n\n\nExercise 5 (A lower bound for the Gaussian maximum) Let \\(Z\\sim N(0,1)\\) and let \\(G=(G_1,\\ldots,G_d)\\) have independent standard normal coordinates.\n\nProve the following consequence of the Paley–Zygmund inequality: for every nonnegative random variable \\(Y\\) with \\(0&lt;\\mathbb EY^2&lt;\\infty\\) and every \\(0&lt;\\theta&lt;1\\), \\[\n\\mathbb P\\{Y\\geq \\theta\\mathbb EY\\}\n\\geq (1-\\theta)^2\\frac{(\\mathbb EY)^2}{\\mathbb EY^2}.\n\\]\nApply an appropriate version of this argument to a Gaussian tail and show that \\[\n\\mathbb E\\|G\\|_\\infty\\geq \\sqrt{2\\log d}-o(1)\n\\] as \\(d\\to\\infty\\).\n\nMake the meaning of the \\(o(1)\\) term in your argument explicit."
-  },
-  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "High-Dimensional Probability",
@@ -333,7 +333,7 @@
     "href": "index.html#fall-2026",
     "title": "High-Dimensional Probability",
     "section": "Fall 2026",
-    "text": "Fall 2026\nCourse logistics live separately from the durable notes. See the course page, the date-by-date calendar, and the exercise sheets.\n\n\n\n\n\n\nNoteNew: September 20 · Exercise Sheet 3\n\n\n\nDownload Exercise Sheet 3 (PDF), for discussion Friday, September 25. The sheet covers Orlicz norms, moment growth and tail bounds, concentration of the Euclidean norm, and Gaussian width of sparse vectors."
+    "text": "Fall 2026\nCourse logistics live separately from the durable notes. See the course page, the date-by-date calendar, and the exercise sheets.\n\n\n\n\n\n\nNoteNew: September 26 · Exercise Sheet 4\n\n\n\nDownload Exercise Sheet 4 (PDF), for discussion Friday, October 2. The sheet covers sampling and covering numbers, randomized Hadamard coordinate embeddings, quadratic forms on nets, and norm deviations on nets."
   },
   {
     "objectID": "lectures/02-convex-hulls.html",
