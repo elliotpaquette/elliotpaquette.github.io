@@ -94,6 +94,35 @@ div.csl-indent {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -318,6 +347,58 @@ div.csl-indent {
     <a class="dropdown-item" href="./lectures/08-extreme-singular-values.html">
  <span class="dropdown-text">8. Extreme Singular Values</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="./lectures/09-covariance-estimation.html">
+ <span class="dropdown-text">9. Covariance Estimation</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./lectures/10-gaussian-processes.html">
+ <span class="dropdown-text">10. Gaussian Processes</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./lectures/11-gaussian-concentration.html">
+ <span class="dropdown-text">11. Gaussian Concentration</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./lectures/12-gaussian-comparison.html">
+ <span class="dropdown-text">12. Gaussian Comparison and Gaussian Matrices</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./lectures/13-gaussian-width-revisited.html">
+ <span class="dropdown-text">13. Gaussian Width Revisited</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./lectures/14-semidefinite-relaxations.html">
+ <span class="dropdown-text">14. Semidefinite Relaxations and Max-Cut</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./lectures/15-grothendieck.html">
+ <span class="dropdown-text">15. Grothendieck’s Inequality</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./lectures/16-dudley.html">
+ <span class="dropdown-text">16. Dudley’s Entropy Integral</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./lectures/17-applications-of-dudley.html">
+ <span class="dropdown-text">17. Applications of Dudley’s Inequality</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./lectures/18-generic-chaining.html">
+ <span class="dropdown-text">18. Generic Chaining</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./lectures/19-matrix-deviation.html">
+ <span class="dropdown-text">19. The Lower Bound and the Matrix Deviation Inequality</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./lectures/20-covariance-effective-rank.html">
+ <span class="dropdown-text">20. Covariance Estimation for Low-Dimensional Data</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./lectures/21-sparse-recovery.html">
+ <span class="dropdown-text">21. Sparse Recovery</span></a>
+  </li>  
     </ul>
   </li>
   <li class="nav-item">
@@ -386,6 +467,7 @@ div.csl-indent {
 <div class="home-thesis">
 <p><strong>The organizing question.</strong> Which notions of size and complexity continue to be useful when dimension is large, and how do they control the behavior of random vectors, matrices, and processes?</p>
 </div>
+<p>The notes answer this question in stages. The first lectures measure sets by covering numbers and by Gaussian width, and show that the two disagree in high dimension. The middle lectures build the probabilistic toolkit, from sub-Gaussian tails through nets for random matrices to Gaussian processes, concentration, and comparison inequalities. The final lectures prove that Gaussian width is, up to constants, the expected supremum of every Gaussian process, through chaining and Talagrand’s majorizing measure theorem, and use that fact to determine how many samples estimate a covariance matrix and how many random measurements recover a sparse signal. The recurring lesson is that the right measure of the size of a set is its width, not its dimension and not its volume.</p>
 <p>These notes support MATH 598 / 784 at McGill University in Fall 2026.</p>
 </div>
 <section id="themes" class="level2">
@@ -393,7 +475,7 @@ div.csl-indent {
 <div class="theme-grid">
 <div class="theme-card">
 <div class="theme-status">
-Lectures 1–4 · available
+Lectures 1–4
 </div>
 <section id="high-dimensional-geometry-and-basic-probabilistic-tools" class="level3">
 <h3 class="anchored" data-anchor-id="high-dimensional-geometry-and-basic-probabilistic-tools">High-dimensional geometry and basic probabilistic tools</h3>
@@ -402,49 +484,60 @@ Lectures 1–4 · available
 </div>
 <div class="theme-card">
 <div class="theme-status">
-Lectures 5–8 · available
+Lectures 5–9
 </div>
 <section id="concentration-embeddings-and-random-matrices" class="level3">
 <h3 class="anchored" data-anchor-id="concentration-embeddings-and-random-matrices">Concentration, embeddings, and random matrices</h3>
-<p><a href="./lectures/05-orlicz-norms.html">Orlicz norms</a>, <a href="./lectures/06-bernstein-dimension-reduction.html">Bernstein’s inequality and dimension reduction</a>, <a href="./lectures/07-coordinate-embeddings.html">coordinate embeddings</a>, and <a href="./lectures/08-extreme-singular-values.html">extreme singular values</a>.</p>
+<p><a href="./lectures/05-orlicz-norms.html">Orlicz norms</a>, <a href="./lectures/06-bernstein-dimension-reduction.html">Bernstein’s inequality and dimension reduction</a>, <a href="./lectures/07-coordinate-embeddings.html">coordinate embeddings</a>, <a href="./lectures/08-extreme-singular-values.html">extreme singular values</a>, and <a href="./lectures/09-covariance-estimation.html">covariance estimation</a>.</p>
 </section>
 </div>
-<div class="theme-card is-future">
+<div class="theme-card">
 <div class="theme-status">
-Forthcoming
-</div>
-<section id="convex-applications-and-covariance-estimation" class="level3">
-<h3 class="anchored" data-anchor-id="convex-applications-and-covariance-estimation">Convex applications and covariance estimation</h3>
-<p>Semidefinite relaxations, Grothendieck-type inequalities, Gaussian matrices, and empirical covariance operators.</p>
-</section>
-</div>
-<div class="theme-card is-future">
-<div class="theme-status">
-Forthcoming
+Lectures 10–13
 </div>
 <section id="gaussian-processes" class="level3">
 <h3 class="anchored" data-anchor-id="gaussian-processes">Gaussian processes</h3>
-<p>Comparison inequalities, metric entropy, Gaussian concentration, and Gaussian width as a geometric invariant.</p>
+<p><a href="./lectures/10-gaussian-processes.html">Gaussian processes and the isonormal process</a>, <a href="./lectures/11-gaussian-concentration.html">Gaussian concentration</a>, <a href="./lectures/12-gaussian-comparison.html">Gaussian comparison and Gaussian matrices</a>, and <a href="./lectures/13-gaussian-width-revisited.html">Gaussian width revisited</a>.</p>
 </section>
 </div>
-<div class="theme-card is-future">
+<div class="theme-card">
 <div class="theme-status">
-Forthcoming
+Lectures 14–15
 </div>
-<section id="chaining-and-extremal-applications" class="level3">
-<h3 class="anchored" data-anchor-id="chaining-and-extremal-applications">Chaining and extremal applications</h3>
-<p>Dudley’s entropy integral, generic chaining, concentration of energy, and smallest-singular-value problems.</p>
+<section id="convex-relaxations" class="level3">
+<h3 class="anchored" data-anchor-id="convex-relaxations">Convex relaxations</h3>
+<p><a href="./lectures/14-semidefinite-relaxations.html">Semidefinite relaxations and max-cut</a> and <a href="./lectures/15-grothendieck.html">Grothendieck’s inequality</a>.</p>
+</section>
+</div>
+<div class="theme-card">
+<div class="theme-status">
+Lectures 16–21
+</div>
+<section id="chaining-and-applications" class="level3">
+<h3 class="anchored" data-anchor-id="chaining-and-applications">Chaining and applications</h3>
+<p><a href="./lectures/16-dudley.html">Dudley’s entropy integral</a>, <a href="./lectures/17-applications-of-dudley.html">applications of Dudley’s inequality</a>, <a href="./lectures/18-generic-chaining.html">generic chaining</a>, <a href="./lectures/19-matrix-deviation.html">the lower bound and the matrix deviation inequality</a>, <a href="./lectures/20-covariance-effective-rank.html">covariance estimation for low-dimensional data</a>, and <a href="./lectures/21-sparse-recovery.html">sparse recovery</a>.</p>
 </section>
 </div>
 </div>
+</section>
+<section id="how-to-read-these-notes" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-read-these-notes">How to read these notes</h2>
+<p>Each lecture is a self-contained unit written for a reader who has the earlier lectures at hand. Later lectures cite earlier results by lecture number rather than by link, so a phrase such as “the net lemma of Lecture 8” is a pointer to that page.</p>
+<ul>
+<li><strong>Proofs are collapsed by default.</strong> Every theorem, lemma, and proposition is followed by an expandable proof. Read the statements first and open the proofs when you want the argument; in print, all proofs are expanded.</li>
+<li><strong>Asides are collapsed too.</strong> Remarks, examples, and digressions that are not needed for the main line of a lecture sit in expandable boxes with a descriptive title.</li>
+<li><strong>Constants.</strong> The letters <span class="math inline">\(c\)</span> and <span class="math inline">\(C\)</span> denote absolute constants whose values may change from line to line. A random variable is called <span class="math inline">\(K\)</span>-sub-Gaussian when <span class="math inline">\(K\)</span> is a variance proxy, so that constants in later results depend on <span class="math inline">\(K\)</span> rather than on <span class="math inline">\(K^2\)</span>; the conventions are fixed in Lectures 4 and 5.</li>
+<li><strong>Prerequisites.</strong> A first graduate course in probability and comfort with norms, convexity, and linear algebra. Measure-theoretic details are kept to a minimum and flagged where they matter.</li>
+</ul>
 </section>
 <section id="sources-and-acknowledgements" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="sources-and-acknowledgements">Sources and acknowledgements</h2>
-<p>The selection and organization of the course owe a particular debt to three resources:</p>
+<p>The selection and organization of the course owe a particular debt to four resources:</p>
 <ul>
 <li>Roman Vershynin, <em>High-Dimensional Probability: An Introduction with Applications in Data Science</em> <span class="citation" data-cites="vershynin2026">(<a href="#ref-vershynin2026" role="doc-biblioref">Vershynin 2026</a>)</span>;</li>
-<li>Ramon van Handel, <em>Probability in High Dimension</em> <span class="citation" data-cites="vanhandel2016">(<a href="#ref-vanhandel2016" role="doc-biblioref">Handel 2016</a>)</span>; and</li>
-<li>Shahar Mendelson, <em>Probabilistic Methods in Analysis</em> <span class="citation" data-cites="mendelsondraft">(<a href="#ref-mendelsondraft" role="doc-biblioref">Mendelson 2023</a>)</span>.</li>
+<li>Ramon van Handel, <em>Probability in High Dimension</em> <span class="citation" data-cites="vanhandel2016">(<a href="#ref-vanhandel2016" role="doc-biblioref">Handel 2016</a>)</span>;</li>
+<li>Shahar Mendelson, <em>Probabilistic Methods in Analysis</em> <span class="citation" data-cites="mendelsondraft">(<a href="#ref-mendelsondraft" role="doc-biblioref">Mendelson 2023</a>)</span>; and</li>
+<li>Michel Talagrand, <em>Upper and Lower Bounds for Stochastic Processes</em> <span class="citation" data-cites="talagrand2014">(<a href="#ref-talagrand2014" role="doc-biblioref">Talagrand 2014</a>)</span>, for the chaining lectures.</li>
 </ul>
 <div class="no-row-height column-margin column-container"><div id="ref-vershynin2026" class="csl-entry" role="listitem">
 Vershynin, Roman. 2026. <em>High-Dimensional Probability: An Introduction with Applications in Data Science</em>. 2nd ed. Cambridge University Press. <a href="https://doi.org/10.1017/9781009490672">https://doi.org/10.1017/9781009490672</a>.
@@ -452,6 +545,8 @@ Vershynin, Roman. 2026. <em>High-Dimensional Probability: An Introduction with A
 Handel, Ramon van. 2016. <span>“Probability in High Dimension.”</span> <a href="https://web.math.princeton.edu/~rvan/APC550.pdf">https://web.math.princeton.edu/~rvan/APC550.pdf</a>.
 </div><div id="ref-mendelsondraft" class="csl-entry" role="listitem">
 Mendelson, Shahar. 2023. <span>“Probabilistic Methods in Analysis.”</span> Unpublished manuscript.
+</div><div id="ref-talagrand2014" class="csl-entry" role="listitem">
+Talagrand, Michel. 2014. <em>Upper and Lower Bounds for Stochastic Processes: Modern Methods and Classical Problems</em>. Springer. <a href="https://doi.org/10.1007/978-3-642-54075-2">https://doi.org/10.1007/978-3-642-54075-2</a>.
 </div></div><p>The notes synthesize ideas from these sources with material developed in earlier versions of the course. Any errors in this presentation are, of course, mine.</p>
 </section>
 <section id="fall-2026" class="level2">

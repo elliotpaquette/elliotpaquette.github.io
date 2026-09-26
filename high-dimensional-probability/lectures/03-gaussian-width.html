@@ -329,6 +329,58 @@ window.Quarto = {
     <a class="dropdown-item" href="../lectures/08-extreme-singular-values.html">
  <span class="dropdown-text">8. Extreme Singular Values</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/09-covariance-estimation.html">
+ <span class="dropdown-text">9. Covariance Estimation</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/10-gaussian-processes.html">
+ <span class="dropdown-text">10. Gaussian Processes</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/11-gaussian-concentration.html">
+ <span class="dropdown-text">11. Gaussian Concentration</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/12-gaussian-comparison.html">
+ <span class="dropdown-text">12. Gaussian Comparison and Gaussian Matrices</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/13-gaussian-width-revisited.html">
+ <span class="dropdown-text">13. Gaussian Width Revisited</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/14-semidefinite-relaxations.html">
+ <span class="dropdown-text">14. Semidefinite Relaxations and Max-Cut</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/15-grothendieck.html">
+ <span class="dropdown-text">15. Grothendieck’s Inequality</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/16-dudley.html">
+ <span class="dropdown-text">16. Dudley’s Entropy Integral</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/17-applications-of-dudley.html">
+ <span class="dropdown-text">17. Applications of Dudley’s Inequality</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/18-generic-chaining.html">
+ <span class="dropdown-text">18. Generic Chaining</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/19-matrix-deviation.html">
+ <span class="dropdown-text">19. The Lower Bound and the Matrix Deviation Inequality</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/20-covariance-effective-rank.html">
+ <span class="dropdown-text">20. Covariance Estimation for Low-Dimensional Data</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/21-sparse-recovery.html">
+ <span class="dropdown-text">21. Sparse Recovery</span></a>
+  </li>  
     </ul>
   </li>
   <li class="nav-item">
@@ -588,7 +640,7 @@ w(U_s)\asymp\sqrt{s\log(ed/s)}.
 </div>
 <p>Unlike the examples above, <span class="math inline">\(U_s\)</span> resists both of our tools at once: it is neither finite (so <a href="#prp-finite-width" class="quarto-xref">Proposition&nbsp;3</a> does not apply) nor convex (so we cannot reduce to a ball via <a href="#prp-width-convexification" class="quarto-xref">Proposition&nbsp;1</a>). In fact <span class="math display">\[
 w(U_s)=\mathbb E\sqrt{(g_{(1)}^*)^2+\cdots+(g_{(s)}^*)^2},
-\]</span> where <span class="math inline">\(g_{(1)}^*\geq\cdots\geq g_{(d)}^*\)</span> is the decreasing rearrangement of <span class="math inline">\(|g_1|,\ldots,|g_d|\)</span> — not an expression we can evaluate with the tools built so far. Bounding suprema of Gaussian processes over sets that are neither finite nor convex is exactly the problem that <strong>chaining</strong>, developed later in the course, is built to solve.</p>
+\]</span> where <span class="math inline">\(g_{(1)}^*\geq\cdots\geq g_{(d)}^*\)</span> is the decreasing rearrangement of <span class="math inline">\(|g_1|,\ldots,|g_d|\)</span> — not an expression we can evaluate with the tools built so far. Bounding suprema of Gaussian processes over sets that are neither finite nor convex is exactly the problem that <strong>chaining</strong>, developed later in the course, is built to solve. For this particular set a direct argument is possible once Sudakov’s inequality is available, and Lecture 13 gives it.</p>
 <p>This raises the natural question behind the rest of the lecture: how do we estimate the supremum of a general Gaussian process from the geometry of the index set alone? Sudakov’s inequality is the first, one-scale answer.</p>
 </section>
 <section id="width-and-metric-entropy" class="level2" data-number="5">
@@ -617,11 +669,11 @@ w(T)\geq c\varepsilon
 <div class="callout-body-container callout-body">
 <p>Choose a maximal <span class="math inline">\(\varepsilon\)</span>-packing <span class="math inline">\(t_1,\ldots,t_m\)</span>. The Gaussian variables <span class="math inline">\(X_i=\langle g,t_i\rangle\)</span> satisfy <span class="math display">\[
 \mathbb E(X_i-X_j)^2=\|t_i-t_j\|_2^2&gt;\varepsilon^2.
-\]</span> A Gaussian comparison argument reduces the problem to the expected maximum of <span class="math inline">\(m\)</span> independent Gaussians with variance of order <span class="math inline">\(\varepsilon^2\)</span>, which is of order <span class="math inline">\(\varepsilon\sqrt{\log m}\)</span>. The comparison theorem and its proof will be developed in the Gaussian-process part of the course.</p>
+\]</span> A Gaussian comparison argument reduces the problem to the expected maximum of <span class="math inline">\(m\)</span> independent Gaussians with variance of order <span class="math inline">\(\varepsilon^2\)</span>, which is of order <span class="math inline">\(\varepsilon\sqrt{\log m}\)</span>. The comparison theorem is the Sudakov–Fernique inequality, and Lecture 12 proves it and completes this argument.</p>
 </div>
 </div>
 </div>
-<p>Sudakov’s inequality says that width controls the entropy at each individual scale. There is a companion principle in the other direction, Dudley’s inequality, which aggregates the entropy at <em>every</em> scale into a single bound on <span class="math inline">\(w(T)\)</span>. We postpone even stating it until we have built chaining, the technique that both proves it and that will let us finally bound quantities like <span class="math inline">\(w(U_s)\)</span> from <a href="#exm-sparse-width" class="quarto-xref">Example&nbsp;2</a> above.</p>
+<p>Sudakov’s inequality says that width controls the entropy at each individual scale. There is a companion principle in the other direction, Dudley’s inequality, which aggregates the entropy at <em>every</em> scale into a single bound on <span class="math inline">\(w(T)\)</span>. We postpone even stating it until Lecture 16, where chaining, the technique that proves it, is developed.</p>
 <!--
 Dudley's inequality:
 $$

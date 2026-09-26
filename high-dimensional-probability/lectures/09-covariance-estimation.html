@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-10-07">
+
+<title>Lecture 9: Covariance Estimation – High-Dimensional Probability</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-5685cd926c25366c96d9f1407e584118.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">High-Dimensional Probability</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-lectures" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Lectures</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-lectures">    
+        <li>
+    <a class="dropdown-item" href="../lectures/01-curse-of-dimensionality.html">
+ <span class="dropdown-text">1. The Curse of Dimensionality</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/02-convex-hulls.html">
+ <span class="dropdown-text">2. Convex Hulls and Sparse Approximation</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/03-gaussian-width.html">
+ <span class="dropdown-text">3. Gaussian Width</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/04-tails.html">
+ <span class="dropdown-text">4. Tails of Random Variables</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/05-orlicz-norms.html">
+ <span class="dropdown-text">5. Geometric Discrepancy and Orlicz Norms</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/06-bernstein-dimension-reduction.html">
+ <span class="dropdown-text">6. Bernstein’s Inequality and Dimension Reduction</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/07-coordinate-embeddings.html">
+ <span class="dropdown-text">7. Coordinate Embeddings</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/08-extreme-singular-values.html">
+ <span class="dropdown-text">8. Extreme Singular Values</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/09-covariance-estimation.html">
+ <span class="dropdown-text">9. Covariance Estimation</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/10-gaussian-processes.html">
+ <span class="dropdown-text">10. Gaussian Processes</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/11-gaussian-concentration.html">
+ <span class="dropdown-text">11. Gaussian Concentration</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/12-gaussian-comparison.html">
+ <span class="dropdown-text">12. Gaussian Comparison and Gaussian Matrices</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/13-gaussian-width-revisited.html">
+ <span class="dropdown-text">13. Gaussian Width Revisited</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/14-semidefinite-relaxations.html">
+ <span class="dropdown-text">14. Semidefinite Relaxations and Max-Cut</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/15-grothendieck.html">
+ <span class="dropdown-text">15. Grothendieck’s Inequality</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/16-dudley.html">
+ <span class="dropdown-text">16. Dudley’s Entropy Integral</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/17-applications-of-dudley.html">
+ <span class="dropdown-text">17. Applications of Dudley’s Inequality</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/18-generic-chaining.html">
+ <span class="dropdown-text">18. Generic Chaining</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/19-matrix-deviation.html">
+ <span class="dropdown-text">19. The Lower Bound and the Matrix Deviation Inequality</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/20-covariance-effective-rank.html">
+ <span class="dropdown-text">20. Covariance Estimation for Low-Dimensional Data</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/21-sparse-recovery.html">
+ <span class="dropdown-text">21. Sparse Recovery</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../exercises/index.html"> 
+<span class="menu-text">Exercises</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-course" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Course</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-course">    
+        <li>
+    <a class="dropdown-item" href="../course/index.html">
+ <span class="dropdown-text">Fall 2026</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../course/calendar.html">
+ <span class="dropdown-text">Calendar</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../references.html"> 
+<span class="menu-text">References</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#the-covariance-estimation-problem" id="toc-the-covariance-estimation-problem" class="nav-link active" data-scroll-target="#the-covariance-estimation-problem"><span class="header-section-number">1</span> The covariance estimation problem</a></li>
+  <li><a href="#sub-gaussian-random-vectors" id="toc-sub-gaussian-random-vectors" class="nav-link" data-scroll-target="#sub-gaussian-random-vectors"><span class="header-section-number">2</span> Sub-Gaussian random vectors</a></li>
+  <li><a href="#nets-and-quadratic-forms" id="toc-nets-and-quadratic-forms" class="nav-link" data-scroll-target="#nets-and-quadratic-forms"><span class="header-section-number">3</span> Nets and quadratic forms</a></li>
+  <li><a href="#two-sided-bounds-for-matrices-with-independent-rows" id="toc-two-sided-bounds-for-matrices-with-independent-rows" class="nav-link" data-scroll-target="#two-sided-bounds-for-matrices-with-independent-rows"><span class="header-section-number">4</span> Two-sided bounds for matrices with independent rows</a></li>
+  <li><a href="#covariance-estimation" id="toc-covariance-estimation" class="nav-link" data-scroll-target="#covariance-estimation"><span class="header-section-number">5</span> Covariance estimation</a></li>
+  <li><a href="#what-the-rate-cannot-see" id="toc-what-the-rate-cannot-see" class="nav-link" data-scroll-target="#what-the-rate-cannot-see"><span class="header-section-number">6</span> What the rate cannot see</a></li>
+  <li><a href="#where-we-go-next" id="toc-where-we-go-next" class="nav-link" data-scroll-target="#where-we-go-next"><span class="header-section-number">7</span> Where we go next</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Lecture 9: Covariance Estimation</h1>
+<p class="subtitle lead">Two-sided singular value bounds and the sample covariance</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 7, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Lecture 8 showed that a tall random matrix is an approximate isometry: for <span class="math inline">\(m\geq C_0n\)</span>, every vector is distorted by a factor <span class="math inline">\(1\pm\eta\)</span>. The proof was a net and a union bound, and it left the dependence of the distortion on <span class="math inline">\(m\)</span> and <span class="math inline">\(n\)</span> unresolved. This lecture sharpens the argument to the form <span class="math display">\[
+\sqrt m-C\sqrt n\ \leq\ s_{\min}(A)\ \leq\ s_{\max}(A)\ \leq\ \sqrt m+C\sqrt n,
+\]</span> promised at the time, and relaxes the hypothesis from independent entries to independent rows. The relaxation is what makes the result statistical. If the rows are samples from a distribution, then <span class="math inline">\(\frac1mA^{\mathsf T}A\)</span> is the sample covariance, and the theorem says how many samples determine a covariance matrix.</p>
+<section id="the-covariance-estimation-problem" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="the-covariance-estimation-problem"><span class="header-section-number">1</span> The covariance estimation problem</h2>
+<p>Let <span class="math inline">\(X\)</span> be a mean-zero random vector in <span class="math inline">\(\mathbb R^n\)</span> with <span class="math inline">\(\mathbb E\|X\|_2^2&lt;\infty\)</span>, and let <span class="math display">\[
+\Sigma:=\mathbb EXX^{\mathsf T}
+\]</span> be its covariance matrix, an <span class="math inline">\(n\times n\)</span> positive semidefinite matrix with <span class="math inline">\(\langle\Sigma x,x\rangle=\mathbb E\langle X,x\rangle^2\)</span>. Given independent samples <span class="math inline">\(X_1,\ldots,X_m\)</span> distributed as <span class="math inline">\(X\)</span>, the natural estimate of <span class="math inline">\(\Sigma\)</span> is the <strong>sample covariance</strong> <span class="math display">\[
+\Sigma_m:=\frac1m\sum_{i=1}^mX_iX_i^{\mathsf T}.
+\]</span> It is unbiased, <span class="math inline">\(\mathbb E\Sigma_m=\Sigma\)</span>, and the law of large numbers applied to each of the <span class="math inline">\(n^2\)</span> entries gives <span class="math inline">\(\Sigma_m\to\Sigma\)</span> almost surely as <span class="math inline">\(m\to\infty\)</span> with <span class="math inline">\(n\)</span> fixed. The high-dimensional question is quantitative: how large must <span class="math inline">\(m\)</span> be, as a function of <span class="math inline">\(n\)</span>, so that <span class="math inline">\(\Sigma_m\approx\Sigma\)</span> in operator norm with high probability?</p>
+<p>Some dependence on <span class="math inline">\(n\)</span> is unavoidable. The matrix <span class="math inline">\(\Sigma_m\)</span> is a sum of <span class="math inline">\(m\)</span> rank-one matrices, so it has rank at most <span class="math inline">\(m\)</span>. If <span class="math inline">\(\Sigma\)</span> is invertible and <span class="math inline">\(m&lt;n\)</span>, then <span class="math inline">\(\Sigma_m\)</span> has a nontrivial kernel while <span class="math inline">\(\Sigma\)</span> does not, and <span class="math display">\[
+\|\Sigma_m-\Sigma\|_{\mathrm{op}}\geq\lambda_{\min}(\Sigma)&gt;0 .
+\]</span> So at least <span class="math inline">\(m\geq n\)</span> samples are needed. The theorem of this lecture says that <span class="math inline">\(m\)</span> proportional to <span class="math inline">\(n\)</span> suffices.</p>
+<div class="callout callout-style-simple callout-note callout-titled" title="Why the operator norm">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Why the operator norm
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The operator norm is the right way to measure the error because it controls what the covariance is used for. The quadratic form <span class="math inline">\(x\mapsto\langle\Sigma x,x\rangle\)</span> is the variance of the data in direction <span class="math inline">\(x\)</span>, and <span class="math inline">\(\|\Sigma_m-\Sigma\|_{\mathrm{op}}\leq\varepsilon\)</span> says that every directional variance is estimated to within <span class="math inline">\(\varepsilon\)</span>. Principal component analysis reads off the leading eigenvectors of <span class="math inline">\(\Sigma\)</span>, and by the Davis–Kahan theorem the leading eigenvectors of <span class="math inline">\(\Sigma_m\)</span> are close to those of <span class="math inline">\(\Sigma\)</span> whenever the operator norm error is small compared to the gap between consecutive eigenvalues of <span class="math inline">\(\Sigma\)</span>. An entrywise error bound would not give this: <span class="math inline">\(n^2\)</span> small entrywise errors can add up to an operator norm error of size <span class="math inline">\(n\)</span> times larger.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="sub-gaussian-random-vectors" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="sub-gaussian-random-vectors"><span class="header-section-number">2</span> Sub-Gaussian random vectors</h2>
+<p>The hypothesis on the data is the vector version of the sub-Gaussian assumption of Lecture 4. Recall that a mean-zero random variable is <span class="math inline">\(V\)</span>-subgaussian if <span class="math inline">\(\mathbb Ee^{\lambda\xi}\leq e^{\lambda^2V/2}\)</span> for every real <span class="math inline">\(\lambda\)</span>.</p>
+<div id="def-subgaussian-vector" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 1 (Sub-Gaussian and isotropic random vectors)</strong></span> A mean-zero random vector <span class="math inline">\(X\)</span> in <span class="math inline">\(\mathbb R^n\)</span> is <strong><span class="math inline">\(K\)</span>-subgaussian</strong> if for every <span class="math inline">\(x\in\mathbb R^n\)</span> the random variable <span class="math inline">\(\langle X,x\rangle\)</span> is <span class="math inline">\(K\|x\|_2^2\)</span>-subgaussian. It is <strong>isotropic</strong> if <span class="math inline">\(\mathbb EXX^{\mathsf T}=I_n\)</span>, that is, if <span class="math inline">\(\mathbb E\langle X,x\rangle^2=\|x\|_2^2\)</span> for every <span class="math inline">\(x\)</span>.</p>
+</div>
+<p>A <span class="math inline">\(K\)</span>-subgaussian vector has every one-dimensional marginal <span class="math inline">\(\langle X,x\rangle\)</span> sub-Gaussian at the same scale, in proportion to the length of <span class="math inline">\(x\)</span>. Isotropy fixes that scale: the variance of a mean-zero <span class="math inline">\(V\)</span>-subgaussian variable is at most <span class="math inline">\(V\)</span> (compare the Taylor expansions at <span class="math inline">\(\lambda=0\)</span> of the two sides of the defining inequality), so an isotropic <span class="math inline">\(K\)</span>-subgaussian vector always has <span class="math inline">\(K\geq1\)</span>. We use this normalization throughout.</p>
+<div class="callout callout-style-simple callout-note callout-titled" title="Examples">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Examples
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>Gaussian vectors.</strong> If <span class="math inline">\(X\sim N(0,I_n)\)</span>, then <span class="math inline">\(\langle X,x\rangle\sim N(0,\|x\|_2^2)\)</span>, which is <span class="math inline">\(\|x\|_2^2\)</span>-subgaussian. So <span class="math inline">\(X\)</span> is isotropic and <span class="math inline">\(1\)</span>-subgaussian.</p>
+<p><strong>Independent coordinates.</strong> If the coordinates of <span class="math inline">\(X\)</span> are independent, mean-zero, of variance <span class="math inline">\(1\)</span>, and <span class="math inline">\(K\)</span>-subgaussian, then <span class="math inline">\(X\)</span> is isotropic, and by the Pythagorean theorem of Lecture 5, <span class="math inline">\(\langle X,x\rangle=\sum_ix_iX_i\)</span> is <span class="math inline">\(\big(\sum_ix_i^2K\big)\)</span>-subgaussian. So <span class="math inline">\(X\)</span> is <span class="math inline">\(K\)</span>-subgaussian. Random sign vectors are the case <span class="math inline">\(K=1\)</span>. This is exactly the row structure assumed in Lecture 8.</p>
+<p><strong>Random directions.</strong> If <span class="math inline">\(X\)</span> is uniform on the sphere of radius <span class="math inline">\(\sqrt n\)</span>, then <span class="math inline">\(X\)</span> is isotropic by symmetry, and it is <span class="math inline">\(C\)</span>-subgaussian for an absolute constant <span class="math inline">\(C\)</span>. We do not prove this now; it follows from the concentration of measure on the sphere, which is the subject of Lecture 11.</p>
+<p><strong>Anisotropic data.</strong> If <span class="math inline">\(Z\)</span> is isotropic and <span class="math inline">\(K\)</span>-subgaussian and <span class="math inline">\(\Sigma\)</span> is positive semidefinite, then <span class="math inline">\(X=\Sigma^{1/2}Z\)</span> has covariance <span class="math inline">\(\Sigma\)</span> and <span class="math inline">\(\langle X,x\rangle=\langle Z,\Sigma^{1/2}x\rangle\)</span> is <span class="math inline">\(K\|\Sigma^{1/2}x\|_2^2=K\langle\Sigma x,x\rangle\)</span>-subgaussian. So the variance proxy of each marginal is <span class="math inline">\(K\)</span> times its true variance. This is the form in which the covariance theorem is stated.</p>
+</div>
+</div>
+</div>
+<p>The examples suggest the natural hypothesis for covariance estimation: the variance proxy of each marginal should be comparable to its true variance. The next lemma shows that under this hypothesis, the data can be standardized.</p>
+<div id="lem-isotropic-reduction" class="theorem lemma">
+<p><span class="theorem-title"><strong>Lemma 1 (Reduction to the isotropic case)</strong></span> Let <span class="math inline">\(X\)</span> be a mean-zero random vector with invertible covariance <span class="math inline">\(\Sigma\)</span>, and suppose that for every <span class="math inline">\(x\in\mathbb R^n\)</span> the marginal <span class="math inline">\(\langle X,x\rangle\)</span> is <span class="math inline">\(K\langle\Sigma x,x\rangle\)</span>-subgaussian. Then <span class="math inline">\(Z:=\Sigma^{-1/2}X\)</span> is isotropic and <span class="math inline">\(K\)</span>-subgaussian, and <span class="math inline">\(X=\Sigma^{1/2}Z\)</span>.</p>
+</div>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Here <span class="math inline">\(\Sigma^{1/2}\)</span> is the positive definite square root of <span class="math inline">\(\Sigma\)</span> and <span class="math inline">\(\Sigma^{-1/2}\)</span> its inverse. For every <span class="math inline">\(x\)</span>, <span class="math display">\[
+\langle Z,x\rangle=\langle X,\Sigma^{-1/2}x\rangle,
+\qquad
+\mathbb E\langle Z,x\rangle^2=\langle\Sigma\Sigma^{-1/2}x,\Sigma^{-1/2}x\rangle=\|x\|_2^2 ,
+\]</span> so <span class="math inline">\(Z\)</span> is isotropic. By hypothesis <span class="math inline">\(\langle Z,x\rangle\)</span> is <span class="math inline">\(K\langle\Sigma\Sigma^{-1/2}x,\Sigma^{-1/2}x\rangle=K\|x\|_2^2\)</span>-subgaussian.</p>
+</div>
+</div>
+</div>
+<p>If <span class="math inline">\(\Sigma\)</span> is singular, <span class="math inline">\(X\)</span> lies almost surely in the range of <span class="math inline">\(\Sigma\)</span>, a subspace of dimension <span class="math inline">\(r=\operatorname{rank}\Sigma&lt;n\)</span>, and everything below goes through on that subspace with <span class="math inline">\(n\)</span> replaced by <span class="math inline">\(r\)</span>. We assume <span class="math inline">\(\Sigma\)</span> invertible to keep the notation light.</p>
+</section>
+<section id="nets-and-quadratic-forms" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="nets-and-quadratic-forms"><span class="header-section-number">3</span> Nets and quadratic forms</h2>
+<p>The two facts about nets from Lecture 8 are that <span class="math inline">\(S^{n-1}\)</span> has an <span class="math inline">\(\varepsilon\)</span>-net of cardinality at most <span class="math inline">\((3/\varepsilon)^n\)</span>, and that a bound on <span class="math inline">\(\|Ax\|_2\)</span> over a net transfers to the sphere. For the sharper result we need the transfer for quadratic forms. This is Problem 3 of Exercise Sheet 4, and we record only the statement.</p>
+<p>For a symmetric matrix <span class="math inline">\(B\)</span>, the spectral theorem gives <span class="math display">\[
+\|B\|_{\mathrm{op}}=\sup_{\|x\|_2=1}|\langle Bx,x\rangle| .
+\]</span></p>
+<div id="lem-quadratic-net" class="theorem lemma">
+<p><span class="theorem-title"><strong>Lemma 2 (Quadratic forms on a net)</strong></span> Let <span class="math inline">\(B\)</span> be a symmetric <span class="math inline">\(n\times n\)</span> matrix, let <span class="math inline">\(0&lt;\varepsilon&lt;\frac12\)</span>, and let <span class="math inline">\(N\)</span> be an <span class="math inline">\(\varepsilon\)</span>-net of <span class="math inline">\(S^{n-1}\)</span>. Then <span class="math display">\[
+\|B\|_{\mathrm{op}}\leq\frac1{1-2\varepsilon}\max_{y\in N}|\langle By,y\rangle| .
+\]</span> In particular, for <span class="math inline">\(\varepsilon=\frac14\)</span>, <span class="math inline">\(\|B\|_{\mathrm{op}}\leq2\max_{y\in N}|\langle By,y\rangle|\)</span>.</p>
+</div>
+<p>The second fact converts a bound on <span class="math inline">\(\frac1mA^{\mathsf T}A-I\)</span> into a bound on the singular values of <span class="math inline">\(A\)</span>. It is the same computation as in the proof of the one-vector lemma of Lecture 8, which passed from <span class="math inline">\(\|Ax\|_2^2\)</span> to <span class="math inline">\(\|Ax\|_2\)</span>.</p>
+<div id="lem-gram-to-singular" class="theorem lemma">
+<p><span class="theorem-title"><strong>Lemma 3 (From the Gram matrix to the singular values)</strong></span> Let <span class="math inline">\(A\)</span> be an <span class="math inline">\(m\times n\)</span> matrix and <span class="math inline">\(\delta\geq0\)</span>. If <span class="math display">\[
+\Big\|\frac1mA^{\mathsf T}A-I_n\Big\|_{\mathrm{op}}\leq\max\{\delta,\delta^2\},
+\]</span> then <span class="math display">\[
+(1-\delta)\sqrt m\leq s_{\min}(A)\leq s_{\max}(A)\leq(1+\delta)\sqrt m .
+\]</span></p>
+</div>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>For a unit vector <span class="math inline">\(x\)</span>, the hypothesis says <span class="math inline">\(|\|Ax\|_2^2/m-1|\leq\max\{\delta,\delta^2\}\)</span>. Write <span class="math inline">\(a=\|Ax\|_2/\sqrt m\geq0\)</span> and suppose <span class="math inline">\(|a-1|&gt;\delta\)</span>. If <span class="math inline">\(a&gt;1+\delta\)</span> then <span class="math inline">\(a^2-1&gt;2\delta+\delta^2\geq\max\{\delta,\delta^2\}\)</span>. If <span class="math inline">\(a&lt;1-\delta\)</span>, which forces <span class="math inline">\(\delta&lt;1\)</span>, then <span class="math inline">\(1-a^2=(1-a)(1+a)&gt;\delta=\max\{\delta,\delta^2\}\)</span>. Both contradict the hypothesis, so <span class="math inline">\(|a-1|\leq\delta\)</span> for every unit <span class="math inline">\(x\)</span>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="two-sided-bounds-for-matrices-with-independent-rows" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="two-sided-bounds-for-matrices-with-independent-rows"><span class="header-section-number">4</span> Two-sided bounds for matrices with independent rows</h2>
+<div id="thm-two-sided" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 1 (Two-sided bound, independent sub-Gaussian rows)</strong></span> Let <span class="math inline">\(A\)</span> be an <span class="math inline">\(m\times n\)</span> matrix whose rows <span class="math inline">\(A_1,\ldots,A_m\)</span> are independent, mean-zero, isotropic, <span class="math inline">\(K\)</span>-subgaussian random vectors in <span class="math inline">\(\mathbb R^n\)</span>. There is an absolute constant <span class="math inline">\(C\)</span> such that, for every <span class="math inline">\(t\geq0\)</span>, with probability at least <span class="math inline">\(1-2e^{-t^2}\)</span>, <span class="math display">\[
+\Big\|\frac1mA^{\mathsf T}A-I_n\Big\|_{\mathrm{op}}\leq K\max\{\delta,\delta^2\},
+\qquad
+\delta:=C\Big(\sqrt{\frac nm}+\frac t{\sqrt m}\Big).
+\]</span> Consequently, on the same event, <span class="math display">\[
+\sqrt m-CK(\sqrt n+t)\ \leq\ s_{\min}(A)\ \leq\ s_{\max}(A)\ \leq\ \sqrt m+CK(\sqrt n+t).
+\]</span></p>
+</div>
+<p>The rows need not have independent coordinates, and they need not be identically distributed. What is used is that each row is an isotropic sub-Gaussian vector and that the rows are independent of one another. When the rows are samples from a distribution, this is exactly the situation of the covariance estimation problem.</p>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Write <span class="math inline">\(B:=\frac1mA^{\mathsf T}A-I_n\)</span>, a symmetric matrix, and note that for every <span class="math inline">\(x\in\mathbb R^n\)</span>, <span class="math display">\[
+\langle Bx,x\rangle=\frac1m\|Ax\|_2^2-\|x\|_2^2
+=\frac1m\sum_{i=1}^m\big(\langle A_i,x\rangle^2-\|x\|_2^2\big).
+\]</span> Set <span class="math inline">\(\varepsilon:=K\max\{\delta,\delta^2\}\)</span>.</p>
+<p><strong>Step 1: the net.</strong> Let <span class="math inline">\(N\)</span> be a <span class="math inline">\(\frac14\)</span>-net of <span class="math inline">\(S^{n-1}\)</span> with <span class="math inline">\(|N|\leq12^n\)</span>, which exists by the net lemma of Lecture 8. By <a href="#lem-quadratic-net" class="quarto-xref">Lemma&nbsp;2</a>, <span class="math inline">\(\|B\|_{\mathrm{op}}\leq2\max_{y\in N}|\langle By,y\rangle|\)</span>, so it suffices to show that <span class="math display">\[
+\max_{y\in N}|\langle By,y\rangle|\leq\frac\varepsilon2
+\]</span> with probability at least <span class="math inline">\(1-2e^{-t^2}\)</span>.</p>
+<p><strong>Step 2: one vector.</strong> Fix <span class="math inline">\(y\in S^{n-1}\)</span> and set <span class="math inline">\(\xi_i:=\langle A_i,y\rangle\)</span>. The <span class="math inline">\(\xi_i\)</span> are independent, mean-zero, with <span class="math inline">\(\mathbb E\xi_i^2=1\)</span>, and <span class="math inline">\(K\)</span>-subgaussian. By the sub-Gaussian–<span class="math inline">\(\psi_2\)</span> comparison of Lecture 5, <span class="math inline">\(\|\xi_i\|_{\psi_2}\leq2\sqrt K\)</span>, and by the Orlicz–Hölder identity of the same lecture, <span class="math inline">\(\|\xi_i^2\|_{\psi_1}=\|\xi_i\|_{\psi_2}^2\leq4K\)</span>. The constant <span class="math inline">\(1\)</span> has <span class="math inline">\(\|1\|_{\psi_1}=1/\log2&lt;2\)</span>, so by the triangle inequality and <span class="math inline">\(K\geq1\)</span>, <span class="math display">\[
+\|\xi_i^2-1\|_{\psi_1}\leq4K+2\leq6K .
+\]</span> Now <span class="math inline">\(\langle By,y\rangle=\frac1m\sum_i(\xi_i^2-1)\)</span> is an average of <span class="math inline">\(m\)</span> independent, mean-zero, sub-exponential variables. Bernstein’s inequality (Lecture 6, <span class="math inline">\(\psi_1\)</span> version) gives <span class="math display">\[
+\mathbb P\Big\{|\langle By,y\rangle|&gt;\frac\varepsilon2\Big\}
+=\mathbb P\Big\{\Big|\sum_{i=1}^m(\xi_i^2-1)\Big|&gt;\frac{m\varepsilon}2\Big\}
+\leq2\exp\Big(-c\,m\min\Big\{\frac\varepsilon{12K},\frac{\varepsilon^2}{144K^2}\Big\}\Big).
+\]</span> Since <span class="math inline">\(\varepsilon/K=\max\{\delta,\delta^2\}\geq\delta^2\)</span> and <span class="math inline">\(\varepsilon^2/K^2=\max\{\delta,\delta^2\}^2\geq\delta^2\)</span>, the minimum is at least <span class="math inline">\(\delta^2/144\)</span>, and <span class="math display">\[
+m\delta^2=C^2(\sqrt n+t)^2\geq C^2(n+t^2).
+\]</span> So the one-vector failure probability is at most <span class="math inline">\(2\exp\big(-c_1C^2(n+t^2)\big)\)</span> with <span class="math inline">\(c_1=c/144\)</span>.</p>
+<p><strong>Step 3: the union bound.</strong> Over the net, <span class="math display">\[
+\mathbb P\Big\{\max_{y\in N}|\langle By,y\rangle|&gt;\frac\varepsilon2\Big\}
+\leq12^n\cdot2\exp\big(-c_1C^2(n+t^2)\big)
+=2\exp\big(n\log12-c_1C^2n-c_1C^2t^2\big)
+\leq2e^{-t^2},
+\]</span> provided <span class="math inline">\(C\)</span> is chosen so that <span class="math inline">\(c_1C^2\geq\log12\)</span>, which also gives <span class="math inline">\(c_1C^2\geq1\)</span>. This proves the first claim.</p>
+<p><strong>Step 4: singular values.</strong> Since <span class="math inline">\(K\geq1\)</span>, <span class="math inline">\(K\max\{\delta,\delta^2\}\leq\max\{K\delta,(K\delta)^2\}\)</span>, so <a href="#lem-gram-to-singular" class="quarto-xref">Lemma&nbsp;3</a> applies with <span class="math inline">\(K\delta\)</span> in place of <span class="math inline">\(\delta\)</span> and gives <span class="math inline">\((1-K\delta)\sqrt m\leq s_{\min}(A)\leq s_{\max}(A)\leq(1+K\delta)\sqrt m\)</span>. Finally <span class="math inline">\(K\delta\sqrt m=CK(\sqrt n+t)\)</span>.</p>
+</div>
+</div>
+</div>
+<p>Compare this with Lecture 8. There, entries were independent and the conclusion was a distortion <span class="math inline">\(\eta\)</span> that did not improve as <span class="math inline">\(m/n\)</span> grew. Here the distortion is <span class="math inline">\(CK\sqrt{n/m}\)</span>, which tends to zero. The price is that the theorem says nothing useful about <span class="math inline">\(s_{\min}(A)\)</span> once <span class="math inline">\(CK\sqrt{n/m}\geq1\)</span>, that is, once <span class="math inline">\(m\)</span> is only a constant multiple of <span class="math inline">\(n\)</span>. In that regime the union bound is again too weak, and the small-ball estimates of Lecture 8 are still the only tool we have. For Gaussian matrices the constant <span class="math inline">\(CK\)</span> can be replaced by <span class="math inline">\(1\)</span>, and Lecture 12 proves this by an entirely different method.</p>
+<p>The theorem also yields a bound in expectation, which is the form used most often.</p>
+<div id="cor-two-sided-expectation" class="theorem corollary">
+<p><span class="theorem-title"><strong>Corollary 1 (Expected deviation of the Gram matrix)</strong></span> In the setting of <a href="#thm-two-sided" class="quarto-xref">Theorem&nbsp;1</a>, <span class="math display">\[
+\mathbb E\Big\|\frac1mA^{\mathsf T}A-I_n\Big\|_{\mathrm{op}}\leq CK\Big(\sqrt{\frac nm}+\frac nm\Big).
+\]</span></p>
+</div>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Let <span class="math inline">\(Y=\|\frac1mA^{\mathsf T}A-I_n\|_{\mathrm{op}}\)</span> and, for <span class="math inline">\(t\geq0\)</span>, let <span class="math display">\[
+\delta(t)=C\Big(\sqrt{\frac nm}+\frac t{\sqrt m}\Big),
+\qquad
+s(t)=K\big(\delta(t)+\delta(t)^2\big)\geq K\max\{\delta(t),\delta(t)^2\}.
+\]</span> The function <span class="math inline">\(s\)</span> is increasing, and <a href="#thm-two-sided" class="quarto-xref">Theorem&nbsp;1</a> gives <span class="math inline">\(\mathbb P\{Y&gt;s(t)\}\leq2e^{-t^2}\)</span>. Writing the expectation as a tail integral and substituting <span class="math inline">\(u=s(t)\)</span>, <span class="math display">\[
+\mathbb EY=\int_0^\infty\mathbb P\{Y&gt;u\}\,du
+\leq s(0)+\int_0^\infty\mathbb P\{Y&gt;s(t)\}\,s'(t)\,dt
+\leq s(0)+2\int_0^\infty e^{-t^2}s'(t)\,dt .
+\]</span> Here <span class="math inline">\(s'(t)=K\delta'(t)(1+2\delta(t))\)</span> with <span class="math inline">\(\delta'(t)=C/\sqrt m\)</span>, so <span class="math display">\[
+\int_0^\infty e^{-t^2}s'(t)\,dt
+\leq\frac{CK}{\sqrt m}\int_0^\infty e^{-t^2}\Big(1+2C\sqrt{\frac nm}+\frac{2Ct}{\sqrt m}\Big)dt
+\leq\frac{C'K}{\sqrt m}\Big(1+\sqrt{\frac nm}+\frac1{\sqrt m}\Big).
+\]</span> Since <span class="math inline">\(n\geq1\)</span>, each of <span class="math inline">\(1/\sqrt m\)</span>, <span class="math inline">\(\sqrt n/m\)</span>, and <span class="math inline">\(1/m\)</span> is at most <span class="math inline">\(\sqrt{n/m}+n/m\)</span>. Similarly <span class="math inline">\(s(0)=K(\delta(0)+\delta(0)^2)=K\big(C\sqrt{n/m}+C^2n/m\big)\)</span>. Adding up gives the claim with a new absolute constant.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="covariance-estimation" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="covariance-estimation"><span class="header-section-number">5</span> Covariance estimation</h2>
+<div id="thm-covariance" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 2 (Covariance estimation)</strong></span> Let <span class="math inline">\(X\)</span> be a mean-zero random vector in <span class="math inline">\(\mathbb R^n\)</span> with invertible covariance <span class="math inline">\(\Sigma\)</span>, and suppose that for every <span class="math inline">\(x\in\mathbb R^n\)</span> the marginal <span class="math inline">\(\langle X,x\rangle\)</span> is <span class="math inline">\(K\langle\Sigma x,x\rangle\)</span>-subgaussian. Let <span class="math inline">\(X_1,\ldots,X_m\)</span> be independent copies of <span class="math inline">\(X\)</span> and <span class="math inline">\(\Sigma_m\)</span> their sample covariance. Then <span class="math display">\[
+\mathbb E\|\Sigma_m-\Sigma\|_{\mathrm{op}}\leq CK\Big(\sqrt{\frac nm}+\frac nm\Big)\|\Sigma\|_{\mathrm{op}},
+\]</span> and for every <span class="math inline">\(u\geq0\)</span>, with probability at least <span class="math inline">\(1-2e^{-u}\)</span>, <span class="math display">\[
+\|\Sigma_m-\Sigma\|_{\mathrm{op}}\leq CK\Big(\sqrt{\frac{n+u}m}+\frac{n+u}m\Big)\|\Sigma\|_{\mathrm{op}} .
+\]</span></p>
+</div>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>By <a href="#lem-isotropic-reduction" class="quarto-xref">Lemma&nbsp;1</a>, <span class="math inline">\(Z_i:=\Sigma^{-1/2}X_i\)</span> are independent, isotropic, <span class="math inline">\(K\)</span>-subgaussian, and <span class="math inline">\(X_i=\Sigma^{1/2}Z_i\)</span>. Let <span class="math inline">\(A\)</span> be the <span class="math inline">\(m\times n\)</span> matrix with rows <span class="math inline">\(Z_i^{\mathsf T}\)</span>. Then <span class="math display">\[
+\Sigma_m-\Sigma
+=\frac1m\sum_{i=1}^m\Sigma^{1/2}Z_iZ_i^{\mathsf T}\Sigma^{1/2}-\Sigma^{1/2}\Sigma^{1/2}
+=\Sigma^{1/2}\Big(\frac1mA^{\mathsf T}A-I_n\Big)\Sigma^{1/2},
+\]</span> and since <span class="math inline">\(\|\Sigma^{1/2}\|_{\mathrm{op}}^2=\|\Sigma\|_{\mathrm{op}}\)</span>, <span class="math display">\[
+\|\Sigma_m-\Sigma\|_{\mathrm{op}}\leq\|\Sigma\|_{\mathrm{op}}\Big\|\frac1mA^{\mathsf T}A-I_n\Big\|_{\mathrm{op}} .
+\]</span> The expectation bound is now <a href="#cor-two-sided-expectation" class="quarto-xref">Corollary&nbsp;1</a>. For the tail bound, apply <a href="#thm-two-sided" class="quarto-xref">Theorem&nbsp;1</a> with <span class="math inline">\(t=\sqrt u\)</span>. Then <span class="math inline">\(\delta=C(\sqrt{n/m}+\sqrt{u/m})\leq2C\sqrt{(n+u)/m}\)</span>, and <span class="math inline">\(K\max\{\delta,\delta^2\}\leq K(\delta+\delta^2)\)</span> gives the claim.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note callout-titled" title="Sample complexity">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Sample complexity
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Fix <span class="math inline">\(\varepsilon\in(0,1)\)</span>. The theorem gives relative error <span class="math inline">\(\mathbb E\|\Sigma_m-\Sigma\|_{\mathrm{op}}\leq\varepsilon\|\Sigma\|_{\mathrm{op}}\)</span> as soon as <span class="math display">\[
+m\geq\frac{C'K^2n}{\varepsilon^2}.
+\]</span> So the sample covariance is an accurate estimate of the covariance once the number of samples is a constant multiple of the dimension, and the constant scales like <span class="math inline">\(\varepsilon^{-2}\)</span>, the usual price of a relative error <span class="math inline">\(\varepsilon\)</span> in a variance estimate. This matches the necessary condition <span class="math inline">\(m\geq n\)</span> up to the constant.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note callout-titled" title="Uncentered data">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Uncentered data
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>If <span class="math inline">\(X\)</span> has an unknown mean <span class="math inline">\(\mu\)</span>, the theorem applies verbatim to the second moment matrix <span class="math inline">\(\mathbb EXX^{\mathsf T}=\Sigma+\mu\mu^{\mathsf T}\)</span>, provided the sub-Gaussian hypothesis is placed on <span class="math inline">\(\langle X-\mu,x\rangle\)</span> and the mean is not too large relative to <span class="math inline">\(\Sigma\)</span>. Estimating <span class="math inline">\(\Sigma\)</span> itself requires subtracting the sample mean, which adds an error of order <span class="math inline">\(\|\bar X_m-\mu\|_2^2\)</span>, and this is of smaller order than the main term. We omit the bookkeeping.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="what-the-rate-cannot-see" class="level2 page-columns page-full" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="what-the-rate-cannot-see"><span class="header-section-number">6</span> What the rate cannot see</h2>
+<p>The bound <span class="math inline">\(\sqrt{n/m}\)</span> depends on the ambient dimension and on nothing else about <span class="math inline">\(\Sigma\)</span>. Two remarks put this in perspective.</p>
+<p><strong>The rate is sharp for isotropic data.</strong> If <span class="math inline">\(X\sim N(0,I_n)\)</span> then <span class="math inline">\(\Sigma_m=\frac1mA^{\mathsf T}A\)</span> for a Gaussian matrix <span class="math inline">\(A\)</span>, and its extreme eigenvalues are <span class="math inline">\(s_{\min}(A)^2/m\)</span> and <span class="math inline">\(s_{\max}(A)^2/m\)</span>. Lecture 12 shows that for Gaussian matrices <span class="math display">\[
+\mathbb Es_{\max}(A)\leq\sqrt m+\sqrt n,
+\qquad
+\mathbb Es_{\min}(A)\geq\sqrt m-\sqrt n,
+\]</span> and both bounds are attained to leading order. The eigenvalues of <span class="math inline">\(\Sigma_m\)</span> therefore spread over an interval of half-width about <span class="math inline">\(2\sqrt{n/m}\)</span> around <span class="math inline">\(1\)</span>, and <span class="math inline">\(\|\Sigma_m-\Sigma\|_{\mathrm{op}}\approx2\sqrt{n/m}\)</span>. In fact the whole empirical spectrum of <span class="math inline">\(\Sigma_m\)</span> has a deterministic limiting shape, the Marchenko–Pastur law <span class="citation" data-cites="marchenko1967">(<a href="#ref-marchenko1967" role="doc-biblioref">Marchenko and Pastur 1967</a>)</span>, supported on exactly this interval.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-marchenko1967" class="csl-entry" role="listitem">
+Marchenko, Vladimir A., and Leonid A. Pastur. 1967. <span>“Distribution of Eigenvalues for Some Sets of Random Matrices.”</span> <em>Mathematics of the USSR-Sbornik</em> 1 (4): 457–83.
+</div><div id="ref-koltchinskii2017" class="csl-entry" role="listitem">
+Koltchinskii, Vladimir, and Karim Lounici. 2017. <span>“Concentration Inequalities and Moment Bounds for Sample Covariance Operators.”</span> <em>Bernoulli</em> 23 (1): 110–33. <a href="https://doi.org/10.3150/15-BEJ730">https://doi.org/10.3150/15-BEJ730</a>.
+</div></div><p><strong>But the dimension is the wrong parameter for structured data.</strong> Suppose the data are nearly low-dimensional: <span class="math inline">\(\Sigma\)</span> has a few large eigenvalues and many small ones. The theorem still charges for all <span class="math inline">\(n\)</span> directions, even though the small directions contribute almost nothing to <span class="math inline">\(\|\Sigma_m-\Sigma\|_{\mathrm{op}}\)</span>. The correct parameter is the <strong>effective rank</strong> <span class="math display">\[
+r(\Sigma):=\frac{\operatorname{tr}\Sigma}{\|\Sigma\|_{\mathrm{op}}}\in[1,n],
+\]</span> which equals <span class="math inline">\(n\)</span> for isotropic data and stays bounded when the spectrum decays fast. For Gaussian data one has <span class="math display">\[
+\mathbb E\|\Sigma_m-\Sigma\|_{\mathrm{op}}\leq C\Big(\sqrt{\frac{r(\Sigma)}m}+\frac{r(\Sigma)}m\Big)\|\Sigma\|_{\mathrm{op}},
+\]</span> a theorem of Koltchinskii and Lounici <span class="citation" data-cites="koltchinskii2017">(<a href="#ref-koltchinskii2017" role="doc-biblioref">Koltchinskii and Lounici 2017</a>)</span>. The net argument of this lecture cannot prove it. The proof of <a href="#thm-two-sided" class="quarto-xref">Theorem&nbsp;1</a> pays <span class="math inline">\(n\log12\)</span> for the net regardless of the geometry of <span class="math inline">\(\Sigma\)</span>, and no choice of net on the ellipsoid <span class="math inline">\(\Sigma^{1/2}S^{n-1}\)</span> repairs this. What is needed is a way to control <span class="math inline">\(\sup_x|\frac1m\|Ax\|_2^2-\|x\|_2^2|\)</span> over the ellipsoid that sees its shape and not only its dimension. That is what the theory of Gaussian processes provides, and Lecture 20 proves the effective-rank theorem with it.</p>
+</section>
+<section id="where-we-go-next" class="level2" data-number="7">
+<h2 data-number="7" class="anchored" data-anchor-id="where-we-go-next"><span class="header-section-number">7</span> Where we go next</h2>
+<p>Two loose ends of this lecture point in the same direction. The constant in <span class="math inline">\(\sqrt m\pm CK\sqrt n\)</span> should be <span class="math inline">\(1\)</span> for Gaussian matrices, and the dimension <span class="math inline">\(n\)</span> in the covariance bound should be the effective rank. Both statements are about the random function <span class="math inline">\(x\mapsto\|Ax\|_2\)</span> on a set of vectors, and both are proved by comparing it to simpler Gaussian processes rather than by discretizing the set. The next lectures develop Gaussian processes from the beginning: their construction, their concentration, and the comparison inequalities that make them computable.</p>
+
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/elliotpaquette\.github\.io\/high-dimensional-probability\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

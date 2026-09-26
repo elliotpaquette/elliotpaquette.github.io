@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-11-04">
+
+<title>Lecture 14: Semidefinite Relaxations and Max-Cut – High-Dimensional Probability</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-5685cd926c25366c96d9f1407e584118.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">High-Dimensional Probability</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-lectures" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Lectures</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-lectures">    
+        <li>
+    <a class="dropdown-item" href="../lectures/01-curse-of-dimensionality.html">
+ <span class="dropdown-text">1. The Curse of Dimensionality</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/02-convex-hulls.html">
+ <span class="dropdown-text">2. Convex Hulls and Sparse Approximation</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/03-gaussian-width.html">
+ <span class="dropdown-text">3. Gaussian Width</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/04-tails.html">
+ <span class="dropdown-text">4. Tails of Random Variables</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/05-orlicz-norms.html">
+ <span class="dropdown-text">5. Geometric Discrepancy and Orlicz Norms</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/06-bernstein-dimension-reduction.html">
+ <span class="dropdown-text">6. Bernstein’s Inequality and Dimension Reduction</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/07-coordinate-embeddings.html">
+ <span class="dropdown-text">7. Coordinate Embeddings</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/08-extreme-singular-values.html">
+ <span class="dropdown-text">8. Extreme Singular Values</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/09-covariance-estimation.html">
+ <span class="dropdown-text">9. Covariance Estimation</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/10-gaussian-processes.html">
+ <span class="dropdown-text">10. Gaussian Processes</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/11-gaussian-concentration.html">
+ <span class="dropdown-text">11. Gaussian Concentration</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/12-gaussian-comparison.html">
+ <span class="dropdown-text">12. Gaussian Comparison and Gaussian Matrices</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/13-gaussian-width-revisited.html">
+ <span class="dropdown-text">13. Gaussian Width Revisited</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/14-semidefinite-relaxations.html">
+ <span class="dropdown-text">14. Semidefinite Relaxations and Max-Cut</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/15-grothendieck.html">
+ <span class="dropdown-text">15. Grothendieck’s Inequality</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/16-dudley.html">
+ <span class="dropdown-text">16. Dudley’s Entropy Integral</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/17-applications-of-dudley.html">
+ <span class="dropdown-text">17. Applications of Dudley’s Inequality</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/18-generic-chaining.html">
+ <span class="dropdown-text">18. Generic Chaining</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/19-matrix-deviation.html">
+ <span class="dropdown-text">19. The Lower Bound and the Matrix Deviation Inequality</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/20-covariance-effective-rank.html">
+ <span class="dropdown-text">20. Covariance Estimation for Low-Dimensional Data</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/21-sparse-recovery.html">
+ <span class="dropdown-text">21. Sparse Recovery</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../exercises/index.html"> 
+<span class="menu-text">Exercises</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-course" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Course</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-course">    
+        <li>
+    <a class="dropdown-item" href="../course/index.html">
+ <span class="dropdown-text">Fall 2026</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../course/calendar.html">
+ <span class="dropdown-text">Calendar</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../references.html"> 
+<span class="menu-text">References</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#quadratic-optimization-over-the-cube" id="toc-quadratic-optimization-over-the-cube" class="nav-link active" data-scroll-target="#quadratic-optimization-over-the-cube"><span class="header-section-number">1</span> Quadratic optimization over the cube</a></li>
+  <li><a href="#the-semidefinite-relaxation" id="toc-the-semidefinite-relaxation" class="nav-link" data-scroll-target="#the-semidefinite-relaxation"><span class="header-section-number">2</span> The semidefinite relaxation</a></li>
+  <li><a href="#rounding-by-a-random-hyperplane" id="toc-rounding-by-a-random-hyperplane" class="nav-link" data-scroll-target="#rounding-by-a-random-hyperplane"><span class="header-section-number">3</span> Rounding by a random hyperplane</a></li>
+  <li><a href="#the-goemanswilliamson-algorithm" id="toc-the-goemanswilliamson-algorithm" class="nav-link" data-scroll-target="#the-goemanswilliamson-algorithm"><span class="header-section-number">4</span> The Goemans–Williamson algorithm</a></li>
+  <li><a href="#beyond-max-cut" id="toc-beyond-max-cut" class="nav-link" data-scroll-target="#beyond-max-cut"><span class="header-section-number">5</span> Beyond max-cut</a></li>
+  <li><a href="#where-we-go-next" id="toc-where-we-go-next" class="nav-link" data-scroll-target="#where-we-go-next"><span class="header-section-number">6</span> Where we go next</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Lecture 14: Semidefinite Relaxations and Max-Cut</h1>
+<p class="subtitle lead">Convex relaxation, Gaussian rounding, and the Goemans–Williamson algorithm</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 4, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>The last four lectures used Gaussian vectors to study suprema of random functions. This lecture uses them for something different: to solve, or nearly solve, a hard combinatorial optimization problem. The problem is to maximize a quadratic form over the vertices of the discrete cube <span class="math inline">\(\{-1,1\}^n\)</span>. A union bound over <span class="math inline">\(2^n\)</span> points is useless here, and the tools are instead convex relaxation, which replaces the cube by a convex set of matrices, and randomized rounding, which uses a Gaussian vector to map a point of the convex set back to the cube. The analysis of the rounding step is a single identity about the signs of two correlated Gaussians, and the identity is exactly what Grothendieck’s inequality, in the next lecture, is built around.</p>
+<section id="quadratic-optimization-over-the-cube" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="quadratic-optimization-over-the-cube"><span class="header-section-number">1</span> Quadratic optimization over the cube</h2>
+<p>Let <span class="math inline">\(A\)</span> be a symmetric <span class="math inline">\(n\times n\)</span> real matrix. The problem is <span class="math display">\[
+\mathrm{INT}(A):=\max\Big\{\sum_{i,j=1}^nA_{ij}x_ix_j:\ x\in\{-1,1\}^n\Big\}
+=\max_{x\in\{-1,1\}^n}\langle Ax,x\rangle .
+\]</span> The feasible set has <span class="math inline">\(2^n\)</span> points, and exhaustive search is exponential. No essentially faster exact method is expected to exist, because the problem is NP-hard. The standard witness to its hardness is the maximum cut problem for graphs.</p>
+<div id="def-max-cut" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 1 (Maximum cut)</strong></span> Let <span class="math inline">\(G=(V,E)\)</span> be a finite simple undirected graph on <span class="math inline">\(V=\{1,\ldots,n\}\)</span> with adjacency matrix <span class="math inline">\(A\)</span>, so <span class="math inline">\(A_{ij}=1\)</span> if <span class="math inline">\(\{i,j\}\in E\)</span> and <span class="math inline">\(A_{ij}=0\)</span> otherwise. A partition of <span class="math inline">\(V\)</span> into two sets is encoded by a vector <span class="math inline">\(x\in\{-1,1\}^n\)</span>, and its <strong>cut</strong> is the number of edges joining the two sets, <span class="math display">\[
+\mathrm{CUT}(G,x):=\#\big\{\{i,j\}\in E:\ x_i\neq x_j\big\}
+=\frac14\sum_{i,j=1}^nA_{ij}(1-x_ix_j).
+\]</span> The <strong>maximum cut</strong> is <span class="math inline">\(\mathrm{MAX\text{-}CUT}(G):=\max_{x\in\{-1,1\}^n}\mathrm{CUT}(G,x)\)</span>.</p>
+</div>
+<p>The formula for <span class="math inline">\(\mathrm{CUT}(G,x)\)</span> holds because <span class="math inline">\(1-x_ix_j\)</span> is <span class="math inline">\(2\)</span> when <span class="math inline">\(x_i\neq x_j\)</span> and <span class="math inline">\(0\)</span> otherwise, and each edge is counted twice in the double sum. Expanding, <span class="math inline">\(\mathrm{CUT}(G,x)=\frac12|E|-\frac14\langle Ax,x\rangle\)</span>, so the maximum cut is the problem <span class="math inline">\(\mathrm{INT}(-A)\)</span> up to an additive constant. Computing <span class="math inline">\(\mathrm{MAX\text{-}CUT}(G)\)</span> exactly is NP-hard, which we take as known.</p>
+<p>Since exact solutions are out of reach, the goal is an <em>approximation algorithm</em>: an efficient procedure that produces a cut of size at least <span class="math inline">\(\alpha\cdot\mathrm{MAX\text{-}CUT}(G)\)</span> for some constant <span class="math inline">\(\alpha&lt;1\)</span>, on every graph. The first such algorithm needs no ideas at all.</p>
+<div id="prp-random-cut" class="theorem proposition">
+<p><span class="theorem-title"><strong>Proposition 1 (A random cut)</strong></span> Let <span class="math inline">\(x\)</span> be uniformly distributed on <span class="math inline">\(\{-1,1\}^n\)</span>. Then <span class="math display">\[
+\mathbb E\,\mathrm{CUT}(G,x)=\frac12|E|\geq\frac12\mathrm{MAX\text{-}CUT}(G).
+\]</span></p>
+</div>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The coordinates of <span class="math inline">\(x\)</span> are independent symmetric signs, so <span class="math inline">\(\mathbb Ex_ix_j=0\)</span> for <span class="math inline">\(i\neq j\)</span>, and <span class="math inline">\(A_{ii}=0\)</span> because the graph has no loops. Taking expectations in the formula for <span class="math inline">\(\mathrm{CUT}(G,x)\)</span> leaves <span class="math inline">\(\frac14\sum_{i,j}A_{ij}=\frac12|E|\)</span>. The inequality is <span class="math inline">\(\mathrm{MAX\text{-}CUT}(G)\leq|E|\)</span>.</p>
+</div>
+</div>
+</div>
+<p>A random partition cuts half the edges on average, so it is a <span class="math inline">\(\frac12\)</span>-approximation in expectation. Repeating the experiment a few times and keeping the best cut gives a <span class="math inline">\((\frac12-\varepsilon)\)</span>-approximation with high probability. Doing better requires looking at the graph.</p>
+</section>
+<section id="the-semidefinite-relaxation" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="the-semidefinite-relaxation"><span class="header-section-number">2</span> The semidefinite relaxation</h2>
+<p>The idea of relaxation is to enlarge the feasible set to a convex one over which the maximum can be computed, and then to argue that the enlargement does not increase the maximum by much. For <span class="math inline">\(\mathrm{INT}(A)\)</span>, the natural enlargement replaces each sign <span class="math inline">\(x_i\in\{-1,1\}\)</span>, a unit vector in <span class="math inline">\(\mathbb R^1\)</span>, by a unit vector <span class="math inline">\(X_i\)</span> in <span class="math inline">\(\mathbb R^n\)</span>: <span class="math display">\[
+\mathrm{SDP}(A):=\max\Big\{\sum_{i,j=1}^nA_{ij}\langle X_i,X_j\rangle:\ X_1,\ldots,X_n\in S^{n-1}\Big\}.
+\]</span> Taking <span class="math inline">\(X_i=x_ie_1\)</span> shows <span class="math inline">\(\mathrm{INT}(A)\leq\mathrm{SDP}(A)\)</span>. The name comes from a reformulation in terms of the Gram matrix of the <span class="math inline">\(X_i\)</span>.</p>
+<div id="lem-gram" class="theorem lemma">
+<p><span class="theorem-title"><strong>Lemma 1 (Gram matrices of unit vectors)</strong></span> An <span class="math inline">\(n\times n\)</span> matrix <span class="math inline">\(X\)</span> is the Gram matrix <span class="math inline">\(X_{ij}=\langle X_i,X_j\rangle\)</span> of some unit vectors <span class="math inline">\(X_1,\ldots,X_n\in\mathbb R^n\)</span> if and only if <span class="math inline">\(X\)</span> is positive semidefinite with <span class="math inline">\(X_{ii}=1\)</span> for every <span class="math inline">\(i\)</span>. The vectors can be read off from <span class="math inline">\(X\)</span> as the columns of <span class="math inline">\(X^{1/2}\)</span>.</p>
+</div>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>If <span class="math inline">\(X_{ij}=\langle X_i,X_j\rangle\)</span> then <span class="math inline">\(X=M^{\mathsf T}M\)</span> with <span class="math inline">\(M\)</span> the matrix whose columns are the <span class="math inline">\(X_i\)</span>, so <span class="math inline">\(\langle Xa,a\rangle=\|Ma\|_2^2\geq0\)</span>, and <span class="math inline">\(X_{ii}=\|X_i\|_2^2=1\)</span>. Conversely, if <span class="math inline">\(X\succeq0\)</span> with unit diagonal, let <span class="math inline">\(M=X^{1/2}\)</span> be the positive semidefinite square root. Then <span class="math inline">\(X=M^{\mathsf T}M\)</span>, so <span class="math inline">\(X_{ij}\)</span> is the inner product of the <span class="math inline">\(i\)</span>-th and <span class="math inline">\(j\)</span>-th columns of <span class="math inline">\(M\)</span>, and these columns are unit vectors because <span class="math inline">\(X_{ii}=1\)</span>.</p>
+</div>
+</div>
+</div>
+<p>Writing <span class="math inline">\(\langle A,X\rangle:=\operatorname{tr}(A^{\mathsf T}X)=\sum_{ij}A_{ij}X_{ij}\)</span> for the trace inner product on matrices, the lemma gives <span class="math display">\[
+\mathrm{SDP}(A)=\max\big\{\langle A,X\rangle:\ X\succeq0,\ X_{ii}=1\text{ for all }i\big\}.
+\]</span> This is a maximization of a linear function over the intersection of the convex cone of positive semidefinite matrices with an affine subspace, which is a convex set. In particular the maximum exists, since the feasible set is compact.</p>
+<div id="def-sdp" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2 (Semidefinite program)</strong></span> A <strong>semidefinite program</strong> is an optimization problem of the form <span class="math display">\[
+\text{maximize }\langle A,X\rangle\quad\text{subject to}\quad X\succeq0,\ \ \langle B_k,X\rangle=b_k\ \ (k=1,\ldots,m),
+\]</span> where <span class="math inline">\(A,B_1,\ldots,B_m\)</span> are given symmetric matrices and <span class="math inline">\(b_1,\ldots,b_m\)</span> are given reals.</p>
+</div>
+<p>The relaxation <span class="math inline">\(\mathrm{SDP}(A)\)</span> is the case <span class="math inline">\(B_k=e_ke_k^{\mathsf T}\)</span>, <span class="math inline">\(b_k=1\)</span>. Semidefinite programs are convex programs, and they can be solved to any prescribed accuracy in time polynomial in <span class="math inline">\(n\)</span> and in the number of accuracy digits, for instance by interior point methods. We treat this as a black box: the value <span class="math inline">\(\mathrm{SDP}(A)\)</span> and a maximizing configuration <span class="math inline">\((X_i)\)</span> are available.</p>
+<p>Two things remain. First, how much larger than <span class="math inline">\(\mathrm{INT}(A)\)</span> can <span class="math inline">\(\mathrm{SDP}(A)\)</span> be? Second, given a maximizing configuration of unit vectors, how does one produce a point of the cube? The second question is answered by a Gaussian vector, and its analysis answers the first.</p>
+</section>
+<section id="rounding-by-a-random-hyperplane" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="rounding-by-a-random-hyperplane"><span class="header-section-number">3</span> Rounding by a random hyperplane</h2>
+<p>Let <span class="math inline">\(X_1,\ldots,X_n\in S^{n-1}\)</span> be given. Choose <span class="math inline">\(g\sim N(0,I_n)\)</span> and set <span class="math display">\[
+x_i:=\operatorname{sgn}\langle X_i,g\rangle,
+\qquad i=1,\ldots,n .
+\]</span> Geometrically, the hyperplane <span class="math inline">\(g^\perp\)</span> splits the sphere into two hemispheres, and <span class="math inline">\(x_i\)</span> records which hemisphere contains <span class="math inline">\(X_i\)</span>. Two vectors that are close on the sphere are likely to land on the same side, so the rounding respects the geometry of the configuration. The following identity quantifies this.</p>
+<div id="lem-grothendieck-identity" class="theorem lemma">
+<p><span class="theorem-title"><strong>Lemma 2 (Grothendieck’s identity)</strong></span> Let <span class="math inline">\(g\sim N(0,I_n)\)</span> and let <span class="math inline">\(u,v\in S^{n-1}\)</span>. Then <span class="math display">\[
+\mathbb E\operatorname{sgn}\langle g,u\rangle\operatorname{sgn}\langle g,v\rangle
+=\frac2\pi\arcsin\langle u,v\rangle .
+\]</span></p>
+</div>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Let <span class="math inline">\(\theta\in[0,\pi]\)</span> be the angle between <span class="math inline">\(u\)</span> and <span class="math inline">\(v\)</span>, so <span class="math inline">\(\langle u,v\rangle=\cos\theta\)</span>. By the rotation invariance of <span class="math inline">\(g\)</span> (Lecture 10) we may assume <span class="math inline">\(u=e_1\)</span> and <span class="math inline">\(v=\cos\theta\,e_1+\sin\theta\,e_2\)</span>. Then <span class="math inline">\(\langle g,u\rangle=g_1\)</span> and <span class="math inline">\(\langle g,v\rangle=g_1\cos\theta+g_2\sin\theta\)</span> depend only on the planar vector <span class="math inline">\((g_1,g_2)\)</span>, which is rotation invariant in <span class="math inline">\(\mathbb R^2\)</span>, so its direction is uniform on the circle.</p>
+<p>The signs of <span class="math inline">\(\langle g,u\rangle\)</span> and <span class="math inline">\(\langle g,v\rangle\)</span> differ exactly when <span class="math inline">\((g_1,g_2)\)</span> lies on opposite sides of the two lines <span class="math inline">\(u^\perp\)</span> and <span class="math inline">\(v^\perp\)</span> through the origin. These lines make an angle <span class="math inline">\(\theta\)</span>, and they divide the plane into four sectors, of which the two where the signs differ have angles <span class="math inline">\(\theta\)</span> and <span class="math inline">\(\theta\)</span>. Hence <span class="math display">\[
+\mathbb P\big\{\operatorname{sgn}\langle g,u\rangle\neq\operatorname{sgn}\langle g,v\rangle\big\}=\frac{2\theta}{2\pi}=\frac\theta\pi ,
+\]</span> and the product of the signs has expectation <span class="math inline">\(1-2\theta/\pi=\frac2\pi\big(\frac\pi2-\theta\big)=\frac2\pi\arcsin(\cos\theta)\)</span>. The event <span class="math inline">\(\langle g,u\rangle=0\)</span> has probability zero and does not affect the computation.</p>
+</div>
+</div>
+</div>
+<p>Compare the identity <span class="math inline">\(\mathbb E\langle g,u\rangle\langle g,v\rangle=\langle u,v\rangle\)</span> of Lecture 10. Taking signs replaces the linear function <span class="math inline">\(t\mapsto t\)</span> by the nonlinear <span class="math inline">\(t\mapsto\frac2\pi\arcsin t\)</span>, which agrees with the linear function at <span class="math inline">\(t=\pm1\)</span>, lies below it on <span class="math inline">\((0,1)\)</span>, and above it on <span class="math inline">\((-1,0)\)</span>. Everything in the analysis of rounding, and in Grothendieck’s inequality, is about the gap between these two functions.</p>
+</section>
+<section id="the-goemanswilliamson-algorithm" class="level2 page-columns page-full" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="the-goemanswilliamson-algorithm"><span class="header-section-number">4</span> The Goemans–Williamson algorithm</h2>
+<p>For the maximum cut problem, the relaxation is <span class="math display">\[
+\mathrm{SDP}(G):=\max\Big\{\frac14\sum_{i,j}A_{ij}\big(1-\langle X_i,X_j\rangle\big):\ X_i\in S^{n-1}\Big\}
+\geq\mathrm{MAX\text{-}CUT}(G),
+\]</span> which is a semidefinite program by <a href="#lem-gram" class="quarto-xref">Lemma&nbsp;1</a>. The algorithm is: solve the relaxation, then round the solution by a random hyperplane.</p>
+<p>The analysis needs one numerical fact. Define <span class="math display">\[
+\alpha:=\min_{0&lt;\theta\leq\pi}\frac2\pi\cdot\frac\theta{1-\cos\theta}.
+\]</span> The function being minimized tends to <span class="math inline">\(+\infty\)</span> as <span class="math inline">\(\theta\downarrow0\)</span>, since <span class="math inline">\(1-\cos\theta\sim\theta^2/2\)</span>, and equals <span class="math inline">\(1\)</span> at <span class="math inline">\(\theta=\pi\)</span>, so the minimum exists and is positive. It is attained at the unique solution of <span class="math inline">\(1-\cos\theta=\theta\sin\theta\)</span> in <span class="math inline">\((0,\pi)\)</span>, which is <span class="math inline">\(\theta\approx2.33\)</span>, and its value is <span class="math display">\[
+\alpha\approx0.8786 .
+\]</span> Substituting <span class="math inline">\(t=\cos\theta\)</span>, the definition of <span class="math inline">\(\alpha\)</span> says precisely that <span id="eq-gw-inequality"><span class="math display">\[
+\frac2\pi\arccos t\geq\alpha(1-t)
+\qquad\text{for all }t\in[-1,1] .
+\tag{1}\]</span></span></p>
+<div id="thm-goemans-williamson" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 1 (Goemans–Williamson)</strong></span> Let <span class="math inline">\(G\)</span> be a graph with adjacency matrix <span class="math inline">\(A\)</span>, let <span class="math inline">\((X_i)\)</span> be a maximizer of <span class="math inline">\(\mathrm{SDP}(G)\)</span>, and let <span class="math inline">\(x=(\operatorname{sgn}\langle X_i,g\rangle)_i\)</span> be its rounding by a random hyperplane. Then <span class="math display">\[
+\mathbb E\,\mathrm{CUT}(G,x)\geq\alpha\cdot\mathrm{SDP}(G)\geq\alpha\cdot\mathrm{MAX\text{-}CUT}(G),
+\qquad\alpha\approx0.8786 .
+\]</span></p>
+</div>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>By the cut formula, linearity of expectation, and <a href="#lem-grothendieck-identity" class="quarto-xref">Lemma&nbsp;2</a>, <span class="math display">\[
+\mathbb E\,\mathrm{CUT}(G,x)=\frac14\sum_{i,j}A_{ij}\big(1-\mathbb Ex_ix_j\big)
+=\frac14\sum_{i,j}A_{ij}\Big(1-\frac2\pi\arcsin\langle X_i,X_j\rangle\Big)
+=\frac14\sum_{i,j}A_{ij}\,\frac2\pi\arccos\langle X_i,X_j\rangle .
+\]</span> Every <span class="math inline">\(A_{ij}\)</span> is nonnegative, so <a href="#eq-gw-inequality" class="quarto-xref">Equation&nbsp;1</a> may be applied term by term: <span class="math display">\[
+\mathbb E\,\mathrm{CUT}(G,x)\geq\alpha\cdot\frac14\sum_{i,j}A_{ij}\big(1-\langle X_i,X_j\rangle\big)=\alpha\cdot\mathrm{SDP}(G).
+\]</span> The second inequality is <span class="math inline">\(\mathrm{SDP}(G)\geq\mathrm{MAX\text{-}CUT}(G)\)</span>.</p>
+</div>
+</div>
+</div>
+<p>Several remarks.</p>
+<p><strong>The bound is in expectation, but that is enough.</strong> The random variable <span class="math inline">\(\mathrm{CUT}(G,x)\)</span> takes values in <span class="math inline">\([0,|E|]\)</span>, so <span class="math inline">\(\mathbb P\{\mathrm{CUT}(G,x)\geq(\alpha-\varepsilon)\mathrm{SDP}(G)\}\geq c\varepsilon\)</span> for a constant <span class="math inline">\(c\)</span> depending on <span class="math inline">\(|E|/\mathrm{SDP}(G)\leq2\)</span>, by the reverse Markov inequality. Repeating the rounding <span class="math inline">\(O(\varepsilon^{-1}\log(1/\eta))\)</span> times and keeping the best cut therefore gives an <span class="math inline">\((\alpha-\varepsilon)\)</span>-approximation with probability at least <span class="math inline">\(1-\eta\)</span>. The rounding can also be derandomized, but the random version is the natural one.</p>
+<p><strong>Where the constant comes from.</strong> The relaxation loses nothing on the constraint side, since the cube is contained in the feasible set. All of the loss is in the rounding step, and it is measured by the ratio of <span class="math inline">\(\frac2\pi\arccos t\)</span> to <span class="math inline">\(1-t\)</span> in <a href="#eq-gw-inequality" class="quarto-xref">Equation&nbsp;1</a>. The worst case is an edge whose endpoints make angle <span class="math inline">\(\theta\approx2.33\)</span> in the relaxed solution, for which the hyperplane cuts the edge with probability <span class="math inline">\(\theta/\pi\approx0.74\)</span> while the relaxation counts it with weight <span class="math inline">\((1-\cos\theta)/2\approx0.85\)</span>.</p>
+<p><strong>The constant is believed optimal.</strong> Håstad proved that no polynomial time algorithm achieves a ratio above <span class="math inline">\(16/17\approx0.941\)</span> unless P equals NP, and Khot, Kindler, Mossel and O’Donnell <span class="citation" data-cites="khot2007">(<a href="#ref-khot2007" role="doc-biblioref">Khot et al. 2007</a>)</span> showed that under the Unique Games Conjecture no polynomial time algorithm achieves a ratio above <span class="math inline">\(\alpha\)</span> itself. The random hyperplane is then the best possible rounding of the best possible relaxation. The algorithm is due to Goemans and Williamson <span class="citation" data-cites="goemans1995">(<a href="#ref-goemans1995" role="doc-biblioref">Goemans and Williamson 1995</a>)</span>.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-khot2007" class="csl-entry" role="listitem">
+Khot, Subhash, Guy Kindler, Elchanan Mossel, and Ryan O’Donnell. 2007. <span>“Optimal Inapproximability Results for <span>MAX-CUT</span> and Other 2-Variable <span>CSPs</span>?”</span> <em>SIAM Journal on Computing</em> 37 (1): 319–57. <a href="https://doi.org/10.1137/S0097539705447372">https://doi.org/10.1137/S0097539705447372</a>.
+</div><div id="ref-goemans1995" class="csl-entry" role="listitem">
+Goemans, Michel X., and David P. Williamson. 1995. <span>“Improved Approximation Algorithms for Maximum Cut and Satisfiability Problems Using Semidefinite Programming.”</span> <em>Journal of the ACM</em> 42 (6): 1115–45. <a href="https://doi.org/10.1145/227683.227684">https://doi.org/10.1145/227683.227684</a>.
+</div></div></section>
+<section id="beyond-max-cut" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="beyond-max-cut"><span class="header-section-number">5</span> Beyond max-cut</h2>
+<p>The argument used two features of the cut objective: the coefficients <span class="math inline">\(A_{ij}\)</span> are nonnegative, and the objective involves <span class="math inline">\(1-\langle X_i,X_j\rangle\)</span> rather than <span class="math inline">\(\langle X_i,X_j\rangle\)</span> alone. Both fail for the general problem <span class="math inline">\(\mathrm{INT}(A)\)</span>. For a symmetric <span class="math inline">\(A\)</span> with entries of both signs, rounding a maximizer <span class="math inline">\((X_i)\)</span> of <span class="math inline">\(\mathrm{SDP}(A)\)</span> gives <span class="math display">\[
+\mathbb E\langle Ax,x\rangle=\frac2\pi\sum_{i,j}A_{ij}\arcsin\langle X_i,X_j\rangle ,
+\]</span> and there is no termwise inequality relating <span class="math inline">\(\arcsin\langle X_i,X_j\rangle\)</span> to <span class="math inline">\(\langle X_i,X_j\rangle\)</span> that respects the signs of the coefficients. If the nonlinearity were absent, that is, if <span class="math inline">\(\arcsin t\)</span> could be replaced by <span class="math inline">\(t\)</span>, we would have <span class="math inline">\(\mathbb E\langle Ax,x\rangle=\frac2\pi\mathrm{SDP}(A)\)</span>, and hence <span class="math inline">\(\mathrm{INT}(A)\geq\frac2\pi\mathrm{SDP}(A)\)</span> for every <span class="math inline">\(A\)</span>.</p>
+<p>Whether some inequality of this form holds, <span class="math inline">\(\mathrm{SDP}(A)\leq K\cdot\mathrm{INT}(A)\)</span> with a constant <span class="math inline">\(K\)</span> independent of <span class="math inline">\(A\)</span> and <span class="math inline">\(n\)</span>, is not at all obvious. The statement that it does is Grothendieck’s inequality, and the next lecture proves it by a device that removes the nonlinearity: the vectors <span class="math inline">\(X_i\)</span> are replaced by vectors <span class="math inline">\(\Phi(X_i)\)</span> in a larger Hilbert space, chosen so that the arcsine of their inner products is a linear function of the original inner products. The rounding then becomes exact, and the Gaussian vector used to round is the isonormal process of Lecture 10 on the larger space.</p>
+<p>The same question arises for the bilinear problem <span class="math display">\[
+\max\Big\{\sum_{i,j}A_{ij}x_iy_j:\ x\in\{-1,1\}^m,\ y\in\{-1,1\}^n\Big\},
+\]</span> whose value is the <strong>cut norm</strong> of <span class="math inline">\(A\)</span>, a quantity that governs the regularity of graphs and the approximation of dense combinatorial problems. Its semidefinite relaxation, over unit vectors <span class="math inline">\(X_i\)</span> and <span class="math inline">\(Y_j\)</span>, is the setting in which Grothendieck’s inequality is usually stated.</p>
+</section>
+<section id="where-we-go-next" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="where-we-go-next"><span class="header-section-number">6</span> Where we go next</h2>
+<p>The next lecture states Grothendieck’s inequality, deduces from it that the bilinear relaxation is tight up to the constant <span class="math inline">\(K\)</span>, explains why the symmetric problem is genuinely harder, and proves the inequality with <span class="math inline">\(K\leq\pi/(2\log(1+\sqrt2))\approx1.78\)</span> by Krivine’s kernel-trick argument.</p>
+
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/elliotpaquette\.github\.io\/high-dimensional-probability\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

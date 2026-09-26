@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-11-25">
+
+<title>Lecture 20: Covariance Estimation for Low-Dimensional Data – High-Dimensional Probability</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-5685cd926c25366c96d9f1407e584118.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">High-Dimensional Probability</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-lectures" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Lectures</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-lectures">    
+        <li>
+    <a class="dropdown-item" href="../lectures/01-curse-of-dimensionality.html">
+ <span class="dropdown-text">1. The Curse of Dimensionality</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/02-convex-hulls.html">
+ <span class="dropdown-text">2. Convex Hulls and Sparse Approximation</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/03-gaussian-width.html">
+ <span class="dropdown-text">3. Gaussian Width</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/04-tails.html">
+ <span class="dropdown-text">4. Tails of Random Variables</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/05-orlicz-norms.html">
+ <span class="dropdown-text">5. Geometric Discrepancy and Orlicz Norms</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/06-bernstein-dimension-reduction.html">
+ <span class="dropdown-text">6. Bernstein’s Inequality and Dimension Reduction</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/07-coordinate-embeddings.html">
+ <span class="dropdown-text">7. Coordinate Embeddings</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/08-extreme-singular-values.html">
+ <span class="dropdown-text">8. Extreme Singular Values</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/09-covariance-estimation.html">
+ <span class="dropdown-text">9. Covariance Estimation</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/10-gaussian-processes.html">
+ <span class="dropdown-text">10. Gaussian Processes</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/11-gaussian-concentration.html">
+ <span class="dropdown-text">11. Gaussian Concentration</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/12-gaussian-comparison.html">
+ <span class="dropdown-text">12. Gaussian Comparison and Gaussian Matrices</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/13-gaussian-width-revisited.html">
+ <span class="dropdown-text">13. Gaussian Width Revisited</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/14-semidefinite-relaxations.html">
+ <span class="dropdown-text">14. Semidefinite Relaxations and Max-Cut</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/15-grothendieck.html">
+ <span class="dropdown-text">15. Grothendieck’s Inequality</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/16-dudley.html">
+ <span class="dropdown-text">16. Dudley’s Entropy Integral</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/17-applications-of-dudley.html">
+ <span class="dropdown-text">17. Applications of Dudley’s Inequality</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/18-generic-chaining.html">
+ <span class="dropdown-text">18. Generic Chaining</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/19-matrix-deviation.html">
+ <span class="dropdown-text">19. The Lower Bound and the Matrix Deviation Inequality</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/20-covariance-effective-rank.html">
+ <span class="dropdown-text">20. Covariance Estimation for Low-Dimensional Data</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/21-sparse-recovery.html">
+ <span class="dropdown-text">21. Sparse Recovery</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../exercises/index.html"> 
+<span class="menu-text">Exercises</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-course" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Course</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-course">    
+        <li>
+    <a class="dropdown-item" href="../course/index.html">
+ <span class="dropdown-text">Fall 2026</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../course/calendar.html">
+ <span class="dropdown-text">Calendar</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../references.html"> 
+<span class="menu-text">References</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#the-deviation-of-squares" id="toc-the-deviation-of-squares" class="nav-link active" data-scroll-target="#the-deviation-of-squares"><span class="header-section-number">1</span> The deviation of squares</a></li>
+  <li><a href="#covariance-estimation-with-effective-rank" id="toc-covariance-estimation-with-effective-rank" class="nav-link" data-scroll-target="#covariance-estimation-with-effective-rank"><span class="header-section-number">2</span> Covariance estimation with effective rank</a></li>
+  <li><a href="#random-projections-revisited" id="toc-random-projections-revisited" class="nav-link" data-scroll-target="#random-projections-revisited"><span class="header-section-number">3</span> Random projections, revisited</a></li>
+  <li><a href="#where-we-go-next" id="toc-where-we-go-next" class="nav-link" data-scroll-target="#where-we-go-next"><span class="header-section-number">4</span> Where we go next</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Lecture 20: Covariance Estimation for Low-Dimensional Data</h1>
+<p class="subtitle lead">Effective rank, ellipsoids, and the matrix deviation inequality at work</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 25, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Lecture 9 proved that <span class="math inline">\(m\gtrsim n\)</span> samples estimate an <span class="math inline">\(n\)</span>-dimensional covariance matrix in operator norm, and observed that the bound charges for all <span class="math inline">\(n\)</span> directions even when the data are concentrated near a low-dimensional subspace. The net argument could not do better, because the net of the sphere has <span class="math inline">\(e^{cn}\)</span> points whatever <span class="math inline">\(\Sigma\)</span> is. The matrix deviation inequality of Lecture 19 replaces the net by the Gaussian width of the relevant index set, and the relevant set is an ellipsoid whose width is <span class="math inline">\(\sqrt{\operatorname{tr}\Sigma}\)</span> rather than <span class="math inline">\(\sqrt{n\|\Sigma\|_{\mathrm{op}}}\)</span>. The result is the theorem stated without proof in Lecture 9: the sample size that matters is the effective rank <span class="math inline">\(\operatorname{tr}\Sigma/\|\Sigma\|_{\mathrm{op}}\)</span>, not the dimension.</p>
+<section id="the-deviation-of-squares" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="the-deviation-of-squares"><span class="header-section-number">1</span> The deviation of squares</h2>
+<p>The covariance error is a quadratic form in the data, so the first step is to pass from <span class="math inline">\(\|Ax\|_2-\sqrt m\|x\|_2\)</span> to its square. Throughout, <span class="math inline">\(A\)</span> is an <span class="math inline">\(m\times n\)</span> matrix with independent, mean-zero, isotropic, <span class="math inline">\(K\)</span>-subgaussian rows, as in Lectures 9 and 19, and for bounded <span class="math inline">\(T\subseteq\mathbb R^n\)</span> we write <span class="math inline">\(w(T)\)</span> for the Gaussian width and <span class="math inline">\(\operatorname{rad}(T)=\sup_{x\in T}\|x\|_2\)</span>.</p>
+<div id="prp-deviation-squares" class="theorem proposition">
+<p><span class="theorem-title"><strong>Proposition 1 (Deviation of squares)</strong></span> For every bounded <span class="math inline">\(T\subseteq\mathbb R^n\)</span>, <span class="math display">\[
+\mathbb E\sup_{x\in T}\Big|\|Ax\|_2^2-m\|x\|_2^2\Big|
+\leq CK^2\big(w(T)+\operatorname{rad}(T)\big)^2+CK\sqrt m\operatorname{rad}(T)\big(w(T)+\operatorname{rad}(T)\big).
+\]</span></p>
+</div>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Write <span class="math inline">\(X_x=\|Ax\|_2-\sqrt m\|x\|_2\)</span> and <span class="math inline">\(S=\sup_{x\in T}|X_x|\)</span>. Since <span class="math inline">\(a^2-b^2=(a-b)(a+b)\)</span> and <span class="math inline">\(\|Ax\|_2+\sqrt m\|x\|_2\leq|X_x|+2\sqrt m\|x\|_2\)</span>, <span class="math display">\[
+\Big|\|Ax\|_2^2-m\|x\|_2^2\Big|=|X_x|\big(\|Ax\|_2+\sqrt m\|x\|_2\big)
+\leq S^2+2\sqrt m\operatorname{rad}(T)\,S
+\]</span> for every <span class="math inline">\(x\in T\)</span>. By the tail form of the matrix deviation inequality (Lecture 19), <span class="math inline">\(S\leq CK(1+u)(w(T)+\operatorname{rad}(T))\)</span> with probability at least <span class="math inline">\(1-2e^{-u^2}\)</span>, so <span class="math inline">\(S\)</span> has a sub-Gaussian tail at scale <span class="math inline">\(CK(w(T)+\operatorname{rad}(T))\)</span>, and integrating gives <span class="math inline">\(\mathbb ES^2\leq CK^2(w(T)+\operatorname{rad}(T))^2\)</span> and <span class="math inline">\(\mathbb ES\leq CK(w(T)+\operatorname{rad}(T))\)</span>. Take expectations.</p>
+</div>
+</div>
+</div>
+<p>The two terms have different origins. The first, of order <span class="math inline">\(K^2w(T)^2\)</span>, is the square of the deviation of the norm process and does not grow with <span class="math inline">\(m\)</span>. The second, of order <span class="math inline">\(\sqrt m\cdot Kw(T)\)</span>, is the cross term between the deviation and the typical size <span class="math inline">\(\sqrt m\|x\|_2\)</span> of <span class="math inline">\(\|Ax\|_2\)</span>. After division by <span class="math inline">\(m\)</span>, they become the <span class="math inline">\(r/m\)</span> and <span class="math inline">\(\sqrt{r/m}\)</span> terms of the covariance bound.</p>
+</section>
+<section id="covariance-estimation-with-effective-rank" class="level2 page-columns page-full" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="covariance-estimation-with-effective-rank"><span class="header-section-number">2</span> Covariance estimation with effective rank</h2>
+<div id="def-effective-rank" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 1 (Effective rank)</strong></span> The <strong>effective rank</strong> of a nonzero positive semidefinite matrix <span class="math inline">\(\Sigma\)</span> is <span class="math display">\[
+r(\Sigma):=\frac{\operatorname{tr}\Sigma}{\|\Sigma\|_{\mathrm{op}}}=\frac{\sum_i\lambda_i(\Sigma)}{\max_i\lambda_i(\Sigma)}\in[1,n].
+\]</span></p>
+</div>
+<p>The effective rank is <span class="math inline">\(n\)</span> when all eigenvalues are equal and stays bounded when the eigenvalues decay quickly. It is the stable rank of <span class="math inline">\(\Sigma^{1/2}\)</span> in the sense of Lecture 13, since <span class="math inline">\(\|\Sigma^{1/2}\|_F^2=\operatorname{tr}\Sigma\)</span> and <span class="math inline">\(\|\Sigma^{1/2}\|_{\mathrm{op}}^2=\|\Sigma\|_{\mathrm{op}}\)</span>, and up to a constant it is the stable dimension of the ellipsoid <span class="math inline">\(\Sigma^{1/2}B_2^n\)</span>, whose width is <span class="math inline">\(\mathbb E\|\Sigma^{1/2}g\|_2\leq\sqrt{\operatorname{tr}\Sigma}\)</span> and whose radius is <span class="math inline">\(\|\Sigma\|_{\mathrm{op}}^{1/2}\)</span>. Unlike the rank, it is continuous in <span class="math inline">\(\Sigma\)</span>.</p>
+<div id="thm-covariance-effective-rank" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 1 (Covariance estimation for low-dimensional data)</strong></span> Let <span class="math inline">\(X\)</span> be a mean-zero random vector in <span class="math inline">\(\mathbb R^n\)</span> with covariance <span class="math inline">\(\Sigma\)</span>, and suppose that for every <span class="math inline">\(x\in\mathbb R^n\)</span> the marginal <span class="math inline">\(\langle X,x\rangle\)</span> is <span class="math inline">\(K\langle\Sigma x,x\rangle\)</span>-subgaussian. Let <span class="math inline">\(\Sigma_m\)</span> be the sample covariance of <span class="math inline">\(m\)</span> independent copies of <span class="math inline">\(X\)</span>. Then <span class="math display">\[
+\mathbb E\|\Sigma_m-\Sigma\|_{\mathrm{op}}\leq CK^2\Big(\sqrt{\frac{r(\Sigma)}m}+\frac{r(\Sigma)}m\Big)\|\Sigma\|_{\mathrm{op}} .
+\]</span></p>
+</div>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>As in Lecture 9, write <span class="math inline">\(X_i=\Sigma^{1/2}Z_i\)</span> with <span class="math inline">\(Z_i\)</span> independent, isotropic, <span class="math inline">\(K\)</span>-subgaussian, and let <span class="math inline">\(A\)</span> be the matrix with rows <span class="math inline">\(Z_i^{\mathsf T}\)</span>; if <span class="math inline">\(\Sigma\)</span> is singular, work in its range. Then <span class="math inline">\(\Sigma_m-\Sigma=\Sigma^{1/2}(\frac1mA^{\mathsf T}A-I)\Sigma^{1/2}\)</span>, and since this matrix is symmetric its operator norm is the supremum of the absolute value of its quadratic form over the sphere: <span class="math display">\[
+\|\Sigma_m-\Sigma\|_{\mathrm{op}}
+=\sup_{\|x\|_2=1}\Big|\Big\langle\Big(\frac1mA^{\mathsf T}A-I\Big)\Sigma^{1/2}x,\Sigma^{1/2}x\Big\rangle\Big|
+=\sup_{y\in\mathcal E}\Big|\frac1m\|Ay\|_2^2-\|y\|_2^2\Big|,
+\]</span> where <span class="math inline">\(\mathcal E:=\Sigma^{1/2}S^{n-1}\)</span> is an ellipsoid. This is the whole point: the net argument of Lecture 9 evaluated the same quadratic form on the sphere, where every direction costs the same, whereas here it is evaluated on <span class="math inline">\(\mathcal E\)</span>, whose extent in each direction is the standard deviation of the data in that direction.</p>
+<p>Now apply <a href="#prp-deviation-squares" class="quarto-xref">Proposition&nbsp;1</a> to <span class="math inline">\(T=\mathcal E\)</span>. Its width is <span class="math display">\[
+w(\mathcal E)=\mathbb E\sup_{\|x\|_2=1}\langle g,\Sigma^{1/2}x\rangle=\mathbb E\|\Sigma^{1/2}g\|_2
+\leq\big(\mathbb E\|\Sigma^{1/2}g\|_2^2\big)^{1/2}=\sqrt{\operatorname{tr}\Sigma},
+\]</span> and its radius is <span class="math inline">\(\|\Sigma^{1/2}\|_{\mathrm{op}}=\|\Sigma\|_{\mathrm{op}}^{1/2}\)</span>. Writing <span class="math inline">\(\sigma=\|\Sigma\|_{\mathrm{op}}\)</span> and <span class="math inline">\(r=r(\Sigma)\)</span>, so that <span class="math inline">\(\operatorname{tr}\Sigma=r\sigma\)</span> and <span class="math inline">\(\sqrt{r\sigma}+\sqrt\sigma\leq2\sqrt{r\sigma}\)</span> because <span class="math inline">\(r\geq1\)</span>, <span class="math display">\[
+\mathbb E\|\Sigma_m-\Sigma\|_{\mathrm{op}}
+\leq\frac1m\Big[CK^2\cdot4r\sigma+CK\sqrt m\sqrt\sigma\cdot2\sqrt{r\sigma}\Big]
+=C'\sigma\Big[K^2\frac rm+K\sqrt{\frac rm}\Big],
+\]</span> and <span class="math inline">\(K\leq K^2\)</span> since <span class="math inline">\(K\geq1\)</span>.</p>
+</div>
+</div>
+</div>
+<p>Compare with Lecture 9, whose bound was the same with <span class="math inline">\(n\)</span> in place of <span class="math inline">\(r(\Sigma)\)</span>. Since <span class="math inline">\(r(\Sigma)\leq n\)</span> always, the new theorem is never worse, and it is much better when the spectrum of <span class="math inline">\(\Sigma\)</span> decays.</p>
+<div class="callout callout-style-simple callout-note callout-titled" title="What the effective rank buys">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>What the effective rank buys
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>Relative error.</strong> For <span class="math inline">\(\varepsilon\in(0,1)\)</span>, <span class="math inline">\(\mathbb E\|\Sigma_m-\Sigma\|_{\mathrm{op}}\leq\varepsilon\|\Sigma\|_{\mathrm{op}}\)</span> as soon as <span class="math inline">\(m\geq CK^4r(\Sigma)/\varepsilon^2\)</span>. The ambient dimension has disappeared from the sample complexity.</p>
+<p><strong>Fast spectral decay.</strong> If <span class="math inline">\(\lambda_i(\Sigma)\leq\lambda_1i^{-2}\)</span>, then <span class="math inline">\(r(\Sigma)\leq\pi^2/6\)</span>, and a number of samples independent of <span class="math inline">\(n\)</span> estimates <span class="math inline">\(\Sigma\)</span> to any fixed relative accuracy, in dimension <span class="math inline">\(n=10^6\)</span> as well as in dimension <span class="math inline">\(10\)</span>. The estimate is in operator norm, so it controls the leading eigenvalues and eigenvectors of <span class="math inline">\(\Sigma\)</span> through the Davis–Kahan theorem, which is what principal component analysis needs.</p>
+<p><strong>Spiked covariance.</strong> If <span class="math inline">\(\Sigma=I_n+\theta vv^{\mathsf T}\)</span> for a unit vector <span class="math inline">\(v\)</span> and <span class="math inline">\(\theta&gt;0\)</span>, then <span class="math inline">\(r(\Sigma)=(n+\theta)/(1+\theta)\)</span>, which is about <span class="math inline">\(n/\theta\)</span> for large <span class="math inline">\(\theta\)</span>. A strong spike reduces the effective rank, and the theorem says the spike direction is learned from <span class="math inline">\(m\gtrsim n/\theta\)</span> samples, up to the accuracy needed for Davis–Kahan.</p>
+<p><strong>Two regimes.</strong> For <span class="math inline">\(m\geq r\)</span> the bound is <span class="math inline">\(\sqrt{r/m}\)</span>, the parametric rate for <span class="math inline">\(r\)</span> effective parameters. For <span class="math inline">\(m&lt;r\)</span> it is <span class="math inline">\(r/m&gt;1\)</span>, which is worse than the trivial bound <span class="math inline">\(\|\Sigma_m-\Sigma\|_{\mathrm{op}}\leq\|\Sigma_m\|_{\mathrm{op}}+\|\Sigma\|_{\mathrm{op}}\)</span> only by a constant, and reflects that <span class="math inline">\(\Sigma_m\)</span> has rank at most <span class="math inline">\(m\)</span>.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note callout-titled" title="Sharpness, and the tail">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Sharpness, and the tail
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>For Gaussian data the theorem is sharp in both terms: Koltchinskii and Lounici <span class="citation" data-cites="koltchinskii2017">(<a href="#ref-koltchinskii2017" role="doc-biblioref">Koltchinskii and Lounici 2017</a>)</span> proved matching lower bounds, so that <span class="math inline">\(\mathbb E\|\Sigma_m-\Sigma\|_{\mathrm{op}}\asymp(\sqrt{r/m}+r/m)\|\Sigma\|_{\mathrm{op}}\)</span> for <span class="math inline">\(X\sim N(0,\Sigma)\)</span>, and they showed that <span class="math inline">\(\|\Sigma_m-\Sigma\|_{\mathrm{op}}\)</span> concentrates around its mean at the scale <span class="math inline">\(\|\Sigma\|_{\mathrm{op}}(\sqrt{1/m}+1/m)\)</span>, much smaller than the mean itself when <span class="math inline">\(r\)</span> is large. A high-probability version of the theorem above, with <span class="math inline">\(r+u^2\)</span> in place of <span class="math inline">\(r\)</span> on an event of probability <span class="math inline">\(1-2e^{-u^2}\)</span>, follows by running the proof with the tail form of the matrix deviation inequality instead of its expectation.</p>
+</div>
+</div>
+</div>
+<div class="no-row-height column-margin column-container"><div id="ref-koltchinskii2017" class="csl-entry" role="listitem">
+Koltchinskii, Vladimir, and Karim Lounici. 2017. <span>“Concentration Inequalities and Moment Bounds for Sample Covariance Operators.”</span> <em>Bernoulli</em> 23 (1): 110–33. <a href="https://doi.org/10.3150/15-BEJ730">https://doi.org/10.3150/15-BEJ730</a>.
+</div></div></section>
+<section id="random-projections-revisited" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="random-projections-revisited"><span class="header-section-number">3</span> Random projections, revisited</h2>
+<p>The same inequality sharpens the random projection theorem of Lecture 13.</p>
+<div id="prp-projection-sharp" class="theorem proposition">
+<p><span class="theorem-title"><strong>Proposition 2 (Sizes of random projections, sharp constant)</strong></span> Let <span class="math inline">\(A\)</span> have independent, mean-zero, isotropic, <span class="math inline">\(K\)</span>-subgaussian rows and let <span class="math inline">\(T\subseteq\mathbb R^n\)</span> be bounded. Then <span class="math display">\[
+\mathbb E\operatorname{diam}(AT)\leq\sqrt m\operatorname{diam}(T)+CKw(T).
+\]</span></p>
+</div>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Apply the matrix deviation inequality (Lecture 19) to the set <span class="math inline">\(T-T\)</span>, for which <span class="math inline">\(\operatorname{rad}(T-T)=\operatorname{diam}(T)\)</span> and <span class="math inline">\(w(T-T)=2w(T)\)</span>: <span class="math display">\[
+\mathbb E\operatorname{diam}(AT)=\mathbb E\sup_{x\in T-T}\|Ax\|_2
+\leq\sqrt m\operatorname{diam}(T)+\mathbb E\sup_{x\in T-T}\Big|\|Ax\|_2-\sqrt m\|x\|_2\Big|
+\leq\sqrt m\operatorname{diam}(T)+CK\big(2w(T)+\operatorname{diam}(T)\big),
+\]</span> and <span class="math inline">\(\operatorname{diam}(T)\leq C'w(T)\)</span>: for any <span class="math inline">\(x,y\in T\)</span>, by the symmetrization identity of Lecture 3, <span class="math inline">\(w(T)=\tfrac12w(T-T)\geq\tfrac12\mathbb E|\langle g,x-y\rangle|=\tfrac12\sqrt{2/\pi}\,\|x-y\|_2\)</span>, and one takes the supremum over <span class="math inline">\(x,y\)</span>.</p>
+</div>
+</div>
+</div>
+<p>Lecture 13 had <span class="math inline">\(C(w(T)+\sqrt m\operatorname{diam}(T))\)</span> with an unspecified constant in front of the <span class="math inline">\(\sqrt m\)</span> term, and only for Gaussian matrices. Here the leading term has constant exactly <span class="math inline">\(1\)</span>, the matrix need only have sub-Gaussian rows, and the price is the width of <span class="math inline">\(T\)</span> with no factor of <span class="math inline">\(\sqrt m\)</span>. In the regime <span class="math inline">\(m\gtrsim d(T)\)</span> of Lecture 13, dividing by <span class="math inline">\(\sqrt m\)</span> shows that <span class="math inline">\(A/\sqrt m\)</span> changes the diameter of <span class="math inline">\(T\)</span> by a factor <span class="math inline">\(1+O(K\sqrt{d(T)/m})\)</span>, and the phase transition at the stable dimension is now visible with its constant.</p>
+</section>
+<section id="where-we-go-next" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="where-we-go-next"><span class="header-section-number">4</span> Where we go next</h2>
+<p>Two applications of the matrix deviation inequality have now been computed, and both turned a question about a random matrix into a question about the Gaussian width of a set: an ellipsoid for covariance estimation, a difference set for projections. The final application of the course is sparse recovery. There the set is the intersection of the kernel of a random measurement matrix with a set of sparse or nearly sparse vectors, its width is <span class="math inline">\(\sqrt{s\log(n/s)}\)</span> by Lecture 13, and the inequality yields the number of linear measurements needed to recover an <span class="math inline">\(s\)</span>-sparse signal by convex optimization.</p>
+
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/elliotpaquette\.github\.io\/high-dimensional-probability\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-10-21">
+
+<title>Lecture 11: Gaussian Concentration – High-Dimensional Probability</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-5685cd926c25366c96d9f1407e584118.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">High-Dimensional Probability</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-lectures" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Lectures</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-lectures">    
+        <li>
+    <a class="dropdown-item" href="../lectures/01-curse-of-dimensionality.html">
+ <span class="dropdown-text">1. The Curse of Dimensionality</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/02-convex-hulls.html">
+ <span class="dropdown-text">2. Convex Hulls and Sparse Approximation</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/03-gaussian-width.html">
+ <span class="dropdown-text">3. Gaussian Width</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/04-tails.html">
+ <span class="dropdown-text">4. Tails of Random Variables</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/05-orlicz-norms.html">
+ <span class="dropdown-text">5. Geometric Discrepancy and Orlicz Norms</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/06-bernstein-dimension-reduction.html">
+ <span class="dropdown-text">6. Bernstein’s Inequality and Dimension Reduction</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/07-coordinate-embeddings.html">
+ <span class="dropdown-text">7. Coordinate Embeddings</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/08-extreme-singular-values.html">
+ <span class="dropdown-text">8. Extreme Singular Values</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/09-covariance-estimation.html">
+ <span class="dropdown-text">9. Covariance Estimation</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/10-gaussian-processes.html">
+ <span class="dropdown-text">10. Gaussian Processes</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/11-gaussian-concentration.html">
+ <span class="dropdown-text">11. Gaussian Concentration</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/12-gaussian-comparison.html">
+ <span class="dropdown-text">12. Gaussian Comparison and Gaussian Matrices</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/13-gaussian-width-revisited.html">
+ <span class="dropdown-text">13. Gaussian Width Revisited</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/14-semidefinite-relaxations.html">
+ <span class="dropdown-text">14. Semidefinite Relaxations and Max-Cut</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/15-grothendieck.html">
+ <span class="dropdown-text">15. Grothendieck’s Inequality</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/16-dudley.html">
+ <span class="dropdown-text">16. Dudley’s Entropy Integral</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/17-applications-of-dudley.html">
+ <span class="dropdown-text">17. Applications of Dudley’s Inequality</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/18-generic-chaining.html">
+ <span class="dropdown-text">18. Generic Chaining</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/19-matrix-deviation.html">
+ <span class="dropdown-text">19. The Lower Bound and the Matrix Deviation Inequality</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/20-covariance-effective-rank.html">
+ <span class="dropdown-text">20. Covariance Estimation for Low-Dimensional Data</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/21-sparse-recovery.html">
+ <span class="dropdown-text">21. Sparse Recovery</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../exercises/index.html"> 
+<span class="menu-text">Exercises</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-course" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Course</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-course">    
+        <li>
+    <a class="dropdown-item" href="../course/index.html">
+ <span class="dropdown-text">Fall 2026</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../course/calendar.html">
+ <span class="dropdown-text">Calendar</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../references.html"> 
+<span class="menu-text">References</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#the-gaussian-concentration-inequality" id="toc-the-gaussian-concentration-inequality" class="nav-link active" data-scroll-target="#the-gaussian-concentration-inequality"><span class="header-section-number">1</span> The Gaussian concentration inequality</a></li>
+  <li><a href="#concentration-on-the-sphere" id="toc-concentration-on-the-sphere" class="nav-link" data-scroll-target="#concentration-on-the-sphere"><span class="header-section-number">2</span> Concentration on the sphere</a></li>
+  <li><a href="#the-borelltis-inequality" id="toc-the-borelltis-inequality" class="nav-link" data-scroll-target="#the-borelltis-inequality"><span class="header-section-number">3</span> The Borell–TIS inequality</a></li>
+  <li><a href="#where-we-go-next" id="toc-where-we-go-next" class="nav-link" data-scroll-target="#where-we-go-next"><span class="header-section-number">4</span> Where we go next</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Lecture 11: Gaussian Concentration</h1>
+<p class="subtitle lead">Lipschitz functions, the sphere, and the Borell–TIS inequality</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 21, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Lecture 10 ended with two questions about the supremum of a Gaussian process: how large is it, and how concentrated is it around its mean? This lecture answers the second, and the answer is remarkably clean. The supremum fluctuates on the scale of the largest standard deviation of a single <span class="math inline">\(X_t\)</span>, whatever the index set. The mechanism is a concentration inequality for Lipschitz functions of a Gaussian vector, proved with Stein’s lemma, and the passage from Lipschitz functions to suprema is the observation that a maximum of linear functions is Lipschitz.</p>
+<section id="the-gaussian-concentration-inequality" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="the-gaussian-concentration-inequality"><span class="header-section-number">1</span> The Gaussian concentration inequality</h2>
+<p>Throughout, <span class="math inline">\(\|h\|_{\mathrm{Lip}}\)</span> denotes the Lipschitz constant of a function <span class="math inline">\(h:\mathbb R^d\to\mathbb R\)</span> with respect to the Euclidean norm. For such <span class="math inline">\(h\)</span>, <span class="math inline">\(\nabla h\)</span> exists almost everywhere and <span class="math inline">\(\|\nabla h\|_2\leq\|h\|_{\mathrm{Lip}}\)</span> wherever it exists.</p>
+<div id="thm-gaussian-concentration" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 1 (Gaussian concentration)</strong></span> Let <span class="math inline">\(X\sim N(0,I_d)\)</span> and let <span class="math inline">\(h:\mathbb R^d\to\mathbb R\)</span> be Lipschitz. Then for every <span class="math inline">\(\lambda\in\mathbb R\)</span>, <span class="math display">\[
+\mathbb Ee^{\lambda(h(X)-\mathbb Eh(X))}\leq\exp\Big(\frac{\lambda^2\|h\|_{\mathrm{Lip}}^2}2\Big),
+\]</span> and consequently, for every <span class="math inline">\(t\geq0\)</span>, <span class="math display">\[
+\mathbb P\big\{|h(X)-\mathbb Eh(X)|\geq t\big\}\leq2\exp\Big(-\frac{t^2}{2\|h\|_{\mathrm{Lip}}^2}\Big).
+\]</span></p>
+</div>
+<p>In the language of Lecture 4, <span class="math inline">\(h(X)-\mathbb Eh(X)\)</span> is sub-Gaussian with variance proxy <span class="math inline">\(\|h\|_{\mathrm{Lip}}^2\)</span>. The dimension <span class="math inline">\(d\)</span> does not appear. A <span class="math inline">\(1\)</span>-Lipschitz function of a standard Gaussian vector in <span class="math inline">\(\mathbb R^{10^6}\)</span> fluctuates no more than a <span class="math inline">\(1\)</span>-Lipschitz function of a single standard Gaussian, which is to say no more than <span class="math inline">\(N(0,1)\)</span> itself. The linear function <span class="math inline">\(h(x)=x_1\)</span> shows that the constant in the exponent cannot be improved.</p>
+<p>The proof rests on an interpolation identity for covariances. For <span class="math inline">\(\alpha\in[0,1]\)</span> and independent <span class="math inline">\(X,Y\sim N(0,\Sigma)\)</span>, set <span class="math display">\[
+X_\alpha:=\alpha X+\sqrt{1-\alpha^2}\,Y .
+\]</span> Then <span class="math inline">\(X_\alpha\sim N(0,\Sigma)\)</span> for every <span class="math inline">\(\alpha\)</span>, since <span class="math inline">\(\alpha^2+(1-\alpha^2)=1\)</span>, while <span class="math inline">\(X_1=X\)</span> and <span class="math inline">\(X_0=Y\)</span> is independent of <span class="math inline">\(X\)</span>. The path <span class="math inline">\(\alpha\mapsto X_\alpha\)</span> moves from a copy of <span class="math inline">\(X\)</span> to an independent copy without leaving the distribution <span class="math inline">\(N(0,\Sigma)\)</span>.</p>
+<div id="lem-covariance-interpolation" class="theorem lemma">
+<p><span class="theorem-title"><strong>Lemma 1 (Covariance interpolation)</strong></span> Let <span class="math inline">\(X,Y\)</span> be independent <span class="math inline">\(N(0,\Sigma)\)</span> vectors in <span class="math inline">\(\mathbb R^d\)</span>, let <span class="math inline">\(f\)</span> be Lipschitz, and let <span class="math inline">\(g\)</span> be <span class="math inline">\(C^1\)</span> and Lipschitz. Then <span class="math display">\[
+\operatorname{Cov}\big(f(X),g(X)\big)
+=\int_0^1\mathbb E\big\langle\Sigma\nabla f(X),\nabla g(X_\alpha)\big\rangle\,d\alpha .
+\]</span></p>
+</div>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Since <span class="math inline">\(X_1=X\)</span> and <span class="math inline">\(X_0=Y\)</span> is independent of <span class="math inline">\(X\)</span>, <span class="math display">\[
+\operatorname{Cov}\big(f(X),g(X)\big)
+=\mathbb Ef(X)g(X_1)-\mathbb Ef(X)g(X_0)
+=\mathbb E\Big[f(X)\int_0^1\frac d{d\alpha}g(X_\alpha)\,d\alpha\Big].
+\]</span> For <span class="math inline">\(0&lt;\alpha&lt;1\)</span>, the chain rule gives <span class="math display">\[
+\frac d{d\alpha}g(X_\alpha)
+=\Big\langle\nabla g(X_\alpha),\,X-\frac\alpha{\sqrt{1-\alpha^2}}Y\Big\rangle
+=\frac1{\sqrt{1-\alpha^2}}\big\langle\nabla g(X_\alpha),W_\alpha\big\rangle,
+\qquad
+W_\alpha:=\sqrt{1-\alpha^2}\,X-\alpha Y .
+\]</span> The pair <span class="math inline">\((X_\alpha,W_\alpha)\)</span> is a rotation of <span class="math inline">\((X,Y)\)</span> by an angle: both are <span class="math inline">\(N(0,\Sigma)\)</span>, and <span class="math display">\[
+\mathbb EX_\alpha W_\alpha^{\mathsf T}
+=\alpha\sqrt{1-\alpha^2}\,\Sigma-\sqrt{1-\alpha^2}\,\alpha\,\Sigma=0,
+\]</span> so by the independence remark of Lecture 10 they are independent. Inverting the rotation, <span class="math inline">\(X=\alpha X_\alpha+\sqrt{1-\alpha^2}\,W_\alpha\)</span>.</p>
+<p>Fix <span class="math inline">\(\alpha\)</span> and condition on <span class="math inline">\(X_\alpha\)</span>. The function <span class="math inline">\(w\mapsto f(\alpha X_\alpha+\sqrt{1-\alpha^2}\,w)\)</span> is Lipschitz with gradient <span class="math inline">\(\sqrt{1-\alpha^2}\,\nabla f(X)\)</span>, and <span class="math inline">\(W_\alpha\sim N(0,\Sigma)\)</span> is independent of <span class="math inline">\(X_\alpha\)</span>. The multivariate Stein lemma of Lecture 10, applied coordinate by coordinate to <span class="math inline">\(W_\alpha\)</span>, gives <span class="math display">\[
+\mathbb E\big[f(X)\langle\nabla g(X_\alpha),W_\alpha\rangle\,\big|\,X_\alpha\big]
+=\sqrt{1-\alpha^2}\,\mathbb E\big[\langle\nabla g(X_\alpha),\Sigma\nabla f(X)\rangle\,\big|\,X_\alpha\big].
+\]</span> Taking expectations, dividing by <span class="math inline">\(\sqrt{1-\alpha^2}\)</span>, and integrating in <span class="math inline">\(\alpha\)</span> gives the identity. The interchange of <span class="math inline">\(\int_0^1d\alpha\)</span> and <span class="math inline">\(\mathbb E\)</span> is justified by Fubini, since the integrand is bounded by <span class="math inline">\(|f(X)|\,\|g\|_{\mathrm{Lip}}\,\|W_\alpha\|_2/\sqrt{1-\alpha^2}\)</span>, whose expectation is integrable in <span class="math inline">\(\alpha\)</span> on <span class="math inline">\((0,1)\)</span>.</p>
+</div>
+</div>
+</div>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof of the concentration inequality">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof of the concentration inequality
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Replacing <span class="math inline">\(h\)</span> by <span class="math inline">\(h-\mathbb Eh(X)\)</span> we may assume <span class="math inline">\(\mathbb Eh(X)=0\)</span>. Write <span class="math inline">\(L=\|h\|_{\mathrm{Lip}}\)</span>. Assume first that <span class="math inline">\(h\)</span> is <span class="math inline">\(C^1\)</span> and bounded, so that <span class="math inline">\(g:=e^{\lambda h}\)</span> is <span class="math inline">\(C^1\)</span> and Lipschitz for every <span class="math inline">\(\lambda\)</span>.</p>
+<p>Let <span class="math inline">\(M(\lambda):=\mathbb Ee^{\lambda h(X)}\)</span>, so that <span class="math inline">\(M(0)=1\)</span> and <span class="math inline">\(M'(\lambda)=\mathbb Eh(X)e^{\lambda h(X)}\)</span>. Since <span class="math inline">\(\mathbb Eh(X)=0\)</span>, this is a covariance, and <a href="#lem-covariance-interpolation" class="quarto-xref">Lemma&nbsp;1</a> with <span class="math inline">\(\Sigma=I_d\)</span>, <span class="math inline">\(f=h\)</span> and <span class="math inline">\(g=e^{\lambda h}\)</span> gives <span class="math display">\[
+M'(\lambda)=\operatorname{Cov}\big(h(X),e^{\lambda h(X)}\big)
+=\lambda\int_0^1\mathbb E\Big[\big\langle\nabla h(X),\nabla h(X_\alpha)\big\rangle e^{\lambda h(X_\alpha)}\Big]d\alpha .
+\]</span> For <span class="math inline">\(\lambda\geq0\)</span>, Cauchy–Schwarz gives <span class="math inline">\(\langle\nabla h(X),\nabla h(X_\alpha)\rangle\leq L^2\)</span> pointwise, and <span class="math inline">\(X_\alpha\sim N(0,I_d)\)</span> for every <span class="math inline">\(\alpha\)</span>, so <span class="math display">\[
+M'(\lambda)\leq\lambda L^2\int_0^1\mathbb Ee^{\lambda h(X_\alpha)}\,d\alpha=\lambda L^2M(\lambda).
+\]</span> Hence <span class="math inline">\((\log M)'(\lambda)\leq\lambda L^2\)</span>, and integrating from <span class="math inline">\(0\)</span>, <span class="math display">\[
+M(\lambda)\leq\exp\Big(\frac{\lambda^2L^2}2\Big)
+\qquad(\lambda\geq0).
+\]</span> Applying this to <span class="math inline">\(-h\)</span> handles <span class="math inline">\(\lambda&lt;0\)</span>. So <span class="math inline">\(h(X)\)</span> is sub-Gaussian with variance proxy <span class="math inline">\(L^2\)</span>, and the tail bound is the sub-Gaussian tail bound of Lecture 4.</p>
+<p>For a general Lipschitz <span class="math inline">\(h\)</span>, the extra assumptions are removed by approximation; see the aside below.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note callout-titled" title="Removing the smoothness and boundedness assumptions">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Removing the smoothness and boundedness assumptions
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Let <span class="math inline">\(h\)</span> be Lipschitz with constant <span class="math inline">\(L\)</span> and mean zero under <span class="math inline">\(N(0,I_d)\)</span>. First truncate: <span class="math inline">\(h_M:=\max\{\min\{h,M\},-M\}\)</span> is bounded and still <span class="math inline">\(L\)</span>-Lipschitz. Then smooth: for <span class="math inline">\(\varepsilon&gt;0\)</span> let <span class="math inline">\(h_{M,\varepsilon}:=h_M*\varphi_\varepsilon\)</span> be the convolution with the density of <span class="math inline">\(N(0,\varepsilon^2I_d)\)</span>. Convolution with a probability density preserves the Lipschitz constant and the bound <span class="math inline">\(M\)</span>, and makes the function <span class="math inline">\(C^\infty\)</span>. So the moment generating function bound holds for <span class="math inline">\(h_{M,\varepsilon}-\mathbb Eh_{M,\varepsilon}(X)\)</span> with the same <span class="math inline">\(L\)</span>.</p>
+<p>As <span class="math inline">\(\varepsilon\to0\)</span>, <span class="math inline">\(h_{M,\varepsilon}\to h_M\)</span> uniformly, because <span class="math inline">\(|h_{M,\varepsilon}(x)-h_M(x)|\leq L\,\mathbb E\|\varepsilon Z\|_2\leq L\varepsilon\sqrt d\)</span>. As <span class="math inline">\(M\to\infty\)</span>, <span class="math inline">\(h_M\to h\)</span> pointwise with <span class="math inline">\(|h_M|\leq|h|\)</span>, and <span class="math inline">\(h(X)\)</span> has Gaussian tails since <span class="math inline">\(|h(x)|\leq|h(0)|+L\|x\|_2\)</span>. Dominated convergence passes the bound <span class="math inline">\(\mathbb Ee^{\lambda(h_{M,\varepsilon}(X)-\mathbb Eh_{M,\varepsilon}(X))}\leq e^{\lambda^2L^2/2}\)</span> to the limit in each step.</p>
+</div>
+</div>
+</div>
+<p>Two immediate applications recover, and sharpen, results seen earlier.</p>
+<p><strong>The norm.</strong> The function <span class="math inline">\(x\mapsto\|x\|_2\)</span> is <span class="math inline">\(1\)</span>-Lipschitz, so <span class="math display">\[
+\mathbb P\big\{\big|\|X\|_2-\mathbb E\|X\|_2\big|\geq t\big\}\leq2e^{-t^2/2}
+\qquad(t\geq0).
+\]</span> Lecture 3 and Exercise Sheet 3 obtained this for Gaussian vectors by a Bernstein argument on <span class="math inline">\(\|X\|_2^2\)</span>. Here it is a one-line consequence of a general principle, with an explicit constant.</p>
+<p><strong>The Gaussian width process.</strong> Let <span class="math inline">\(T\subseteq\mathbb R^d\)</span> be bounded with <span class="math inline">\(R:=\sup_{t\in T}\|t\|_2\)</span>, and let <span class="math inline">\(h_T(x)=\sup_{t\in T}\langle x,t\rangle\)</span> be its support function. For every <span class="math inline">\(t\in T\)</span>, <span class="math inline">\(\langle x,t\rangle\leq\langle y,t\rangle+R\|x-y\|_2\leq h_T(y)+R\|x-y\|_2\)</span>, so <span class="math inline">\(h_T\)</span> is <span class="math inline">\(R\)</span>-Lipschitz. Therefore <span class="math display">\[
+\mathbb P\Big\{\Big|\sup_{t\in T}\langle g,t\rangle-w(T)\Big|\geq u\Big\}\leq2\exp\Big(-\frac{u^2}{2R^2}\Big).
+\]</span> The mean of the supremum is the Gaussian width, a quantity that reflects the whole geometry of <span class="math inline">\(T\)</span>. The fluctuations depend on <span class="math inline">\(T\)</span> only through its radius. These are different pieces of information, and the second is far cruder than the first: for <span class="math inline">\(T=B_2^d\)</span> the mean is about <span class="math inline">\(\sqrt d\)</span> while the fluctuations are of order <span class="math inline">\(1\)</span>.</p>
+</section>
+<section id="concentration-on-the-sphere" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="concentration-on-the-sphere"><span class="header-section-number">2</span> Concentration on the sphere</h2>
+<p>The uniform distribution on the sphere inherits concentration from the Gaussian, because a normalized Gaussian vector is uniform on the sphere and the normalization is nearly constant.</p>
+<div id="thm-sphere-concentration" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 2 (Concentration on the sphere)</strong></span> There are absolute constants <span class="math inline">\(c,C&gt;0\)</span> such that the following holds. Let <span class="math inline">\(\omega\)</span> be uniform on <span class="math inline">\(S^{d-1}\)</span> and let <span class="math inline">\(f:S^{d-1}\to\mathbb R\)</span> be Lipschitz with respect to the Euclidean distance, with constant <span class="math inline">\(L\)</span>. Then for every <span class="math inline">\(t\geq0\)</span>, <span class="math display">\[
+\mathbb P\big\{|f(\omega)-\mathbb Ef(\omega)|\geq t\big\}\leq C\exp\Big(-\frac{c\,dt^2}{L^2}\Big).
+\]</span></p>
+</div>
+<p>The point is the factor <span class="math inline">\(d\)</span> in the exponent. A <span class="math inline">\(1\)</span>-Lipschitz function on the sphere of radius <span class="math inline">\(1\)</span> fluctuates by about <span class="math inline">\(1/\sqrt d\)</span>, which is the scale on which the sphere looks flat. This is the same phenomenon as the volume concentration of Lecture 1: the sphere of radius <span class="math inline">\(\sqrt d\)</span>, on which a <span class="math inline">\(1\)</span>-Lipschitz function fluctuates by <span class="math inline">\(O(1)\)</span>, is the sphere on which the standard Gaussian vector lives.</p>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>By homogeneity take <span class="math inline">\(L=1\)</span>, and by subtracting a constant assume <span class="math inline">\(|f|\leq2\)</span>, which is possible because <span class="math inline">\(f\)</span> is <span class="math inline">\(1\)</span>-Lipschitz on a set of diameter <span class="math inline">\(2\)</span>. Let <span class="math inline">\(Z\sim N(0,I_d)\)</span>; by rotation invariance, <span class="math inline">\(\omega\)</span> has the law of <span class="math inline">\(Z/\|Z\|_2\)</span>, and we work with this representation.</p>
+<p><strong>Step 1: a Lipschitz extension.</strong> Let <span class="math inline">\(\varphi:[0,\infty)\to[0,1]\)</span> be the piecewise linear function equal to <span class="math inline">\(1\)</span> on <span class="math inline">\([\sqrt d/2,2\sqrt d]\)</span>, equal to <span class="math inline">\(0\)</span> outside <span class="math inline">\([\sqrt d/4,3\sqrt d]\)</span>, and linear in between; its Lipschitz constant is <span class="math inline">\(4/\sqrt d\)</span>. Define <span class="math display">\[
+F(z):=\varphi(\|z\|_2)\,f\Big(\frac z{\|z\|_2}\Big),
+\qquad F(0):=0 .
+\]</span> We claim <span class="math inline">\(F\)</span> is <span class="math inline">\((16/\sqrt d)\)</span>-Lipschitz on <span class="math inline">\(\mathbb R^d\)</span>. For <span class="math inline">\(z_1,z_2\neq0\)</span>, <span class="math display">\[
+|F(z_1)-F(z_2)|
+\leq\big|\varphi(\|z_1\|_2)-\varphi(\|z_2\|_2)\big|\cdot2
++\varphi(\|z_2\|_2)\,\Big\|\frac{z_1}{\|z_1\|_2}-\frac{z_2}{\|z_2\|_2}\Big\|_2 .
+\]</span> The first term is at most <span class="math inline">\((8/\sqrt d)\|z_1-z_2\|_2\)</span>. For the second, the elementary inequality <span class="math inline">\(\|a/\|a\|_2-b/\|b\|_2\|_2\leq2\|a-b\|_2/\|b\|_2\)</span> and the fact that <span class="math inline">\(\varphi(\|z_2\|_2)\neq0\)</span> forces <span class="math inline">\(\|z_2\|_2\geq\sqrt d/4\)</span> bound it by <span class="math inline">\((8/\sqrt d)\|z_1-z_2\|_2\)</span>. The cases involving <span class="math inline">\(z=0\)</span> are similar.</p>
+<p><strong>Step 2: concentration of <span class="math inline">\(F(Z)\)</span>.</strong> By <a href="#thm-gaussian-concentration" class="quarto-xref">Theorem&nbsp;1</a>, <span class="math display">\[
+\mathbb P\big\{|F(Z)-\mathbb EF(Z)|\geq s\big\}\leq2\exp\Big(-\frac{ds^2}{512}\Big).
+\]</span></p>
+<p><strong>Step 3: comparing <span class="math inline">\(F(Z)\)</span> with <span class="math inline">\(f(\omega)\)</span>.</strong> Let <span class="math inline">\(E=\{\sqrt d/2\leq\|Z\|_2\leq2\sqrt d\}\)</span>. On <span class="math inline">\(E\)</span>, <span class="math inline">\(F(Z)=f(\omega)\)</span>. By the Bernstein bound on <span class="math inline">\(\|Z\|_2^2\)</span> from Lecture 6, <span class="math inline">\(\mathbb P\{E^c\}\leq2e^{-c_0d}\)</span> for an absolute <span class="math inline">\(c_0&gt;0\)</span>. Since <span class="math inline">\(|F(Z)-f(\omega)|=(1-\varphi(\|Z\|_2))|f(\omega)|\leq2\)</span> always, <span class="math display">\[
+|\mathbb EF(Z)-\mathbb Ef(\omega)|\leq2\,\mathbb P\{E^c\}\leq4e^{-c_0d}.
+\]</span> Hence for <span class="math inline">\(t\geq8e^{-c_0d}\)</span>, <span class="math display">\[
+\mathbb P\big\{|f(\omega)-\mathbb Ef(\omega)|\geq t\big\}
+\leq\mathbb P\{E^c\}+\mathbb P\big\{|F(Z)-\mathbb EF(Z)|\geq t/2\big\}
+\leq2e^{-c_0d}+2e^{-dt^2/2048}.
+\]</span> Since <span class="math inline">\(|f(\omega)-\mathbb Ef(\omega)|\leq2\)</span>, only <span class="math inline">\(t\leq2\)</span> matters, and for such <span class="math inline">\(t\)</span> we have <span class="math inline">\(e^{-c_0d}\leq e^{-c_0dt^2/4}\)</span>. This gives the claim for <span class="math inline">\(t\geq8e^{-c_0d}\)</span> with <span class="math inline">\(c=\min\{c_0/4,1/2048\}\)</span> and <span class="math inline">\(C=4\)</span>. For smaller <span class="math inline">\(t\)</span>, the right-hand side of the claim exceeds <span class="math inline">\(1\)</span> once <span class="math inline">\(C\)</span> is increased to an absolute constant, because <span class="math inline">\(dt^2\leq64de^{-2c_0d}\)</span> is bounded uniformly in <span class="math inline">\(d\)</span>.</p>
+</div>
+</div>
+</div>
+<p>The constants here are far from optimal. The sharp statement, due to Lévy, is that spherical caps are the extremal sets, which gives the exponent <span class="math inline">\(-(d-2)t^2/(2L^2)\)</span>. The proof above trades the constant for the convenience of deducing the sphere from the Gaussian, which is the pattern we follow throughout.</p>
+</section>
+<section id="the-borelltis-inequality" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="the-borelltis-inequality"><span class="header-section-number">3</span> The Borell–TIS inequality</h2>
+<p>The Gaussian width process was concentrated because its supremum is a Lipschitz function of <span class="math inline">\(g\)</span>. The same is true of every Gaussian process, via the Karhunen–Loève representation of Lecture 10, and the Lipschitz constant is the largest standard deviation.</p>
+<div id="thm-borell-tis" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 3 (Borell–TIS inequality)</strong></span> Let <span class="math inline">\((X_t)_{t\in T}\)</span> be a centered Gaussian process whose canonical metric space <span class="math inline">\((T,d)\)</span> is separable. Suppose <span class="math display">\[
+\sigma^2:=\sup_{t\in T}\mathbb EX_t^2&lt;\infty
+\qquad\text{and}\qquad
+\mathbb E\sup_{t\in T}X_t&lt;\infty .
+\]</span> Then for every <span class="math inline">\(x\geq0\)</span>, <span class="math display">\[
+\mathbb P\Big\{\sup_{t\in T}X_t-\mathbb E\sup_{t\in T}X_t\geq x\Big\}\leq e^{-x^2/(2\sigma^2)},
+\qquad
+\mathbb P\Big\{\sup_{t\in T}X_t-\mathbb E\sup_{t\in T}X_t\leq-x\Big\}\leq e^{-x^2/(2\sigma^2)}.
+\]</span></p>
+</div>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>Finite index sets.</strong> Let <span class="math inline">\(T'=\{t_1,\ldots,t_n\}\subseteq T\)</span> be finite and let <span class="math inline">\(\Sigma\)</span> be the covariance matrix of <span class="math inline">\((X_{t_i})_{i\leq n}\)</span>. By the square-root representation of Lecture 10, this vector has the law of <span class="math inline">\(\Sigma^{1/2}Z\)</span> with <span class="math inline">\(Z\sim N(0,I_n)\)</span>. Define <span class="math display">\[
+\varphi(z):=\max_{i\leq n}\big(\Sigma^{1/2}z\big)_i ,
+\]</span> so that <span class="math inline">\(\sup_{t\in T'}X_t\)</span> has the law of <span class="math inline">\(\varphi(Z)\)</span>. Each coordinate function <span class="math inline">\(z\mapsto(\Sigma^{1/2}z)_i=\langle(\Sigma^{1/2})_{i\cdot},z\rangle\)</span> is Lipschitz with constant <span class="math inline">\(\|(\Sigma^{1/2})_{i\cdot}\|_2=\sqrt{(\Sigma)_{ii}}=\sqrt{\mathbb EX_{t_i}^2}\leq\sigma\)</span>, and a maximum of <span class="math inline">\(\sigma\)</span>-Lipschitz functions is <span class="math inline">\(\sigma\)</span>-Lipschitz. By <a href="#thm-gaussian-concentration" class="quarto-xref">Theorem&nbsp;1</a>, both one-sided bounds hold for <span class="math inline">\(T'\)</span>, each with the single-tail constant <span class="math inline">\(1\)</span> in front (the proof of the concentration theorem bounds each tail separately by <span class="math inline">\(e^{-x^2/(2\sigma^2)}\)</span>).</p>
+<p><strong>Passage to the limit.</strong> Let <span class="math inline">\(T_0\)</span> be a countable dense subset of <span class="math inline">\((T,d)\)</span> and let <span class="math inline">\(T_1\subseteq T_2\subseteq\cdots\)</span> be finite sets increasing to <span class="math inline">\(T_0\)</span>. By the convention of Lecture 10, <span class="math inline">\(\sup_TX=\sup_{T_0}X\)</span>, and <span class="math inline">\(S_n:=\sup_{T_n}X\)</span> increases to <span class="math inline">\(S:=\sup_{T_0}X\)</span> almost surely. By monotone convergence, <span class="math inline">\(\mathbb ES_n\uparrow\mathbb ES\)</span>, which is finite by hypothesis. Fix <span class="math inline">\(x\geq0\)</span> and <span class="math inline">\(\varepsilon&gt;0\)</span>, and let <span class="math inline">\(n\)</span> be large enough that <span class="math inline">\(\mathbb ES_n\geq\mathbb ES-\varepsilon\)</span>. Then <span class="math display">\[
+\{S_n-\mathbb ES&gt;x\}\subseteq\{S_n-\mathbb ES_n\geq x-\varepsilon\},
+\]</span> so <span class="math inline">\(\mathbb P\{S_n-\mathbb ES&gt;x\}\leq e^{-(x-\varepsilon)^2/(2\sigma^2)}\)</span> for all large <span class="math inline">\(n\)</span>. The events <span class="math inline">\(\{S_n-\mathbb ES&gt;x\}\)</span> increase to <span class="math inline">\(\{S-\mathbb ES&gt;x\}\)</span>, hence <span class="math inline">\(\mathbb P\{S-\mathbb ES&gt;x\}\leq e^{-(x-\varepsilon)^2/(2\sigma^2)}\)</span>. Let <span class="math inline">\(\varepsilon\to0\)</span>, then replace <span class="math inline">\(x\)</span> by <span class="math inline">\(x-\varepsilon'\)</span> and let <span class="math inline">\(\varepsilon'\to0\)</span> to pass from <span class="math inline">\(&gt;x\)</span> to <span class="math inline">\(\geq x\)</span>. The lower tail is the same argument with the inequalities reversed, using <span class="math inline">\(S_n\leq S\)</span> and <span class="math inline">\(\mathbb ES_n\leq\mathbb ES\)</span> directly.</p>
+</div>
+</div>
+</div>
+<p>The theorem is the answer to the concentration question. Whatever the index set, the supremum of a Gaussian process is sub-Gaussian around its mean with variance proxy <span class="math inline">\(\sigma^2\)</span>, the largest variance of a single <span class="math inline">\(X_t\)</span>. Some remarks.</p>
+<p><strong>The mean dominates the fluctuations.</strong> Applying the theorem to the process <span class="math inline">\((\varepsilon X_t)_{(t,\varepsilon)\in T\times\{\pm1\}}\)</span>, whose supremum is <span class="math inline">\(\sup_t|X_t|\)</span>, gives the same bounds for <span class="math inline">\(\sup_t|X_t|\)</span>. But <span class="math inline">\(\mathbb E\sup_t|X_t|\geq\sup_t\mathbb E|X_t|=\sqrt{2/\pi}\,\sigma\)</span>, so the mean of <span class="math inline">\(\sup|X_t|\)</span> is always at least a constant multiple of the scale <span class="math inline">\(\sigma\)</span> on which it fluctuates. The supremum of a Gaussian process is therefore never much more spread out than it is large. This is why the remaining problem, taken up in Lecture 12, is the mean alone.</p>
+<p><strong>Finiteness of the mean is a genuine hypothesis.</strong> For i.i.d. standard Gaussians indexed by <span class="math inline">\(\mathbb N\)</span> we have <span class="math inline">\(\sigma=1\)</span> but <span class="math inline">\(\sup_tX_t=+\infty\)</span>, and the theorem says nothing. Conversely, when <span class="math inline">\(\mathbb E\sup X&lt;\infty\)</span>, the theorem shows that <span class="math inline">\(\sup X\)</span> has Gaussian tails, so all its moments are finite.</p>
+<p><strong>No independence, no structure.</strong> The proof used nothing about <span class="math inline">\(T\)</span>. Every concentration statement earlier in the course, from Hoeffding to Bernstein, required independent summands. Here the <span class="math inline">\(X_t\)</span> may be arbitrarily correlated.</p>
+<div class="callout callout-style-simple callout-note callout-titled" title="Example: the maximum of $d$ independent Gaussians">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Example: the maximum of <span class="math inline">\(d\)</span> independent Gaussians
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Let <span class="math inline">\(G\sim N(0,I_d)\)</span> and consider <span class="math inline">\(\|G\|_\infty=\max_i|G_i|\)</span>, a Gaussian supremum with <span class="math inline">\(\sigma=1\)</span> over the index set <span class="math inline">\(\{\pm e_1,\ldots,\pm e_d\}\)</span>. Lecture 3 gives <span class="math inline">\(\mathbb E\|G\|_\infty\leq\sqrt{2\log(2d)}\)</span>, and it is also at least <span class="math inline">\(\sqrt{2\log d}-o(1)\)</span>.</p>
+<p><em>Upper tail by a union bound.</em> Using the Gaussian tail <span class="math inline">\(\mathbb P\{|Z|\geq s\}\leq e^{-s^2/2}\)</span>, <span class="math display">\[
+\mathbb P\big\{\|G\|_\infty\geq\sqrt{2\log d}+t\big\}
+\leq d\,e^{-(\sqrt{2\log d}+t)^2/2}
+=e^{-t\sqrt{2\log d}-t^2/2}.
+\]</span></p>
+<p><em>Both tails by Borell–TIS.</em> With <span class="math inline">\(m=\mathbb E\|G\|_\infty\)</span>, <span class="math display">\[
+\mathbb P\big\{|\|G\|_\infty-m|\geq t\big\}\leq2e^{-t^2/2}.
+\]</span></p>
+<p>The union bound gives the better upper tail, which is not surprising: it used the independence of the coordinates and the exact Gaussian tail, while Borell–TIS used only <span class="math inline">\(\sigma=1\)</span>. What Borell–TIS adds is the lower tail, <span class="math inline">\(\mathbb P\{\|G\|_\infty\leq m-t\}\leq e^{-t^2/2}\)</span>, which no union bound can produce, and which it produces with no independence at all.</p>
+<p>Both bounds miss the truth. In fact <span class="math inline">\(\|G\|_\infty-\sqrt{2\log d}\to0\)</span> in probability, and the fluctuations of <span class="math inline">\(\|G\|_\infty\)</span> are of order <span class="math inline">\(1/\sqrt{\log d}\)</span>, not order <span class="math inline">\(1\)</span>. Borell–TIS is sharp for some processes (a single <span class="math inline">\(X_t\)</span>, for instance) but it is a worst-case statement over all index sets with a given <span class="math inline">\(\sigma\)</span>, and it cannot see the finer structure of a particular one.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="where-we-go-next" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="where-we-go-next"><span class="header-section-number">4</span> Where we go next</h2>
+<p>Concentration reduces the study of <span class="math inline">\(\sup_tX_t\)</span> to the study of its mean. The next lecture develops the main tool for the mean, Gaussian comparison. Slepian’s inequality and the Sudakov–Fernique inequality say that if the canonical metric of one process is dominated by that of another, then so is the expected supremum. The proof is again Stein’s lemma along an interpolation between two Gaussian vectors, now with two different covariances at the endpoints. The first application is the norm of a Gaussian random matrix, where comparison gives the sharp bound <span class="math inline">\(\sqrt m+\sqrt n\)</span> and Borell–TIS turns it into a tail bound.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/elliotpaquette\.github\.io\/high-dimensional-probability\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

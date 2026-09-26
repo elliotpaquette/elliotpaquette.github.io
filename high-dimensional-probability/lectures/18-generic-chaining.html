@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-11-18">
+
+<title>Lecture 18: Generic Chaining – High-Dimensional Probability</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-5685cd926c25366c96d9f1407e584118.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">High-Dimensional Probability</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-lectures" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Lectures</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-lectures">    
+        <li>
+    <a class="dropdown-item" href="../lectures/01-curse-of-dimensionality.html">
+ <span class="dropdown-text">1. The Curse of Dimensionality</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/02-convex-hulls.html">
+ <span class="dropdown-text">2. Convex Hulls and Sparse Approximation</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/03-gaussian-width.html">
+ <span class="dropdown-text">3. Gaussian Width</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/04-tails.html">
+ <span class="dropdown-text">4. Tails of Random Variables</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/05-orlicz-norms.html">
+ <span class="dropdown-text">5. Geometric Discrepancy and Orlicz Norms</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/06-bernstein-dimension-reduction.html">
+ <span class="dropdown-text">6. Bernstein’s Inequality and Dimension Reduction</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/07-coordinate-embeddings.html">
+ <span class="dropdown-text">7. Coordinate Embeddings</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/08-extreme-singular-values.html">
+ <span class="dropdown-text">8. Extreme Singular Values</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/09-covariance-estimation.html">
+ <span class="dropdown-text">9. Covariance Estimation</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/10-gaussian-processes.html">
+ <span class="dropdown-text">10. Gaussian Processes</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/11-gaussian-concentration.html">
+ <span class="dropdown-text">11. Gaussian Concentration</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/12-gaussian-comparison.html">
+ <span class="dropdown-text">12. Gaussian Comparison and Gaussian Matrices</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/13-gaussian-width-revisited.html">
+ <span class="dropdown-text">13. Gaussian Width Revisited</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/14-semidefinite-relaxations.html">
+ <span class="dropdown-text">14. Semidefinite Relaxations and Max-Cut</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/15-grothendieck.html">
+ <span class="dropdown-text">15. Grothendieck’s Inequality</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/16-dudley.html">
+ <span class="dropdown-text">16. Dudley’s Entropy Integral</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/17-applications-of-dudley.html">
+ <span class="dropdown-text">17. Applications of Dudley’s Inequality</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/18-generic-chaining.html">
+ <span class="dropdown-text">18. Generic Chaining</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/19-matrix-deviation.html">
+ <span class="dropdown-text">19. The Lower Bound and the Matrix Deviation Inequality</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/20-covariance-effective-rank.html">
+ <span class="dropdown-text">20. Covariance Estimation for Low-Dimensional Data</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/21-sparse-recovery.html">
+ <span class="dropdown-text">21. Sparse Recovery</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../exercises/index.html"> 
+<span class="menu-text">Exercises</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-course" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Course</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-course">    
+        <li>
+    <a class="dropdown-item" href="../course/index.html">
+ <span class="dropdown-text">Fall 2026</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../course/calendar.html">
+ <span class="dropdown-text">Calendar</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../references.html"> 
+<span class="menu-text">References</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#rewriting-dudleys-sum" id="toc-rewriting-dudleys-sum" class="nav-link active" data-scroll-target="#rewriting-dudleys-sum"><span class="header-section-number">1</span> Rewriting Dudley’s sum</a></li>
+  <li><a href="#the-generic-chaining-bound" id="toc-the-generic-chaining-bound" class="nav-link" data-scroll-target="#the-generic-chaining-bound"><span class="header-section-number">2</span> The generic chaining bound</a></li>
+  <li><a href="#comparison-with-dudley-and-sudakov" id="toc-comparison-with-dudley-and-sudakov" class="nav-link" data-scroll-target="#comparison-with-dudley-and-sudakov"><span class="header-section-number">3</span> Comparison with Dudley and Sudakov</a></li>
+  <li><a href="#the-majorizing-measure-theorem" id="toc-the-majorizing-measure-theorem" class="nav-link" data-scroll-target="#the-majorizing-measure-theorem"><span class="header-section-number">4</span> The majorizing measure theorem</a></li>
+  <li><a href="#where-we-go-next" id="toc-where-we-go-next" class="nav-link" data-scroll-target="#where-we-go-next"><span class="header-section-number">5</span> Where we go next</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Lecture 18: Generic Chaining</h1>
+<p class="subtitle lead">Talagrand’s <span class="math inline">\(\gamma_2\)</span> functional and the majorizing measure theorem</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 18, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Dudley’s inequality bounds the supremum of a sub-Gaussian process by an entropy integral, and Lecture 16 showed two ways it can fail: Talagrand’s example, where the integral diverges although the supremum is finite, and the <span class="math inline">\(\ell^1\)</span> ball, where it is off by a logarithm. In both cases the covering numbers are the wrong bookkeeping. They count how many points are needed to approximate <span class="math inline">\(T\)</span> at scale <span class="math inline">\(\varepsilon\)</span> uniformly over <span class="math inline">\(T\)</span>, but different parts of <span class="math inline">\(T\)</span> may need different resolutions at different scales. Generic chaining keeps the chaining argument and changes only the bookkeeping: instead of fixing the scales and asking how many points each needs, it fixes the number of points at each stage and asks, <em>for each <span class="math inline">\(t\)</span> separately</em>, how well the stages approximate <span class="math inline">\(t\)</span>. The resulting functional <span class="math inline">\(\gamma_2(T,d)\)</span> is never larger than Dudley’s integral, and for Gaussian processes it is the answer: it is equivalent to <span class="math inline">\(\mathbb E\sup X\)</span> up to absolute constants.</p>
+<section id="rewriting-dudleys-sum" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="rewriting-dudleys-sum"><span class="header-section-number">1</span> Rewriting Dudley’s sum</h2>
+<p>Recall the outcome of chaining in Lecture 16. With <span class="math inline">\(\varepsilon_k=2^{-k}\)</span> and <span class="math inline">\(T_k\)</span> an <span class="math inline">\(\varepsilon_k\)</span>-net of minimal size <span class="math inline">\(N_k=N(T,d,2^{-k})\)</span>, <span class="math display">\[
+\mathbb E\sup_{t\in T}X_t\leq C\sum_k2^{-k}\sqrt{\log N_k}.
+\]</span> Each term is the product of a scale and the square root of a log cardinality. Turn the bookkeeping around: fix the cardinalities and let the scales adapt. A sequence of subsets <span class="math inline">\((T_k)_{k\geq0}\)</span> of <span class="math inline">\(T\)</span> is <strong>admissible</strong> if <span class="math display">\[
+|T_0|=1,
+\qquad
+|T_k|\leq2^{2^k}\quad(k\geq1).
+\]</span> The doubly exponential growth is chosen so that <span class="math inline">\(\sqrt{\log|T_k|}\leq2^{k/2}\)</span> grows geometrically, which is what makes the sums below converge. Given an admissible sequence, the sets <span class="math inline">\(T_k\)</span> are nets of <span class="math inline">\(T\)</span> at the scales <span class="math display">\[
+\varepsilon_k:=\sup_{t\in T}d(t,T_k),
+\qquad d(t,A):=\inf_{a\in A}d(t,a),
+\]</span> and running the chaining argument with these nets gives <span id="eq-dudley-sum"><span class="math display">\[
+\mathbb E\sup_{t\in T}X_t\leq C\sum_{k\geq0}2^{k/2}\sup_{t\in T}d(t,T_k).
+\tag{1}\]</span></span> Taking the infimum over admissible sequences, the right side is equivalent to Dudley’s integral up to constants (see <a href="#lem-gamma2-vs-dudley" class="quarto-xref">Lemma&nbsp;1</a> below for one direction). So far nothing has happened. The change is to move the supremum outside the sum.</p>
+<div id="def-gamma2" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 1 (Talagrand’s <span class="math inline">\(\gamma_2\)</span> functional)</strong></span> For a metric space <span class="math inline">\((T,d)\)</span>, <span class="math display">\[
+\gamma_2(T,d):=\inf_{(T_k)}\ \sup_{t\in T}\ \sum_{k\geq0}2^{k/2}d(t,T_k),
+\]</span> the infimum over all admissible sequences.</p>
+</div>
+<p>Since <span class="math inline">\(\sup_t\sum_k\leq\sum_k\sup_t\)</span>, the functional is at most the quantity in <a href="#eq-dudley-sum" class="quarto-xref">Equation&nbsp;1</a> for every admissible sequence, hence at most Dudley’s sum. The difference is that Dudley charges every <span class="math inline">\(t\)</span> for the worst-approximated point at each scale, while <span class="math inline">\(\gamma_2\)</span> charges each <span class="math inline">\(t\)</span> only for its own approximation errors, and the worst <em>total</em> cost over <span class="math inline">\(t\)</span> is what counts. In a space where the nets that serve some points well at stage <span class="math inline">\(k\)</span> already serve other points well at all later stages, this matters.</p>
+<div class="callout callout-style-simple callout-note callout-titled" title="Talagrand's example has bounded $\gamma_2$">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Talagrand’s example has bounded <span class="math inline">\(\gamma_2\)</span>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Let <span class="math inline">\(T=\{0\}\cup\{t_n:n\geq1\}\subseteq\ell^2\)</span> with <span class="math inline">\(t_n=e_n/\sqrt{1+\log n}\)</span>, the set of Lecture 16 with the origin added, which changes neither the supremum of the isonormal process, since <span class="math inline">\(\sup_nX_{t_n}\geq0\)</span> almost surely, nor the divergence of Dudley’s integral. Take <span class="math display">\[
+T_k:=\{0\}\cup\{t_n:n\leq2^{2^k}\},
+\qquad|T_k|\leq2^{2^k}+1 ,
+\]</span> which is admissible after shifting the index by one. For <span class="math inline">\(t=t_n\)</span>, the distance <span class="math inline">\(d(t_n,T_k)\)</span> is <span class="math inline">\(0\)</span> once <span class="math inline">\(2^{2^k}\geq n\)</span>, and is at most <span class="math inline">\(\|t_n\|_2=1/\sqrt{1+\log n}\)</span> always, using the origin. So <span class="math display">\[
+\sum_{k\geq0}2^{k/2}d(t_n,T_k)\leq\frac1{\sqrt{1+\log n}}\sum_{k:\,2^{2^k}&lt;n}2^{k/2}
+\leq\frac{C\,2^{k_n/2}}{\sqrt{1+\log n}},
+\]</span> where <span class="math inline">\(k_n\)</span> is the largest index with <span class="math inline">\(2^{2^{k_n}}&lt;n\)</span>, so that <span class="math inline">\(2^{k_n}&lt;\log_2n\)</span> and <span class="math inline">\(2^{k_n/2}&lt;\sqrt{\log_2n}\)</span>. The right side is bounded by an absolute constant, uniformly in <span class="math inline">\(n\)</span>, and <span class="math inline">\(d(0,T_k)=0\)</span>. Hence <span class="math inline">\(\gamma_2(T,d)\leq C\)</span>, in agreement with the finiteness of <span class="math inline">\(\mathbb E\sup_nX_{t_n}\)</span>.</p>
+<p>The mechanism is visible: the far-out points <span class="math inline">\(t_n\)</span> with <span class="math inline">\(n\)</span> huge are approximated by the origin, at a cost <span class="math inline">\(\|t_n\|_2\)</span> that is tiny, and the stages <span class="math inline">\(T_k\)</span> with <span class="math inline">\(2^{2^k}&lt;n\)</span> that fail to contain <span class="math inline">\(t_n\)</span> are few, about <span class="math inline">\(\log\log n\)</span> of them, with geometrically growing weights that sum to <span class="math inline">\(\sqrt{\log n}\)</span>. Dudley, by contrast, insisted on covering each <span class="math inline">\(t_n\)</span> to within <span class="math inline">\(\varepsilon\)</span> by a point at distance <span class="math inline">\(\varepsilon\)</span>, and paid <span class="math inline">\(\exp(2/\varepsilon^2)\)</span> points to do so.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="the-generic-chaining-bound" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="the-generic-chaining-bound"><span class="header-section-number">2</span> The generic chaining bound</h2>
+<div id="thm-generic-chaining" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 1 (Generic chaining)</strong></span> Let <span class="math inline">\((X_t)_{t\in T}\)</span> be a centered process, sub-Gaussian with respect to a metric <span class="math inline">\(d\)</span> for which <span class="math inline">\((T,d)\)</span> is separable. Then <span class="math display">\[
+\mathbb E\sup_{t\in T}X_t\leq C\gamma_2(T,d),
+\]</span> and for every <span class="math inline">\(t_0\in T\)</span> and <span class="math inline">\(u\geq0\)</span>, with probability at least <span class="math inline">\(1-2e^{-u^2}\)</span>, <span class="math display">\[
+\sup_{t\in T}|X_t-X_{t_0}|\leq C(1+u)\gamma_2(T,d).
+\]</span></p>
+</div>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>As in Lecture 16 it suffices to treat finite <span class="math inline">\(T\)</span>; the reduction is the same, using that an admissible sequence for <span class="math inline">\(T\)</span> restricts to one for a subset after replacing each point by a nearest point of the subset, which at most doubles every <span class="math inline">\(d(t,T_k)\)</span>. Fix an admissible sequence <span class="math inline">\((T_k)\)</span> with <span class="math inline">\(T_0=\{t_0\}\)</span> and <span class="math display">\[
+S:=\sup_{t\in T}\sum_{k\geq0}2^{k/2}d(t,T_k)
+\]</span> close to <span class="math inline">\(\gamma_2(T,d)\)</span>. For <span class="math inline">\(t\in T\)</span> let <span class="math inline">\(\pi_k(t)\in T_k\)</span> be a nearest point, so <span class="math inline">\(d(t,\pi_k(t))=d(t,T_k)\)</span>, and <span class="math inline">\(\pi_k(t)=t\)</span> for large <span class="math inline">\(k\)</span> since <span class="math inline">\(T\)</span> is finite.</p>
+<p><strong>Step 1: the chain.</strong> <span class="math inline">\(X_t-X_{t_0}=\sum_{k\geq1}(X_{\pi_k(t)}-X_{\pi_{k-1}(t)})\)</span>, a finite sum, with links of <span class="math inline">\(\psi_2\)</span> norm at most <span class="math display">\[
+d\big(\pi_k(t),\pi_{k-1}(t)\big)\leq d(t,T_k)+d(t,T_{k-1}).
+\]</span></p>
+<p><strong>Step 2: the increments, uniformly.</strong> At stage <span class="math inline">\(k\)</span> the link <span class="math inline">\((\pi_k(t),\pi_{k-1}(t))\)</span> is one of at most <span class="math inline">\(|T_k||T_{k-1}|\leq2^{2^{k+1}}\)</span> pairs <span class="math inline">\((a,b)\)</span>. For a single pair and <span class="math inline">\(s\geq0\)</span>, the sub-Gaussian tail of Lecture 5 gives <span class="math inline">\(\mathbb P\{|X_a-X_b|\geq d(a,b)s\}\leq2e^{-s^2}\)</span>. Take <span class="math inline">\(s_k:=\sqrt{2^{k+2}\log2}+u\)</span>, so that <span class="math inline">\(s_k^2\geq2^{k+2}\log2+u^2\)</span> and the union bound over the pairs at stage <span class="math inline">\(k\)</span> gives failure probability at most <span class="math display">\[
+2^{2^{k+1}}\cdot2\exp\big(-2^{k+2}\log2-u^2\big)=2\cdot2^{-2^{k+1}}e^{-u^2}.
+\]</span> Summing over <span class="math inline">\(k\geq1\)</span>, all links at all stages satisfy <span class="math inline">\(|X_a-X_b|\leq d(a,b)s_k\)</span> outside an event of probability at most <span class="math inline">\(2e^{-u^2}\sum_{k\geq1}2^{-2^{k+1}}\leq2e^{-u^2}\)</span>.</p>
+<p><strong>Step 3: summing the chain.</strong> On the good event, for every <span class="math inline">\(t\)</span>, <span class="math display">\[
+|X_t-X_{t_0}|\leq\sum_{k\geq1}\big(d(t,T_k)+d(t,T_{k-1})\big)\big(2^{(k+2)/2}\sqrt{\log2}+u\big).
+\]</span> The two sums <span class="math inline">\(\sum_k2^{k/2}d(t,T_k)\)</span> and <span class="math inline">\(\sum_k2^{k/2}d(t,T_{k-1})=\sqrt2\sum_k2^{(k-1)/2}d(t,T_{k-1})\)</span> are each at most <span class="math inline">\(\sqrt2\,S\)</span>, and since <span class="math inline">\(2^{k/2}\geq1\)</span> the sums without the weight <span class="math inline">\(2^{k/2}\)</span> are also at most <span class="math inline">\(S\)</span>. Altogether <span class="math inline">\(|X_t-X_{t_0}|\leq C(1+u)S\)</span>, uniformly in <span class="math inline">\(t\)</span>, which is the tail bound. Integrating in <span class="math inline">\(u\)</span> and using <span class="math inline">\(\mathbb EX_{t_0}=0\)</span> gives the expectation bound, and <span class="math inline">\(S\)</span> may be taken arbitrarily close to <span class="math inline">\(\gamma_2(T,d)\)</span>.</p>
+</div>
+</div>
+</div>
+<p>The proof is the proof of Dudley’s inequality with one change: the threshold for the link at stage <span class="math inline">\(k\)</span> is proportional to the link’s own length <span class="math inline">\(d(\pi_k(t),\pi_{k-1}(t))\)</span> rather than to the worst link length <span class="math inline">\(2^{-k+2}\)</span> at that stage. The union bound is unaffected, because the number of pairs at stage <span class="math inline">\(k\)</span> is controlled by the admissibility condition and not by the scale, and the sum along the chain then produces the <span class="math inline">\(\gamma_2\)</span> sum for the particular <span class="math inline">\(t\)</span> rather than Dudley’s sum of suprema.</p>
+<div class="callout callout-style-simple callout-note callout-titled" title="A sharper tail">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>A sharper tail
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The tail bound above has scale <span class="math inline">\(\gamma_2(T,d)\)</span> in the fluctuation term <span class="math inline">\(u\gamma_2\)</span>, whereas for Gaussian processes Borell–TIS (Lecture 11) gives fluctuations on the smaller scale <span class="math inline">\(\sigma=\sup_t\sqrt{\operatorname{Var}X_t}\)</span>. A more careful choice of chain, in which one moves from <span class="math inline">\(\pi_{k-1}(t)\)</span> to <span class="math inline">\(\pi_k(t)\)</span> only when <span class="math inline">\(d(t,T_k)\)</span> is less than half of <span class="math inline">\(d(t,\pi_{k-1}(t))\)</span>, makes the link lengths decrease geometrically and yields <span class="math display">\[
+\sup_{s,t\in T}|X_t-X_s|\leq C\big[\gamma_2(T,d)+u\operatorname{diam}(T)\big]
+\]</span> with probability at least <span class="math inline">\(1-2e^{-u^2}\)</span>, for every sub-Gaussian process. This is the form in the handwritten notes, and it is the sub-Gaussian analogue of Borell–TIS: the mean is controlled by the geometry through <span class="math inline">\(\gamma_2\)</span>, and the fluctuations by the diameter alone.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="comparison-with-dudley-and-sudakov" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="comparison-with-dudley-and-sudakov"><span class="header-section-number">3</span> Comparison with Dudley and Sudakov</h2>
+<p>Two lemmas place <span class="math inline">\(\gamma_2\)</span> between the bounds of Lectures 12 and 16.</p>
+<div id="lem-gamma2-vs-dudley" class="theorem lemma">
+<p><span class="theorem-title"><strong>Lemma 1 (<span class="math inline">\(\gamma_2\)</span> is at most Dudley’s integral)</strong></span> For every metric space <span class="math inline">\((T,d)\)</span>, <span class="math display">\[
+\gamma_2(T,d)\leq C\int_0^\infty\sqrt{\log N(T,d,\varepsilon)}\,d\varepsilon .
+\]</span></p>
+</div>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Assume the integral is finite, so <span class="math inline">\(T\)</span> is totally bounded. For <span class="math inline">\(k\geq0\)</span> let <span class="math display">\[
+\varepsilon_k:=\inf\big\{\varepsilon&gt;0:\ N(T,d,\varepsilon)\leq2^{2^k}\big\},
+\]</span> a nonincreasing sequence tending to <span class="math inline">\(0\)</span>, with <span class="math inline">\(\varepsilon_0\)</span> at most the diameter. Choose <span class="math inline">\(T_k\)</span> to be a <span class="math inline">\(2\varepsilon_k\)</span>-net of cardinality at most <span class="math inline">\(2^{2^k}\)</span>, which exists by the definition of <span class="math inline">\(\varepsilon_k\)</span>; then <span class="math inline">\((T_k)\)</span> is admissible and <span class="math inline">\(d(t,T_k)\leq2\varepsilon_k\)</span> for every <span class="math inline">\(t\)</span>, so <span class="math display">\[
+\gamma_2(T,d)\leq2\sum_{k\geq0}2^{k/2}\varepsilon_k .
+\]</span> For <span class="math inline">\(\varepsilon&lt;\varepsilon_k\)</span> we have <span class="math inline">\(N(T,d,\varepsilon)&gt;2^{2^k}\)</span>, so <span class="math inline">\(\sqrt{\log N(T,d,\varepsilon)}\geq2^{k/2}\sqrt{\log2}\)</span> on <span class="math inline">\((\varepsilon_{k+1},\varepsilon_k)\)</span>, and <span class="math display">\[
+\int_0^\infty\sqrt{\log N(T,d,\varepsilon)}\,d\varepsilon
+\geq\sqrt{\log2}\sum_{k\geq0}2^{k/2}(\varepsilon_k-\varepsilon_{k+1}).
+\]</span> Finally, writing <span class="math inline">\(\varepsilon_k=\sum_{j\geq k}(\varepsilon_j-\varepsilon_{j+1})\)</span> and exchanging the order of summation, <span class="math display">\[
+\sum_{k\geq0}2^{k/2}\varepsilon_k=\sum_{j\geq0}(\varepsilon_j-\varepsilon_{j+1})\sum_{k\leq j}2^{k/2}
+\leq\frac{\sqrt2}{\sqrt2-1}\sum_{j\geq0}2^{j/2}(\varepsilon_j-\varepsilon_{j+1}),
+\]</span> which is at most a constant times the integral.</p>
+</div>
+</div>
+</div>
+<div id="lem-gamma2-vs-sudakov" class="theorem lemma">
+<p><span class="theorem-title"><strong>Lemma 2 (<span class="math inline">\(\gamma_2\)</span> is at least the Sudakov quantity)</strong></span> For every metric space <span class="math inline">\((T,d)\)</span> and every <span class="math inline">\(\varepsilon&gt;0\)</span>, <span class="math display">\[
+\gamma_2(T,d)\geq c\,\varepsilon\sqrt{\log N(T,d,\varepsilon)} .
+\]</span></p>
+</div>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Let <span class="math inline">\(N=N(T,d,\varepsilon)\geq2\)</span> and let <span class="math inline">\((T_k)\)</span> be admissible. Let <span class="math inline">\(k\)</span> be the largest index with <span class="math inline">\(2^{2^k}&lt;N\)</span>, so that <span class="math inline">\(2^{2^{k+1}}\geq N\)</span> and hence <span class="math inline">\(2^{k/2}\geq\sqrt{\log_2N}/2\)</span>. Since <span class="math inline">\(|T_k|&lt;N\)</span>, the set <span class="math inline">\(T_k\)</span> is not an <span class="math inline">\(\varepsilon\)</span>-net of <span class="math inline">\(T\)</span>, so some <span class="math inline">\(t\in T\)</span> has <span class="math inline">\(d(t,T_k)\geq\varepsilon\)</span>. For this <span class="math inline">\(t\)</span>, <span class="math display">\[
+\sum_{j\geq0}2^{j/2}d(t,T_j)\geq2^{k/2}d(t,T_k)\geq\frac{\varepsilon\sqrt{\log_2N}}2 .
+\]</span> Taking the supremum over <span class="math inline">\(t\)</span> and the infimum over admissible sequences gives the claim.</p>
+</div>
+</div>
+</div>
+<p>So for a general metric space, <span class="math display">\[
+c\,\sup_{\varepsilon&gt;0}\varepsilon\sqrt{\log N(T,d,\varepsilon)}
+\ \leq\ \gamma_2(T,d)\ \leq\ C\int_0^\infty\sqrt{\log N(T,d,\varepsilon)}\,d\varepsilon ,
+\]</span> and both inequalities can be strict. For Talagrand’s example the right side is infinite while <span class="math inline">\(\gamma_2\)</span> is bounded. For the <span class="math inline">\(\ell^1\)</span> ball, Lecture 16 found the right side of order <span class="math inline">\((\log n)^{3/2}\)</span> and the left side of order <span class="math inline">\(\sqrt{\log n}\)</span>; the theorem below shows that <span class="math inline">\(\gamma_2(B_1^n)\asymp\sqrt{\log n}\)</span>, so <span class="math inline">\(\gamma_2\)</span> sits at the lower bound there and the entropy integral is what overshoots.</p>
+</section>
+<section id="the-majorizing-measure-theorem" class="level2 page-columns page-full" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="the-majorizing-measure-theorem"><span class="header-section-number">4</span> The majorizing measure theorem</h2>
+<p>For Gaussian processes the generic chaining bound is sharp.</p>
+<div id="thm-majorizing-measure" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 2 (Talagrand’s majorizing measure theorem)</strong></span> Let <span class="math inline">\((X_t)_{t\in T}\)</span> be a centered Gaussian process with separable canonical metric <span class="math inline">\(d\)</span>. Then <span class="math display">\[
+c\,\gamma_2(T,d)\leq\mathbb E\sup_{t\in T}X_t\leq C\gamma_2(T,d)
+\]</span> for absolute constants <span class="math inline">\(c,C&gt;0\)</span>.</p>
+</div>
+<p>The upper bound is <a href="#thm-generic-chaining" class="quarto-xref">Theorem&nbsp;1</a>, since a Gaussian process is sub-Gaussian with respect to <span class="math inline">\(2d\)</span>. The lower bound is the deep part. It says that for Gaussian processes, chaining is not merely a technique but the <em>only</em> mechanism: whatever makes <span class="math inline">\(\mathbb E\sup X\)</span> large must be visible as an admissible sequence that cannot approximate some point cheaply. The next lecture proves the lower bound. Its proof reverses the chaining argument, building a tree of subsets of <span class="math inline">\(T\)</span> whose branches are well separated at each depth and using Sudakov’s minoration, in the sharp form of the Sudakov–Fernique comparison, to show that the process must pay <span class="math inline">\(\varepsilon\sqrt{\log(\text{number of branches})}\)</span> at every branching.</p>
+<p>The name comes from Fernique’s original formulation of the lower bound in terms of probability measures on <span class="math inline">\(T\)</span> <span class="citation" data-cites="fernique1975">(<a href="#ref-fernique1975" role="doc-biblioref">Fernique 1975</a>)</span>, and Talagrand’s theorem <span class="citation" data-cites="talagrand1987">(<a href="#ref-talagrand1987" role="doc-biblioref">Talagrand 1987</a>)</span> established the matching upper bound and the equivalence with the <span class="math inline">\(\gamma_2\)</span> functional; the modern account is <span class="citation" data-cites="talagrand2014">(<a href="#ref-talagrand2014" role="doc-biblioref">Talagrand 2014</a>)</span>.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-fernique1975" class="csl-entry" role="listitem">
+Fernique, Xavier. 1975. <span>“Régularité Des Trajectoires Des Fonctions Aléatoires Gaussiennes.”</span> <em>École d’Été de Probabilités de Saint-Flour IV, Lecture Notes in Mathematics</em> 480: 1–96.
+</div><div id="ref-talagrand1987" class="csl-entry" role="listitem">
+Talagrand, Michel. 1987. <span>“Regularity of <span>Gaussian</span> Processes.”</span> <em>Acta Mathematica</em> 159: 99–149. <a href="https://doi.org/10.1007/BF02392556">https://doi.org/10.1007/BF02392556</a>.
+</div><div id="ref-talagrand2014" class="csl-entry" role="listitem">
+Talagrand, Michel. 2014. <em>Upper and Lower Bounds for Stochastic Processes: Modern Methods and Classical Problems</em>. Springer. <a href="https://doi.org/10.1007/978-3-642-54075-2">https://doi.org/10.1007/978-3-642-54075-2</a>.
+</div></div><p>Three consequences are worth recording.</p>
+<p><strong>Gaussian width is a <span class="math inline">\(\gamma_2\)</span> functional.</strong> For <span class="math inline">\(T\subseteq\mathbb R^n\)</span> with the Euclidean metric, <span class="math inline">\(w(T)\asymp\gamma_2(T,\|\cdot\|_2)\)</span>. The width of every set in Lecture 3 and Lecture 13 could, in principle, be computed by exhibiting an admissible sequence and a matching tree.</p>
+<p><strong>Comparison for sub-Gaussian processes.</strong> If <span class="math inline">\((X_t)\)</span> is sub-Gaussian with respect to the canonical metric of a Gaussian process <span class="math inline">\((Y_t)\)</span> on the same index set, then <span class="math display">\[
+\mathbb E\sup_tX_t\leq C\gamma_2(T,d)\leq C'\,\mathbb E\sup_tY_t .
+\]</span> Thus every sub-Gaussian process is dominated by a Gaussian process with the same increments, a statement that has no direct proof and is the main practical use of the theorem. Lecture 19 applies it to random matrices with sub-Gaussian rows.</p>
+<p><strong>The gap between Sudakov and Dudley is closed.</strong> For Gaussian processes the expected supremum is neither the largest rectangle under the entropy curve nor the area under it. It is <span class="math inline">\(\gamma_2\)</span>, a quantity that sees the entropy of each region of <span class="math inline">\(T\)</span> at each scale, and it coincides with the rectangle for some sets, with the area for others, and with neither in general.</p>
+</section>
+<section id="where-we-go-next" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="where-we-go-next"><span class="header-section-number">5</span> Where we go next</h2>
+<p>The next lecture completes the proof of the majorizing measure theorem with the tree construction and the sharpened Sudakov lemma from the handwritten notes, and then turns the theorem into a tool: the matrix deviation inequality, which controls <span class="math inline">\(\sup_{x\in T}\big|\|Ax\|_2-\sqrt m\|x\|_2\big|\)</span> for a matrix <span class="math inline">\(A\)</span> with independent sub-Gaussian rows by the Gaussian width of <span class="math inline">\(T\)</span>. That inequality is what the covariance estimation problem of Lecture 9 was missing.</p>
+
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/elliotpaquette\.github\.io\/high-dimensional-probability\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

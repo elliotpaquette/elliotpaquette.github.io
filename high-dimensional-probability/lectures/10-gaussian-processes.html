@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-10-19">
+
+<title>Lecture 10: Gaussian Processes – High-Dimensional Probability</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-5685cd926c25366c96d9f1407e584118.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">High-Dimensional Probability</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-lectures" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Lectures</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-lectures">    
+        <li>
+    <a class="dropdown-item" href="../lectures/01-curse-of-dimensionality.html">
+ <span class="dropdown-text">1. The Curse of Dimensionality</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/02-convex-hulls.html">
+ <span class="dropdown-text">2. Convex Hulls and Sparse Approximation</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/03-gaussian-width.html">
+ <span class="dropdown-text">3. Gaussian Width</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/04-tails.html">
+ <span class="dropdown-text">4. Tails of Random Variables</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/05-orlicz-norms.html">
+ <span class="dropdown-text">5. Geometric Discrepancy and Orlicz Norms</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/06-bernstein-dimension-reduction.html">
+ <span class="dropdown-text">6. Bernstein’s Inequality and Dimension Reduction</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/07-coordinate-embeddings.html">
+ <span class="dropdown-text">7. Coordinate Embeddings</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/08-extreme-singular-values.html">
+ <span class="dropdown-text">8. Extreme Singular Values</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/09-covariance-estimation.html">
+ <span class="dropdown-text">9. Covariance Estimation</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/10-gaussian-processes.html">
+ <span class="dropdown-text">10. Gaussian Processes</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/11-gaussian-concentration.html">
+ <span class="dropdown-text">11. Gaussian Concentration</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/12-gaussian-comparison.html">
+ <span class="dropdown-text">12. Gaussian Comparison and Gaussian Matrices</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/13-gaussian-width-revisited.html">
+ <span class="dropdown-text">13. Gaussian Width Revisited</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/14-semidefinite-relaxations.html">
+ <span class="dropdown-text">14. Semidefinite Relaxations and Max-Cut</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/15-grothendieck.html">
+ <span class="dropdown-text">15. Grothendieck’s Inequality</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/16-dudley.html">
+ <span class="dropdown-text">16. Dudley’s Entropy Integral</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/17-applications-of-dudley.html">
+ <span class="dropdown-text">17. Applications of Dudley’s Inequality</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/18-generic-chaining.html">
+ <span class="dropdown-text">18. Generic Chaining</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/19-matrix-deviation.html">
+ <span class="dropdown-text">19. The Lower Bound and the Matrix Deviation Inequality</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/20-covariance-effective-rank.html">
+ <span class="dropdown-text">20. Covariance Estimation for Low-Dimensional Data</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/21-sparse-recovery.html">
+ <span class="dropdown-text">21. Sparse Recovery</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../exercises/index.html"> 
+<span class="menu-text">Exercises</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-course" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Course</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-course">    
+        <li>
+    <a class="dropdown-item" href="../course/index.html">
+ <span class="dropdown-text">Fall 2026</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../course/calendar.html">
+ <span class="dropdown-text">Calendar</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../references.html"> 
+<span class="menu-text">References</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#the-multivariate-normal" id="toc-the-multivariate-normal" class="nav-link active" data-scroll-target="#the-multivariate-normal"><span class="header-section-number">1</span> The multivariate normal</a></li>
+  <li><a href="#gaussian-processes-and-the-canonical-metric" id="toc-gaussian-processes-and-the-canonical-metric" class="nav-link" data-scroll-target="#gaussian-processes-and-the-canonical-metric"><span class="header-section-number">2</span> Gaussian processes and the canonical metric</a></li>
+  <li><a href="#the-isonormal-process" id="toc-the-isonormal-process" class="nav-link" data-scroll-target="#the-isonormal-process"><span class="header-section-number">3</span> The isonormal process</a></li>
+  <li><a href="#steins-lemma" id="toc-steins-lemma" class="nav-link" data-scroll-target="#steins-lemma"><span class="header-section-number">4</span> Stein’s lemma</a></li>
+  <li><a href="#where-we-go-next" id="toc-where-we-go-next" class="nav-link" data-scroll-target="#where-we-go-next"><span class="header-section-number">5</span> Where we go next</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Lecture 10: Gaussian Processes</h1>
+<p class="subtitle lead">The isonormal process, the Karhunen–Loève expansion, and Stein’s lemma</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 19, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Several objects from earlier lectures are random functions of a parameter. The Gaussian width of Lecture 3 is the expected supremum of <span class="math inline">\(t\mapsto\langle g,t\rangle\)</span> over a set <span class="math inline">\(T\)</span>. The singular values of a Gaussian matrix are the extreme values of <span class="math inline">\((u,v)\mapsto\langle Au,v\rangle\)</span> over pairs of unit vectors. In each case the random function is jointly Gaussian, and Lecture 9 ended by claiming that the sharpest results about such functions come not from discretizing the parameter set but from comparing one Gaussian function to another. This lecture sets up the language for that: Gaussian processes, the metric they induce on their index set, and the two tools, the isonormal process and Stein’s lemma, on which the next two lectures rest.</p>
+<section id="the-multivariate-normal" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="the-multivariate-normal"><span class="header-section-number">1</span> The multivariate normal</h2>
+<div id="def-multivariate-normal" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 1 (Gaussian random vector)</strong></span> A random vector <span class="math inline">\(X\)</span> in <span class="math inline">\(\mathbb R^d\)</span> is <strong>Gaussian</strong>, written <span class="math inline">\(X\sim N(\mu,\Sigma)\)</span>, if there are <span class="math inline">\(\mu\in\mathbb R^d\)</span> and a positive semidefinite <span class="math inline">\(\Sigma\in\mathbb R^{d\times d}\)</span> such that <span class="math display">\[
+\mathbb Ee^{i\langle\xi,X\rangle}=\exp\Big(i\langle\xi,\mu\rangle-\frac12\langle\xi,\Sigma\xi\rangle\Big)
+\qquad\text{for every }\xi\in\mathbb R^d .
+\]</span> Then <span class="math inline">\(\mu=\mathbb EX\)</span> and <span class="math inline">\(\Sigma=\mathbb E(X-\mu)(X-\mu)^{\mathsf T}\)</span>.</p>
+</div>
+<p>The definition through the characteristic function makes the basic manipulations immediate, because the characteristic function determines the law and behaves well under linear maps.</p>
+<div id="prp-gaussian-linear" class="theorem proposition">
+<p><span class="theorem-title"><strong>Proposition 1 (Linear images and the square-root representation)</strong></span> &nbsp;</p>
+<ol type="1">
+<li>If <span class="math inline">\(X\sim N(\mu,\Sigma)\)</span> and <span class="math inline">\(A\in\mathbb R^{k\times d}\)</span>, <span class="math inline">\(b\in\mathbb R^k\)</span>, then <span class="math inline">\(AX+b\sim N(A\mu+b,\ A\Sigma A^{\mathsf T})\)</span>.</li>
+<li>If <span class="math inline">\(Z=(Z_1,\ldots,Z_d)\)</span> has i.i.d. <span class="math inline">\(N(0,1)\)</span> coordinates, then <span class="math inline">\(Z\sim N(0,I_d)\)</span>, and <span class="math inline">\(\mu+AZ\sim N(\mu,AA^{\mathsf T})\)</span> for every <span class="math inline">\(A\)</span>.</li>
+<li>Conversely, if <span class="math inline">\(X\sim N(\mu,\Sigma)\)</span>, then <span class="math inline">\(X\)</span> has the same law as <span class="math inline">\(\mu+\Sigma^{1/2}Z\)</span>, where <span class="math inline">\(\Sigma^{1/2}\)</span> is the positive semidefinite square root of <span class="math inline">\(\Sigma\)</span>. In particular <span class="math inline">\(N(\mu,\Sigma)\)</span> exists for every <span class="math inline">\(\mu\)</span> and every positive semidefinite <span class="math inline">\(\Sigma\)</span>.</li>
+<li>If <span class="math inline">\(\Sigma\)</span> is invertible, <span class="math inline">\(X\)</span> has density <span class="math inline">\((2\pi)^{-d/2}(\det\Sigma)^{-1/2}\exp\big(-\frac12\langle x-\mu,\Sigma^{-1}(x-\mu)\rangle\big)\)</span>.</li>
+</ol>
+</div>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>For (1), <span class="math display">\[
+\mathbb Ee^{i\langle\xi,AX+b\rangle}
+=e^{i\langle\xi,b\rangle}\,\mathbb Ee^{i\langle A^{\mathsf T}\xi,X\rangle}
+=\exp\Big(i\langle\xi,A\mu+b\rangle-\frac12\langle A^{\mathsf T}\xi,\Sigma A^{\mathsf T}\xi\rangle\Big),
+\]</span> and <span class="math inline">\(\langle A^{\mathsf T}\xi,\Sigma A^{\mathsf T}\xi\rangle=\langle\xi,A\Sigma A^{\mathsf T}\xi\rangle\)</span>. For (2), independence factors the characteristic function of <span class="math inline">\(Z\)</span> into <span class="math inline">\(\prod_je^{-\xi_j^2/2}=e^{-\|\xi\|_2^2/2}\)</span>, and then (1) applies. For (3), by (2) the vector <span class="math inline">\(\mu+\Sigma^{1/2}Z\)</span> is <span class="math inline">\(N(\mu,\Sigma)\)</span>, and two random vectors with the same characteristic function have the same law. For (4), change variables in the density of <span class="math inline">\(Z\)</span> using the map <span class="math inline">\(z\mapsto\mu+\Sigma^{1/2}z\)</span>, whose Jacobian is <span class="math inline">\((\det\Sigma)^{1/2}\)</span>.</p>
+</div>
+</div>
+</div>
+<p>Two consequences are used constantly.</p>
+<p><strong>Rotation invariance.</strong> If <span class="math inline">\(U\)</span> is orthogonal and <span class="math inline">\(Z\sim N(0,I_d)\)</span>, then <span class="math inline">\(UZ\sim N(0,UU^{\mathsf T})=N(0,I_d)\)</span>. The standard Gaussian vector has no preferred direction.</p>
+<p><strong>Independence is a matter of covariance.</strong> If <span class="math inline">\(X\sim N(\mu,\Sigma)\)</span> and <span class="math inline">\(\Sigma\)</span> is block diagonal with respect to a splitting of the coordinates, then the characteristic function factors over the blocks, so the corresponding sub-vectors of <span class="math inline">\(X\)</span> are independent. For jointly Gaussian variables, uncorrelated means independent. This is false without joint Gaussianity, and it is the reason the <em>joint</em> law matters in the definition of a Gaussian process below.</p>
+<p>For a standard Gaussian vector <span class="math inline">\(g\sim N(0,I_d)\)</span> and fixed <span class="math inline">\(u,v\in\mathbb R^d\)</span>, part (1) gives <span class="math display">\[
+\langle g,u\rangle\sim N(0,\|u\|_2^2),
+\qquad
+\mathbb E\langle g,u\rangle\langle g,v\rangle=\langle u,v\rangle .
+\]</span> So the linear forms of a standard Gaussian vector reproduce the Euclidean geometry of <span class="math inline">\(\mathbb R^d\)</span> inside a space of random variables. This observation is the seed of the whole lecture.</p>
+</section>
+<section id="gaussian-processes-and-the-canonical-metric" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="gaussian-processes-and-the-canonical-metric"><span class="header-section-number">2</span> Gaussian processes and the canonical metric</h2>
+<div id="def-gaussian-process" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2 (Gaussian process)</strong></span> Let <span class="math inline">\(T\)</span> be a set. A collection of random variables <span class="math inline">\((X_t)_{t\in T}\)</span> on a common probability space is a <strong>Gaussian process</strong> if for every finite <span class="math inline">\(T'\subseteq T\)</span> the vector <span class="math inline">\((X_t)_{t\in T'}\)</span> is Gaussian. It is <strong>centered</strong> if <span class="math inline">\(\mathbb EX_t=0\)</span> for every <span class="math inline">\(t\)</span>.</p>
+</div>
+<p>Two functions describe a Gaussian process completely, since they determine every finite-dimensional law: <span class="math display">\[
+\mu(t):=\mathbb EX_t,
+\qquad
+K(s,t):=\mathbb E\big(X_s-\mu(s)\big)\big(X_t-\mu(t)\big),
+\]</span> the <strong>mean</strong> and the <strong>covariance</strong>. The covariance is positive semidefinite in the sense that for all <span class="math inline">\(t_1,\ldots,t_n\in T\)</span> and real <span class="math inline">\(a_1,\ldots,a_n\)</span>, <span class="math display">\[
+\sum_{i,j}a_ia_jK(t_i,t_j)=\operatorname{Var}\Big(\sum_ia_iX_{t_i}\Big)\geq0 .
+\]</span> A third function is a repackaging of these two, but it is the one that carries the geometry.</p>
+<div id="def-canonical-metric" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 3 (The canonical metric)</strong></span> The <strong>canonical metric</strong> of <span class="math inline">\((X_t)_{t\in T}\)</span> is <span class="math display">\[
+d(s,t):=\big(\mathbb E(X_s-X_t)^2\big)^{1/2}
+=\big((\mu(s)-\mu(t))^2+K(s,s)+K(t,t)-2K(s,t)\big)^{1/2}.
+\]</span></p>
+</div>
+<p>This is the <span class="math inline">\(L^2(\mathbb P)\)</span> distance between the random variables <span class="math inline">\(X_s\)</span> and <span class="math inline">\(X_t\)</span>, so it satisfies the triangle inequality. It is a pseudometric: <span class="math inline">\(d(s,t)=0\)</span> means <span class="math inline">\(X_s=X_t\)</span> almost surely, which can happen for <span class="math inline">\(s\neq t\)</span>, and we identify such indices when convenient. The geometry of <span class="math inline">\((T,d)\)</span> is the input to every estimate on <span class="math inline">\(\sup_tX_t\)</span> in the rest of the course.</p>
+<div id="thm-existence" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 1 (Existence)</strong></span> Let <span class="math inline">\(T\)</span> be a set, <span class="math inline">\(\mu:T\to\mathbb R\)</span> any function, and <span class="math inline">\(K:T\times T\to\mathbb R\)</span> symmetric and positive semidefinite. Then there is a probability space carrying a Gaussian process with mean <span class="math inline">\(\mu\)</span> and covariance <span class="math inline">\(K\)</span>.</p>
+</div>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>For each finite <span class="math inline">\(F\subseteq T\)</span>, the restriction of <span class="math inline">\(K\)</span> to <span class="math inline">\(F\times F\)</span> is a positive semidefinite matrix, so by <a href="#prp-gaussian-linear" class="quarto-xref">Proposition&nbsp;1</a> the law <span class="math inline">\(N(\mu|_F,K|_{F\times F})\)</span> on <span class="math inline">\(\mathbb R^F\)</span> exists. These laws are consistent: if <span class="math inline">\(F\subseteq F'\)</span>, the marginal of <span class="math inline">\(N(\mu|_{F'},K|_{F'\times F'})\)</span> on the coordinates in <span class="math inline">\(F\)</span> is <span class="math inline">\(N(\mu|_F,K|_{F\times F})\)</span>, by part (1) of <a href="#prp-gaussian-linear" class="quarto-xref">Proposition&nbsp;1</a> applied to the coordinate projection. The Kolmogorov extension theorem then provides a probability measure on <span class="math inline">\(\mathbb R^T\)</span>, with the product <span class="math inline">\(\sigma\)</span>-algebra, whose finite-dimensional marginals are these laws. The coordinate maps <span class="math inline">\(X_t(\omega)=\omega(t)\)</span> are the process.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note callout-titled" title="Examples">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Examples
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>All examples are centered.</p>
+<p><strong>The Gaussian width process.</strong> For <span class="math inline">\(T\subseteq\mathbb R^d\)</span> and <span class="math inline">\(g\sim N(0,I_d)\)</span>, <span class="math inline">\(X_t=\langle g,t\rangle\)</span> has <span class="math inline">\(K(s,t)=\langle s,t\rangle\)</span> and <span class="math inline">\(d(s,t)=\|s-t\|_2\)</span>. The canonical metric is the Euclidean metric, and <span class="math inline">\(\mathbb E\sup_tX_t=w(T)\)</span> is the Gaussian width of Lecture 3.</p>
+<p><strong>Brownian motion.</strong> <span class="math inline">\(T=[0,\infty)\)</span> and <span class="math inline">\(K(s,t)=\min\{s,t\}\)</span>. Positive semidefiniteness follows from <span class="math inline">\(\min\{s,t\}=\int_0^\infty\mathbb 1_{[0,s]}\mathbb 1_{[0,t]}\)</span>, which exhibits <span class="math inline">\(K\)</span> as a Gram matrix. Here <span class="math inline">\(d(s,t)=|s-t|^{1/2}\)</span>. Restricting to <span class="math inline">\(T=\mathbb N_0\)</span> gives the Gaussian random walk, the partial sums of i.i.d. standard Gaussians.</p>
+<p><strong>Branching random walk.</strong> Let <span class="math inline">\(T\)</span> be the set of vertices of the rooted binary tree, and attach independent <span class="math inline">\(N(0,1)\)</span> weights to the edges. Let <span class="math inline">\(X_v\)</span> be the sum of the weights along the path from the root to <span class="math inline">\(v\)</span>. Then <span class="math inline">\(K(v,w)\)</span> is the depth of the most recent common ancestor of <span class="math inline">\(v\)</span> and <span class="math inline">\(w\)</span>, and <span class="math inline">\(d(v,w)^2\)</span> is the number of edges on the path from <span class="math inline">\(v\)</span> to <span class="math inline">\(w\)</span>: the canonical metric is the square root of the graph distance on the tree. The metric tree of Lecture 2 is this geometry.</p>
+<p><strong>The Gaussian matrix process.</strong> For an <span class="math inline">\(m\times n\)</span> matrix <span class="math inline">\(A\)</span> with i.i.d. <span class="math inline">\(N(0,1)\)</span> entries and <span class="math inline">\(T=S^{n-1}\times S^{m-1}\)</span>, <span class="math inline">\(X_{(u,v)}=\langle Au,v\rangle\)</span> has <span class="math inline">\(K((u,v),(w,z))=\langle u,w\rangle\langle v,z\rangle\)</span> and <span class="math inline">\(d((u,v),(w,z))=\|uv^{\mathsf T}-wz^{\mathsf T}\|_F\)</span>. Its supremum is <span class="math inline">\(s_{\max}(A)\)</span>. Lecture 12 computes <span class="math inline">\(\mathbb E\sup X\)</span> by comparing this process with a simpler one on the same index set.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note callout-titled" title="Suprema over uncountable index sets">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Suprema over uncountable index sets
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>For an uncountable <span class="math inline">\(T\)</span> the supremum <span class="math inline">\(\sup_{t\in T}X_t\)</span> need not be measurable, and it can depend on which version of the process is used. We adopt the following convention, which covers every process in this course. Say that <span class="math inline">\((T,d)\)</span> is separable if it has a countable dense subset <span class="math inline">\(T_0\)</span>. Then define <span class="math display">\[
+\sup_{t\in T}X_t:=\sup_{t\in T_0}X_t .
+\]</span> This is a random variable, and it does not depend on the choice of <span class="math inline">\(T_0\)</span> up to almost sure equality, because for <span class="math inline">\(t\in T\)</span> and <span class="math inline">\(t_k\to t\)</span> in <span class="math inline">\(T_0\)</span> we have <span class="math inline">\(X_{t_k}\to X_t\)</span> in <span class="math inline">\(L^2\)</span>, hence along a subsequence almost surely. When the process has continuous sample paths, as <span class="math inline">\(t\mapsto\langle g,t\rangle\)</span> does, the convention agrees with the pointwise supremum.</p>
+<p>The expectation <span class="math inline">\(\mathbb E\sup_tX_t\)</span> can be <span class="math inline">\(+\infty\)</span>. If <span class="math inline">\(T=\mathbb N\)</span> and the <span class="math inline">\(X_t\)</span> are i.i.d. <span class="math inline">\(N(0,1)\)</span>, then <span class="math inline">\(d(s,t)=\sqrt2\)</span> for <span class="math inline">\(s\neq t\)</span>, the metric space is not totally bounded, and <span class="math inline">\(\sup_tX_t=+\infty\)</span> almost surely. Sudakov’s inequality of Lecture 3 already says that finiteness of <span class="math inline">\(\mathbb E\sup X\)</span> forces <span class="math inline">\((T,d)\)</span> to be totally bounded.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="the-isonormal-process" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="the-isonormal-process"><span class="header-section-number">3</span> The isonormal process</h2>
+<p>The linear forms <span class="math inline">\(\langle g,u\rangle\)</span> of a standard Gaussian vector realize the inner product of <span class="math inline">\(\mathbb R^d\)</span> as a covariance. The same construction works in any separable Hilbert space, and the resulting process is the universal example.</p>
+<div id="def-isonormal" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 4 (The isonormal process)</strong></span> Let <span class="math inline">\(H\)</span> be a separable Hilbert space with orthonormal basis <span class="math inline">\((e_j)_{j\geq1}\)</span>, and let <span class="math inline">\(Z_1,Z_2,\ldots\)</span> be i.i.d. <span class="math inline">\(N(0,1)\)</span>. For <span class="math inline">\(h=\sum_j\hat h_je_j\in H\)</span> define <span class="math display">\[
+g(h):=\sum_{j\geq1}\hat h_jZ_j ,
+\]</span> the series converging in <span class="math inline">\(L^2(\mathbb P)\)</span>. The process <span class="math inline">\((g(h))_{h\in H}\)</span> is the <strong>isonormal process</strong> on <span class="math inline">\(H\)</span>.</p>
+</div>
+<div id="prp-isonormal" class="theorem proposition">
+<p><span class="theorem-title"><strong>Proposition 2 (Properties of the isonormal process)</strong></span> The series defining <span class="math inline">\(g(h)\)</span> converges in <span class="math inline">\(L^2(\mathbb P)\)</span>, and <span class="math inline">\((g(h))_{h\in H}\)</span> is a centered Gaussian process with <span class="math display">\[
+\mathbb Eg(h)g(h')=\langle h,h'\rangle_H
+\qquad\text{for all }h,h'\in H .
+\]</span> Its canonical metric is the norm distance <span class="math inline">\(d(h,h')=\|h-h'\|_H\)</span>. The map <span class="math inline">\(h\mapsto g(h)\)</span> is linear: <span class="math inline">\(g(\alpha h+\beta h')=\alpha g(h)+\beta g(h')\)</span> almost surely.</p>
+</div>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Let <span class="math inline">\(g_n(h)=\sum_{j\leq n}\hat h_jZ_j\)</span>. For <span class="math inline">\(m&lt;n\)</span>, by independence and <span class="math inline">\(\mathbb EZ_j^2=1\)</span>, <span class="math display">\[
+\mathbb E\big(g_n(h)-g_m(h)\big)^2=\sum_{j=m+1}^n\hat h_j^2 ,
+\]</span> which tends to zero since <span class="math inline">\(\sum_j\hat h_j^2=\|h\|_H^2&lt;\infty\)</span>. So <span class="math inline">\((g_n(h))_n\)</span> is Cauchy in <span class="math inline">\(L^2(\mathbb P)\)</span> and converges. Each <span class="math inline">\(g_n(h)\)</span> is Gaussian with variance <span class="math inline">\(\sum_{j\leq n}\hat h_j^2\)</span>, and for finitely many <span class="math inline">\(h^{(1)},\ldots,h^{(k)}\)</span> the vector <span class="math inline">\((g_n(h^{(i)}))_i\)</span> is Gaussian by <a href="#prp-gaussian-linear" class="quarto-xref">Proposition&nbsp;1</a>, being a linear image of <span class="math inline">\((Z_1,\ldots,Z_n)\)</span>. Characteristic functions pass to <span class="math inline">\(L^2\)</span> limits, since <span class="math inline">\(|\mathbb Ee^{i\langle\xi,Y_n\rangle}-\mathbb Ee^{i\langle\xi,Y\rangle}|\leq\|\xi\|_2\,\mathbb E\|Y_n-Y\|_2\)</span>, so the limit vector is Gaussian too. The covariance is <span class="math display">\[
+\mathbb Eg(h)g(h')=\lim_n\mathbb Eg_n(h)g_n(h')=\lim_n\sum_{j\leq n}\hat h_j\hat h'_j=\langle h,h'\rangle_H .
+\]</span> Linearity holds for each <span class="math inline">\(g_n\)</span> and passes to the limit.</p>
+</div>
+</div>
+</div>
+<p>Two instances are already familiar. For <span class="math inline">\(H=\mathbb R^d\)</span> with the standard basis, <span class="math inline">\(g(h)=\langle g,h\rangle\)</span> with <span class="math inline">\(g=(Z_1,\ldots,Z_d)\)</span>, which is the Gaussian width process. For <span class="math inline">\(H=L^2[0,\infty)\)</span>, the process <span class="math inline">\(B_t:=g(\mathbb 1_{[0,t]})\)</span> has covariance <span class="math inline">\(\langle\mathbb 1_{[0,s]},\mathbb 1_{[0,t]}\rangle=\min\{s,t\}\)</span>, which is Brownian motion, and more generally <span class="math inline">\(g(f)\)</span> is the stochastic integral <span class="math inline">\(\int f\,dB\)</span> for deterministic <span class="math inline">\(f\)</span>.</p>
+<p>The point of the isonormal process is that it is, up to relabeling, the only Gaussian process.</p>
+<div id="thm-karhunen-loeve" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 2 (Every separable Gaussian process is isonormal)</strong></span> Let <span class="math inline">\((X_t)_{t\in T}\)</span> be a centered Gaussian process whose canonical metric space <span class="math inline">\((T,d)\)</span> is separable. Then there are i.i.d. <span class="math inline">\(N(0,1)\)</span> variables <span class="math inline">\(Z_1,Z_2,\ldots\)</span> and vectors <span class="math inline">\(x(t)=(\hat x(t,j))_{j\geq1}\in\ell^2\)</span>, one for each <span class="math inline">\(t\in T\)</span>, such that <span class="math display">\[
+X_t=\sum_{j\geq1}\hat x(t,j)Z_j
+\qquad\text{almost surely, for every }t\in T,
+\]</span> with the series converging in <span class="math inline">\(L^2(\mathbb P)\)</span>. Consequently <span class="math display">\[
+K(s,t)=\langle x(s),x(t)\rangle_{\ell^2}
+\qquad\text{and}\qquad
+d(s,t)=\|x(s)-x(t)\|_{\ell^2}.
+\]</span> In other words, <span class="math inline">\(X_t=g(x(t))\)</span> for the isonormal process <span class="math inline">\(g\)</span> on <span class="math inline">\(\ell^2\)</span>, and <span class="math inline">\(t\mapsto x(t)\)</span> is an isometry from <span class="math inline">\((T,d)\)</span> onto the subset <span class="math inline">\(x(T)\)</span> of <span class="math inline">\(\ell^2\)</span>.</p>
+</div>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Let <span class="math inline">\(H_X\subseteq L^2(\mathbb P)\)</span> be the closed linear span of <span class="math inline">\(\{X_t:t\in T\}\)</span>. Since <span class="math inline">\((T,d)\)</span> is separable and <span class="math inline">\(t\mapsto X_t\)</span> is an isometry into <span class="math inline">\(L^2(\mathbb P)\)</span>, the set <span class="math inline">\(\{X_t\}\)</span> is separable in <span class="math inline">\(L^2(\mathbb P)\)</span>, so <span class="math inline">\(H_X\)</span> is a separable Hilbert space and has a countable orthonormal basis <span class="math inline">\((Z_j)_{j\geq1}\)</span>.</p>
+<p>Each <span class="math inline">\(Z_j\)</span> is an <span class="math inline">\(L^2\)</span> limit of finite linear combinations of the <span class="math inline">\(X_t\)</span>, so finitely many of the <span class="math inline">\(Z_j\)</span> form a Gaussian vector, by the same limiting argument as in the proof of <a href="#prp-isonormal" class="quarto-xref">Proposition&nbsp;2</a>. They are orthonormal in <span class="math inline">\(L^2(\mathbb P)\)</span>, that is, they have variance <span class="math inline">\(1\)</span> and are pairwise uncorrelated, so they are i.i.d. <span class="math inline">\(N(0,1)\)</span> by the independence remark after <a href="#prp-gaussian-linear" class="quarto-xref">Proposition&nbsp;1</a>.</p>
+<p>Expanding <span class="math inline">\(X_t\in H_X\)</span> in the basis, <span class="math inline">\(X_t=\sum_j\langle X_t,Z_j\rangle_{L^2}Z_j\)</span> in <span class="math inline">\(L^2(\mathbb P)\)</span>. Set <span class="math inline">\(\hat x(t,j):=\langle X_t,Z_j\rangle_{L^2}=\mathbb EX_tZ_j\)</span>. Parseval gives <span class="math inline">\(\|x(t)\|_{\ell^2}^2=\mathbb EX_t^2&lt;\infty\)</span>, and the covariance and metric identities follow from Parseval applied to <span class="math inline">\(\mathbb EX_sX_t=\langle X_s,X_t\rangle_{L^2}\)</span>.</p>
+</div>
+</div>
+</div>
+<p>The representation <span class="math inline">\(X_t=\sum_j\hat x(t,j)Z_j\)</span> is called the <strong>Karhunen–Loève expansion</strong>. Its conceptual content is this. A centered Gaussian process on a separable index set is the same thing as a subset <span class="math inline">\(x(T)\)</span> of a Hilbert space, and the process is the restriction of the isonormal process to that subset. Questions about <span class="math inline">\(\sup_tX_t\)</span> are questions about the Gaussian width of <span class="math inline">\(x(T)\)</span>, in the sense of Lecture 3 but now in infinite dimensions. The Gaussian width process was not one example among many; it was the general case in disguise.</p>
+<div class="callout callout-style-simple callout-note callout-titled" title="Karhunen–Loève for Brownian motion">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Karhunen–Loève for Brownian motion
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The theorem does not single out a basis. For Brownian motion on <span class="math inline">\([0,1]\)</span> a natural choice diagonalizes the covariance operator <span class="math inline">\(f\mapsto\int_0^1\min\{s,t\}f(s)\,ds\)</span>, whose eigenfunctions are <span class="math inline">\(\sqrt2\sin\big((j-\tfrac12)\pi t\big)\)</span> with eigenvalues <span class="math inline">\(\lambda_j=\big((j-\tfrac12)\pi\big)^{-2}\)</span>. Then <span class="math display">\[
+B_t=\sum_{j\geq1}\sqrt{\lambda_j}\,\sqrt2\sin\big((j-\tfrac12)\pi t\big)Z_j ,
+\]</span> and the decay of <span class="math inline">\(\lambda_j\)</span> measures how well Brownian motion is approximated by finitely many Gaussians. The expansion in <a href="#thm-karhunen-loeve" class="quarto-xref">Theorem&nbsp;2</a> is exact but says nothing about which coordinates matter most; that is a question about the geometry of <span class="math inline">\(x(T)\)</span>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="steins-lemma" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="steins-lemma"><span class="header-section-number">4</span> Stein’s lemma</h2>
+<p>The second tool is an integration by parts formula. It is what lets us differentiate expectations of functions of Gaussians, and it is the engine behind the concentration and comparison inequalities of the next two lectures.</p>
+<div id="lem-stein" class="theorem lemma">
+<p><span class="theorem-title"><strong>Lemma 1 (Stein’s lemma, one variable)</strong></span> Let <span class="math inline">\(X\sim N(0,\sigma^2)\)</span> and let <span class="math inline">\(f:\mathbb R\to\mathbb R\)</span> be Lipschitz. Then <span class="math display">\[
+\mathbb E\,Xf(X)=\sigma^2\,\mathbb Ef'(X).
+\]</span></p>
+</div>
+<p>Here <span class="math inline">\(f\)</span> is differentiable almost everywhere with <span class="math inline">\(|f'|\leq\|f\|_{\mathrm{Lip}}\)</span>, by Rademacher’s theorem, and <span class="math inline">\(f\)</span> is the integral of <span class="math inline">\(f'\)</span>, so the right-hand side is well defined.</p>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Let <span class="math inline">\(\varphi_\sigma(x)=(2\pi\sigma^2)^{-1/2}e^{-x^2/(2\sigma^2)}\)</span> be the density of <span class="math inline">\(X\)</span>. Its defining property for this proof is <span class="math display">\[
+x\varphi_\sigma(x)=-\sigma^2\varphi_\sigma'(x).
+\]</span> Hence, integrating by parts, <span class="math display">\[
+\mathbb EXf(X)=\int_{\mathbb R}xf(x)\varphi_\sigma(x)\,dx
+=-\sigma^2\int_{\mathbb R}f(x)\varphi_\sigma'(x)\,dx
+=\sigma^2\int_{\mathbb R}f'(x)\varphi_\sigma(x)\,dx .
+\]</span> The boundary terms vanish because <span class="math inline">\(|f(x)|\leq|f(0)|+\|f\|_{\mathrm{Lip}}|x|\)</span> grows at most linearly while <span class="math inline">\(\varphi_\sigma\)</span> decays like a Gaussian, and the integration by parts is legitimate for the absolutely continuous function <span class="math inline">\(f\)</span>.</p>
+</div>
+</div>
+</div>
+<p>The identity characterizes the Gaussian: if <span class="math inline">\(\mathbb EXf(X)=\sigma^2\mathbb Ef'(X)\)</span> for all bounded Lipschitz <span class="math inline">\(f\)</span>, then <span class="math inline">\(X\sim N(0,\sigma^2)\)</span>. Taking <span class="math inline">\(f(x)=x^{k-1}\)</span> shows that the identity forces all moments to be those of <span class="math inline">\(N(0,\sigma^2)\)</span>, which determines the law. We do not need this converse, but it explains why the lemma is so tightly bound to Gaussian structure.</p>
+<div id="lem-stein-multivariate" class="theorem lemma">
+<p><span class="theorem-title"><strong>Lemma 2 (Stein’s lemma, several variables)</strong></span> Let <span class="math inline">\(X\sim N(0,\Sigma)\)</span> in <span class="math inline">\(\mathbb R^d\)</span> and let <span class="math inline">\(f:\mathbb R^d\to\mathbb R\)</span> be Lipschitz. Then for every <span class="math inline">\(j\)</span>, <span class="math display">\[
+\mathbb E\,X_jf(X)=\mathbb E\langle\Sigma e_j,\nabla f(X)\rangle
+=\sum_{k=1}^d\Sigma_{jk}\,\mathbb E\,\partial_kf(X).
+\]</span> Equivalently, <span class="math inline">\(\mathbb E\,Xf(X)=\Sigma\,\mathbb E\nabla f(X)\)</span> as vectors.</p>
+</div>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>By <a href="#prp-gaussian-linear" class="quarto-xref">Proposition&nbsp;1</a> we may take <span class="math inline">\(X=\Sigma^{1/2}Z\)</span> with <span class="math inline">\(Z\sim N(0,I_d)\)</span>. Write <span class="math inline">\(S=\Sigma^{1/2}\)</span>, so that <span class="math inline">\(X_j=\sum_iS_{ji}Z_i\)</span>, and set <span class="math inline">\(F(z)=f(Sz)\)</span>, which is Lipschitz with <span class="math inline">\(\partial_iF(z)=\sum_kS_{ki}\,\partial_kf(Sz)\)</span> by the chain rule, valid almost everywhere.</p>
+<p>For a single coordinate <span class="math inline">\(Z_i\)</span>, condition on the other coordinates: they are independent of <span class="math inline">\(Z_i\)</span>, and <span class="math inline">\(z_i\mapsto F(z)\)</span> is Lipschitz, so the one-variable lemma with <span class="math inline">\(\sigma=1\)</span> gives <span class="math inline">\(\mathbb E\,Z_iF(Z)=\mathbb E\,\partial_iF(Z)\)</span>. Therefore <span class="math display">\[
+\mathbb EX_jf(X)=\sum_iS_{ji}\,\mathbb EZ_iF(Z)
+=\sum_iS_{ji}\sum_kS_{ki}\,\mathbb E\partial_kf(X)
+=\sum_k(SS^{\mathsf T})_{jk}\,\mathbb E\partial_kf(X),
+\]</span> and <span class="math inline">\(SS^{\mathsf T}=\Sigma\)</span>.</p>
+</div>
+</div>
+</div>
+<p>For the Gaussian width process this reads <span class="math inline">\(\mathbb E\langle g,t\rangle f(g)=\mathbb E\langle t,\nabla f(g)\rangle\)</span>. The next lecture applies it with <span class="math inline">\(f\)</span> an exponential of a Lipschitz function to prove that Lipschitz functions of a Gaussian vector concentrate, and Lecture 12 applies it along an interpolation between two covariances to compare the suprema of two processes. Both proofs are the same computation with different choices of <span class="math inline">\(f\)</span>.</p>
+</section>
+<section id="where-we-go-next" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="where-we-go-next"><span class="header-section-number">5</span> Where we go next</h2>
+<p>A centered Gaussian process is a subset of a Hilbert space together with the isonormal process on it, and the object of interest is <span class="math inline">\(\sup_{t\in T}X_t\)</span>, the Gaussian width of that subset. Two questions remain. How concentrated is the supremum around its mean? Lecture 11 shows that the fluctuations are governed by <span class="math inline">\(\sup_t\operatorname{Var}X_t\)</span> alone, whatever the geometry of <span class="math inline">\(T\)</span>. And how large is the mean? Lecture 12 begins the answer with comparison inequalities, which bound <span class="math inline">\(\mathbb E\sup X\)</span> by <span class="math inline">\(\mathbb E\sup Y\)</span> whenever the canonical metric of <span class="math inline">\(X\)</span> is dominated by that of <span class="math inline">\(Y\)</span>, and uses them to compute the norm of a Gaussian matrix.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/elliotpaquette\.github\.io\/high-dimensional-probability\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
