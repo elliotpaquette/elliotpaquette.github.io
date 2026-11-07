@@ -431,14 +431,14 @@ window.Quarto = {
   <li><a href="#scoring-rubric" id="toc-scoring-rubric" class="nav-link" data-scroll-target="#scoring-rubric">Scoring rubric</a></li>
   <li><a href="#choosing-an-appointment" id="toc-choosing-an-appointment" class="nav-link" data-scroll-target="#choosing-an-appointment">Choosing an appointment</a></li>
   <li><a href="#problem-statements" id="toc-problem-statements" class="nav-link" data-scroll-target="#problem-statements">Problem statements</a></li>
-  <li><a href="#gaussian-quadratic-forms-and-effective-dimension" id="toc-gaussian-quadratic-forms-and-effective-dimension" class="nav-link" data-scroll-target="#gaussian-quadratic-forms-and-effective-dimension">1. Gaussian quadratic forms and effective dimension</a></li>
-  <li><a href="#one-random-map-for-a-union-of-subspaces" id="toc-one-random-map-for-a-union-of-subspaces" class="nav-link" data-scroll-target="#one-random-map-for-a-union-of-subspaces">2. One random map for a union of subspaces</a></li>
+  <li><a href="#estimating-a-trace-without-reading-the-matrix" id="toc-estimating-a-trace-without-reading-the-matrix" class="nav-link" data-scroll-target="#estimating-a-trace-without-reading-the-matrix">1. Estimating a trace without reading the matrix</a></li>
+  <li><a href="#encoding-a-finite-set-with-random-hyperplanes" id="toc-encoding-a-finite-set-with-random-hyperplanes" class="nav-link" data-scroll-target="#encoding-a-finite-set-with-random-hyperplanes">2. Encoding a finite set with random hyperplanes</a></li>
   <li><a href="#the-ground-state-energy-of-a-gaussian-spin-system" id="toc-the-ground-state-energy-of-a-gaussian-spin-system" class="nav-link" data-scroll-target="#the-ground-state-energy-of-a-gaussian-spin-system">3. The ground-state energy of a Gaussian spin system</a></li>
-  <li><a href="#noisy-measurements-and-feasible-recovery" id="toc-noisy-measurements-and-feasible-recovery" class="nav-link" data-scroll-target="#noisy-measurements-and-feasible-recovery">4. Noisy measurements and feasible recovery</a></li>
+  <li><a href="#recovering-a-signal-from-noisy-measurements" id="toc-recovering-a-signal-from-noisy-measurements" class="nav-link" data-scroll-target="#recovering-a-signal-from-noisy-measurements">4. Recovering a signal from noisy measurements</a></li>
   <li><a href="#random-sections-of-the-octahedron" id="toc-random-sections-of-the-octahedron" class="nav-link" data-scroll-target="#random-sections-of-the-octahedron">5. Random sections of the octahedron</a></li>
-  <li><a href="#random-approximation-and-entropy-of-a-convex-hull" id="toc-random-approximation-and-entropy-of-a-convex-hull" class="nav-link" data-scroll-target="#random-approximation-and-entropy-of-a-convex-hull">6. Random approximation and entropy of a convex hull</a></li>
+  <li><a href="#a-large-euclidean-section-of-the-ell1-ball" id="toc-a-large-euclidean-section-of-the-ell1-ball" class="nav-link" data-scroll-target="#a-large-euclidean-section-of-the-ell1-ball">6. A large Euclidean section of the <span class="math inline">\(\ell^1\)</span>-ball</a></li>
   <li><a href="#generic-chaining-on-a-binary-tree" id="toc-generic-chaining-on-a-binary-tree" class="nav-link" data-scroll-target="#generic-chaining-on-a-binary-tree">7. Generic chaining on a binary tree</a></li>
-  <li><a href="#product-geometry-and-sub-gaussian-processes" id="toc-product-geometry-and-sub-gaussian-processes" class="nav-link" data-scroll-target="#product-geometry-and-sub-gaussian-processes">8. Product geometry and sub-Gaussian processes</a></li>
+  <li><a href="#generic-chaining-for-a-product-of-balls" id="toc-generic-chaining-for-a-product-of-balls" class="nav-link" data-scroll-target="#generic-chaining-for-a-product-of-balls">8. Generic chaining for a product of balls</a></li>
   </ul>
 </nav>
     </div>
@@ -533,45 +533,41 @@ window.Quarto = {
 <section id="problem-statements" class="level2">
 <h2 class="anchored" data-anchor-id="problem-statements">Problem statements</h2>
 <p><a href="../exercises/final-exam-problems.pdf">Download the printable problem sheet (PDF)</a></p>
-<p>Throughout, <span class="math inline">\(C,c&gt;0\)</span> denote absolute constants, whose values may change. All logarithms are natural. Write <span class="math inline">\(B_p^n=\{x\in\mathbb R^n:\|x\|_p\leq1\}\)</span>, and, for a nonempty bounded set <span class="math inline">\(T\)</span> in a Euclidean space, write <span class="math inline">\(w(T)=\mathbb E\sup_{t\in T}\langle g,t\rangle\)</span> for standard Gaussian <span class="math inline">\(g\)</span>. Covering numbers have centers in the set being covered.</p>
+<p>Throughout, <span class="math inline">\(C,c&gt;0\)</span> denote absolute constants, whose values may change. All logarithms are natural. Write <span class="math inline">\(B_p^n=\{x\in\mathbb R^n:\|x\|_p\leq1\}\)</span>, and, for a nonempty bounded set <span class="math inline">\(T\)</span> in a Euclidean space, write <span class="math inline">\(w(T)=\mathbb E\sup_{t\in T}\langle g,t\rangle\)</span> for standard Gaussian <span class="math inline">\(g\)</span>. A standard Gaussian matrix has independent <span class="math inline">\(N(0,1)\)</span> entries; <span class="math inline">\(\|A\|_F^2=\sum_{i,j}A_{ij}^2\)</span> denotes its squared Frobenius norm.</p>
 </section>
-<section id="gaussian-quadratic-forms-and-effective-dimension" class="level2">
-<h2 class="anchored" data-anchor-id="gaussian-quadratic-forms-and-effective-dimension">1. Gaussian quadratic forms and effective dimension</h2>
-<p>Let <span class="math inline">\(A\)</span> be a nonzero real symmetric <span class="math inline">\(n\times n\)</span> matrix, let <span class="math inline">\(g\sim N(0,I_n)\)</span>, and set <span class="math inline">\(Q=g^{\mathsf T}Ag-\operatorname{tr}A\)</span>.</p>
+<section id="estimating-a-trace-without-reading-the-matrix" class="level2">
+<h2 class="anchored" data-anchor-id="estimating-a-trace-without-reading-the-matrix">1. Estimating a trace without reading the matrix</h2>
+<p>Let <span class="math inline">\(A\)</span> be a nonzero positive semidefinite <span class="math inline">\(n\times n\)</span> matrix. Suppose that we can compute <span class="math inline">\(Av\)</span> for a chosen vector <span class="math inline">\(v\)</span>, but cannot read the entries of <span class="math inline">\(A\)</span> directly. Let <span class="math inline">\(g\sim N(0,I_n)\)</span> and let <span class="math inline">\(\varepsilon\in\{-1,1\}^n\)</span> have independent uniform sign coordinates.</p>
 <ol type="1">
-<li>Diagonalize <span class="math inline">\(A\)</span> and compute <span class="math inline">\(\mathbb E e^{\theta Q}\)</span>. Show that <span class="math display">\[
-\log\mathbb E e^{\theta Q}\leq C\theta^2\|A\|_F^2
-\quad\text{if }|\theta|\leq c/\|A\|_{\mathrm{op}}.
+<li>Show that <span class="math inline">\(g^{\mathsf T}Ag\)</span> and <span class="math inline">\(\varepsilon^{\mathsf T}A\varepsilon\)</span> are unbiased estimators of <span class="math inline">\(\operatorname{tr}A\)</span>, and prove <span class="math display">\[
+\operatorname{Var}(g^{\mathsf T}Ag)=2\|A\|_F^2,
+\qquad
+\operatorname{Var}(\varepsilon^{\mathsf T}A\varepsilon)
+=2\sum_{i\ne j}A_{ij}^2.
 \]</span></li>
-<li>Optimize the exponential Markov bound to prove, for <span class="math inline">\(t&gt;0\)</span>, <span class="math display">\[
-\mathbb P\{|Q|\geq t\}\leq
-2\exp\left[-c\min\left\{\frac{t^2}{\|A\|_F^2},
-\frac{t}{\|A\|_{\mathrm{op}}}\right\}\right].
-\]</span></li>
-<li>Suppose <span class="math inline">\(A\succeq0\)</span> and define <span class="math inline">\(r_2(A)=(\operatorname{tr}A)^2/\|A\|_F^2\)</span> and <span class="math inline">\(r_\infty(A)=\operatorname{tr}A/\|A\|_{\mathrm{op}}\)</span>. Express the relative-error bound at <span class="math inline">\(t=\varepsilon\operatorname{tr}A\)</span> in terms of these quantities. Explain the two regimes using an orthogonal projection of rank <span class="math inline">\(r\)</span>, and check that <span class="math inline">\(r_\infty(A)\leq r_2(A)\leq\operatorname{rank}A\)</span>.</li>
+<li>Choose either estimator. Form <span class="math inline">\(b\)</span> independent batches, each containing <span class="math inline">\(k\)</span> independent copies, and let <span class="math inline">\(\widehat\tau\)</span> be a median of the <span class="math inline">\(b\)</span> batch averages. For <span class="math inline">\(0&lt;\delta,\rho&lt;1\)</span>, prove that <span class="math display">\[
+k\geq C\delta^{-2},\qquad b\geq C\log(2/\rho)
+\quad\Longrightarrow\quad
+\mathbb P\{|\widehat\tau-\operatorname{tr}A|
+&gt;\delta\operatorname{tr}A\}\leq\rho.
+\]</span> Thus only <span class="math inline">\(O(\delta^{-2}\log(2/\rho))\)</span> matrix-vector products are needed, independently of <span class="math inline">\(n\)</span>.</li>
 </ol>
-<p><em>Hint.</em> For <span class="math inline">\(|u|\leq1/2\)</span>, <span class="math inline">\(-\log(1-u)-u\leq Cu^2\)</span>. The argument must allow negative eigenvalues in parts 1 and 2.</p>
+<p><em>Hint.</em> Use positivity of the eigenvalues to bound the variance relative to <span class="math inline">\((\operatorname{tr}A)^2\)</span>, then control how many batch averages are inaccurate.</p>
 </section>
-<section id="one-random-map-for-a-union-of-subspaces" class="level2">
-<h2 class="anchored" data-anchor-id="one-random-map-for-a-union-of-subspaces">2. One random map for a union of subspaces</h2>
-<p>Let <span class="math inline">\(V_1,\ldots,V_M\)</span> be linear subspaces of <span class="math inline">\(\mathbb R^n\)</span>, each of dimension at most <span class="math inline">\(k\)</span>, where <span class="math inline">\(1\leq k\leq n\)</span> and <span class="math inline">\(M\geq1\)</span>. Let <span class="math inline">\(G\)</span> be an <span class="math inline">\(m\times n\)</span> matrix of independent <span class="math inline">\(N(0,1)\)</span> entries. Fix <span class="math inline">\(\varepsilon,\rho\in(0,1)\)</span> and put <span class="math inline">\(T=\bigcup_{j=1}^M V_j\)</span>.</p>
+<section id="encoding-a-finite-set-with-random-hyperplanes" class="level2">
+<h2 class="anchored" data-anchor-id="encoding-a-finite-set-with-random-hyperplanes">2. Encoding a finite set with random hyperplanes</h2>
+<p>Let <span class="math inline">\(T\subset S^{n-1}\)</span> have <span class="math inline">\(N\geq2\)</span> points. Take independent <span class="math inline">\(g_1,\ldots,g_m\sim N(0,I_n)\)</span> and encode <span class="math inline">\(x\in T\)</span> by <span class="math display">\[
+\Phi(x)=\big(\operatorname{sign}\langle g_i,x\rangle\big)_{i=1}^m
+\in\{-1,1\}^m,
+\]</span> where <span class="math inline">\(\operatorname{sign}(0)=1\)</span>. Write <span class="math inline">\(d_H(u,v)=m^{-1}|\{i:u_i\ne v_i\}|\)</span> and <span class="math inline">\(d_{\mathrm{ang}}(x,y)=\pi^{-1}\arccos\langle x,y\rangle\)</span>.</p>
 <ol type="1">
-<li>For a fixed <span class="math inline">\(d\)</span>-dimensional subspace <span class="math inline">\(W\)</span>, <span class="math inline">\(d\geq1\)</span>, use a <span class="math inline">\(1/4\)</span>-net of its unit sphere and Problem 1 to prove <span class="math display">\[
-\mathbb P\left\{\sup_{x\in W\cap S^{n-1}}
-\left|m^{-1}\|Gx\|_2^2-1\right|&gt;\varepsilon\right\}
-\leq 2\exp(Cd-cm\varepsilon^2).
-\]</span></li>
-<li>Deduce that, if <span class="math inline">\(m\geq C\varepsilon^{-2}(k+\log(M/\rho))\)</span>, then with probability at least <span class="math inline">\(1-\rho\)</span>, <span class="math display">\[
-(1-\varepsilon)\|x-y\|_2^2\leq m^{-1}\|G(x-y)\|_2^2
-\leq(1+\varepsilon)\|x-y\|_2^2
-\quad\text{for every }x,y\in T.
-\]</span> Explain why controlling each <span class="math inline">\(V_j\)</span> separately does not by itself prove this.</li>
-<li>Apply the result to all vectors with at most <span class="math inline">\(s\)</span> nonzero coordinates, <span class="math inline">\(1\leq s\leq n\)</span>, to obtain the sufficient bound <span class="math display">\[
-m\geq C\varepsilon^{-2}
-\left(s\log\frac{en}{s}+\log\frac1\rho\right).
-\]</span></li>
+<li>Prove that <span class="math inline">\(\mathbb E d_H(\Phi(x),\Phi(y))=d_{\mathrm{ang}}(x,y)\)</span> for every <span class="math inline">\(x,y\in T\)</span>.</li>
+<li>For <span class="math inline">\(0&lt;\delta,\rho&lt;1\)</span>, prove that <span class="math inline">\(m\geq C\delta^{-2}\log(N/\rho)\)</span> implies, with probability at least <span class="math inline">\(1-\rho\)</span>, <span class="math display">\[
+\sup_{x,y\in T}
+|d_H(\Phi(x),\Phi(y))-d_{\mathrm{ang}}(x,y)|\leq\delta.
+\]</span> Deduce that on this event any two points assigned the same code have Euclidean distance at most <span class="math inline">\(\pi\delta\)</span>.</li>
 </ol>
-<p><em>Facts you may use.</em> A unit sphere in dimension <span class="math inline">\(d\)</span> has a <span class="math inline">\(1/4\)</span>-net of size at most <span class="math inline">\(9^d\)</span>. For symmetric <span class="math inline">\(B\)</span> and such a net <span class="math inline">\(\mathcal N\)</span>, <span class="math inline">\(\|B\|_{\mathrm{op}}\leq2\max_{x\in\mathcal N}|x^{\mathsf T}Bx|\)</span>. For part 2, consider the spaces <span class="math inline">\(V_i+V_j\)</span>.</p>
+<p><em>Hint.</em> Use rotational invariance in the plane spanned by <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>.</p>
 </section>
 <section id="the-ground-state-energy-of-a-gaussian-spin-system" class="level2">
 <h2 class="anchored" data-anchor-id="the-ground-state-energy-of-a-gaussian-spin-system">3. The ground-state energy of a Gaussian spin system</h2>
@@ -582,62 +578,66 @@ H_\sigma=\sum_{i&gt;j}Z_{ij}\sigma_i\sigma_j,
 <ol type="1">
 <li>Prove that <span class="math inline">\(\mathbb EE_n=-\mathbb E\max_\sigma H_\sigma\)</span> and that <span class="math inline">\(-\mathbb EE_n\leq Cn^{3/2}\)</span>.</li>
 <li>Construct signs successively by taking <span class="math inline">\(\sigma_1=1\)</span> and choosing <span class="math inline">\(\sigma_i\)</span> to maximize <span class="math inline">\(\sigma_i\sum_{j&lt;i}Z_{ij}\sigma_j\)</span>. Condition on the previous rows to show that the expected value attained is <span class="math inline">\(\sqrt{2/\pi}\sum_{i=2}^n\sqrt{i-1}\)</span>. Deduce <span class="math inline">\(cn^{3/2}\leq-\mathbb EE_n\)</span>.</li>
-<li>Show that <span class="math inline">\(Z\mapsto E_n\)</span> is <span class="math inline">\(\sqrt{n(n-1)/2}\)</span>-Lipschitz, and deduce <span class="math display">\[
+<li>Prove that <span class="math display">\[
 \mathbb P\left\{\left|\frac{E_n}{\mathbb EE_n}-1\right|&gt;\delta\right\}
 \leq2e^{-c\delta^2 n}\qquad(\delta&gt;0).
 \]</span> In particular, <span class="math inline">\(E_n/\mathbb EE_n\to1\)</span> in probability.</li>
 </ol>
-<p><em>Facts you may use.</em> For centered Gaussian variables with variances at most <span class="math inline">\(v^2\)</span>, <span class="math inline">\(\mathbb E\max_{1\leq j\leq N}X_j\leq v\sqrt{2\log N}\)</span>, without any independence assumption. An <span class="math inline">\(L\)</span>-Lipschitz function of a standard Gaussian vector satisfies <span class="math inline">\(\mathbb P\{|f-\mathbb Ef|&gt;t\}\leq2e^{-t^2/(2L^2)}\)</span>.</p>
+<p><em>Facts you may use.</em> For centered Gaussian variables with variances at most <span class="math inline">\(v^2\)</span>, <span class="math inline">\(\mathbb E\max_{1\leq j\leq N}X_j\leq v\sqrt{2\log N}\)</span>, without any independence assumption.</p>
 </section>
-<section id="noisy-measurements-and-feasible-recovery" class="level2">
-<h2 class="anchored" data-anchor-id="noisy-measurements-and-feasible-recovery">4. Noisy measurements and feasible recovery</h2>
-<p>Let <span class="math inline">\(T\subset\mathbb R^n\)</span> be nonempty and compact, let <span class="math inline">\(x\in T\)</span>, and let <span class="math inline">\(A\)</span> be an <span class="math inline">\(m\times n\)</span> standard Gaussian matrix. Observe <span class="math inline">\(y=Ax+\eta\)</span>, where <span class="math inline">\(\eta\in\mathbb R^m\)</span> is deterministic. A reconstruction <span class="math inline">\(\widehat x\in T\)</span> may depend measurably on <span class="math inline">\(A\)</span> and <span class="math inline">\(y\)</span>.</p>
-<p>You may use the following <strong>Gaussian matrix deviation bound</strong>: for every compact symmetric set <span class="math inline">\(S\subset\mathbb R^n\)</span> containing <span class="math inline">\(0\)</span>, <span class="math display">\[
+<section id="recovering-a-signal-from-noisy-measurements" class="level2">
+<h2 class="anchored" data-anchor-id="recovering-a-signal-from-noisy-measurements">4. Recovering a signal from noisy measurements</h2>
+<p>An unknown signal <span class="math inline">\(x\)</span> belongs to a known nonempty compact set <span class="math inline">\(T\subset\mathbb R^n\)</span>. We observe <span class="math display">\[
+y=Ax+\eta,
+\]</span> where <span class="math inline">\(A\)</span> is an <span class="math inline">\(m\times n\)</span> standard Gaussian matrix and <span class="math inline">\(\eta\in\mathbb R^m\)</span> is a fixed noise vector. Reconstruct <span class="math inline">\(x\)</span> by choosing any measurable constrained least-squares solution <span class="math display">\[
+\widehat x\in\operatorname*{arg\,min}_{z\in T}\|Az-y\|_2.
+\]</span> The expectation below is over <span class="math inline">\(A\)</span>; <span class="math inline">\(x\)</span> and <span class="math inline">\(\eta\)</span> are fixed.</p>
+<ol type="1">
+<li>Prove that <span class="math display">\[
+\mathbb E\|\widehat x-x\|_2
+\leq\frac{Cw(T)+2\|\eta\|_2}{\sqrt m}.
+\]</span></li>
+<li>If the only prior information is <span class="math inline">\(\|x\|_1\leq R\)</span> for <span class="math inline">\(R&gt;0\)</span>, take <span class="math inline">\(T=RB_1^n\)</span> and deduce <span class="math display">\[
+\mathbb E\|\widehat x-x\|_2
+\leq\frac{CR\sqrt{\log(2n)}+2\|\eta\|_2}{\sqrt m}.
+\]</span></li>
+</ol>
+<p><em>Hint.</em> Apply the following <strong>Gaussian deviation theorem</strong> to <span class="math inline">\(T-T\)</span>: for a compact symmetric set <span class="math inline">\(S\)</span> containing <span class="math inline">\(0\)</span>, <span class="math display">\[
 \mathbb E\sup_{h\in S}
 \left|\|Ah\|_2-\sqrt m\|h\|_2\right|\leq Cw(S).
-\]</span> No proof of this theorem is required.</p>
-<ol type="1">
-<li>Show that <span class="math inline">\(w(T-T)=2w(T)\)</span>. If <span class="math inline">\(\|A\widehat x-y\|_2\leq\delta\)</span> almost surely, where <span class="math inline">\(\delta\geq0\)</span> is deterministic, prove <span class="math display">\[
-\mathbb E\|\widehat x-x\|_2
-\leq\frac{Cw(T)+\|\eta\|_2+\delta}{\sqrt m}.
-\]</span> The proof must allow <span class="math inline">\(\widehat x\)</span> to be chosen after observing <span class="math inline">\(A\)</span>.</li>
-<li>Explain when exact interpolation (<span class="math inline">\(\delta=0\)</span>) is feasible. For a constrained least-squares minimizer over <span class="math inline">\(T\)</span>, prove the bound with <span class="math inline">\(2\|\eta\|_2\)</span> in place of <span class="math inline">\(\|\eta\|_2+\delta\)</span>.</li>
-<li>Specialize to <span class="math inline">\(T=RB_1^n\)</span>, <span class="math inline">\(R&gt;0\)</span>, to obtain <span class="math inline">\(\mathbb E\|\widehat x-x\|_2\leq
-[CR\sqrt{\log(2n)}+2\|\eta\|_2]/\sqrt m\)</span> for constrained least squares. Explain, by a kernel example when <span class="math inline">\(m&lt;n\)</span>, why a feasibility restriction on <span class="math inline">\(\widehat x\)</span> is essential.</li>
-</ol>
-<p><em>Hint.</em> Apply the deviation bound uniformly on <span class="math inline">\(T-T\)</span> before substituting <span class="math inline">\(h=\widehat x-x\)</span>. For <span class="math inline">\(RB_1^n\)</span>, identify the supremum defining its width.</p>
+\]</span> You may use this theorem without proof.</p>
 </section>
 <section id="random-sections-of-the-octahedron" class="level2">
 <h2 class="anchored" data-anchor-id="random-sections-of-the-octahedron">5. Random sections of the octahedron</h2>
-<p>Let <span class="math inline">\(1\leq d&lt;n\)</span>, let <span class="math inline">\(A\)</span> be a <span class="math inline">\(d\times n\)</span> standard Gaussian matrix, and let <span class="math inline">\(E=\ker A\)</span>. Prove the Garnaev–Gluskin bound <span class="math display">\[
-\mathbb E\operatorname{diam}(B_1^n\cap E)
-\leq C\sqrt{\frac{\log(en/d)}{d}},
-\]</span> where diameter is measured in Euclidean distance. The following steps make the problem independent of later lectures.</p>
+<p>Let <span class="math inline">\(1\leq d&lt;n\)</span>, let <span class="math inline">\(A\)</span> be a <span class="math inline">\(d\times n\)</span> standard Gaussian matrix, and let <span class="math inline">\(E=\ker A\)</span>. All radii and diameters below are Euclidean.</p>
 <ol type="1">
 <li>Put <span class="math inline">\(T_r=B_1^n\cap rB_2^n\)</span>. If <span class="math inline">\(n^{-1/2}\leq r\leq1\)</span>, prove <span class="math display">\[w(T_r)\leq C\sqrt{\log(enr^2)}.\]</span> You may use <span class="math inline">\(\mathbb E(\sum_{i=1}^s(g_i^*)^2)^{1/2}
 \leq C\sqrt{s\log(en/s)}\)</span>, where <span class="math inline">\(g_1^*\geq\cdots\geq g_n^*\)</span> are the decreasing rearrangement of <span class="math inline">\(|g_1|,\ldots,|g_n|\)</span>.</li>
-<li>Write <span class="math inline">\(\operatorname{rad}(S)=\sup_{x\in S}\|x\|_2\)</span>. Prove that if <span class="math inline">\(\operatorname{rad}(T_r\cap E)\leq r/2\)</span>, then <span class="math inline">\(\operatorname{rad}(B_1^n\cap E)\leq r/2\)</span>.</li>
-<li>You may use the following <strong>Gaussian deviation theorem</strong>: for compact symmetric <span class="math inline">\(S\)</span> containing <span class="math inline">\(0\)</span> and <span class="math inline">\(u\geq0\)</span>, with probability at least <span class="math inline">\(1-2e^{-u^2}\)</span>, <span class="math display">\[
-\sup_{h\in S}\left|\|Ah\|_2-\sqrt d\|h\|_2\right|
-\leq C_0\big[w(S)+u\operatorname{rad}(S)\big].
-\]</span> Use it with <span class="math inline">\(S=T_r\)</span>, <span class="math inline">\(u=a\sqrt d\)</span> for a sufficiently small absolute <span class="math inline">\(a&gt;0\)</span>, and <span class="math inline">\(r=B\sqrt{\log(en/d)/d}\)</span> for a sufficiently large absolute <span class="math inline">\(B\)</span>. Handle <span class="math inline">\(r\geq1\)</span> separately. Deduce the asserted <strong>expectation</strong> bound, including the contribution of the exceptional event.</li>
-</ol>
-<p><em>Hint for part 1.</em> Split <span class="math inline">\(\langle g,x\rangle\)</span> over the <span class="math inline">\(s\)</span> largest coordinates of <span class="math inline">\(|g|\)</span> and their complement, with <span class="math inline">\(s=\lceil r^{-2}\rceil\)</span>. The two contributions are at most <span class="math inline">\(r(\sum_{i\leq s}(g_i^*)^2)^{1/2}\)</span> and <span class="math inline">\(g_{s+1}^*\)</span>, respectively; the second term is zero when <span class="math inline">\(s=n\)</span>.</p>
-</section>
-<section id="random-approximation-and-entropy-of-a-convex-hull" class="level2">
-<h2 class="anchored" data-anchor-id="random-approximation-and-entropy-of-a-convex-hull">6. Random approximation and entropy of a convex hull</h2>
-<p>Let <span class="math inline">\(v_1,\ldots,v_N\in B_2^n\)</span>, where <span class="math inline">\(N\geq1\)</span>, and set <span class="math inline">\(K=\operatorname{conv}\{0,\pm v_1,\ldots,\pm v_N\}\)</span>.</p>
-<ol type="1">
-<li>For each <span class="math inline">\(x\in K\)</span> and integer <span class="math inline">\(m\geq1\)</span>, construct independent random vectors <span class="math inline">\(Y_1,\ldots,Y_m\in\{0,\pm v_1,\ldots,\pm v_N\}\)</span> with <span class="math inline">\(\mathbb EY_i=x\)</span>. Prove <span class="math display">\[
-\mathbb E\left\|m^{-1}\sum_{i=1}^mY_i-x\right\|_2^2\leq m^{-1}.
+<li>Prove the Garnaev–Gluskin bound <span class="math display">\[
+\mathbb E\operatorname{diam}(B_1^n\cap E)
+\leq C\sqrt{\frac{\log(en/d)}{d}}.
 \]</span></li>
-<li>Deduce, for <span class="math inline">\(0&lt;\varepsilon\leq1\)</span>, <span class="math display">\[
-\log N(K,\|\cdot\|_2,\varepsilon)
-\leq \lceil\varepsilon^{-2}\rceil\log(2N+1).
-\]</span> Explain why the approximating points belong to <span class="math inline">\(K\)</span> and why the net works simultaneously for all <span class="math inline">\(x\in K\)</span>.</li>
-<li>Independently prove <span class="math inline">\(w(K)\leq C\sqrt{\log(2N)}\)</span>. Why does inserting just the entropy estimate from part 2 into Dudley’s integral fail to give a finite upper bound? Combine it with <span class="math inline">\(N(K,\varepsilon)\leq(1+2/\varepsilon)^n\)</span> to explain why the actual entropy integral is nevertheless finite for every fixed <span class="math inline">\(n\)</span>.</li>
 </ol>
-<p><em>Hint.</em> For part 3, a linear functional attains its maximum over a finite convex hull at one of its vertices. Distinguish a divergent upper bound from a divergent integral.</p>
+<p><em>Hint.</em> Apply the <strong>Gaussian deviation theorem</strong> to <span class="math inline">\(T_r\)</span> for a suitable <span class="math inline">\(r\)</span>. You may use the following form without proof: for compact symmetric <span class="math inline">\(S\)</span> containing <span class="math inline">\(0\)</span> and <span class="math inline">\(u\geq0\)</span>, with probability at least <span class="math inline">\(1-2e^{-u^2}\)</span>, <span class="math display">\[
+\sup_{h\in S}\left|\|Ah\|_2-\sqrt d\|h\|_2\right|
+\leq C_0\big[w(S)+u\operatorname{rad}(S)\big],
+\qquad \operatorname{rad}(S)=\sup_{h\in S}\|h\|_2.
+\]</span></p>
+</section>
+<section id="a-large-euclidean-section-of-the-ell1-ball" class="level2">
+<h2 class="anchored" data-anchor-id="a-large-euclidean-section-of-the-ell1-ball">6. A large Euclidean section of the <span class="math inline">\(\ell^1\)</span>-ball</h2>
+<p>Let <span class="math inline">\(G\)</span> be an <span class="math inline">\(n\times k\)</span> standard Gaussian matrix, where <span class="math inline">\(1\leq k\leq n\)</span>, and put <span class="math inline">\(\mu=\mathbb E|g|=\sqrt{2/\pi}\)</span> for <span class="math inline">\(g\sim N(0,1)\)</span>.</p>
+<ol type="1">
+<li>Prove that there are absolute constants <span class="math inline">\(c_0,c_1&gt;0\)</span> such that, if <span class="math inline">\(k\leq c_0n\)</span>, then with probability at least <span class="math inline">\(1-2e^{-c_1n}\)</span>, <span class="math display">\[
+\frac{\mu}{2}n\|v\|_2\leq\|Gv\|_1\leq2\mu n\|v\|_2
+\qquad\text{for every }v\in\mathbb R^k.
+\]</span></li>
+<li>Deduce that, for <span class="math inline">\(k\leq c_0n\)</span> (reducing the absolute constants if needed), with probability at least <span class="math inline">\(1-2e^{-cn}\)</span> the <span class="math inline">\(k\)</span>-dimensional subspace <span class="math inline">\(F=\operatorname{range}(G)\)</span> satisfies <span class="math display">\[
+c\sqrt n\|z\|_2\leq\|z\|_1\leq\sqrt n\|z\|_2
+\qquad\text{for every }z\in F.
+\]</span></li>
+</ol>
+<p><em>Hint.</em> For a fixed unit vector <span class="math inline">\(v\)</span>, use Gaussian concentration for <span class="math inline">\(\|Gv\|_1\)</span>, then pass from a sufficiently fine net to the whole sphere. You may use the Gaussian singular-value estimates from the course.</p>
 </section>
 <section id="generic-chaining-on-a-binary-tree" class="level2">
 <h2 class="anchored" data-anchor-id="generic-chaining-on-a-binary-tree">7. Generic chaining on a binary tree</h2>
@@ -653,33 +653,21 @@ c\gamma_2(T,d)\leq\mathbb E\max_{t\in T}X_t\leq C\gamma_2(T,d).
 <li>If <span class="math inline">\(\ell(s,t)\)</span> is the length of the common prefix of two leaves, prove <span class="math inline">\(d(s,t)^2=2(m-\ell(s,t))\)</span>.</li>
 <li>Construct an admissible sequence by representing every prefix of length <span class="math inline">\(\min\{m,2^j\}\)</span> at level <span class="math inline">\(j\geq1\)</span> by one leaf, and taking a single leaf at level <span class="math inline">\(0\)</span>. Prove directly that <span class="math inline">\(\gamma_2(T,d)\leq Cm\)</span>.</li>
 <li>Starting at the root, repeatedly follow the edge with the larger Gaussian label. Use independence of unexplored edges to show that the expected value at the resulting leaf is <span class="math inline">\(m/\sqrt\pi\)</span>. Deduce <span class="math inline">\(\gamma_2(T,d)\geq cm\)</span> and <span class="math inline">\(cm\leq\mathbb E\max_tX_t\leq Cm\)</span>.</li>
-<li>Prove <span class="math display">\[
-\mathbb P\left\{\left|\max_tX_t-\mathbb E\max_tX_t\right|&gt;u\right\}
-\leq2e^{-u^2/(2m)}.
-\]</span> Explain why, for <span class="math inline">\(m\geq2\)</span>, the leaves cannot be treated as independent Gaussian variables.</li>
 </ol>
 <p><em>Hint.</em> If <span class="math inline">\(a,b\)</span> are independent standard normals, <span class="math inline">\(\max(a,b)=(a+b+|a-b|)/2\)</span>. In part 2, bound the nonzero sum by <span class="math inline">\(C\sqrt m\sum_{2^j&lt;m}2^{j/2}\)</span>, keeping the level-zero term.</p>
 </section>
-<section id="product-geometry-and-sub-gaussian-processes" class="level2">
-<h2 class="anchored" data-anchor-id="product-geometry-and-sub-gaussian-processes">8. Product geometry and sub-Gaussian processes</h2>
+<section id="generic-chaining-for-a-product-of-balls" class="level2">
+<h2 class="anchored" data-anchor-id="generic-chaining-for-a-product-of-balls">8. Generic chaining for a product of balls</h2>
 <p>Let <span class="math inline">\(a_1,\ldots,a_q&gt;0\)</span> and integers <span class="math inline">\(d_1,\ldots,d_q\geq1\)</span> be given. In the orthogonal product <span class="math inline">\(\mathbb R^{d_1}\times\cdots\times\mathbb R^{d_q}\)</span>, let <span class="math display">\[
 T=\prod_{j=1}^q a_jB_2^{d_j}
 \]</span> with its Euclidean metric. The definition and theorem in Problem 7 extend to compact Euclidean sets and their continuous Gaussian processes.</p>
-<ol type="1">
-<li>Prove <span class="math display">\[
+<p>Prove that <span class="math display">\[
 w(T)=\sum_{j=1}^q a_j\mathbb E\|g^{(j)}\|_2,
 \qquad
 c\sum_{j=1}^q a_j\sqrt{d_j}\leq\gamma_2(T)\leq
 C\sum_{j=1}^q a_j\sqrt{d_j},
-\]</span> where <span class="math inline">\(g^{(j)}\)</span> is standard Gaussian in <span class="math inline">\(\mathbb R^{d_j}\)</span>.</li>
-<li>Let <span class="math inline">\((Y_t)_{t\in T}\)</span> be a centered process with almost surely continuous paths, <span class="math inline">\(Y_0=0\)</span>, and <span class="math display">\[
-\mathbb E e^{\lambda(Y_s-Y_t)}
-\leq\exp\left(\frac{L^2\lambda^2\|s-t\|_2^2}{2}\right)
-\quad(s,t\in T,\ \lambda\in\mathbb R).
-\]</span> Using the generic chaining bound, prove <span class="math inline">\(\mathbb E\sup_{t\in T}|Y_t|\leq CL\sum_j a_j\sqrt{d_j}\)</span>.</li>
-<li>The diameter is <span class="math inline">\(2(\sum_j a_j^2)^{1/2}\)</span>. Compare this product with the Euclidean ball of that same radius <span class="math inline">\((\sum_j a_j^2)^{1/2}\)</span> in dimension <span class="math inline">\(D=\sum_jd_j\)</span>. Show that bounding width only by this radius and <span class="math inline">\(D\)</span> can lose an unbounded factor, using <span class="math inline">\(q=2\)</span>, <span class="math inline">\(d_1=1\)</span>, <span class="math inline">\(d_2=N\)</span>, <span class="math inline">\(a_1=1\)</span>, <span class="math inline">\(a_2=N^{-1}\)</span>.</li>
-</ol>
-<p><em>Facts you may use.</em> For a standard Gaussian vector in <span class="math inline">\(\mathbb R^d\)</span>, <span class="math inline">\(c\sqrt d\leq\mathbb E\|g\|_2\leq\sqrt d\)</span>. The generic chaining bound gives <span class="math inline">\(\mathbb E\sup_t|Y_t-Y_0|\leq CL\gamma_2(T)\)</span> under the hypotheses in part 2.</p>
+\]</span> where <span class="math inline">\(g^{(j)}\)</span> is standard Gaussian in <span class="math inline">\(\mathbb R^{d_j}\)</span>.</p>
+<p><em>Fact you may use.</em> For a standard Gaussian vector in <span class="math inline">\(\mathbb R^d\)</span>, <span class="math inline">\(c\sqrt d\leq\mathbb E\|g\|_2\leq\sqrt d\)</span>.</p>
 
 
 </section>
