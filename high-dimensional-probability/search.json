@@ -525,55 +525,6 @@
     "text": "Fall 2026\nCourse logistics live separately from the durable notes. See the course page, the date-by-date calendar, and the exercise sheets.\n\n\n\n\n\n\nNoteNew: November 1 · Exercise Sheet 7\n\n\n\nDownload Exercise Sheet 7 (PDF). The sheet covers Gaussian width and complexity, Gaussian rounding for positive semidefinite quadratic forms, and Dudley’s inequality for low-rank matrices, with an optional ellipsoid example showing a limitation of the entropy integral."
   },
   {
-    "objectID": "course/homework-01.html",
-    "href": "course/homework-01.html",
-    "title": "Homework 1",
-    "section": "",
-    "text": "Every student should work on every problem. Presentation responsibilities will rotate during the quiz section, and Kevin Xiao will communicate the assignments privately. If you are exceptionally unable to give your assigned presentation, you must arrange to present the problem independently to Kevin.\nThere is no public presenter list. Quiz-section logistics and presentation dates will be announced separately.\nProblems 1–3 are adapted from exercises in the first edition of Vershynin’s High-Dimensional Probability (Vershynin 2018). The edition is specified because exercise numbering changed in later versions."
-  },
-  {
-    "objectID": "course/homework-01.html#working-and-presentation-rules",
-    "href": "course/homework-01.html#working-and-presentation-rules",
-    "title": "Homework 1",
-    "section": "",
-    "text": "Every student should work on every problem. Presentation responsibilities will rotate during the quiz section, and Kevin Xiao will communicate the assignments privately. If you are exceptionally unable to give your assigned presentation, you must arrange to present the problem independently to Kevin.\nThere is no public presenter list. Quiz-section logistics and presentation dates will be announced separately.\nProblems 1–3 are adapted from exercises in the first edition of Vershynin’s High-Dimensional Probability (Vershynin 2018). The edition is specified because exercise numbering changed in later versions."
-  },
-  {
-    "objectID": "course/homework-01.html#problems",
-    "href": "course/homework-01.html#problems",
-    "title": "Homework 1",
-    "section": "Problems",
-    "text": "Problems\n\nExercise 1 (Covering with external centers) Let \\(K\\subseteq \\mathbb R^d\\), and write \\(N(K,\\varepsilon)\\) for the smallest number of closed Euclidean balls of radius \\(\\varepsilon\\) whose centers lie in \\(K\\) and whose union contains \\(K\\). Let \\(N^{\\mathrm{ext}}(K,\\varepsilon)\\) be the corresponding number when the centers may lie anywhere in \\(\\mathbb R^d\\).\nProve that \\[\nN^{\\mathrm{ext}}(K,\\varepsilon)\n\\leq N(K,\\varepsilon)\n\\leq N^{\\mathrm{ext}}(K,\\varepsilon/2).\n\\]\nAdapted from Exercise 4.2.9 of Vershynin (2018).\n\n\nExercise 2 (Approximate monotonicity) Give a counterexample to the assertion that \\[\nL\\subseteq K \\quad\\Longrightarrow\\quad\nN(L,\\varepsilon)\\leq N(K,\\varepsilon)\n\\] when the centers in each covering number are required to lie in the set being covered. Then prove the approximate statement \\[\nL\\subseteq K \\quad\\Longrightarrow\\quad\nN(L,\\varepsilon)\\leq N(K,\\varepsilon/2).\n\\]\nAdapted from Exercise 4.2.10 of Vershynin (2018).\n\n\nExercise 3 (Small-ball probabilities) Let \\(X_1,\\ldots,X_N\\) be independent nonnegative random variables with continuous distributions. Suppose that every \\(X_i\\) has a density bounded by \\(1\\).\n\nShow that, for every \\(t&gt;0\\), \\[\n\\mathbb E e^{-tX_i}\\leq \\frac1t.\n\\]\nDeduce that, for every \\(\\varepsilon&gt;0\\), \\[\n\\mathbb P\\left\\{\\sum_{i=1}^N X_i\\leq \\varepsilon N\\right\\}\n\\leq (e\\varepsilon)^N.\n\\]\n\nFor the second part, apply the exponential Markov inequality to \\(-\\sum_i X_i\\) and optimize the free parameter. Adapted from Exercise 2.2.10 of Vershynin (2018).\n\nVershynin, Roman. 2018. High-Dimensional Probability: An Introduction with Applications in Data Science. Cambridge University Press. https://doi.org/10.1017/9781108231596.\n\n\nExercise 4 (Gaussian width of an \\(\\ell^p\\) ball) Let \\[\nB_p^d=\\{x\\in\\mathbb R^d:\\|x\\|_p\\leq 1\\},\n\\] and let \\(G\\sim N(0,I_d)\\). For \\(1&lt;p&lt;\\infty\\), compute the order in \\(d\\) of \\[\nw(B_p^d)=\\mathbb E\\sup_{x\\in B_p^d}\\langle G,x\\rangle.\n\\] Your answer should be sharp up to constants depending only on \\(p\\). Identify the dual exponent and explain separately what happens at the endpoint \\(p=1\\).\n\n\nExercise 5 (A lower bound for the Gaussian maximum) Let \\(Z\\sim N(0,1)\\) and let \\(G=(G_1,\\ldots,G_d)\\) have independent standard normal coordinates.\n\nProve the following consequence of the Paley–Zygmund inequality: for every nonnegative random variable \\(Y\\) with \\(0&lt;\\mathbb EY^2&lt;\\infty\\) and every \\(0&lt;\\theta&lt;1\\), \\[\n\\mathbb P\\{Y\\geq \\theta\\mathbb EY\\}\n\\geq (1-\\theta)^2\\frac{(\\mathbb EY)^2}{\\mathbb EY^2}.\n\\]\nApply an appropriate version of this argument to a Gaussian tail and show that \\[\n\\mathbb E\\|G\\|_\\infty\\geq \\sqrt{2\\log d}-o(1)\n\\] as \\(d\\to\\infty\\).\n\nMake the meaning of the \\(o(1)\\) term in your argument explicit."
-  },
-  {
-    "objectID": "course/calendar.html",
-    "href": "course/calendar.html",
-    "title": "Fall 2026 Calendar",
-    "section": "",
-    "text": "This calendar uses McGill’s approved Fall 2026 academic dates. The content of the course is the twenty-one lectures in the notes, and the dates below give the intended pacing. Some meetings during the term are expected to be cancelled or shifted, in which case the sequence of lectures is kept and the dates move; the notes, not the dates, are the reference. The two December meetings are held in reserve to absorb such shifts. There is no midterm."
-  },
-  {
-    "objectID": "course/calendar.html#teaching-calendar",
-    "href": "course/calendar.html#teaching-calendar",
-    "title": "Fall 2026 Calendar",
-    "section": "Teaching calendar",
-    "text": "Teaching calendar\n\n\n\n\nDate\nMeeting\nTopic\n\n\n\n\nMon Aug 31\nLecture 1\nThe curse of dimensionality: integration, Monte Carlo, covers, and volume\n\n\nWed Sep 2\nLecture 2\nConvex hulls and sparse approximation: Carathéodory and Maurey’s method\n\n\nMon Sep 7\n—\nNo class — Labour Day\n\n\nWed Sep 9\nLecture 3\nGaussian width: dual norms, convexification, and entropy\n\n\nMon Sep 14\nLecture 4\nTails of random variables: sub-Gaussian variables and Chernoff bounds\n\n\nWed Sep 16\nLecture 5\nGeometric discrepancy and Orlicz norms\n\n\nMon Sep 21\nLecture 6\nBernstein’s inequality and dimension reduction\n\n\nWed Sep 23\nLecture 7\nCoordinate embeddings\n\n\nMon Sep 28\nLecture 8\nExtreme singular values I: nets and operator norms\n\n\nWed Sep 30\nLecture 9\nExtreme singular values II: small-ball estimates\n\n\nMon Oct 5\nLecture 10\nExtreme singular values III: rectangular sub-Gaussian matrices\n\n\nWed Oct 7\nLecture 11\nCovariance estimation I: two-sided singular value bounds and the sample covariance\n\n\nFri Oct 9–Wed Oct 14\n—\nNo class — Fall Reading Break\n\n\nMon Oct 19\nLecture 12\nGaussian processes: the isonormal process and the Karhunen–Loève expansion\n\n\nWed Oct 21\nLecture 13\nGaussian concentration: Lipschitz functions, the sphere, and the Borell–TIS inequality\n\n\nMon Oct 26\nLecture 14\nGaussian comparison I: Slepian and Sudakov–Fernique\n\n\nWed Oct 28\nLecture 15\nGaussian comparison II: Gaussian matrices and Sudakov’s minoration\n\n\nMon Nov 2\nLecture 16\nGaussian width revisited: sparse vectors, random projections, and random cones\n\n\nWed Nov 4\nLecture 17\nSemidefinite relaxations and max-cut: Gaussian rounding and Goemans–Williamson\n\n\nMon Nov 9\nLecture 18\nGrothendieck’s inequality: the kernel trick and Krivine’s bound\n\n\nWed Nov 11\nLecture 19\nDudley’s entropy integral: chaining and sub-Gaussian processes\n\n\nMon Nov 16\nLecture 20\nApplications of Dudley’s inequality: uniform laws of large numbers and Brownian continuity\n\n\nWed Nov 18\nLecture 21\nGeneric chaining I: the \\(\\gamma_2\\) functional and the majorizing measure theorem\n\n\nMon Nov 23\nLecture 22\nGeneric chaining II: the lower bound and the matrix deviation inequality\n\n\nWed Nov 25\nLecture 23\nCovariance estimation II: low-dimensional data and effective rank\n\n\nMon Nov 30\nLecture 24\nSparse recovery: the escape theorem, basis pursuit, and the Lasso\n\n\nWed Dec 2\n—\nReserve: catch-up for cancelled meetings, or synthesis\n\n\nThu Dec 3\n—\nMonday make-up schedule. Reserve: catch-up or synthesis"
-  },
-  {
-    "objectID": "course/calendar.html#academic-dates",
-    "href": "course/calendar.html#academic-dates",
-    "title": "Fall 2026 Calendar",
-    "section": "Academic dates",
-    "text": "Academic dates\n\nMonday, August 31: classes begin.\nMonday, September 7: Labour Day; classes cancelled.\nTuesday, September 15: add/drop deadline.\nTuesday, September 22: withdrawal-with-refund deadline.\nFriday, October 9–Wednesday, October 14: Fall Reading Break; classes cancelled.\nTuesday, October 27: withdrawal-without-refund deadline.\nThursday, December 3: Monday-schedule make-up day.\nFriday, December 4: classes end.\nDecember 5–6: study days.\nMonday, December 7: examinations begin.\n\nThe official McGill calendar takes precedence if any institutional date changes."
-  },
-  {
-    "objectID": "course/calendar.html#quiz-section",
-    "href": "course/calendar.html#quiz-section",
-    "title": "Fall 2026 Calendar",
-    "section": "Quiz section",
-    "text": "Quiz section\nHomework presentations will take place in a separate quiz section. Its day, time, and room are still to be announced, so no section meetings have been invented on this calendar. Kevin Xiao will communicate the private presenter rotation."
-  },
-  {
     "objectID": "course/index.html",
     "href": "course/index.html",
     "title": "MATH 598 / 784 · Fall 2026",
@@ -606,7 +557,7 @@
     "href": "course/index.html#assessment",
     "title": "MATH 598 / 784 · Fall 2026",
     "section": "Assessment",
-    "text": "Assessment\nThe assessment weights are still being finalized. There is no midterm; the calendar uses every meeting for lectures."
+    "text": "Assessment\nThe final exam is an individual blackboard presentation in Burnside 925, during November 23–27, primarily on Monday, Wednesday, and Friday. Prepare all eight published problems; two will be selected at random. The examination lasts 20 minutes within a 30-minute appointment and is scored out of 50. See the final exam page for the problems, rubric, and signup. The assessment weights are still being finalized. There is no midterm."
   },
   {
     "objectID": "course/index.html#working-character-of-the-course-pages",
@@ -616,11 +567,172 @@
     "text": "Working character of the course pages\nThe lecture notes are intended to become evergreen. Dates, rooms, homework procedures, and assessment information on pages under Course apply only to the Fall 2026 offering and may be revised during internal course preparation."
   },
   {
+    "objectID": "course/final-exam.html",
+    "href": "course/final-exam.html",
+    "title": "Final exam",
+    "section": "",
+    "text": "Where: Burnside Hall 925, at the blackboard in the instructor’s office.\nWhen: the week of November 23–27, primarily Monday November 23, Wednesday November 25, and Friday November 27, between 10:00 a.m. and 5:00 p.m. No appointments during 12:00–1:30 p.m. each day, Wednesday 3:00–4:00 p.m., or Friday 2:00–4:30 p.m.\nAppointment: 30 minutes, containing a 20-minute examination.\nPreparation: all eight final exam problems.\nAssessment: two randomly selected problems, up to 50 points total.\n\nBook or change an appointment"
+  },
+  {
+    "objectID": "course/final-exam.html#at-a-glance",
+    "href": "course/final-exam.html#at-a-glance",
+    "title": "Final exam",
+    "section": "",
+    "text": "Where: Burnside Hall 925, at the blackboard in the instructor’s office.\nWhen: the week of November 23–27, primarily Monday November 23, Wednesday November 25, and Friday November 27, between 10:00 a.m. and 5:00 p.m. No appointments during 12:00–1:30 p.m. each day, Wednesday 3:00–4:00 p.m., or Friday 2:00–4:30 p.m.\nAppointment: 30 minutes, containing a 20-minute examination.\nPreparation: all eight final exam problems.\nAssessment: two randomly selected problems, up to 50 points total.\n\nBook or change an appointment"
+  },
+  {
+    "objectID": "course/final-exam.html#how-the-examination-works",
+    "href": "course/final-exam.html#how-the-examination-works",
+    "title": "Final exam",
+    "section": "How the examination works",
+    "text": "How the examination works\nArrive at the start of your booked appointment. The instructor will write the selected problem on the board; you will present your solution and answer questions about it. The 20 minutes cover both problems and all questions. A late arrival does not extend the appointment or delay the next student.\nProblems are drawn uniformly at random from the eight published problems, without repetition within your exam. Prepare all parts of every problem. You should be able to explain why each step is valid, where the assumptions are used, and the cases or examples requested in the statement. You may use any theorem or fact explicitly supplied on the sheet without proving it.\nIf you cannot solve a selected problem, you may request a replacement. The replacement is drawn at random from the problems not yet drawn, and costs 5 points. You may begin a problem and then request a replacement; time already spent is part of the same 20-minute limit. A skipped attempt does not also receive a presentation score. There are at most two scored presentations, and at most eight distinct problems can be drawn. If there are no undrawn problems left, no further replacement is possible."
+  },
+  {
+    "objectID": "course/final-exam.html#scoring-rubric",
+    "href": "course/final-exam.html#scoring-rubric",
+    "title": "Final exam",
+    "section": "Scoring rubric",
+    "text": "Scoring rubric\nEach retained presentation is scored out of 25.\n\n\n\n\n\n\n\nPoints\nStandard\n\n\n\n\n25\nA complete, correct, well-explained solution to all parts, with convincing answers to follow-up questions.\n\n\n20\nA complete, correct presentation, but difficulty answering follow-up questions about the argument.\n\n\n15\nReaches a correct solution but cannot fully explain or justify important steps.\n\n\n10\nMakes meaningful progress, but the solution remains incomplete or time runs out.\n\n\n0–5\nLittle or no correct mathematical progress; an unattempted presentation receives 0.\n\n\n\nThe first three levels distinguish mastery, a correct prepared presentation, and a correct conclusion with gaps in its justification. The instructor uses the mathematical work shown to assess incomplete presentations.\nIf the presentation scores are \\(s_1,s_2\\) and \\(r\\) replacements were requested, the exam score is \\[\n\\max\\{0,s_1+s_2-5r\\}\\quad\\text{out of }50.\n\\] For example, two 25-point presentations after one replacement earn 45/50. Two 20-point presentations without a replacement earn 40/50. A second presentation that is not attempted before time expires earns 0."
+  },
+  {
+    "objectID": "course/final-exam.html#choosing-an-appointment",
+    "href": "course/final-exam.html#choosing-an-appointment",
+    "title": "Final exam",
+    "section": "Choosing an appointment",
+    "text": "Choosing an appointment\nUse your full name and email address when booking. Public availability will show whether a slot is available, without displaying student names or emails. Use the same verified email address to return and move your appointment. A successful move releases your previous slot; if the new slot has already been taken, you keep your existing appointment.\nPlease leave the usual class periods for students with other classes. If you do not have other classes constraining your availability, choose a slot that does not overlap our Monday/Wednesday 10:05–11:25 class periods. These priority slots will be marked on the booking page. All times are Montréal local time (America/Toronto)."
+  },
+  {
+    "objectID": "course/final-exam.html#problem-statements",
+    "href": "course/final-exam.html#problem-statements",
+    "title": "Final exam",
+    "section": "Problem statements",
+    "text": "Problem statements\nDownload the printable problem sheet (PDF)\nThroughout, \\(C,c&gt;0\\) denote absolute constants, whose values may change. All logarithms are natural. Write \\(B_p^n=\\{x\\in\\mathbb R^n:\\|x\\|_p\\leq1\\}\\), and, for a nonempty bounded set \\(T\\) in a Euclidean space, write \\(w(T)=\\mathbb E\\sup_{t\\in T}\\langle g,t\\rangle\\) for standard Gaussian \\(g\\). Covering numbers have centers in the set being covered."
+  },
+  {
+    "objectID": "course/final-exam.html#gaussian-quadratic-forms-and-effective-dimension",
+    "href": "course/final-exam.html#gaussian-quadratic-forms-and-effective-dimension",
+    "title": "Final exam",
+    "section": "1. Gaussian quadratic forms and effective dimension",
+    "text": "1. Gaussian quadratic forms and effective dimension\nLet \\(A\\) be a nonzero real symmetric \\(n\\times n\\) matrix, let \\(g\\sim N(0,I_n)\\), and set \\(Q=g^{\\mathsf T}Ag-\\operatorname{tr}A\\).\n\nDiagonalize \\(A\\) and compute \\(\\mathbb E e^{\\theta Q}\\). Show that \\[\n\\log\\mathbb E e^{\\theta Q}\\leq C\\theta^2\\|A\\|_F^2\n\\quad\\text{if }|\\theta|\\leq c/\\|A\\|_{\\mathrm{op}}.\n\\]\nOptimize the exponential Markov bound to prove, for \\(t&gt;0\\), \\[\n\\mathbb P\\{|Q|\\geq t\\}\\leq\n2\\exp\\left[-c\\min\\left\\{\\frac{t^2}{\\|A\\|_F^2},\n\\frac{t}{\\|A\\|_{\\mathrm{op}}}\\right\\}\\right].\n\\]\nSuppose \\(A\\succeq0\\) and define \\(r_2(A)=(\\operatorname{tr}A)^2/\\|A\\|_F^2\\) and \\(r_\\infty(A)=\\operatorname{tr}A/\\|A\\|_{\\mathrm{op}}\\). Express the relative-error bound at \\(t=\\varepsilon\\operatorname{tr}A\\) in terms of these quantities. Explain the two regimes using an orthogonal projection of rank \\(r\\), and check that \\(r_\\infty(A)\\leq r_2(A)\\leq\\operatorname{rank}A\\).\n\nHint. For \\(|u|\\leq1/2\\), \\(-\\log(1-u)-u\\leq Cu^2\\). The argument must allow negative eigenvalues in parts 1 and 2."
+  },
+  {
+    "objectID": "course/final-exam.html#one-random-map-for-a-union-of-subspaces",
+    "href": "course/final-exam.html#one-random-map-for-a-union-of-subspaces",
+    "title": "Final exam",
+    "section": "2. One random map for a union of subspaces",
+    "text": "2. One random map for a union of subspaces\nLet \\(V_1,\\ldots,V_M\\) be linear subspaces of \\(\\mathbb R^n\\), each of dimension at most \\(k\\), where \\(1\\leq k\\leq n\\) and \\(M\\geq1\\). Let \\(G\\) be an \\(m\\times n\\) matrix of independent \\(N(0,1)\\) entries. Fix \\(\\varepsilon,\\rho\\in(0,1)\\) and put \\(T=\\bigcup_{j=1}^M V_j\\).\n\nFor a fixed \\(d\\)-dimensional subspace \\(W\\), \\(d\\geq1\\), use a \\(1/4\\)-net of its unit sphere and Problem 1 to prove \\[\n\\mathbb P\\left\\{\\sup_{x\\in W\\cap S^{n-1}}\n\\left|m^{-1}\\|Gx\\|_2^2-1\\right|&gt;\\varepsilon\\right\\}\n\\leq 2\\exp(Cd-cm\\varepsilon^2).\n\\]\nDeduce that, if \\(m\\geq C\\varepsilon^{-2}(k+\\log(M/\\rho))\\), then with probability at least \\(1-\\rho\\), \\[\n(1-\\varepsilon)\\|x-y\\|_2^2\\leq m^{-1}\\|G(x-y)\\|_2^2\n\\leq(1+\\varepsilon)\\|x-y\\|_2^2\n\\quad\\text{for every }x,y\\in T.\n\\] Explain why controlling each \\(V_j\\) separately does not by itself prove this.\nApply the result to all vectors with at most \\(s\\) nonzero coordinates, \\(1\\leq s\\leq n\\), to obtain the sufficient bound \\[\nm\\geq C\\varepsilon^{-2}\n\\left(s\\log\\frac{en}{s}+\\log\\frac1\\rho\\right).\n\\]\n\nFacts you may use. A unit sphere in dimension \\(d\\) has a \\(1/4\\)-net of size at most \\(9^d\\). For symmetric \\(B\\) and such a net \\(\\mathcal N\\), \\(\\|B\\|_{\\mathrm{op}}\\leq2\\max_{x\\in\\mathcal N}|x^{\\mathsf T}Bx|\\). For part 2, consider the spaces \\(V_i+V_j\\)."
+  },
+  {
+    "objectID": "course/final-exam.html#the-ground-state-energy-of-a-gaussian-spin-system",
+    "href": "course/final-exam.html#the-ground-state-energy-of-a-gaussian-spin-system",
+    "title": "Final exam",
+    "section": "3. The ground-state energy of a Gaussian spin system",
+    "text": "3. The ground-state energy of a Gaussian spin system\nFor \\(n\\geq2\\), let \\((Z_{ij})_{1\\leq j&lt;i\\leq n}\\) be independent standard normal random variables. For \\(\\sigma\\in\\{-1,1\\}^n\\), define \\[\nH_\\sigma=\\sum_{i&gt;j}Z_{ij}\\sigma_i\\sigma_j,\n\\qquad E_n=\\min_{\\sigma\\in\\{-1,1\\}^n}H_\\sigma.\n\\]\n\nProve that \\(\\mathbb EE_n=-\\mathbb E\\max_\\sigma H_\\sigma\\) and that \\(-\\mathbb EE_n\\leq Cn^{3/2}\\).\nConstruct signs successively by taking \\(\\sigma_1=1\\) and choosing \\(\\sigma_i\\) to maximize \\(\\sigma_i\\sum_{j&lt;i}Z_{ij}\\sigma_j\\). Condition on the previous rows to show that the expected value attained is \\(\\sqrt{2/\\pi}\\sum_{i=2}^n\\sqrt{i-1}\\). Deduce \\(cn^{3/2}\\leq-\\mathbb EE_n\\).\nShow that \\(Z\\mapsto E_n\\) is \\(\\sqrt{n(n-1)/2}\\)-Lipschitz, and deduce \\[\n\\mathbb P\\left\\{\\left|\\frac{E_n}{\\mathbb EE_n}-1\\right|&gt;\\delta\\right\\}\n\\leq2e^{-c\\delta^2 n}\\qquad(\\delta&gt;0).\n\\] In particular, \\(E_n/\\mathbb EE_n\\to1\\) in probability.\n\nFacts you may use. For centered Gaussian variables with variances at most \\(v^2\\), \\(\\mathbb E\\max_{1\\leq j\\leq N}X_j\\leq v\\sqrt{2\\log N}\\), without any independence assumption. An \\(L\\)-Lipschitz function of a standard Gaussian vector satisfies \\(\\mathbb P\\{|f-\\mathbb Ef|&gt;t\\}\\leq2e^{-t^2/(2L^2)}\\)."
+  },
+  {
+    "objectID": "course/final-exam.html#noisy-measurements-and-feasible-recovery",
+    "href": "course/final-exam.html#noisy-measurements-and-feasible-recovery",
+    "title": "Final exam",
+    "section": "4. Noisy measurements and feasible recovery",
+    "text": "4. Noisy measurements and feasible recovery\nLet \\(T\\subset\\mathbb R^n\\) be nonempty and compact, let \\(x\\in T\\), and let \\(A\\) be an \\(m\\times n\\) standard Gaussian matrix. Observe \\(y=Ax+\\eta\\), where \\(\\eta\\in\\mathbb R^m\\) is deterministic. A reconstruction \\(\\widehat x\\in T\\) may depend measurably on \\(A\\) and \\(y\\).\nYou may use the following Gaussian matrix deviation bound: for every compact symmetric set \\(S\\subset\\mathbb R^n\\) containing \\(0\\), \\[\n\\mathbb E\\sup_{h\\in S}\n\\left|\\|Ah\\|_2-\\sqrt m\\|h\\|_2\\right|\\leq Cw(S).\n\\] No proof of this theorem is required.\n\nShow that \\(w(T-T)=2w(T)\\). If \\(\\|A\\widehat x-y\\|_2\\leq\\delta\\) almost surely, where \\(\\delta\\geq0\\) is deterministic, prove \\[\n\\mathbb E\\|\\widehat x-x\\|_2\n\\leq\\frac{Cw(T)+\\|\\eta\\|_2+\\delta}{\\sqrt m}.\n\\] The proof must allow \\(\\widehat x\\) to be chosen after observing \\(A\\).\nExplain when exact interpolation (\\(\\delta=0\\)) is feasible. For a constrained least-squares minimizer over \\(T\\), prove the bound with \\(2\\|\\eta\\|_2\\) in place of \\(\\|\\eta\\|_2+\\delta\\).\nSpecialize to \\(T=RB_1^n\\), \\(R&gt;0\\), to obtain \\(\\mathbb E\\|\\widehat x-x\\|_2\\leq\n[CR\\sqrt{\\log(2n)}+2\\|\\eta\\|_2]/\\sqrt m\\) for constrained least squares. Explain, by a kernel example when \\(m&lt;n\\), why a feasibility restriction on \\(\\widehat x\\) is essential.\n\nHint. Apply the deviation bound uniformly on \\(T-T\\) before substituting \\(h=\\widehat x-x\\). For \\(RB_1^n\\), identify the supremum defining its width."
+  },
+  {
+    "objectID": "course/final-exam.html#random-sections-of-the-octahedron",
+    "href": "course/final-exam.html#random-sections-of-the-octahedron",
+    "title": "Final exam",
+    "section": "5. Random sections of the octahedron",
+    "text": "5. Random sections of the octahedron\nLet \\(1\\leq d&lt;n\\), let \\(A\\) be a \\(d\\times n\\) standard Gaussian matrix, and let \\(E=\\ker A\\). Prove the Garnaev–Gluskin bound \\[\n\\mathbb E\\operatorname{diam}(B_1^n\\cap E)\n\\leq C\\sqrt{\\frac{\\log(en/d)}{d}},\n\\] where diameter is measured in Euclidean distance. The following steps make the problem independent of later lectures.\n\nPut \\(T_r=B_1^n\\cap rB_2^n\\). If \\(n^{-1/2}\\leq r\\leq1\\), prove \\[w(T_r)\\leq C\\sqrt{\\log(enr^2)}.\\] You may use \\(\\mathbb E(\\sum_{i=1}^s(g_i^*)^2)^{1/2}\n\\leq C\\sqrt{s\\log(en/s)}\\), where \\(g_1^*\\geq\\cdots\\geq g_n^*\\) are the decreasing rearrangement of \\(|g_1|,\\ldots,|g_n|\\).\nWrite \\(\\operatorname{rad}(S)=\\sup_{x\\in S}\\|x\\|_2\\). Prove that if \\(\\operatorname{rad}(T_r\\cap E)\\leq r/2\\), then \\(\\operatorname{rad}(B_1^n\\cap E)\\leq r/2\\).\nYou may use the following Gaussian deviation theorem: for compact symmetric \\(S\\) containing \\(0\\) and \\(u\\geq0\\), with probability at least \\(1-2e^{-u^2}\\), \\[\n\\sup_{h\\in S}\\left|\\|Ah\\|_2-\\sqrt d\\|h\\|_2\\right|\n\\leq C_0\\big[w(S)+u\\operatorname{rad}(S)\\big].\n\\] Use it with \\(S=T_r\\), \\(u=a\\sqrt d\\) for a sufficiently small absolute \\(a&gt;0\\), and \\(r=B\\sqrt{\\log(en/d)/d}\\) for a sufficiently large absolute \\(B\\). Handle \\(r\\geq1\\) separately. Deduce the asserted expectation bound, including the contribution of the exceptional event.\n\nHint for part 1. Split \\(\\langle g,x\\rangle\\) over the \\(s\\) largest coordinates of \\(|g|\\) and their complement, with \\(s=\\lceil r^{-2}\\rceil\\). The two contributions are at most \\(r(\\sum_{i\\leq s}(g_i^*)^2)^{1/2}\\) and \\(g_{s+1}^*\\), respectively; the second term is zero when \\(s=n\\)."
+  },
+  {
+    "objectID": "course/final-exam.html#random-approximation-and-entropy-of-a-convex-hull",
+    "href": "course/final-exam.html#random-approximation-and-entropy-of-a-convex-hull",
+    "title": "Final exam",
+    "section": "6. Random approximation and entropy of a convex hull",
+    "text": "6. Random approximation and entropy of a convex hull\nLet \\(v_1,\\ldots,v_N\\in B_2^n\\), where \\(N\\geq1\\), and set \\(K=\\operatorname{conv}\\{0,\\pm v_1,\\ldots,\\pm v_N\\}\\).\n\nFor each \\(x\\in K\\) and integer \\(m\\geq1\\), construct independent random vectors \\(Y_1,\\ldots,Y_m\\in\\{0,\\pm v_1,\\ldots,\\pm v_N\\}\\) with \\(\\mathbb EY_i=x\\). Prove \\[\n\\mathbb E\\left\\|m^{-1}\\sum_{i=1}^mY_i-x\\right\\|_2^2\\leq m^{-1}.\n\\]\nDeduce, for \\(0&lt;\\varepsilon\\leq1\\), \\[\n\\log N(K,\\|\\cdot\\|_2,\\varepsilon)\n\\leq \\lceil\\varepsilon^{-2}\\rceil\\log(2N+1).\n\\] Explain why the approximating points belong to \\(K\\) and why the net works simultaneously for all \\(x\\in K\\).\nIndependently prove \\(w(K)\\leq C\\sqrt{\\log(2N)}\\). Why does inserting just the entropy estimate from part 2 into Dudley’s integral fail to give a finite upper bound? Combine it with \\(N(K,\\varepsilon)\\leq(1+2/\\varepsilon)^n\\) to explain why the actual entropy integral is nevertheless finite for every fixed \\(n\\).\n\nHint. For part 3, a linear functional attains its maximum over a finite convex hull at one of its vertices. Distinguish a divergent upper bound from a divergent integral."
+  },
+  {
+    "objectID": "course/final-exam.html#generic-chaining-on-a-binary-tree",
+    "href": "course/final-exam.html#generic-chaining-on-a-binary-tree",
+    "title": "Final exam",
+    "section": "7. Generic chaining on a binary tree",
+    "text": "7. Generic chaining on a binary tree\nFor a finite metric space \\((T,d)\\), define \\[\n\\gamma_2(T,d)=\\inf_{(T_j)}\\sup_{t\\in T}\n\\sum_{j\\geq0}2^{j/2}d(t,T_j),\n\\qquad |T_0|=1,\\quad |T_j|\\leq2^{2^j}\\ (j\\geq1).\n\\] You may use Talagrand’s theorem: for a centered Gaussian process with canonical metric \\(d(s,t)=(\\mathbb E|X_s-X_t|^2)^{1/2}\\), \\[\nc\\gamma_2(T,d)\\leq\\mathbb E\\max_{t\\in T}X_t\\leq C\\gamma_2(T,d).\n\\]\nLet \\(T=\\{0,1\\}^m\\), \\(m\\geq1\\), be the leaves of a binary tree of depth \\(m\\). Attach independent standard Gaussian variables \\(g_e\\) to its edges and put \\(X_t=\\sum_{e\\in[\\varnothing,t]}g_e\\).\n\nIf \\(\\ell(s,t)\\) is the length of the common prefix of two leaves, prove \\(d(s,t)^2=2(m-\\ell(s,t))\\).\nConstruct an admissible sequence by representing every prefix of length \\(\\min\\{m,2^j\\}\\) at level \\(j\\geq1\\) by one leaf, and taking a single leaf at level \\(0\\). Prove directly that \\(\\gamma_2(T,d)\\leq Cm\\).\nStarting at the root, repeatedly follow the edge with the larger Gaussian label. Use independence of unexplored edges to show that the expected value at the resulting leaf is \\(m/\\sqrt\\pi\\). Deduce \\(\\gamma_2(T,d)\\geq cm\\) and \\(cm\\leq\\mathbb E\\max_tX_t\\leq Cm\\).\nProve \\[\n\\mathbb P\\left\\{\\left|\\max_tX_t-\\mathbb E\\max_tX_t\\right|&gt;u\\right\\}\n\\leq2e^{-u^2/(2m)}.\n\\] Explain why, for \\(m\\geq2\\), the leaves cannot be treated as independent Gaussian variables.\n\nHint. If \\(a,b\\) are independent standard normals, \\(\\max(a,b)=(a+b+|a-b|)/2\\). In part 2, bound the nonzero sum by \\(C\\sqrt m\\sum_{2^j&lt;m}2^{j/2}\\), keeping the level-zero term."
+  },
+  {
+    "objectID": "course/final-exam.html#product-geometry-and-sub-gaussian-processes",
+    "href": "course/final-exam.html#product-geometry-and-sub-gaussian-processes",
+    "title": "Final exam",
+    "section": "8. Product geometry and sub-Gaussian processes",
+    "text": "8. Product geometry and sub-Gaussian processes\nLet \\(a_1,\\ldots,a_q&gt;0\\) and integers \\(d_1,\\ldots,d_q\\geq1\\) be given. In the orthogonal product \\(\\mathbb R^{d_1}\\times\\cdots\\times\\mathbb R^{d_q}\\), let \\[\nT=\\prod_{j=1}^q a_jB_2^{d_j}\n\\] with its Euclidean metric. The definition and theorem in Problem 7 extend to compact Euclidean sets and their continuous Gaussian processes.\n\nProve \\[\nw(T)=\\sum_{j=1}^q a_j\\mathbb E\\|g^{(j)}\\|_2,\n\\qquad\nc\\sum_{j=1}^q a_j\\sqrt{d_j}\\leq\\gamma_2(T)\\leq\nC\\sum_{j=1}^q a_j\\sqrt{d_j},\n\\] where \\(g^{(j)}\\) is standard Gaussian in \\(\\mathbb R^{d_j}\\).\nLet \\((Y_t)_{t\\in T}\\) be a centered process with almost surely continuous paths, \\(Y_0=0\\), and \\[\n\\mathbb E e^{\\lambda(Y_s-Y_t)}\n\\leq\\exp\\left(\\frac{L^2\\lambda^2\\|s-t\\|_2^2}{2}\\right)\n\\quad(s,t\\in T,\\ \\lambda\\in\\mathbb R).\n\\] Using the generic chaining bound, prove \\(\\mathbb E\\sup_{t\\in T}|Y_t|\\leq CL\\sum_j a_j\\sqrt{d_j}\\).\nThe diameter is \\(2(\\sum_j a_j^2)^{1/2}\\). Compare this product with the Euclidean ball of that same radius \\((\\sum_j a_j^2)^{1/2}\\) in dimension \\(D=\\sum_jd_j\\). Show that bounding width only by this radius and \\(D\\) can lose an unbounded factor, using \\(q=2\\), \\(d_1=1\\), \\(d_2=N\\), \\(a_1=1\\), \\(a_2=N^{-1}\\).\n\nFacts you may use. For a standard Gaussian vector in \\(\\mathbb R^d\\), \\(c\\sqrt d\\leq\\mathbb E\\|g\\|_2\\leq\\sqrt d\\). The generic chaining bound gives \\(\\mathbb E\\sup_t|Y_t-Y_0|\\leq CL\\gamma_2(T)\\) under the hypotheses in part 2."
+  },
+  {
+    "objectID": "course/calendar.html",
+    "href": "course/calendar.html",
+    "title": "Fall 2026 Calendar",
+    "section": "",
+    "text": "This calendar uses McGill’s approved Fall 2026 academic dates. The content of the course is the twenty-one lectures in the notes, and the dates below give the intended pacing. Some meetings during the term are expected to be cancelled or shifted, in which case the sequence of lectures is kept and the dates move; the notes, not the dates, are the reference. The two December meetings are held in reserve to absorb such shifts. There is no midterm."
+  },
+  {
+    "objectID": "course/calendar.html#final-exam-week",
+    "href": "course/calendar.html#final-exam-week",
+    "title": "Fall 2026 Calendar",
+    "section": "Final exam week",
+    "text": "Final exam week\nThe final oral exam takes place November 23–27, primarily on Monday, Wednesday, and Friday, in Burnside 925. Each student books a 30-minute appointment containing a 20-minute exam. Appointment signup. Appointments run 10:00–17:00, excluding 12:00–13:30 each day, Wednesday 15:00–16:00, and Friday 14:00–16:30. The former November 23/25 lecture plan is superseded by exam appointments; the placement of any remaining lectures will be confirmed separately."
+  },
+  {
+    "objectID": "course/calendar.html#teaching-calendar",
+    "href": "course/calendar.html#teaching-calendar",
+    "title": "Fall 2026 Calendar",
+    "section": "Teaching calendar",
+    "text": "Teaching calendar\n\n\n\n\nDate\nMeeting\nTopic\n\n\n\n\nMon Aug 31\nLecture 1\nThe curse of dimensionality: integration, Monte Carlo, covers, and volume\n\n\nWed Sep 2\nLecture 2\nConvex hulls and sparse approximation: Carathéodory and Maurey’s method\n\n\nMon Sep 7\n—\nNo class — Labour Day\n\n\nWed Sep 9\nLecture 3\nGaussian width: dual norms, convexification, and entropy\n\n\nMon Sep 14\nLecture 4\nTails of random variables: sub-Gaussian variables and Chernoff bounds\n\n\nWed Sep 16\nLecture 5\nGeometric discrepancy and Orlicz norms\n\n\nMon Sep 21\nLecture 6\nBernstein’s inequality and dimension reduction\n\n\nWed Sep 23\nLecture 7\nCoordinate embeddings\n\n\nMon Sep 28\nLecture 8\nExtreme singular values I: nets and operator norms\n\n\nWed Sep 30\nLecture 9\nExtreme singular values II: small-ball estimates\n\n\nMon Oct 5\nLecture 10\nExtreme singular values III: rectangular sub-Gaussian matrices\n\n\nWed Oct 7\nLecture 11\nCovariance estimation I: two-sided singular value bounds and the sample covariance\n\n\nFri Oct 9–Wed Oct 14\n—\nNo class — Fall Reading Break\n\n\nMon Oct 19\nLecture 12\nGaussian processes: the isonormal process and the Karhunen–Loève expansion\n\n\nWed Oct 21\nLecture 13\nGaussian concentration: Lipschitz functions, the sphere, and the Borell–TIS inequality\n\n\nMon Oct 26\nLecture 14\nGaussian comparison I: Slepian and Sudakov–Fernique\n\n\nWed Oct 28\nLecture 15\nGaussian comparison II: Gaussian matrices and Sudakov’s minoration\n\n\nMon Nov 2\nLecture 16\nGaussian width revisited: sparse vectors, random projections, and random cones\n\n\nWed Nov 4\nLecture 17\nSemidefinite relaxations and max-cut: Gaussian rounding and Goemans–Williamson\n\n\nMon Nov 9\nLecture 18\nGrothendieck’s inequality: the kernel trick and Krivine’s bound\n\n\nWed Nov 11\nLecture 19\nDudley’s entropy integral: chaining and sub-Gaussian processes\n\n\nMon Nov 16\nLecture 20\nApplications of Dudley’s inequality: uniform laws of large numbers and Brownian continuity\n\n\nWed Nov 18\nLecture 21\nGeneric chaining I: the \\(\\gamma_2\\) functional and the majorizing measure theorem\n\n\nMon Nov 23\nOral exams\nFinal exam appointments, Burnside 925; 10:00–12:00 and 13:30–17:00\n\n\nWed Nov 25\nOral exams\nFinal exam appointments, Burnside 925; 10:00–12:00, 13:30–15:00, and 16:00–17:00\n\n\nFri Nov 27\nOral exams\nFinal exam appointments, Burnside 925; 10:00–12:00, 13:30–14:00, and 16:30–17:00\n\n\nMon Nov 30\nLecture 24\nSparse recovery: the escape theorem, basis pursuit, and the Lasso\n\n\nWed Dec 2\n—\nReserve: catch-up for cancelled meetings, or synthesis\n\n\nThu Dec 3\n—\nMonday make-up schedule. Reserve: catch-up or synthesis"
+  },
+  {
+    "objectID": "course/calendar.html#academic-dates",
+    "href": "course/calendar.html#academic-dates",
+    "title": "Fall 2026 Calendar",
+    "section": "Academic dates",
+    "text": "Academic dates\n\nMonday, August 31: classes begin.\nMonday, September 7: Labour Day; classes cancelled.\nTuesday, September 15: add/drop deadline.\nTuesday, September 22: withdrawal-with-refund deadline.\nFriday, October 9–Wednesday, October 14: Fall Reading Break; classes cancelled.\nTuesday, October 27: withdrawal-without-refund deadline.\nThursday, December 3: Monday-schedule make-up day.\nFriday, December 4: classes end.\nDecember 5–6: study days.\nMonday, December 7: examinations begin.\n\nThe official McGill calendar takes precedence if any institutional date changes."
+  },
+  {
+    "objectID": "course/calendar.html#quiz-section",
+    "href": "course/calendar.html#quiz-section",
+    "title": "Fall 2026 Calendar",
+    "section": "Quiz section",
+    "text": "Quiz section\nHomework presentations will take place in a separate quiz section. Its day, time, and room are still to be announced, so no section meetings have been invented on this calendar. Kevin Xiao will communicate the private presenter rotation."
+  },
+  {
+    "objectID": "course/exam-booking.html",
+    "href": "course/exam-booking.html",
+    "title": "Book your final exam",
+    "section": "",
+    "text": "Choose a 30-minute appointment for your 20-minute oral exam. Arrive at the start of the appointment. All times are Montréal time (America/Toronto).\nPlease leave slots marked Class-time priority (overlapping our usual class period) for students whose other classes restrict their availability. If you do not have other classes, choose a slot outside our Monday/Wednesday 10:05–11:25 class periods.\nThere are 26 appointments: 11 on Monday, 9 on Wednesday, and 6 on Friday. Appointments run between 10:00 a.m. and 5:00 p.m., with no appointments during 12:00–1:30 p.m. each day, Wednesday 3:00–4:00 p.m., or Friday 2:00–4:30 p.m.\nExam rules, rubric, and problems · Printable problem sheet\n\n\n  Loading booking information…\n  Booking requires JavaScript. Contact the instructor if you cannot use this form.\n  \n    Your confirmed appointment\n    \n    Add to my calendar (.ics)\n    If you move your appointment, replace the old event in your calendar.\n  \n  \n  Refresh availability\n  \n    Verify your email\n    Use the same email each time you book or move your appointment.\n    Email address\n    \n    Send verification code\n  \n  \n    Code from your email\n    \n    Verify code\n  \n  \n    Signed in as .\n    Sign out\n  \n  \n    Confirm your appointment\n    \n    Full name\n    \n    Your name and email are visible to the instructor, not on the public calendar.\n    Book this appointment\n    A selection is not a reservation until you receive confirmation here.\n      When moving an appointment, your old slot stays reserved until the new one is confirmed."
+  },
+  {
+    "objectID": "course/homework-01.html",
+    "href": "course/homework-01.html",
+    "title": "Homework 1",
+    "section": "",
+    "text": "Every student should work on every problem. Presentation responsibilities will rotate during the quiz section, and Kevin Xiao will communicate the assignments privately. If you are exceptionally unable to give your assigned presentation, you must arrange to present the problem independently to Kevin.\nThere is no public presenter list. Quiz-section logistics and presentation dates will be announced separately.\nProblems 1–3 are adapted from exercises in the first edition of Vershynin’s High-Dimensional Probability (Vershynin 2018). The edition is specified because exercise numbering changed in later versions."
+  },
+  {
+    "objectID": "course/homework-01.html#working-and-presentation-rules",
+    "href": "course/homework-01.html#working-and-presentation-rules",
+    "title": "Homework 1",
+    "section": "",
+    "text": "Every student should work on every problem. Presentation responsibilities will rotate during the quiz section, and Kevin Xiao will communicate the assignments privately. If you are exceptionally unable to give your assigned presentation, you must arrange to present the problem independently to Kevin.\nThere is no public presenter list. Quiz-section logistics and presentation dates will be announced separately.\nProblems 1–3 are adapted from exercises in the first edition of Vershynin’s High-Dimensional Probability (Vershynin 2018). The edition is specified because exercise numbering changed in later versions."
+  },
+  {
+    "objectID": "course/homework-01.html#problems",
+    "href": "course/homework-01.html#problems",
+    "title": "Homework 1",
+    "section": "Problems",
+    "text": "Problems\n\nExercise 1 (Covering with external centers) Let \\(K\\subseteq \\mathbb R^d\\), and write \\(N(K,\\varepsilon)\\) for the smallest number of closed Euclidean balls of radius \\(\\varepsilon\\) whose centers lie in \\(K\\) and whose union contains \\(K\\). Let \\(N^{\\mathrm{ext}}(K,\\varepsilon)\\) be the corresponding number when the centers may lie anywhere in \\(\\mathbb R^d\\).\nProve that \\[\nN^{\\mathrm{ext}}(K,\\varepsilon)\n\\leq N(K,\\varepsilon)\n\\leq N^{\\mathrm{ext}}(K,\\varepsilon/2).\n\\]\nAdapted from Exercise 4.2.9 of Vershynin (2018).\n\n\nExercise 2 (Approximate monotonicity) Give a counterexample to the assertion that \\[\nL\\subseteq K \\quad\\Longrightarrow\\quad\nN(L,\\varepsilon)\\leq N(K,\\varepsilon)\n\\] when the centers in each covering number are required to lie in the set being covered. Then prove the approximate statement \\[\nL\\subseteq K \\quad\\Longrightarrow\\quad\nN(L,\\varepsilon)\\leq N(K,\\varepsilon/2).\n\\]\nAdapted from Exercise 4.2.10 of Vershynin (2018).\n\n\nExercise 3 (Small-ball probabilities) Let \\(X_1,\\ldots,X_N\\) be independent nonnegative random variables with continuous distributions. Suppose that every \\(X_i\\) has a density bounded by \\(1\\).\n\nShow that, for every \\(t&gt;0\\), \\[\n\\mathbb E e^{-tX_i}\\leq \\frac1t.\n\\]\nDeduce that, for every \\(\\varepsilon&gt;0\\), \\[\n\\mathbb P\\left\\{\\sum_{i=1}^N X_i\\leq \\varepsilon N\\right\\}\n\\leq (e\\varepsilon)^N.\n\\]\n\nFor the second part, apply the exponential Markov inequality to \\(-\\sum_i X_i\\) and optimize the free parameter. Adapted from Exercise 2.2.10 of Vershynin (2018).\n\nVershynin, Roman. 2018. High-Dimensional Probability: An Introduction with Applications in Data Science. Cambridge University Press. https://doi.org/10.1017/9781108231596.\n\n\nExercise 4 (Gaussian width of an \\(\\ell^p\\) ball) Let \\[\nB_p^d=\\{x\\in\\mathbb R^d:\\|x\\|_p\\leq 1\\},\n\\] and let \\(G\\sim N(0,I_d)\\). For \\(1&lt;p&lt;\\infty\\), compute the order in \\(d\\) of \\[\nw(B_p^d)=\\mathbb E\\sup_{x\\in B_p^d}\\langle G,x\\rangle.\n\\] Your answer should be sharp up to constants depending only on \\(p\\). Identify the dual exponent and explain separately what happens at the endpoint \\(p=1\\).\n\n\nExercise 5 (A lower bound for the Gaussian maximum) Let \\(Z\\sim N(0,1)\\) and let \\(G=(G_1,\\ldots,G_d)\\) have independent standard normal coordinates.\n\nProve the following consequence of the Paley–Zygmund inequality: for every nonnegative random variable \\(Y\\) with \\(0&lt;\\mathbb EY^2&lt;\\infty\\) and every \\(0&lt;\\theta&lt;1\\), \\[\n\\mathbb P\\{Y\\geq \\theta\\mathbb EY\\}\n\\geq (1-\\theta)^2\\frac{(\\mathbb EY)^2}{\\mathbb EY^2}.\n\\]\nApply an appropriate version of this argument to a Gaussian tail and show that \\[\n\\mathbb E\\|G\\|_\\infty\\geq \\sqrt{2\\log d}-o(1)\n\\] as \\(d\\to\\infty\\).\n\nMake the meaning of the \\(o(1)\\) term in your argument explicit."
+  },
+  {
     "objectID": "exercises/index.html",
     "href": "exercises/index.html",
     "title": "Exercises",
     "section": "",
-    "text": "Exercise sheets are distributed as PDFs. Students should work on every problem and come to the quiz section ready to discuss their solutions.\n\n\n\nSheet\nDiscussion\nExercises\nDownload\n\n\n\n\n1\nFriday, September 11\nVershynin (first edition), 4.2.5, 4.2.9, 4.2.10, 4.2.16\nPDF\n\n\n2\nFriday, September 18\nGaussian maxima and Gaussian width; Vershynin (first edition), 2.2.10, 2.3.5\nPDF\n\n\n3\nFriday, September 25\nOrlicz norms, moment growth and tails, norm concentration, and sparse Gaussian width\nPDF\n\n\n4\nFriday, October 2\nCoordinate sampling, randomized Hadamard embeddings, and quadratic forms and norm deviations on nets\nPDF\n\n\n5\nFriday, October 23\nCovariance with an unknown mean, missing directions, Gaussian lengths, and concentration on the cube\nPDF\n\n\n6\nTo be announced\nGaussian contraction, Gordon’s inequality, Johnson–Lindenstrauss via Gaussian width, and Gaussian Chevet with stable rank\nPDF\n\n\n7\nTo be announced\nGaussian width and complexity, positive semidefinite rounding, Dudley for low-rank matrices, and an optional ellipsoid example\nPDF New: November 1\n\n\n\nThe edition is stated because exercise numbering changed in the second edition."
+    "text": "Exercise sheets are distributed as PDFs. Students should work on every problem and come to the quiz section ready to discuss their solutions.\n\n\n\nSheet\nDiscussion\nExercises\nDownload\n\n\n\n\n1\nFriday, September 11\nVershynin (first edition), 4.2.5, 4.2.9, 4.2.10, 4.2.16\nPDF\n\n\n2\nFriday, September 18\nGaussian maxima and Gaussian width; Vershynin (first edition), 2.2.10, 2.3.5\nPDF\n\n\n3\nFriday, September 25\nOrlicz norms, moment growth and tails, norm concentration, and sparse Gaussian width\nPDF\n\n\n4\nFriday, October 2\nCoordinate sampling, randomized Hadamard embeddings, and quadratic forms and norm deviations on nets\nPDF\n\n\n5\nFriday, October 23\nCovariance with an unknown mean, missing directions, Gaussian lengths, and concentration on the cube\nPDF\n\n\n6\nTo be announced\nGaussian contraction, Gordon’s inequality, Johnson–Lindenstrauss via Gaussian width, and Gaussian Chevet with stable rank\nPDF\n\n\n7\nTo be announced\nGaussian width and complexity, positive semidefinite rounding, Dudley for low-rank matrices, and an optional ellipsoid example\nPDF\n\n\nFinal exam problems\nNovember 23–27\nEight problems; oral exam in Burnside 925\nPDF · Rules and signup\n\n\n\nThe edition is stated because exercise numbering changed in the second edition."
   },
   {
     "objectID": "lectures/01-curse-of-dimensionality.html",
