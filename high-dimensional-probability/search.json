@@ -1237,5 +1237,12 @@
     "title": "Final exam",
     "section": "8. Generic chaining for a product of balls",
     "text": "8. Generic chaining for a product of balls\nLet \\(a_1,\\ldots,a_q&gt;0\\) and integers \\(d_1,\\ldots,d_q\\geq1\\) be given. In the orthogonal product \\(\\mathbb R^{d_1}\\times\\cdots\\times\\mathbb R^{d_q}\\), let \\[\nT=\\prod_{j=1}^q a_jB_2^{d_j}\n\\] with its Euclidean metric. The definition and theorem in Problem 7 extend to compact Euclidean sets and their continuous Gaussian processes.\nProve that \\[\nw(T)=\\sum_{j=1}^q a_j\\mathbb E\\|g^{(j)}\\|_2,\n\\qquad\nc\\sum_{j=1}^q a_j\\sqrt{d_j}\\leq\\gamma_2(T)\\leq\nC\\sum_{j=1}^q a_j\\sqrt{d_j},\n\\] where \\(g^{(j)}\\) is standard Gaussian in \\(\\mathbb R^{d_j}\\).\nFact you may use. For a standard Gaussian vector in \\(\\mathbb R^d\\), \\(c\\sqrt d\\leq\\mathbb E\\|g\\|_2\\leq\\sqrt d\\)."
+  },
+  {
+    "objectID": "course/final-exam.html#a-quadratic-kernel-and-generic-chaining",
+    "href": "course/final-exam.html#a-quadratic-kernel-and-generic-chaining",
+    "title": "Final exam",
+    "section": "8. A quadratic kernel and generic chaining",
+    "text": "8. A quadratic kernel and generic chaining\nLet \\(a_1,\\ldots,a_n&gt;0\\), put \\(D=\\operatorname{diag}(a_1,\\ldots,a_n)\\), and define the ellipsoid \\(E=DB_2^n\\) and its quadratic lift \\[\n\\Phi(x)=xx^{\\mathsf T},\\qquad\n\\mathcal K=\\{\\Phi(x):x\\in E\\}.\n\\] Equip \\(\\mathcal K\\) with the Frobenius metric, induced by \\(\\langle A,B\\rangle_F=\\operatorname{tr}(A^{\\mathsf T}B)\\). Let \\(G\\) be an \\(n\\times n\\) standard Gaussian matrix.\n\nProve that \\(\\langle\\Phi(x),\\Phi(y)\\rangle_F=\\langle x,y\\rangle^2\\). Show that \\(X_x=x^{\\mathsf T}Gx\\), \\(x\\in E\\), is a centered Gaussian process with covariance \\(\\mathbb EX_xX_y=\\langle x,y\\rangle^2\\), and that its canonical pseudometric satisfies \\[\nd(x,y)^2=\\|x\\|_2^4+\\|y\\|_2^4-2\\langle x,y\\rangle^2\n=\\|\\Phi(x)-\\Phi(y)\\|_F^2.\n\\]\nProve the sharp estimate \\[\nc\\left(\\max_i a_i\\right)\\left(\\sum_i a_i^2\\right)^{1/2}\n\\leq\\gamma_2(\\mathcal K,\\|\\cdot\\|_F)\n\\leq C\\left(\\max_i a_i\\right)\\left(\\sum_i a_i^2\\right)^{1/2}.\n\\]\n\nYou may use Talagrand’s theorem from Problem 7 for compact Euclidean sets and their continuous Gaussian processes.\nHint. For the lower bound, set \\(H=(G+G^{\\mathsf T})/2\\) and consider a column of \\(DHD\\) corresponding to the largest \\(a_i\\)."
   }
 ]

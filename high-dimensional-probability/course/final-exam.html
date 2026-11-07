@@ -438,7 +438,7 @@ window.Quarto = {
   <li><a href="#random-sections-of-the-octahedron" id="toc-random-sections-of-the-octahedron" class="nav-link" data-scroll-target="#random-sections-of-the-octahedron">5. Random sections of the octahedron</a></li>
   <li><a href="#a-large-euclidean-section-of-the-ell1-ball" id="toc-a-large-euclidean-section-of-the-ell1-ball" class="nav-link" data-scroll-target="#a-large-euclidean-section-of-the-ell1-ball">6. A large Euclidean section of the <span class="math inline">\(\ell^1\)</span>-ball</a></li>
   <li><a href="#generic-chaining-on-a-binary-tree" id="toc-generic-chaining-on-a-binary-tree" class="nav-link" data-scroll-target="#generic-chaining-on-a-binary-tree">7. Generic chaining on a binary tree</a></li>
-  <li><a href="#generic-chaining-for-a-product-of-balls" id="toc-generic-chaining-for-a-product-of-balls" class="nav-link" data-scroll-target="#generic-chaining-for-a-product-of-balls">8. Generic chaining for a product of balls</a></li>
+  <li><a href="#a-quadratic-kernel-and-generic-chaining" id="toc-a-quadratic-kernel-and-generic-chaining" class="nav-link" data-scroll-target="#a-quadratic-kernel-and-generic-chaining">8. A quadratic kernel and generic chaining</a></li>
   </ul>
 </nav>
     </div>
@@ -656,18 +656,25 @@ c\gamma_2(T,d)\leq\mathbb E\max_{t\in T}X_t\leq C\gamma_2(T,d).
 </ol>
 <p><em>Hint.</em> If <span class="math inline">\(a,b\)</span> are independent standard normals, <span class="math inline">\(\max(a,b)=(a+b+|a-b|)/2\)</span>. In part 2, bound the nonzero sum by <span class="math inline">\(C\sqrt m\sum_{2^j&lt;m}2^{j/2}\)</span>, keeping the level-zero term.</p>
 </section>
-<section id="generic-chaining-for-a-product-of-balls" class="level2">
-<h2 class="anchored" data-anchor-id="generic-chaining-for-a-product-of-balls">8. Generic chaining for a product of balls</h2>
-<p>Let <span class="math inline">\(a_1,\ldots,a_q&gt;0\)</span> and integers <span class="math inline">\(d_1,\ldots,d_q\geq1\)</span> be given. In the orthogonal product <span class="math inline">\(\mathbb R^{d_1}\times\cdots\times\mathbb R^{d_q}\)</span>, let <span class="math display">\[
-T=\prod_{j=1}^q a_jB_2^{d_j}
-\]</span> with its Euclidean metric. The definition and theorem in Problem 7 extend to compact Euclidean sets and their continuous Gaussian processes.</p>
-<p>Prove that <span class="math display">\[
-w(T)=\sum_{j=1}^q a_j\mathbb E\|g^{(j)}\|_2,
-\qquad
-c\sum_{j=1}^q a_j\sqrt{d_j}\leq\gamma_2(T)\leq
-C\sum_{j=1}^q a_j\sqrt{d_j},
-\]</span> where <span class="math inline">\(g^{(j)}\)</span> is standard Gaussian in <span class="math inline">\(\mathbb R^{d_j}\)</span>.</p>
-<p><em>Fact you may use.</em> For a standard Gaussian vector in <span class="math inline">\(\mathbb R^d\)</span>, <span class="math inline">\(c\sqrt d\leq\mathbb E\|g\|_2\leq\sqrt d\)</span>.</p>
+<section id="a-quadratic-kernel-and-generic-chaining" class="level2">
+<h2 class="anchored" data-anchor-id="a-quadratic-kernel-and-generic-chaining">8. A quadratic kernel and generic chaining</h2>
+<p>Let <span class="math inline">\(a_1,\ldots,a_n&gt;0\)</span>, put <span class="math inline">\(D=\operatorname{diag}(a_1,\ldots,a_n)\)</span>, and define the ellipsoid <span class="math inline">\(E=DB_2^n\)</span> and its quadratic lift <span class="math display">\[
+\Phi(x)=xx^{\mathsf T},\qquad
+\mathcal K=\{\Phi(x):x\in E\}.
+\]</span> Equip <span class="math inline">\(\mathcal K\)</span> with the Frobenius metric, induced by <span class="math inline">\(\langle A,B\rangle_F=\operatorname{tr}(A^{\mathsf T}B)\)</span>. Let <span class="math inline">\(G\)</span> be an <span class="math inline">\(n\times n\)</span> standard Gaussian matrix.</p>
+<ol type="1">
+<li>Prove that <span class="math inline">\(\langle\Phi(x),\Phi(y)\rangle_F=\langle x,y\rangle^2\)</span>. Show that <span class="math inline">\(X_x=x^{\mathsf T}Gx\)</span>, <span class="math inline">\(x\in E\)</span>, is a centered Gaussian process with covariance <span class="math inline">\(\mathbb EX_xX_y=\langle x,y\rangle^2\)</span>, and that its canonical pseudometric satisfies <span class="math display">\[
+d(x,y)^2=\|x\|_2^4+\|y\|_2^4-2\langle x,y\rangle^2
+=\|\Phi(x)-\Phi(y)\|_F^2.
+\]</span></li>
+<li>Prove the sharp estimate <span class="math display">\[
+c\left(\max_i a_i\right)\left(\sum_i a_i^2\right)^{1/2}
+\leq\gamma_2(\mathcal K,\|\cdot\|_F)
+\leq C\left(\max_i a_i\right)\left(\sum_i a_i^2\right)^{1/2}.
+\]</span></li>
+</ol>
+<p>You may use Talagrand’s theorem from Problem 7 for compact Euclidean sets and their continuous Gaussian processes.</p>
+<p><em>Hint.</em> For the lower bound, set <span class="math inline">\(H=(G+G^{\mathsf T})/2\)</span> and consider a column of <span class="math inline">\(DHD\)</span> corresponding to the largest <span class="math inline">\(a_i\)</span>.</p>
 
 
 </section>
