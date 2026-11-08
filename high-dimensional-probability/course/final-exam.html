@@ -432,7 +432,7 @@ window.Quarto = {
   <li><a href="#choosing-an-appointment" id="toc-choosing-an-appointment" class="nav-link" data-scroll-target="#choosing-an-appointment">Choosing an appointment</a></li>
   <li><a href="#problem-statements" id="toc-problem-statements" class="nav-link" data-scroll-target="#problem-statements">Problem statements</a></li>
   <li><a href="#estimating-a-trace-without-reading-the-matrix" id="toc-estimating-a-trace-without-reading-the-matrix" class="nav-link" data-scroll-target="#estimating-a-trace-without-reading-the-matrix">1. Estimating a trace without reading the matrix</a></li>
-  <li><a href="#encoding-a-finite-set-with-random-hyperplanes" id="toc-encoding-a-finite-set-with-random-hyperplanes" class="nav-link" data-scroll-target="#encoding-a-finite-set-with-random-hyperplanes">2. Encoding a finite set with random hyperplanes</a></li>
+  <li><a href="#gaussian-concentration-after-a-nonlinear-map" id="toc-gaussian-concentration-after-a-nonlinear-map" class="nav-link" data-scroll-target="#gaussian-concentration-after-a-nonlinear-map">2. Gaussian concentration after a nonlinear map</a></li>
   <li><a href="#the-ground-state-energy-of-a-gaussian-spin-system" id="toc-the-ground-state-energy-of-a-gaussian-spin-system" class="nav-link" data-scroll-target="#the-ground-state-energy-of-a-gaussian-spin-system">3. The ground-state energy of a Gaussian spin system</a></li>
   <li><a href="#recovering-a-signal-from-noisy-measurements" id="toc-recovering-a-signal-from-noisy-measurements" class="nav-link" data-scroll-target="#recovering-a-signal-from-noisy-measurements">4. Recovering a signal from noisy measurements</a></li>
   <li><a href="#random-sections-of-the-octahedron" id="toc-random-sections-of-the-octahedron" class="nav-link" data-scroll-target="#random-sections-of-the-octahedron">5. Random sections of the octahedron</a></li>
@@ -554,20 +554,29 @@ k\geq C\delta^{-2},\qquad b\geq C\log(2/\rho)
 </ol>
 <p><em>Hint.</em> Use positivity of the eigenvalues to bound the variance relative to <span class="math inline">\((\operatorname{tr}A)^2\)</span>, then control how many batch averages are inaccurate.</p>
 </section>
-<section id="encoding-a-finite-set-with-random-hyperplanes" class="level2">
-<h2 class="anchored" data-anchor-id="encoding-a-finite-set-with-random-hyperplanes">2. Encoding a finite set with random hyperplanes</h2>
-<p>Let <span class="math inline">\(T\subset S^{n-1}\)</span> have <span class="math inline">\(N\geq2\)</span> points. Take independent <span class="math inline">\(g_1,\ldots,g_m\sim N(0,I_n)\)</span> and encode <span class="math inline">\(x\in T\)</span> by <span class="math display">\[
-\Phi(x)=\big(\operatorname{sign}\langle g_i,x\rangle\big)_{i=1}^m
-\in\{-1,1\}^m,
-\]</span> where <span class="math inline">\(\operatorname{sign}(0)=1\)</span>. Write <span class="math inline">\(d_H(u,v)=m^{-1}|\{i:u_i\ne v_i\}|\)</span> and <span class="math inline">\(d_{\mathrm{ang}}(x,y)=\pi^{-1}\arccos\langle x,y\rangle\)</span>.</p>
+<section id="gaussian-concentration-after-a-nonlinear-map" class="level2">
+<h2 class="anchored" data-anchor-id="gaussian-concentration-after-a-nonlinear-map">2. Gaussian concentration after a nonlinear map</h2>
+<p>Let <span class="math inline">\(A\in\mathbb R^{m\times n}\)</span> be a fixed matrix whose rows have Euclidean norm one. For independent <span class="math inline">\(g,h\sim N(0,I_n)\)</span>, set <span class="math display">\[
+X(g)=\tanh(Ag),\qquad
+\kappa=\mathbb E\tanh^2(Z),\quad Z\sim N(0,1),\qquad
+r=\frac{m}{\|A\|_{\mathrm{op}}^2},
+\]</span> where <span class="math inline">\(\tanh\)</span> acts coordinatewise.</p>
 <ol type="1">
-<li>Prove that <span class="math inline">\(\mathbb E d_H(\Phi(x),\Phi(y))=d_{\mathrm{ang}}(x,y)\)</span> for every <span class="math inline">\(x,y\in T\)</span>.</li>
-<li>For <span class="math inline">\(0&lt;\delta,\rho&lt;1\)</span>, prove that <span class="math inline">\(m\geq C\delta^{-2}\log(N/\rho)\)</span> implies, with probability at least <span class="math inline">\(1-\rho\)</span>, <span class="math display">\[
-\sup_{x,y\in T}
-|d_H(\Phi(x),\Phi(y))-d_{\mathrm{ang}}(x,y)|\leq\delta.
-\]</span> Deduce that on this event any two points assigned the same code have Euclidean distance at most <span class="math inline">\(\pi\delta\)</span>.</li>
+<li>Prove that <span class="math inline">\(\mathbb E\|X(g)\|_2^2=m\kappa\)</span> and, for every <span class="math inline">\(t&gt;0\)</span>, <span class="math display">\[
+\mathbb P\left\{
+\left|\frac{\|X(g)\|_2^2}{m}-\kappa\right|&gt;t
+\right\}\leq2e^{-crt^2}.
+\]</span></li>
+<li>Prove that, for every <span class="math inline">\(t&gt;0\)</span>, <span class="math display">\[
+\mathbb P\left\{
+\left|\frac{\langle X(g),X(h)\rangle}{m}\right|&gt;t
+\right\}\leq2e^{-crt^2}.
+\]</span> Deduce that, for <span class="math inline">\(0&lt;\varepsilon&lt;1\)</span>, with probability at least <span class="math inline">\(1-6e^{-cr\varepsilon^2}\)</span>, <span class="math display">\[
+\frac{|\langle X(g),X(h)\rangle|}
+{\|X(g)\|_2\|X(h)\|_2}\leq\varepsilon.
+\]</span> The denominator is nonzero almost surely.</li>
 </ol>
-<p><em>Hint.</em> Use rotational invariance in the plane spanned by <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>.</p>
+<p><em>Hint.</em> Use <span class="math inline">\(|\tanh u|\leq1\)</span>, <span class="math inline">\(0\leq\tanh'(u)\leq1\)</span>, and the oddness of <span class="math inline">\(\tanh\)</span>. The coordinates of <span class="math inline">\(X(g)\)</span> need not be independent.</p>
 </section>
 <section id="the-ground-state-energy-of-a-gaussian-spin-system" class="level2">
 <h2 class="anchored" data-anchor-id="the-ground-state-energy-of-a-gaussian-spin-system">3. The ground-state energy of a Gaussian spin system</h2>
