@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2026-11-23">
+<meta name="dcterms.date" content="2026-11-04">
 
 <title>Lecture 19: The Lower Bound and the Matrix Deviation Inequality – High-Dimensional Probability</title>
 <style>
@@ -472,7 +472,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 23, 2026</p>
+      <p class="date">November 4, 2026</p>
     </div>
   </div>
   
@@ -487,7 +487,7 @@ window.Quarto = {
 <p>Lecture 18 stated the majorizing measure theorem and proved its upper half, the generic chaining bound <span class="math inline">\(\mathbb E\sup X\leq C\gamma_2(T,d)\)</span>. This lecture does two things with the lower half. It explains the mechanism of the proof, a tree of well-separated subsets of <span class="math inline">\(T\)</span> along which Sudakov’s minoration is applied at every branching, and it uses the theorem in the form that matters for applications: any process with sub-Gaussian increments is dominated by the Gaussian process with the same increments. The application is the matrix deviation inequality, which controls <span class="math inline">\(\|Ax\|_2-\sqrt m\|x\|_2\)</span> uniformly over an arbitrary set of vectors <span class="math inline">\(x\)</span> by the Gaussian width of the set, for a matrix <span class="math inline">\(A\)</span> with independent sub-Gaussian rows. It is the tool that Lecture 9 lacked.</p>
 <section id="sudakovs-minoration-with-a-remainder" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="sudakovs-minoration-with-a-remainder"><span class="header-section-number">1</span> Sudakov’s minoration with a remainder</h2>
-<p>The lower bound in Sudakov’s minoration (Lecture 12) says that <span class="math inline">\(\varepsilon\)</span>-separated points force <span class="math inline">\(\mathbb E\sup X\geq c\varepsilon\sqrt{\log N}\)</span>. For an iterative argument one needs more: the separated points should carry <em>subsets</em> of <span class="math inline">\(T\)</span>, and the process should pay <span class="math inline">\(\varepsilon\sqrt{\log N}\)</span> in addition to whatever the subsets themselves force.</p>
+<p>The lower bound in Sudakov’s minoration (Lecture 13) says that <span class="math inline">\(\varepsilon\)</span>-separated points force <span class="math inline">\(\mathbb E\sup X\geq c\varepsilon\sqrt{\log N}\)</span>. For an iterative argument one needs more: the separated points should carry <em>subsets</em> of <span class="math inline">\(T\)</span>, and the process should pay <span class="math inline">\(\varepsilon\sqrt{\log N}\)</span> in addition to whatever the subsets themselves force.</p>
 <div id="lem-sudakov-remainder" class="theorem lemma">
 <p><span class="theorem-title"><strong>Lemma 1 (Sudakov with a remainder)</strong></span> There are absolute constants <span class="math inline">\(c,c'&gt;0\)</span> with the following property. Let <span class="math inline">\((X_t)_{t\in T}\)</span> be a centered Gaussian process with canonical metric <span class="math inline">\(d\)</span>, and let <span class="math inline">\(T_1,\ldots,T_N\subseteq T\)</span> be subsets, <span class="math inline">\(N\geq2\)</span>, such that <span class="math display">\[
 \operatorname{diam}(T_j)\leq c\,\varepsilon

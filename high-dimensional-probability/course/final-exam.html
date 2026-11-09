@@ -434,8 +434,8 @@ window.Quarto = {
   <li><a href="#estimating-a-trace-without-reading-the-matrix" id="toc-estimating-a-trace-without-reading-the-matrix" class="nav-link" data-scroll-target="#estimating-a-trace-without-reading-the-matrix">1. Estimating a trace without reading the matrix</a></li>
   <li><a href="#gaussian-concentration-after-a-nonlinear-map" id="toc-gaussian-concentration-after-a-nonlinear-map" class="nav-link" data-scroll-target="#gaussian-concentration-after-a-nonlinear-map">2. Gaussian concentration after a nonlinear map</a></li>
   <li><a href="#the-ground-state-energy-of-a-gaussian-spin-system" id="toc-the-ground-state-energy-of-a-gaussian-spin-system" class="nav-link" data-scroll-target="#the-ground-state-energy-of-a-gaussian-spin-system">3. The ground-state energy of a Gaussian spin system</a></li>
-  <li><a href="#recovering-a-signal-from-noisy-measurements" id="toc-recovering-a-signal-from-noisy-measurements" class="nav-link" data-scroll-target="#recovering-a-signal-from-noisy-measurements">4. Recovering a signal from noisy measurements</a></li>
-  <li><a href="#random-sections-of-the-octahedron" id="toc-random-sections-of-the-octahedron" class="nav-link" data-scroll-target="#random-sections-of-the-octahedron">5. Random sections of the octahedron</a></li>
+  <li><a href="#random-sections-of-the-octahedron" id="toc-random-sections-of-the-octahedron" class="nav-link" data-scroll-target="#random-sections-of-the-octahedron">4. Random sections of the octahedron</a></li>
+  <li><a href="#low-rank-recovery-by-nuclear-norm-minimization" id="toc-low-rank-recovery-by-nuclear-norm-minimization" class="nav-link" data-scroll-target="#low-rank-recovery-by-nuclear-norm-minimization">5. Low-rank recovery by nuclear-norm minimization</a></li>
   <li><a href="#a-large-euclidean-section-of-the-ell1-ball" id="toc-a-large-euclidean-section-of-the-ell1-ball" class="nav-link" data-scroll-target="#a-large-euclidean-section-of-the-ell1-ball">6. A large Euclidean section of the <span class="math inline">\(\ell^1\)</span>-ball</a></li>
   <li><a href="#generic-chaining-on-a-binary-tree" id="toc-generic-chaining-on-a-binary-tree" class="nav-link" data-scroll-target="#generic-chaining-on-a-binary-tree">7. Generic chaining on a binary tree</a></li>
   <li><a href="#a-quadratic-kernel-and-generic-chaining" id="toc-a-quadratic-kernel-and-generic-chaining" class="nav-link" data-scroll-target="#a-quadratic-kernel-and-generic-chaining">8. A quadratic kernel and generic chaining</a></li>
@@ -593,31 +593,14 @@ H_\sigma=\sum_{i&gt;j}Z_{ij}\sigma_i\sigma_j,
 \]</span> In particular, <span class="math inline">\(E_n/\mathbb EE_n\to1\)</span> in probability.</li>
 </ol>
 <p><em>Facts you may use.</em> For centered Gaussian variables with variances at most <span class="math inline">\(v^2\)</span>, <span class="math inline">\(\mathbb E\max_{1\leq j\leq N}X_j\leq v\sqrt{2\log N}\)</span>, without any independence assumption.</p>
-</section>
-<section id="recovering-a-signal-from-noisy-measurements" class="level2">
-<h2 class="anchored" data-anchor-id="recovering-a-signal-from-noisy-measurements">4. Recovering a signal from noisy measurements</h2>
-<p>An unknown signal <span class="math inline">\(x\)</span> belongs to a known nonempty compact set <span class="math inline">\(T\subset\mathbb R^n\)</span>. We observe <span class="math display">\[
-y=Ax+\eta,
-\]</span> where <span class="math inline">\(A\)</span> is an <span class="math inline">\(m\times n\)</span> standard Gaussian matrix and <span class="math inline">\(\eta\in\mathbb R^m\)</span> is a fixed noise vector. Reconstruct <span class="math inline">\(x\)</span> by choosing any measurable constrained least-squares solution <span class="math display">\[
-\widehat x\in\operatorname*{arg\,min}_{z\in T}\|Az-y\|_2.
-\]</span> The expectation below is over <span class="math inline">\(A\)</span>; <span class="math inline">\(x\)</span> and <span class="math inline">\(\eta\)</span> are fixed.</p>
-<ol type="1">
-<li>Prove that <span class="math display">\[
-\mathbb E\|\widehat x-x\|_2
-\leq\frac{Cw(T)+2\|\eta\|_2}{\sqrt m}.
-\]</span></li>
-<li>If the only prior information is <span class="math inline">\(\|x\|_1\leq R\)</span> for <span class="math inline">\(R&gt;0\)</span>, take <span class="math inline">\(T=RB_1^n\)</span> and deduce <span class="math display">\[
-\mathbb E\|\widehat x-x\|_2
-\leq\frac{CR\sqrt{\log(2n)}+2\|\eta\|_2}{\sqrt m}.
-\]</span></li>
-</ol>
-<p><em>Hint.</em> Apply the following <strong>Gaussian deviation theorem</strong> to <span class="math inline">\(T-T\)</span>: for a compact symmetric set <span class="math inline">\(S\)</span> containing <span class="math inline">\(0\)</span>, <span class="math display">\[
-\mathbb E\sup_{h\in S}
-\left|\|Ah\|_2-\sqrt m\|h\|_2\right|\leq Cw(S).
-\]</span> You may use this theorem without proof.</p>
+<p><strong>Gaussian deviation theorem.</strong> The next two problems may use the following result without proof. Let <span class="math inline">\(A\)</span> be an <span class="math inline">\(m\times n\)</span> standard Gaussian matrix. For every compact symmetric set <span class="math inline">\(S\subseteq\mathbb R^n\)</span> containing <span class="math inline">\(0\)</span> and every <span class="math inline">\(u\geq0\)</span>, with probability at least <span class="math inline">\(1-2e^{-u^2}\)</span>, <span class="math display">\[
+\sup_{h\in S}\left|\|Ah\|_2-\sqrt m\|h\|_2\right|
+\leq C_0\big[w(S)+u\operatorname{rad}(S)\big],
+\qquad \operatorname{rad}(S)=\sup_{h\in S}\|h\|_2,
+\]</span> where <span class="math inline">\(C_0&gt;0\)</span> is an absolute constant.</p>
 </section>
 <section id="random-sections-of-the-octahedron" class="level2">
-<h2 class="anchored" data-anchor-id="random-sections-of-the-octahedron">5. Random sections of the octahedron</h2>
+<h2 class="anchored" data-anchor-id="random-sections-of-the-octahedron">4. Random sections of the octahedron</h2>
 <p>Let <span class="math inline">\(1\leq d&lt;n\)</span>, let <span class="math inline">\(A\)</span> be a <span class="math inline">\(d\times n\)</span> standard Gaussian matrix, and let <span class="math inline">\(E=\ker A\)</span>. All radii and diameters below are Euclidean.</p>
 <ol type="1">
 <li>Put <span class="math inline">\(T_r=B_1^n\cap rB_2^n\)</span>. If <span class="math inline">\(n^{-1/2}\leq r\leq1\)</span>, prove <span class="math display">\[w(T_r)\leq C\sqrt{\log(enr^2)}.\]</span> You may use <span class="math inline">\(\mathbb E(\sum_{i=1}^s(g_i^*)^2)^{1/2}
@@ -627,11 +610,30 @@ y=Ax+\eta,
 \leq C\sqrt{\frac{\log(en/d)}{d}}.
 \]</span></li>
 </ol>
-<p><em>Hint.</em> Apply the <strong>Gaussian deviation theorem</strong> to <span class="math inline">\(T_r\)</span> for a suitable <span class="math inline">\(r\)</span>. You may use the following form without proof: for compact symmetric <span class="math inline">\(S\)</span> containing <span class="math inline">\(0\)</span> and <span class="math inline">\(u\geq0\)</span>, with probability at least <span class="math inline">\(1-2e^{-u^2}\)</span>, <span class="math display">\[
-\sup_{h\in S}\left|\|Ah\|_2-\sqrt d\|h\|_2\right|
-\leq C_0\big[w(S)+u\operatorname{rad}(S)\big],
-\qquad \operatorname{rad}(S)=\sup_{h\in S}\|h\|_2.
+<p><em>Hint.</em> Apply the Gaussian deviation theorem to <span class="math inline">\(T_r\)</span> for a suitable <span class="math inline">\(r\)</span>.</p>
+</section>
+<section id="low-rank-recovery-by-nuclear-norm-minimization" class="level2">
+<h2 class="anchored" data-anchor-id="low-rank-recovery-by-nuclear-norm-minimization">5. Low-rank recovery by nuclear-norm minimization</h2>
+<p>For <span class="math inline">\(M\in\mathbb R^{p\times q}\)</span>, define its nuclear norm by <span class="math inline">\(\|M\|_* = \sum_j\sigma_j(M)\)</span>, the sum of its singular values, and use <span class="math inline">\(\langle B,M\rangle_F=\operatorname{tr}(B^{\mathsf T}M)\)</span>. Fix <span class="math inline">\(1\leq r\leq\min\{p,q\}\)</span>. Let <span class="math inline">\(G_1,\ldots,G_m\)</span> be independent standard Gaussian <span class="math inline">\(p\times q\)</span> matrices and set <span class="math display">\[
+\mathcal A(M)=\big(\langle G_i,M\rangle_F\big)_{i=1}^m.
 \]</span></p>
+<ol type="1">
+<li>Prove that if <span class="math inline">\(\operatorname{rank}(X)\leq r\)</span> and <span class="math inline">\(\|X+H\|_*\leq\|X\|_*\)</span>, then <span class="math display">\[\|H\|_*\leq2\sqrt{2r}\,\|H\|_F.\]</span></li>
+<li>Observe <span class="math inline">\(y=\mathcal A(X)+\eta\)</span>, where <span class="math inline">\(\operatorname{rank}(X)\leq r\)</span> and <span class="math inline">\(\|\eta\|_2\leq\delta\)</span>, and choose any minimizer <span class="math display">\[
+\widehat X\in\operatorname*{arg\,min}_M
+\{\|M\|_*:\ \|\mathcal A(M)-y\|_2\leq\delta\}.
+\]</span> Prove that if <span class="math inline">\(m\geq Cr(p+q)\)</span>, then with probability at least <span class="math inline">\(1-2e^{-cm}\)</span>, <span class="math display">\[\|\widehat X-X\|_F\leq\frac{C\delta}{\sqrt m},\]</span> simultaneously for every such <span class="math inline">\(X\)</span> and <span class="math inline">\(\eta\)</span>. In particular, recovery is exact when <span class="math inline">\(\delta=0\)</span>.</li>
+</ol>
+<p><em>Nuclear-norm facts.</em> You may use that <span class="math inline">\(\|\cdot\|_*\)</span> is a norm, is invariant under orthogonal changes of basis, and satisfies <span class="math display">\[
+\|M\|_*\leq\sqrt{\operatorname{rank}(M)}\,\|M\|_F,
+\qquad
+\sup_{\|M\|_*\leq1}\langle B,M\rangle_F=\|B\|_{\mathrm{op}}.
+\]</span> The first inequality is Cauchy–Schwarz for the singular values. For the second, write <span class="math inline">\(M=\sum_j\sigma_j u_jv_j^{\mathsf T}\)</span> and use <span class="math inline">\(|u_j^{\mathsf T}Bv_j|\leq\|B\|_{\mathrm{op}}\)</span>; equality is attained by <span class="math inline">\(M=uv^{\mathsf T}\)</span> for leading left and right singular vectors of <span class="math inline">\(B\)</span>. The nuclear norm of a block-diagonal matrix is the sum of the nuclear norms of its blocks. You may also use <span class="math inline">\(\mathbb E\|G\|_{\mathrm{op}}\leq\sqrt p+\sqrt q\)</span> for a standard Gaussian <span class="math inline">\(p\times q\)</span> matrix <span class="math inline">\(G\)</span>.</p>
+<p><em>Hint for part 1.</em> In singular-vector bases for <span class="math inline">\(X\)</span>, its only nonzero block is the top-left block of size <span class="math inline">\(s\times s\)</span>, where <span class="math inline">\(s=\operatorname{rank}(X)\)</span>. Split <span class="math display">\[
+H=H_{\parallel}+H_{\perp},\qquad
+H_{\parallel}=\begin{pmatrix}H_{11}&amp;H_{12}\\H_{21}&amp;0\end{pmatrix},
+\qquad H_{\perp}=\begin{pmatrix}0&amp;0\\0&amp;H_{22}\end{pmatrix}.
+\]</span> Use <span class="math inline">\(\operatorname{rank}(H_{\parallel})\leq2r\)</span> and compare <span class="math inline">\(\|X+H_{\perp}\|_*\)</span> with <span class="math inline">\(\|X+H\|_*+\|H_{\parallel}\|_*\)</span>.</p>
 </section>
 <section id="a-large-euclidean-section-of-the-ell1-ball" class="level2">
 <h2 class="anchored" data-anchor-id="a-large-euclidean-section-of-the-ell1-ball">6. A large Euclidean section of the <span class="math inline">\(\ell^1\)</span>-ball</h2>

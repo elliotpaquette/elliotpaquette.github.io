@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2026-11-02">
+<meta name="dcterms.date" content="2026-10-21">
 
 <title>Lecture 13: Gaussian Width Revisited – High-Dimensional Probability</title>
 <style>
@@ -446,13 +446,14 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#sparse-vectors" id="toc-sparse-vectors" class="nav-link active" data-scroll-target="#sparse-vectors"><span class="header-section-number">1</span> Sparse vectors</a></li>
-  <li><a href="#random-projections-of-sets" id="toc-random-projections-of-sets" class="nav-link" data-scroll-target="#random-projections-of-sets"><span class="header-section-number">2</span> Random projections of sets</a>
+  <li><a href="#sudakovs-minoration" id="toc-sudakovs-minoration" class="nav-link active" data-scroll-target="#sudakovs-minoration"><span class="header-section-number">1</span> Sudakov’s minoration</a></li>
+  <li><a href="#sparse-vectors" id="toc-sparse-vectors" class="nav-link" data-scroll-target="#sparse-vectors"><span class="header-section-number">2</span> Sparse vectors</a></li>
+  <li><a href="#random-projections-of-sets" id="toc-random-projections-of-sets" class="nav-link" data-scroll-target="#random-projections-of-sets"><span class="header-section-number">3</span> Random projections of sets</a>
   <ul class="collapse">
-  <li><a href="#the-phase-transition" id="toc-the-phase-transition" class="nav-link" data-scroll-target="#the-phase-transition"><span class="header-section-number">2.1</span> The phase transition</a></li>
+  <li><a href="#the-phase-transition" id="toc-the-phase-transition" class="nav-link" data-scroll-target="#the-phase-transition"><span class="header-section-number">3.1</span> The phase transition</a></li>
   </ul></li>
-  <li><a href="#overlap-of-random-cones" id="toc-overlap-of-random-cones" class="nav-link" data-scroll-target="#overlap-of-random-cones"><span class="header-section-number">3</span> Overlap of random cones</a></li>
-  <li><a href="#where-we-go-next" id="toc-where-we-go-next" class="nav-link" data-scroll-target="#where-we-go-next"><span class="header-section-number">4</span> Where we go next</a></li>
+  <li><a href="#overlap-of-random-cones" id="toc-overlap-of-random-cones" class="nav-link" data-scroll-target="#overlap-of-random-cones"><span class="header-section-number">4</span> Overlap of random cones</a></li>
+  <li><a href="#where-we-go-next" id="toc-where-we-go-next" class="nav-link" data-scroll-target="#where-we-go-next"><span class="header-section-number">5</span> Where we go next</a></li>
   </ul>
 </nav>
     </div>
@@ -463,7 +464,7 @@ window.Quarto = {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Lecture 13: Gaussian Width Revisited</h1>
-<p class="subtitle lead">Sparse vectors, random projections, and random cones</p>
+<p class="subtitle lead">Sudakov’s minoration, sparse vectors, random projections, and random cones</p>
 </div>
 
 
@@ -474,7 +475,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 2, 2026</p>
+      <p class="date">October 21, 2026</p>
     </div>
   </div>
   
@@ -486,20 +487,15 @@ window.Quarto = {
 </header>
 
 
-<p>Lecture 3 introduced the Gaussian width <span class="math inline">\(w(T)=\mathbb E\sup_{t\in T}\langle g,t\rangle\)</span> as a measure of the size of a set, computed it for a few standard sets, and left two things unfinished: the width of the set of sparse vectors, and the proof of Sudakov’s minoration. Lecture 12 supplied the proof. This lecture uses the tools of Lectures 10 through 12 to finish the sparse example and then to show what Gaussian width is <em>for</em>. It governs the size of a random projection of a set, with a phase transition at a dimension-like quantity built from the width, and it governs whether two randomly rotated cones intersect. In both problems the ambient dimension is the wrong parameter and the width is the right one.</p>
-<p>Throughout, <span class="math inline">\(g\sim N(0,I_n)\)</span> and <span class="math inline">\(w(T)=\mathbb E\sup_{t\in T}\langle g,t\rangle\)</span> for bounded <span class="math inline">\(T\subseteq\mathbb R^n\)</span>. Recall from Lecture 3 that <span class="math inline">\(w(T)=w(\operatorname{conv}T)\)</span> and <span class="math inline">\(w(T-T)=2w(T)\)</span>, and from Lecture 12 that Sudakov’s minoration reads <span class="math display">\[
-\log N(T,\varepsilon)\leq\frac{C\,w(T)^2}{\varepsilon^2}
-\qquad(\varepsilon&gt;0).
-\]</span></p>
-<section id="sparse-vectors" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="sparse-vectors"><span class="header-section-number">1</span> Sparse vectors</h2>
-<p>Let <span class="math inline">\(1\leq s\leq n\)</span> and let <span class="math display">\[
-U_s:=\{x\in\mathbb R^n:\|x\|_2\leq1,\ |\operatorname{supp}x|\leq s\}
-\]</span> be the set of <span class="math inline">\(s\)</span>-sparse vectors in the unit ball. Lecture 3 claimed <span class="math inline">\(w(U_s)\asymp\sqrt{s\log(en/s)}\)</span> and observed that <span class="math inline">\(U_s\)</span> is neither finite nor convex, so that neither tool available then applied. Both bounds are now within reach.</p>
-<div id="prp-sparse-width" class="theorem proposition">
-<p><span class="theorem-title"><strong>Proposition 1 (Width of the sparse vectors)</strong></span> There are absolute constants <span class="math inline">\(c,C&gt;0\)</span> such that, for <span class="math inline">\(1\leq s\leq n/2\)</span> with <span class="math inline">\(n/s\)</span> larger than an absolute constant, <span class="math display">\[
-c\sqrt{s\log(en/s)}\leq w(U_s)\leq C\sqrt{s\log(en/s)} .
-\]</span></p>
+<p>Lecture 3 introduced the Gaussian width <span class="math inline">\(w(T)=\mathbb E\sup_{t\in T}\langle g,t\rangle\)</span> as a measure of the size of a set, computed it for a few standard sets, and left two things unfinished: the width of the set of sparse vectors, and the proof of Sudakov’s minoration. This lecture uses the comparison tools of Lecture 12 to prove the minoration, finish the sparse example and then to show what Gaussian width is <em>for</em>. It governs the size of a random projection of a set, with a phase transition at a dimension-like quantity built from the width, and it governs whether two randomly rotated cones intersect. In both problems the ambient dimension is the wrong parameter and the width is the right one.</p>
+<p>Throughout, <span class="math inline">\(g\sim N(0,I_n)\)</span> and <span class="math inline">\(w(T)=\mathbb E\sup_{t\in T}\langle g,t\rangle\)</span> for bounded <span class="math inline">\(T\subseteq\mathbb R^n\)</span>. Recall from Lecture 3 that <span class="math inline">\(w(T)=w(\operatorname{conv}T)\)</span> and <span class="math inline">\(w(T-T)=2w(T)\)</span>.</p>
+<section id="sudakovs-minoration" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="sudakovs-minoration"><span class="header-section-number">1</span> Sudakov’s minoration</h2>
+<p>Lecture 3 stated that Gaussian width controls covering numbers at every scale and left the proof as a roadmap, because it needed a comparison theorem. Here is the proof, for a general Gaussian process.</p>
+<div id="thm-sudakov" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 1 (Sudakov’s minoration inequality)</strong></span> There is an absolute constant <span class="math inline">\(c&gt;0\)</span> such that for every centered Gaussian process <span class="math inline">\((X_t)_{t\in T}\)</span> with separable canonical metric <span class="math inline">\(d\)</span>, and every <span class="math inline">\(\varepsilon&gt;0\)</span>, <span class="math display">\[
+\mathbb E\sup_{t\in T}X_t\geq c\,\varepsilon\sqrt{\log N(T,d,\varepsilon)} .
+\]</span> For the Gaussian width process <span class="math inline">\(X_t=\langle g,t\rangle\)</span> on <span class="math inline">\(T\subseteq\mathbb R^d\)</span> this reads <span class="math inline">\(w(T)\geq c\varepsilon\sqrt{\log N(T,\|\cdot\|_2,\varepsilon)}\)</span>.</p>
 </div>
 <div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
@@ -513,29 +509,53 @@ c\sqrt{s\log(en/s)}\leq w(U_s)\leq C\sqrt{s\log(en/s)} .
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p><strong>Upper bound.</strong> This is Problem 4 of Exercise Sheet 3. The supremum over <span class="math inline">\(U_s\)</span> is <span class="math inline">\(\max_{|S|=s}\|g_S\|_2\)</span>, a maximum over <span class="math inline">\(\binom ns\)</span> chi variables, and the exponential-moment argument of Lecture 3 for finite sets, applied to the squares, gives <span class="math inline">\(\mathbb E\max_S\|g_S\|_2^2\leq Cs\log(en/s)\)</span>. Jensen’s inequality finishes.</p>
-<p><strong>Lower bound.</strong> The packing lemma of Lecture 2 provides a family <span class="math inline">\(X\)</span> of <span class="math inline">\(s\)</span>-element subsets of <span class="math inline">\(\{1,\ldots,n\}\)</span> with <span class="math inline">\(|I\triangle J|\geq s/2\)</span> for distinct <span class="math inline">\(I,J\in X\)</span> and <span class="math inline">\(\log|X|\gtrsim s\log(n/s)\)</span>. The unit vectors <span class="math inline">\(x_I:=s^{-1/2}\sum_{i\in I}e_i\)</span> lie in <span class="math inline">\(U_s\)</span> and satisfy <span class="math display">\[
-\|x_I-x_J\|_2^2=\frac{|I\triangle J|}s\geq\frac12 ,
-\]</span> so they form a <span class="math inline">\(2^{-1/2}\)</span>-separated subset of <span class="math inline">\(U_s\)</span>, and <span class="math inline">\(\log N(U_s,\tfrac12)\geq\log|X|\gtrsim s\log(n/s)\)</span>. Sudakov’s minoration with <span class="math inline">\(\varepsilon=\frac12\)</span> gives <span class="math inline">\(w(U_s)\geq c\sqrt{s\log(n/s)}\)</span>, and <span class="math inline">\(\log(n/s)\asymp\log(en/s)\)</span> in the stated range.</p>
+<p>We need a lower bound on the expected maximum of independent Gaussians: for <span class="math inline">\(N\geq2\)</span> and <span class="math inline">\(g\sim N(0,I_N)\)</span>, <span class="math display">\[
+\mathbb E\max_{i\leq N}g_i\geq c_0\sqrt{\log N} .
+\]</span> Indeed, <span class="math inline">\(\max_i|g_i|\leq\max_i g_i-\min_i g_i+|g_1|\)</span>. Taking expectations and using symmetry gives <span class="math inline">\(\mathbb E\max_i g_i\geq\frac12(\mathbb E\|g\|_\infty-\mathbb E|g_1|)\)</span>. Exercise Sheet 2 showed <span class="math inline">\(\mathbb E\|g\|_\infty\geq\sqrt{2\log N}-o(1)\)</span> as <span class="math inline">\(N\to\infty\)</span>, which proves the bound for large <span class="math inline">\(N\)</span>. For the remaining <span class="math inline">\(N\geq2\)</span>, use <span class="math inline">\(\mathbb E\max_{i\leq N}g_i\geq\mathbb E\max(g_1,g_2)=1/\sqrt\pi\)</span> and decrease the absolute constant <span class="math inline">\(c_0\)</span> if necessary.</p>
+<p>Now let <span class="math inline">\(N:=N(T,d,\varepsilon)\)</span>, which we may assume finite and at least <span class="math inline">\(2\)</span>, the statement being trivial otherwise (if <span class="math inline">\(N=\infty\)</span>, run the argument on finite subsets). By the covering–packing comparison of Lecture 1, <span class="math inline">\(T\)</span> contains an <span class="math inline">\(\varepsilon\)</span>-separated set <span class="math inline">\(t_1,\ldots,t_N\)</span>. Let <span class="math inline">\(Y_1,\ldots,Y_N\)</span> be independent <span class="math inline">\(N(0,\varepsilon^2/2)\)</span>. For <span class="math inline">\(i\neq j\)</span>, <span class="math display">\[
+\mathbb E(X_{t_i}-X_{t_j})^2=d(t_i,t_j)^2\geq\varepsilon^2=\mathbb E(Y_i-Y_j)^2 .
+\]</span> So <span class="math inline">\(Y\)</span> has the smaller increments, and the <a href="../lectures/12-gaussian-comparison.html#thm-sudakov-fernique">Sudakov–Fernique inequality</a> applied to the processes <span class="math inline">\((Y_i)\)</span> and <span class="math inline">\((X_{t_i})\)</span> on the finite set <span class="math inline">\(\{1,\ldots,N\}\)</span> gives <span class="math display">\[
+\mathbb E\sup_{t\in T}X_t\geq\mathbb E\max_{i\leq N}X_{t_i}\geq\mathbb E\max_{i\leq N}Y_i
+=\frac\varepsilon{\sqrt2}\,\mathbb E\max_{i\leq N}g_i\geq\frac{c_0}{\sqrt2}\,\varepsilon\sqrt{\log N} .
+\]</span></p>
 </div>
 </div>
 </div>
-<p>The lower bound is a first instance of Sudakov’s inequality being sharp: the entropy at the single scale <span class="math inline">\(\varepsilon=\frac12\)</span> already accounts for the whole width. Compare the <span class="math inline">\(\ell^p\)</span> balls of Lecture 12, where Sudakov is sharp at <span class="math inline">\(p=1\)</span> and far from sharp for <span class="math inline">\(p&gt;2\)</span>.</p>
+<p>Sudakov’s inequality is a statement about a single scale: it says nothing about how the covering numbers at different scales combine. Its converse direction, an upper bound on <span class="math inline">\(\mathbb E\sup X\)</span> from the covering numbers, requires all scales at once and is Dudley’s inequality, the subject of the chaining lectures. The two together bracket the expected supremum between the entropy at the worst single scale and the integral of the entropy over all scales.</p>
+<div class="callout callout-style-simple callout-note callout-titled" title="Sudakov as a geometric measurement">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Sudakov as a geometric measurement
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>For the Gaussian width process the inequality reads <span class="math display">\[
+\log N(T,\varepsilon)\leq\frac{C\,w(T)^2}{\varepsilon^2}
+\qquad\text{for every }\varepsilon&gt;0 .
+\]</span> This is a purely geometric statement about subsets of <span class="math inline">\(\mathbb R^d\)</span>, proved by probabilistic means. For the <span class="math inline">\(\ell^p\)</span> balls with <span class="math inline">\(1\leq p\leq2\)</span>, Lecture 3 and its exercises give <span class="math inline">\(w(B_p^d)\asymp d^{1-1/p}\)</span> up to logarithmic factors at <span class="math inline">\(p=1\)</span>, so <span class="math display">\[
+\log N(B_p^d,\varepsilon)\lesssim\frac{d^{2-2/p}}{\varepsilon^2},
+\]</span> which for <span class="math inline">\(p&lt;2\)</span> is subexponential in <span class="math inline">\(d\)</span> at fixed <span class="math inline">\(\varepsilon\)</span>, far below the volumetric bound <span class="math inline">\(d\log(C/\varepsilon)\)</span>. At <span class="math inline">\(p=1\)</span> this recovers the Maurey bound of Lecture 2 up to logarithms, by a completely different argument. For <span class="math inline">\(p&gt;2\)</span> the volumetric bound is the better one, and Sudakov is not sharp.</p>
+</div>
+</div>
+</div>
 </section>
-<section id="random-projections-of-sets" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="random-projections-of-sets"><span class="header-section-number">2</span> Random projections of sets</h2>
-<p>Let <span class="math inline">\(G\)</span> be an <span class="math inline">\(m\times n\)</span> matrix with independent <span class="math inline">\(N(0,1)\)</span> entries and let <span class="math inline">\(T\subseteq\mathbb R^n\)</span> be bounded. The Johnson–Lindenstrauss lemma of Lecture 6 says that if <span class="math inline">\(T\)</span> is finite and <span class="math inline">\(m\gtrsim\log|T|\)</span>, then <span class="math inline">\(G/\sqrt m\)</span> acts on <span class="math inline">\(T\)</span> as an approximate isometry, so in particular <span class="math inline">\(\operatorname{diam}(GT)\approx\sqrt m\operatorname{diam}(T)\)</span>. For <span class="math inline">\(T=B_2^n\)</span> nothing of the kind can hold when <span class="math inline">\(m&lt;n\)</span>, since then <span class="math inline">\(\operatorname{diam}(GB_2^n)=2\|G\|_{\mathrm{op}}\approx2(\sqrt m+\sqrt n)\)</span> is dominated by <span class="math inline">\(\sqrt n\)</span>, a quantity that does not shrink with <span class="math inline">\(m\)</span>. What happens in between is decided by the Gaussian width.</p>
-<div id="thm-random-projection" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 1 (Diameter of a random projection)</strong></span> There are absolute constants <span class="math inline">\(c,C&gt;0\)</span> such that, for every bounded <span class="math inline">\(T\subseteq\mathbb R^n\)</span> and every <span class="math inline">\(m\geq1\)</span>, <span class="math display">\[
-c\big(w(T)+\sqrt m\operatorname{diam}(T)\big)
-\leq\mathbb E\operatorname{diam}(GT)
-\leq C\big(w(T)+\sqrt m\operatorname{diam}(T)\big).
-\]</span> Moreover, with probability at least <span class="math inline">\(1-e^{-m}\)</span>, <span class="math display">\[
-\operatorname{diam}(GT)\leq4w(T)+C\sqrt m\operatorname{diam}(T).
+<section id="sparse-vectors" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="sparse-vectors"><span class="header-section-number">2</span> Sparse vectors</h2>
+<p>Let <span class="math inline">\(1\leq s\leq n\)</span> and let <span class="math display">\[
+U_s:=\{x\in\mathbb R^n:\|x\|_2\leq1,\ |\operatorname{supp}x|\leq s\}
+\]</span> be the set of <span class="math inline">\(s\)</span>-sparse vectors in the unit ball. Lecture 3 claimed <span class="math inline">\(w(U_s)\asymp\sqrt{s\log(en/s)}\)</span> and observed that <span class="math inline">\(U_s\)</span> is neither finite nor convex, so that neither tool available then applied. Both bounds are now within reach.</p>
+<div id="prp-sparse-width" class="theorem proposition">
+<p><span class="theorem-title"><strong>Proposition 1 (Width of the sparse vectors)</strong></span> There are absolute constants <span class="math inline">\(c,C&gt;0\)</span> such that, for <span class="math inline">\(1\leq s\leq n/2\)</span> with <span class="math inline">\(n/s\)</span> larger than an absolute constant, <span class="math display">\[
+c\sqrt{s\log(en/s)}\leq w(U_s)\leq C\sqrt{s\log(en/s)} .
 \]</span></p>
 </div>
 <div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -544,7 +564,40 @@ c\big(w(T)+\sqrt m\operatorname{diam}(T)\big)
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>Upper bound.</strong> This is Problem 4 of Exercise Sheet 3. The supremum over <span class="math inline">\(U_s\)</span> is <span class="math inline">\(\max_{|S|=s}\|g_S\|_2\)</span>, a maximum over <span class="math inline">\(\binom ns\)</span> chi variables, and the exponential-moment argument of Lecture 3 for finite sets, applied to the squares, gives <span class="math inline">\(\mathbb E\max_S\|g_S\|_2^2\leq Cs\log(en/s)\)</span>. Jensen’s inequality finishes.</p>
+<p><strong>Lower bound.</strong> The packing lemma of Lecture 2 provides a family <span class="math inline">\(X\)</span> of <span class="math inline">\(s\)</span>-element subsets of <span class="math inline">\(\{1,\ldots,n\}\)</span> with <span class="math inline">\(|I\triangle J|\geq s/2\)</span> for distinct <span class="math inline">\(I,J\in X\)</span> and <span class="math inline">\(\log|X|\gtrsim s\log(n/s)\)</span>. The unit vectors <span class="math inline">\(x_I:=s^{-1/2}\sum_{i\in I}e_i\)</span> lie in <span class="math inline">\(U_s\)</span> and satisfy <span class="math display">\[
+\|x_I-x_J\|_2^2=\frac{|I\triangle J|}s\geq\frac12 ,
+\]</span> so they form a <span class="math inline">\(2^{-1/2}\)</span>-separated subset of <span class="math inline">\(U_s\)</span>, and <span class="math inline">\(\log N(U_s,\tfrac12)\geq\log|X|\gtrsim s\log(n/s)\)</span>. Sudakov’s minoration with <span class="math inline">\(\varepsilon=\frac12\)</span> gives <span class="math inline">\(w(U_s)\geq c\sqrt{s\log(n/s)}\)</span>, and <span class="math inline">\(\log(n/s)\asymp\log(en/s)\)</span> in the stated range.</p>
+</div>
+</div>
+</div>
+<p>The lower bound is a first instance of Sudakov’s inequality being sharp: the entropy at the single scale <span class="math inline">\(\varepsilon=\frac12\)</span> already accounts for the whole width. Compare the <span class="math inline">\(\ell^p\)</span> balls discussed above, where Sudakov is sharp at <span class="math inline">\(p=1\)</span> and far from sharp for <span class="math inline">\(p&gt;2\)</span>.</p>
+</section>
+<section id="random-projections-of-sets" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="random-projections-of-sets"><span class="header-section-number">3</span> Random projections of sets</h2>
+<p>Let <span class="math inline">\(G\)</span> be an <span class="math inline">\(m\times n\)</span> matrix with independent <span class="math inline">\(N(0,1)\)</span> entries and let <span class="math inline">\(T\subseteq\mathbb R^n\)</span> be bounded. The Johnson–Lindenstrauss lemma of Lecture 6 says that if <span class="math inline">\(T\)</span> is finite and <span class="math inline">\(m\gtrsim\log|T|\)</span>, then <span class="math inline">\(G/\sqrt m\)</span> acts on <span class="math inline">\(T\)</span> as an approximate isometry, so in particular <span class="math inline">\(\operatorname{diam}(GT)\approx\sqrt m\operatorname{diam}(T)\)</span>. For <span class="math inline">\(T=B_2^n\)</span> nothing of the kind can hold when <span class="math inline">\(m&lt;n\)</span>, since then <span class="math inline">\(\operatorname{diam}(GB_2^n)=2\|G\|_{\mathrm{op}}\approx2(\sqrt m+\sqrt n)\)</span> is dominated by <span class="math inline">\(\sqrt n\)</span>, a quantity that does not shrink with <span class="math inline">\(m\)</span>. What happens in between is decided by the Gaussian width.</p>
+<div id="thm-random-projection" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 2 (Diameter of a random projection)</strong></span> There are absolute constants <span class="math inline">\(c,C&gt;0\)</span> such that, for every bounded <span class="math inline">\(T\subseteq\mathbb R^n\)</span> and every <span class="math inline">\(m\geq1\)</span>, <span class="math display">\[
+c\big(w(T)+\sqrt m\operatorname{diam}(T)\big)
+\leq\mathbb E\operatorname{diam}(GT)
+\leq C\big(w(T)+\sqrt m\operatorname{diam}(T)\big).
+\]</span> Moreover, with probability at least <span class="math inline">\(1-e^{-m}\)</span>, <span class="math display">\[
+\operatorname{diam}(GT)\leq4w(T)+C\sqrt m\operatorname{diam}(T).
+\]</span></p>
+</div>
+<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Write <span class="math inline">\(D=\operatorname{diam}(T)\)</span> and <span class="math inline">\(T'=T-T\)</span>, so that <span class="math inline">\(\sup_{x\in T'}\|x\|_2=D\)</span> and <span class="math inline">\(w(T')=2w(T)\)</span>.</p>
 <p><strong>Upper bound, reduction to a net.</strong> For <span class="math inline">\(z\in\mathbb R^m\)</span> define <span class="math display">\[
@@ -579,8 +632,8 @@ c\big(w(T)+\sqrt m\operatorname{diam}(T)\big)
 </div>
 </div>
 <p>The proof has the same shape as the sharp bound on <span class="math inline">\(\|G\|_{\mathrm{op}}\)</span> in Lecture 12, and indeed <span class="math inline">\(T=B_2^n\)</span> recovers it up to constants. There the supremum over the sphere <span class="math inline">\(S^{n-1}\)</span> was handled by comparison; here the supremum over the general set <span class="math inline">\(T'\)</span> is handled by concentration around the width, and only the supremum over the target sphere <span class="math inline">\(S^{m-1}\)</span> needs a net. The net costs <span class="math inline">\(6^m\)</span>, which is exactly what makes <span class="math inline">\(\sqrt m\)</span> the price of the target dimension.</p>
-<section id="the-phase-transition" class="level3" data-number="2.1">
-<h3 data-number="2.1" class="anchored" data-anchor-id="the-phase-transition"><span class="header-section-number">2.1</span> The phase transition</h3>
+<section id="the-phase-transition" class="level3" data-number="3.1">
+<h3 data-number="3.1" class="anchored" data-anchor-id="the-phase-transition"><span class="header-section-number">3.1</span> The phase transition</h3>
 <p>Write the theorem as <span class="math display">\[
 \mathbb E\operatorname{diam}(GT)\asymp\max\Big\{w(T),\ \sqrt m\operatorname{diam}(T)\Big\}.
 \]</span> The two terms balance when <span class="math inline">\(m\asymp w(T)^2/\operatorname{diam}(T)^2\)</span>.</p>
@@ -596,7 +649,7 @@ d(T):=\frac{w(T)^2}{\operatorname{diam}(T)^2}.
 </ul>
 <p>The name is justified by two facts. First, <span class="math inline">\(d(T)\leq\dim T\)</span>, where <span class="math inline">\(\dim T\)</span> is the dimension of the affine span of <span class="math inline">\(T\)</span>: if <span class="math inline">\(T\)</span> lies in a <span class="math inline">\(k\)</span>-dimensional subspace, then <span class="math inline">\(T-T\)</span> lies in <span class="math inline">\(\operatorname{diam}(T)\cdot B_2^k\)</span> up to a rotation, so <span class="math inline">\(2w(T)=w(T-T)\leq\operatorname{diam}(T)\,\mathbb E\|g'\|_2\leq\operatorname{diam}(T)\sqrt k\)</span> with <span class="math inline">\(g'\sim N(0,I_k)\)</span>, and <span class="math inline">\(d(T)\leq k/4\)</span>. Second, <span class="math inline">\(d(T)\)</span> is stable under perturbation of <span class="math inline">\(T\)</span> in a way that the algebraic dimension is not: shrinking one axis of <span class="math inline">\(B_2^n\)</span> to zero drops <span class="math inline">\(\dim\)</span> from <span class="math inline">\(n\)</span> to <span class="math inline">\(n-1\)</span> only at the last instant, while <span class="math inline">\(d\)</span> decreases continuously. For a finite set, <span class="math inline">\(d(T)\lesssim\log|T|\)</span> by the finite-set bound of Lecture 3, which is the Johnson–Lindenstrauss dimension again.</p>
 <div class="callout callout-style-simple callout-note callout-titled" title="Orthogonal projections">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -605,7 +658,7 @@ d(T):=\frac{w(T)^2}{\operatorname{diam}(T)^2}.
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>The theorem is stated for a Gaussian matrix, which is not a projection. If <span class="math inline">\(P\)</span> is the orthogonal projection onto a uniformly random <span class="math inline">\(m\)</span>-dimensional subspace of <span class="math inline">\(\mathbb R^n\)</span>, then <span class="math inline">\(\|Px\|_2\)</span> has the law of <span class="math inline">\(\|Qx\|_2\)</span>, where <span class="math inline">\(Q\)</span> consists of the first <span class="math inline">\(m\)</span> rows of a Haar-distributed orthogonal matrix. The rows of <span class="math inline">\(Q\)</span> are orthonormal, while the rows of <span class="math inline">\(G/\sqrt n\)</span> are only approximately so; running the proof above with <span class="math inline">\(Q\)</span> in place of <span class="math inline">\(G\)</span>, and using the spherical concentration inequality of Lecture 11 in place of the Gaussian one, gives <span class="math display">\[
 \mathbb E\operatorname{diam}(PT)\asymp\frac{w(T)}{\sqrt n}+\sqrt{\frac mn}\operatorname{diam}(T),
@@ -615,8 +668,8 @@ d(T):=\frac{w(T)^2}{\operatorname{diam}(T)^2}.
 </div>
 </section>
 </section>
-<section id="overlap-of-random-cones" class="level2 page-columns page-full" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="overlap-of-random-cones"><span class="header-section-number">3</span> Overlap of random cones</h2>
+<section id="overlap-of-random-cones" class="level2 page-columns page-full" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="overlap-of-random-cones"><span class="header-section-number">4</span> Overlap of random cones</h2>
 <p>The second application replaces sets by cones and projection by rotation. A <strong>closed convex cone</strong> is a closed convex set <span class="math inline">\(K\subseteq\mathbb R^n\)</span> with <span class="math inline">\(\lambda K\subseteq K\)</span> for all <span class="math inline">\(\lambda\geq0\)</span>. Let <span class="math inline">\(Q\)</span> be a Haar distributed random orthogonal matrix, so that <span class="math inline">\(QC\)</span> is a uniformly random rotation of a cone <span class="math inline">\(C\)</span>. Two cones in general position intersect only at the origin if they are small, and along a nontrivial set if they are large. The question is what “small” and “large” mean, and the answer is a width.</p>
 <div id="lem-cone-projection" class="theorem lemma">
 <p><span class="theorem-title"><strong>Lemma 1 (Projection onto a cone)</strong></span> Let <span class="math inline">\(C\)</span> be a closed convex cone and let <span class="math inline">\(\Pi_C(x)\)</span> denote the nearest point of <span class="math inline">\(C\)</span> to <span class="math inline">\(x\)</span>. Then <span class="math display">\[
@@ -624,7 +677,7 @@ d(T):=\frac{w(T)^2}{\operatorname{diam}(T)^2}.
 \]</span></p>
 </div>
 <div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -633,7 +686,7 @@ d(T):=\frac{w(T)^2}{\operatorname{diam}(T)^2}.
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Write <span class="math inline">\(p=\Pi_C(x)\)</span>. The nearest-point characterization for a closed convex set gives <span class="math inline">\(\langle x-p,y-p\rangle\leq0\)</span> for all <span class="math inline">\(y\in C\)</span>. Taking <span class="math inline">\(y=2p\)</span> and <span class="math inline">\(y=0\)</span>, both in <span class="math inline">\(C\)</span> because <span class="math inline">\(C\)</span> is a cone, gives <span class="math inline">\(\langle x-p,p\rangle=0\)</span>, and then <span class="math inline">\(\langle x-p,y\rangle\leq0\)</span> for all <span class="math inline">\(y\in C\)</span>. Hence for <span class="math inline">\(y\in C\)</span> with <span class="math inline">\(\|y\|_2\leq1\)</span>, <span class="math display">\[
 \langle y,x\rangle=\langle y,p\rangle+\langle y,x-p\rangle\leq\langle y,p\rangle\leq\|p\|_2 ,
@@ -653,7 +706,7 @@ w(C\cap B_2^n)^2\leq\delta(C)\leq\big(w(C\cap B_2^n)+2\big)^2 .
 \]</span></p>
 </div>
 <div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -662,7 +715,7 @@ w(C\cap B_2^n)^2\leq\delta(C)\leq\big(w(C\cap B_2^n)+2\big)^2 .
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Let <span class="math inline">\(Z=\sup_{y\in C\cap B_2^n}\langle y,g\rangle\)</span>, so <span class="math inline">\(\mathbb EZ=w(C\cap B_2^n)\)</span> and <span class="math inline">\(\delta(C)=\mathbb EZ^2\)</span>. The lower bound is Jensen. For the upper bound, <span class="math inline">\(Z\)</span> is the support function of a set of radius <span class="math inline">\(1\)</span>, hence <span class="math inline">\(1\)</span>-Lipschitz in <span class="math inline">\(g\)</span>, and Gaussian concentration (Lecture 11) gives <span class="math display">\[
 \operatorname{Var}Z=\int_0^\infty2t\,\mathbb P\{|Z-\mathbb EZ|\geq t\}\,dt
@@ -673,7 +726,7 @@ w(C\cap B_2^n)^2\leq\delta(C)\leq\big(w(C\cap B_2^n)+2\big)^2 .
 </div>
 <p>Some examples. A linear subspace <span class="math inline">\(E\)</span> of dimension <span class="math inline">\(k\)</span> is a cone with <span class="math inline">\(\delta(E)=\mathbb E\|\Pi_Eg\|_2^2=k\)</span>, so statistical dimension extends linear dimension. The nonnegative orthant <span class="math inline">\(\mathbb R^n_{\geq0}\)</span> has <span class="math inline">\(\Pi(g)=(g_i^+)_i\)</span> and <span class="math inline">\(\delta=n/2\)</span>. A circular cone of half-angle <span class="math inline">\(\theta\)</span> has <span class="math inline">\(\delta\approx n\sin^2\theta\)</span>. In each case <span class="math inline">\(\delta(C)\)</span> is the dimension of the subspace that the cone most resembles.</p>
 <div id="thm-kinematic" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 2 (Approximate kinematic formula)</strong></span> There is an absolute constant <span class="math inline">\(C\)</span> such that for all closed convex cones <span class="math inline">\(K,C\subseteq\mathbb R^n\)</span>, all <span class="math inline">\(\eta\in(0,1)\)</span>, and <span class="math inline">\(Q\)</span> Haar orthogonal, <span class="math display">\[
+<p><span class="theorem-title"><strong>Theorem 3 (Approximate kinematic formula)</strong></span> There is an absolute constant <span class="math inline">\(C\)</span> such that for all closed convex cones <span class="math inline">\(K,C\subseteq\mathbb R^n\)</span>, all <span class="math inline">\(\eta\in(0,1)\)</span>, and <span class="math inline">\(Q\)</span> Haar orthogonal, <span class="math display">\[
 \delta(K)+\delta(C)\leq n-C\sqrt{n\log(1/\eta)}
 \quad\Longrightarrow\quad
 \mathbb P\{K\cap QC\neq\{0\}\}\leq\eta ,
@@ -687,7 +740,7 @@ w(C\cap B_2^n)^2\leq\delta(C)\leq\big(w(C\cap B_2^n)+2\big)^2 .
 <div class="no-row-height column-margin column-container"><div id="ref-amelunxen2014" class="csl-entry" role="listitem">
 Amelunxen, Dennis, Martin Lotz, Michael B. McCoy, and Joel A. Tropp. 2014. <span>“Living on the Edge: Phase Transitions in Convex Programs with Random Data.”</span> <em>Information and Inference</em> 3 (3): 224–94. <a href="https://doi.org/10.1093/imaiai/iau005">https://doi.org/10.1093/imaiai/iau005</a>.
 </div></div><div class="callout callout-style-simple callout-note callout-titled" title="Preview: the phase transition of sparse recovery">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -696,7 +749,7 @@ Amelunxen, Dennis, Martin Lotz, Michael B. McCoy, and Joel A. Tropp. 2014. <span
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Let <span class="math inline">\(A\)</span> be an <span class="math inline">\(m\times n\)</span> Gaussian matrix and let <span class="math inline">\(x_0\in\mathbb R^n\)</span> be <span class="math inline">\(s\)</span>-sparse. Basis pursuit recovers <span class="math inline">\(x_0\)</span> from <span class="math inline">\(y=Ax_0\)</span> as the minimizer of <span class="math inline">\(\|x\|_1\)</span> subject to <span class="math inline">\(Ax=y\)</span>. The recovery succeeds exactly when the kernel of <span class="math inline">\(A\)</span>, a uniformly random subspace of dimension <span class="math inline">\(n-m\)</span>, meets the <strong>descent cone</strong> of the <span class="math inline">\(\ell^1\)</span> norm at <span class="math inline">\(x_0\)</span>, <span class="math display">\[
 D(x_0):=\{h:\|x_0+\tau h\|_1\leq\|x_0\|_1\text{ for some }\tau&gt;0\},
@@ -705,8 +758,8 @@ D(x_0):=\{h:\|x_0+\tau h\|_1\leq\|x_0\|_1\text{ for some }\tau&gt;0\},
 </div>
 </div>
 </section>
-<section id="where-we-go-next" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="where-we-go-next"><span class="header-section-number">4</span> Where we go next</h2>
+<section id="where-we-go-next" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="where-we-go-next"><span class="header-section-number">5</span> Where we go next</h2>
 <p>Gaussian width has now appeared in three roles: as the expected supremum of a Gaussian process, which is what the comparison inequalities compute; as a geometric size that controls covering numbers through Sudakov’s minoration; and as the parameter that governs random projections and random cones. The next two lectures leave Gaussian processes for a different use of Gaussian vectors, rounding the solution of a semidefinite program to a point of the discrete cube, before the course returns to suprema of processes with Dudley’s inequality and chaining.</p>
 
 

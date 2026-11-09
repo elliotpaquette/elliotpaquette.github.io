@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2026-10-26">
+<meta name="dcterms.date" content="2026-10-19">
 
 <title>Lecture 12: Gaussian Comparison and Gaussian Matrices – High-Dimensional Probability</title>
 <style>
@@ -431,8 +431,7 @@ window.Quarto = {
   <li><a href="#slepians-inequality" id="toc-slepians-inequality" class="nav-link" data-scroll-target="#slepians-inequality"><span class="header-section-number">2</span> Slepian’s inequality</a></li>
   <li><a href="#the-sudakovfernique-inequality" id="toc-the-sudakovfernique-inequality" class="nav-link" data-scroll-target="#the-sudakovfernique-inequality"><span class="header-section-number">3</span> The Sudakov–Fernique inequality</a></li>
   <li><a href="#norms-of-gaussian-random-matrices" id="toc-norms-of-gaussian-random-matrices" class="nav-link" data-scroll-target="#norms-of-gaussian-random-matrices"><span class="header-section-number">4</span> Norms of Gaussian random matrices</a></li>
-  <li><a href="#sudakovs-minoration" id="toc-sudakovs-minoration" class="nav-link" data-scroll-target="#sudakovs-minoration"><span class="header-section-number">5</span> Sudakov’s minoration</a></li>
-  <li><a href="#where-we-go-next" id="toc-where-we-go-next" class="nav-link" data-scroll-target="#where-we-go-next"><span class="header-section-number">6</span> Where we go next</a></li>
+  <li><a href="#where-we-go-next" id="toc-where-we-go-next" class="nav-link" data-scroll-target="#where-we-go-next"><span class="header-section-number">5</span> Where we go next</a></li>
   </ul>
 </nav>
     </div>
@@ -443,7 +442,7 @@ window.Quarto = {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Lecture 12: Gaussian Comparison and Gaussian Matrices</h1>
-<p class="subtitle lead">Slepian, Sudakov–Fernique, sharp bounds on Gaussian matrices, and Sudakov’s minoration</p>
+<p class="subtitle lead">Slepian, Sudakov–Fernique, and sharp bounds on Gaussian matrices</p>
 </div>
 
 
@@ -454,7 +453,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 26, 2026</p>
+      <p class="date">October 19, 2026</p>
     </div>
   </div>
   
@@ -466,7 +465,7 @@ window.Quarto = {
 </header>
 
 
-<p>Lecture 11 reduced the study of the supremum of a Gaussian process to the study of its mean. This lecture develops the main tool for the mean. The idea is to compare two Gaussian processes on the same index set: if the increments of <span class="math inline">\(X\)</span> are smaller than those of <span class="math inline">\(Y\)</span> in the canonical metric, then <span class="math inline">\(\mathbb E\sup X\leq\mathbb E\sup Y\)</span>. The proof is Stein’s lemma along an interpolation between the two covariances, in the same way that the concentration inequality was Stein’s lemma along an interpolation between a Gaussian vector and an independent copy. The two applications are the norm of a Gaussian random matrix, where comparison with a process that can be computed exactly gives the sharp bound <span class="math inline">\(\sqrt m+\sqrt n\)</span>, and Sudakov’s minoration, whose proof Lecture 3 postponed to this point.</p>
+<p>Lecture 11 reduced the study of the supremum of a Gaussian process to the study of its mean. This lecture develops the main tool for the mean. The idea is to compare two Gaussian processes on the same index set: if the increments of <span class="math inline">\(X\)</span> are smaller than those of <span class="math inline">\(Y\)</span> in the canonical metric, then <span class="math inline">\(\mathbb E\sup X\leq\mathbb E\sup Y\)</span>. The proof is Stein’s lemma along an interpolation between the two covariances, in the same way that the concentration inequality was Stein’s lemma along an interpolation between a Gaussian vector and an independent copy. The applications are sharp bounds for Gaussian matrices, including the operator-norm bound <span class="math inline">\(\sqrt m+\sqrt n\)</span>. Lecture 13 uses these comparison tools to prove Sudakov’s minoration, whose proof Lecture 3 postponed.</p>
 <section id="gaussian-interpolation" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="gaussian-interpolation"><span class="header-section-number">1</span> Gaussian interpolation</h2>
 <p>Let <span class="math inline">\(X\sim N(0,\Sigma^X)\)</span> and <span class="math inline">\(Y\sim N(0,\Sigma^Y)\)</span> be independent Gaussian vectors in <span class="math inline">\(\mathbb R^n\)</span>, and for <span class="math inline">\(u\in[0,1]\)</span> set <span class="math display">\[
@@ -734,64 +733,9 @@ s_{\min}(A)=\min_{u\in S^{n-1}}\max_{v\in S^{m-1}}\langle Au,v\rangle ,
 </div>
 </div>
 </section>
-<section id="sudakovs-minoration" class="level2" data-number="5">
-<h2 data-number="5" class="anchored" data-anchor-id="sudakovs-minoration"><span class="header-section-number">5</span> Sudakov’s minoration</h2>
-<p>Lecture 3 stated that Gaussian width controls covering numbers at every scale and left the proof as a roadmap, because it needed a comparison theorem. Here is the proof, for a general Gaussian process.</p>
-<div id="thm-sudakov" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 4 (Sudakov’s minoration inequality)</strong></span> There is an absolute constant <span class="math inline">\(c&gt;0\)</span> such that for every centered Gaussian process <span class="math inline">\((X_t)_{t\in T}\)</span> with separable canonical metric <span class="math inline">\(d\)</span>, and every <span class="math inline">\(\varepsilon&gt;0\)</span>, <span class="math display">\[
-\mathbb E\sup_{t\in T}X_t\geq c\,\varepsilon\sqrt{\log N(T,d,\varepsilon)} .
-\]</span> For the Gaussian width process <span class="math inline">\(X_t=\langle g,t\rangle\)</span> on <span class="math inline">\(T\subseteq\mathbb R^d\)</span> this reads <span class="math inline">\(w(T)\geq c\varepsilon\sqrt{\log N(T,\|\cdot\|_2,\varepsilon)}\)</span>.</p>
-</div>
-<div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Proof
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-10" class="callout-10-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>We need a lower bound on the expected maximum of independent Gaussians: for <span class="math inline">\(N\geq2\)</span> and <span class="math inline">\(g\sim N(0,I_N)\)</span>, <span class="math display">\[
-\mathbb E\max_{i\leq N}g_i\geq c_0\sqrt{\log N} .
-\]</span> Indeed, <span class="math inline">\(\max_i|g_i|\leq\max_ig_i+\max_i(-g_i)\)</span>, and the two terms on the right have the same law, so <span class="math inline">\(\mathbb E\max_ig_i\geq\frac12\mathbb E\|g\|_\infty\)</span>, and Exercise Sheet 2 showed <span class="math inline">\(\mathbb E\|g\|_\infty\geq\sqrt{2\log N}-o(1)\)</span> as <span class="math inline">\(N\to\infty\)</span>. For each fixed <span class="math inline">\(N\geq2\)</span> the left side is positive, so a single constant <span class="math inline">\(c_0\)</span> works for all <span class="math inline">\(N\geq2\)</span>.</p>
-<p>Now let <span class="math inline">\(N:=N(T,d,\varepsilon)\)</span>, which we may assume finite and at least <span class="math inline">\(2\)</span>, the statement being trivial otherwise (if <span class="math inline">\(N=\infty\)</span>, run the argument on finite subsets). By the covering–packing comparison of Lecture 1, <span class="math inline">\(T\)</span> contains an <span class="math inline">\(\varepsilon\)</span>-separated set <span class="math inline">\(t_1,\ldots,t_N\)</span>. Let <span class="math inline">\(Y_1,\ldots,Y_N\)</span> be independent <span class="math inline">\(N(0,\varepsilon^2/2)\)</span>. For <span class="math inline">\(i\neq j\)</span>, <span class="math display">\[
-\mathbb E(X_{t_i}-X_{t_j})^2=d(t_i,t_j)^2\geq\varepsilon^2=\mathbb E(Y_i-Y_j)^2 .
-\]</span> So <span class="math inline">\(Y\)</span> has the smaller increments, and <a href="#thm-sudakov-fernique" class="quarto-xref">Theorem&nbsp;2</a> applied to the processes <span class="math inline">\((Y_i)\)</span> and <span class="math inline">\((X_{t_i})\)</span> on the finite set <span class="math inline">\(\{1,\ldots,N\}\)</span> gives <span class="math display">\[
-\mathbb E\sup_{t\in T}X_t\geq\mathbb E\max_{i\leq N}X_{t_i}\geq\mathbb E\max_{i\leq N}Y_i
-=\frac\varepsilon{\sqrt2}\,\mathbb E\max_{i\leq N}g_i\geq\frac{c_0}{\sqrt2}\,\varepsilon\sqrt{\log N} .
-\]</span></p>
-</div>
-</div>
-</div>
-<p>Sudakov’s inequality is a statement about a single scale: it says nothing about how the covering numbers at different scales combine. Its converse direction, an upper bound on <span class="math inline">\(\mathbb E\sup X\)</span> from the covering numbers, requires all scales at once and is Dudley’s inequality, the subject of the chaining lectures. The two together bracket the expected supremum between the entropy at the worst single scale and the integral of the entropy over all scales.</p>
-<div class="callout callout-style-simple callout-note callout-titled" title="Sudakov as a geometric measurement">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Sudakov as a geometric measurement
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-11" class="callout-11-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>For the Gaussian width process the inequality reads <span class="math display">\[
-\log N(T,\varepsilon)\leq\frac{C\,w(T)^2}{\varepsilon^2}
-\qquad\text{for every }\varepsilon&gt;0 .
-\]</span> This is a purely geometric statement about subsets of <span class="math inline">\(\mathbb R^d\)</span>, proved by probabilistic means. For the <span class="math inline">\(\ell^p\)</span> balls with <span class="math inline">\(1\leq p\leq2\)</span>, Lecture 3 and its exercises give <span class="math inline">\(w(B_p^d)\asymp d^{1-1/p}\)</span> up to logarithmic factors at <span class="math inline">\(p=1\)</span>, so <span class="math display">\[
-\log N(B_p^d,\varepsilon)\lesssim\frac{d^{2-2/p}}{\varepsilon^2},
-\]</span> which for <span class="math inline">\(p&lt;2\)</span> is subexponential in <span class="math inline">\(d\)</span> at fixed <span class="math inline">\(\varepsilon\)</span>, far below the volumetric bound <span class="math inline">\(d\log(C/\varepsilon)\)</span>. At <span class="math inline">\(p=1\)</span> this recovers the Maurey bound of Lecture 2 up to logarithms, by a completely different argument. For <span class="math inline">\(p&gt;2\)</span> the volumetric bound is the better one, and Sudakov is not sharp.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="where-we-go-next" class="level2" data-number="6">
-<h2 data-number="6" class="anchored" data-anchor-id="where-we-go-next"><span class="header-section-number">6</span> Where we go next</h2>
-<p>Comparison inequalities compute expected suprema by trading a complicated process for a simpler one with larger increments. The next lecture returns to Gaussian width with these tools in hand: Sudakov’s minoration as a geometric measurement, the width of sparse vectors and of <span class="math inline">\(\ell^p\)</span> balls, and Gaussian width as the quantity that governs the diameter of a random projection of a set and the intersection of randomly rotated cones. After that, the semidefinite relaxation lectures use the Gaussian tools of Lectures 10 and 11 in a different direction, to round the solution of a convex program to a point of the discrete cube.</p>
+<section id="where-we-go-next" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="where-we-go-next"><span class="header-section-number">5</span> Where we go next</h2>
+<p>Comparison inequalities compute expected suprema by trading a complicated process for a simpler one with larger increments. The next lecture returns to Gaussian width with these tools in hand: the proof of <a href="../lectures/13-gaussian-width-revisited.html#thm-sudakov">Sudakov’s minoration</a> and its use as a geometric measurement, the width of sparse vectors and of <span class="math inline">\(\ell^p\)</span> balls, and Gaussian width as the quantity that governs the diameter of a random projection of a set and the intersection of randomly rotated cones. After that, the semidefinite relaxation lectures use the Gaussian tools of Lectures 10 and 11 in a different direction, to round the solution of a convex program to a point of the discrete cube.</p>
 
 
 </section>
