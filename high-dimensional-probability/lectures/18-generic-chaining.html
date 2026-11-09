@@ -535,7 +535,7 @@ T_k:=\{0\}\cup\{t_n:n\leq2^{2^k}\},
 <p><span class="theorem-title"><strong>Theorem 1 (Generic chaining)</strong></span> Let <span class="math inline">\((X_t)_{t\in T}\)</span> be a centered process, sub-Gaussian with respect to a metric <span class="math inline">\(d\)</span> for which <span class="math inline">\((T,d)\)</span> is separable. Then <span class="math display">\[
 \mathbb E\sup_{t\in T}X_t\leq C\gamma_2(T,d),
 \]</span> and for every <span class="math inline">\(t_0\in T\)</span> and <span class="math inline">\(u\geq0\)</span>, with probability at least <span class="math inline">\(1-2e^{-u^2}\)</span>, <span class="math display">\[
-\sup_{t\in T}|X_t-X_{t_0}|\leq C(1+u)\gamma_2(T,d).
+\sup_{t\in T}|X_t-X_{t_0}|\leq C\big[\gamma_2(T,d)+u\operatorname{diam}(T,d)\big].
 \]</span></p>
 </div>
 <div class="proof-fold callout callout-style-simple callout-note callout-titled" title="Proof">
@@ -550,37 +550,48 @@ T_k:=\{0\}\cup\{t_n:n\leq2^{2^k}\},
 </div>
 <div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>As in Lecture 16 it suffices to treat finite <span class="math inline">\(T\)</span>; the reduction is the same, using that an admissible sequence for <span class="math inline">\(T\)</span> restricts to one for a subset after replacing each point by a nearest point of the subset, which at most doubles every <span class="math inline">\(d(t,T_k)\)</span>. Fix an admissible sequence <span class="math inline">\((T_k)\)</span> with <span class="math inline">\(T_0=\{t_0\}\)</span> and <span class="math display">\[
+<p>As in Lecture 16, using the supremum convention of Lecture 10, it suffices to treat finite <span class="math inline">\(T\)</span>. An admissible sequence for <span class="math inline">\(T\)</span> restricts to one for a finite subset after replacing each net point by a nearest point of the subset, which at most doubles every <span class="math inline">\(d(t,T_k)\)</span>. Write <span class="math inline">\(D=\operatorname{diam}(T,d)\)</span> and fix an admissible sequence <span class="math inline">\((T_k)\)</span> with <span class="math display">\[
 S:=\sup_{t\in T}\sum_{k\geq0}2^{k/2}d(t,T_k)
-\]</span> close to <span class="math inline">\(\gamma_2(T,d)\)</span>. For <span class="math inline">\(t\in T\)</span> let <span class="math inline">\(\pi_k(t)\in T_k\)</span> be a nearest point, so <span class="math inline">\(d(t,\pi_k(t))=d(t,T_k)\)</span>, and <span class="math inline">\(\pi_k(t)=t\)</span> for large <span class="math inline">\(k\)</span> since <span class="math inline">\(T\)</span> is finite.</p>
-<p><strong>Step 1: the chain.</strong> <span class="math inline">\(X_t-X_{t_0}=\sum_{k\geq1}(X_{\pi_k(t)}-X_{\pi_{k-1}(t)})\)</span>, a finite sum, with links of <span class="math inline">\(\psi_2\)</span> norm at most <span class="math display">\[
+\]</span> arbitrarily close to <span class="math inline">\(\gamma_2(T,d)\)</span>. We do not require the singleton <span class="math inline">\(T_0\)</span> to equal <span class="math inline">\(\{t_0\}\)</span>. We may take <span class="math inline">\(T_k=T\)</span> for all sufficiently large <span class="math inline">\(k\)</span>. Let <span class="math inline">\(\pi_k(t)\in T_k\)</span> be a nearest point to <span class="math inline">\(t\)</span>.</p>
+<p><strong>Step 1: start the chain at a level depending on the tail parameter.</strong> Set <span class="math inline">\(v=\max\{1,u\}\)</span> and choose <span class="math inline">\(\ell\geq0\)</span> with <span class="math inline">\(2^\ell\leq v^2&lt;2^{\ell+1}\)</span>. Decompose <span class="math display">\[
+X_t-X_{t_0}=X_{\pi_\ell(t)}-X_{t_0}
++\sum_{k&gt;\ell}\big(X_{\pi_k(t)}-X_{\pi_{k-1}(t)}\big).
+\]</span> The first jump has length at most <span class="math inline">\(D\)</span>. Each later link has <span class="math inline">\(\psi_2\)</span> norm at most <span class="math display">\[
 d\big(\pi_k(t),\pi_{k-1}(t)\big)\leq d(t,T_k)+d(t,T_{k-1}).
 \]</span></p>
-<p><strong>Step 2: the increments, uniformly.</strong> At stage <span class="math inline">\(k\)</span> the link <span class="math inline">\((\pi_k(t),\pi_{k-1}(t))\)</span> is one of at most <span class="math inline">\(|T_k||T_{k-1}|\leq2^{2^{k+1}}\)</span> pairs <span class="math inline">\((a,b)\)</span>. For a single pair and <span class="math inline">\(s\geq0\)</span>, the sub-Gaussian tail of Lecture 5 gives <span class="math inline">\(\mathbb P\{|X_a-X_b|\geq d(a,b)s\}\leq2e^{-s^2}\)</span>. Take <span class="math inline">\(s_k:=\sqrt{2^{k+2}\log2}+u\)</span>, so that <span class="math inline">\(s_k^2\geq2^{k+2}\log2+u^2\)</span> and the union bound over the pairs at stage <span class="math inline">\(k\)</span> gives failure probability at most <span class="math display">\[
-2^{2^{k+1}}\cdot2\exp\big(-2^{k+2}\log2-u^2\big)=2\cdot2^{-2^{k+1}}e^{-u^2}.
-\]</span> Summing over <span class="math inline">\(k\geq1\)</span>, all links at all stages satisfy <span class="math inline">\(|X_a-X_b|\leq d(a,b)s_k\)</span> outside an event of probability at most <span class="math inline">\(2e^{-u^2}\sum_{k\geq1}2^{-2^{k+1}}\leq2e^{-u^2}\)</span>.</p>
-<p><strong>Step 3: summing the chain.</strong> On the good event, for every <span class="math inline">\(t\)</span>, <span class="math display">\[
-|X_t-X_{t_0}|\leq\sum_{k\geq1}\big(d(t,T_k)+d(t,T_{k-1})\big)\big(2^{(k+2)/2}\sqrt{\log2}+u\big).
-\]</span> The two sums <span class="math inline">\(\sum_k2^{k/2}d(t,T_k)\)</span> and <span class="math inline">\(\sum_k2^{k/2}d(t,T_{k-1})=\sqrt2\sum_k2^{(k-1)/2}d(t,T_{k-1})\)</span> are each at most <span class="math inline">\(\sqrt2\,S\)</span>, and since <span class="math inline">\(2^{k/2}\geq1\)</span> the sums without the weight <span class="math inline">\(2^{k/2}\)</span> are also at most <span class="math inline">\(S\)</span>. Altogether <span class="math inline">\(|X_t-X_{t_0}|\leq C(1+u)S\)</span>, uniformly in <span class="math inline">\(t\)</span>, which is the tail bound. Integrating in <span class="math inline">\(u\)</span> and using <span class="math inline">\(\mathbb EX_{t_0}=0\)</span> gives the expectation bound, and <span class="math inline">\(S\)</span> may be taken arbitrarily close to <span class="math inline">\(\gamma_2(T,d)\)</span>.</p>
+<p><strong>Step 2: control the first jump.</strong> For a single pair, Lecture 5 gives <span class="math inline">\(\mathbb P\{|X_a-X_b|&gt;s\,d(a,b)\}\leq2e^{-s^2}\)</span>. There are at most <span class="math inline">\(|T_\ell|\leq2^{2^\ell}\)</span> possible first jumps. Thus, for a sufficiently large absolute constant <span class="math inline">\(L\)</span>, <span class="math display">\[
+\mathbb P\Big\{\max_{a\in T_\ell}|X_a-X_{t_0}|&gt;LvD\Big\}
+\leq2\exp\big((\log2)2^\ell-L^2v^2\big)\leq e^{-v^2}.
+\]</span></p>
+<p><strong>Step 3: control the fine links.</strong> At level <span class="math inline">\(k&gt;\ell\)</span> there are at most <span class="math inline">\(|T_k||T_{k-1}|\leq2^{2^{k+1}}\)</span> possible pairs. A union bound shows that all these links, at every level <span class="math inline">\(k&gt;\ell\)</span>, satisfy <span class="math inline">\(|X_a-X_b|\leq L2^{k/2}d(a,b)\)</span>, except on an event of probability at most <span class="math display">\[
+2\sum_{k&gt;\ell}\exp\big(-(L^2-2\log2)2^k\big)\leq e^{-v^2},
+\]</span> after increasing <span class="math inline">\(L\)</span>, since <span class="math inline">\(2^{\ell+1}&gt;v^2\)</span>.</p>
+<p><strong>Step 4: sum the chain.</strong> Outside the two exceptional events, <span class="math display">\[
+\begin{aligned}
+|X_t-X_{t_0}|
+&amp;\leq LvD+L\sum_{k&gt;\ell}2^{k/2}\big(d(t,T_k)+d(t,T_{k-1})\big)\\
+&amp;\leq LvD+L(1+\sqrt2)S
+\end{aligned}
+\]</span> uniformly in <span class="math inline">\(t\)</span>. Every admissible sequence has <span class="math inline">\(S\geq\sup_t d(t,T_0)\geq D/2\)</span>, so <span class="math inline">\(D\leq2\gamma_2(T,d)\)</span>. Consequently the extra <span class="math inline">\(D\)</span> when <span class="math inline">\(u&lt;1\)</span> is absorbed into the chaining term. Letting <span class="math inline">\(S\)</span> decrease to <span class="math inline">\(\gamma_2(T,d)\)</span> proves the claimed tail bound, with failure probability at most <span class="math inline">\(2e^{-v^2}\leq2e^{-u^2}\)</span>. Integrating in <span class="math inline">\(u\)</span>, using <span class="math inline">\(D\leq2\gamma_2(T,d)\)</span> and <span class="math inline">\(\mathbb EX_{t_0}=0\)</span>, gives the expectation bound. The tail argument uses only the increment bounds, so it also applies when <span class="math inline">\(X\)</span> is not centered.</p>
 </div>
 </div>
 </div>
 <p>The proof is the proof of Dudley’s inequality with one change: the threshold for the link at stage <span class="math inline">\(k\)</span> is proportional to the link’s own length <span class="math inline">\(d(\pi_k(t),\pi_{k-1}(t))\)</span> rather than to the worst link length <span class="math inline">\(2^{-k+2}\)</span> at that stage. The union bound is unaffected, because the number of pairs at stage <span class="math inline">\(k\)</span> is controlled by the admissibility condition and not by the scale, and the sum along the chain then produces the <span class="math inline">\(\gamma_2\)</span> sum for the particular <span class="math inline">\(t\)</span> rather than Dudley’s sum of suprema.</p>
-<div class="callout callout-style-simple callout-note callout-titled" title="A sharper tail">
+<div class="callout callout-style-simple callout-note callout-titled" title="Complexity and fluctuations">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>A sharper tail
+<span class="screen-reader-only">Note</span>Complexity and fluctuations
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>The tail bound above has scale <span class="math inline">\(\gamma_2(T,d)\)</span> in the fluctuation term <span class="math inline">\(u\gamma_2\)</span>, whereas for Gaussian processes Borell–TIS (Lecture 11) gives fluctuations on the smaller scale <span class="math inline">\(\sigma=\sup_t\sqrt{\operatorname{Var}X_t}\)</span>. A more careful choice of chain, in which one moves from <span class="math inline">\(\pi_{k-1}(t)\)</span> to <span class="math inline">\(\pi_k(t)\)</span> only when <span class="math inline">\(d(t,T_k)\)</span> is less than half of <span class="math inline">\(d(t,\pi_{k-1}(t))\)</span>, makes the link lengths decrease geometrically and yields <span class="math display">\[
-\sup_{s,t\in T}|X_t-X_s|\leq C\big[\gamma_2(T,d)+u\operatorname{diam}(T)\big]
-\]</span> with probability at least <span class="math inline">\(1-2e^{-u^2}\)</span>, for every sub-Gaussian process. This is the form in the handwritten notes, and it is the sub-Gaussian analogue of Borell–TIS: the mean is controlled by the geometry through <span class="math inline">\(\gamma_2\)</span>, and the fluctuations by the diameter alone.</p>
+<p>Starting the chain at level <span class="math inline">\(\ell\)</span> separates the complexity term <span class="math inline">\(\gamma_2(T,d)\)</span> from the fluctuation term <span class="math inline">\(u\operatorname{diam}(T,d)\)</span>. By the triangle inequality the theorem also gives <span class="math display">\[
+\sup_{s,t\in T}|X_t-X_s|\leq C\big[\gamma_2(T,d)+u\operatorname{diam}(T,d)\big]
+\]</span> with probability at least <span class="math inline">\(1-2e^{-u^2}\)</span>, for every sub-Gaussian process. This is the sub-Gaussian analogue of Borell–TIS (Lecture 11): the complexity is controlled by <span class="math inline">\(\gamma_2\)</span>, while the tail parameter multiplies only the diameter. For Gaussian processes, Borell–TIS more precisely controls deviations of the supremum from its mean at the scale <span class="math inline">\(\sup_t\sqrt{\operatorname{Var}X_t}\)</span>.</p>
 </div>
 </div>
 </div>
